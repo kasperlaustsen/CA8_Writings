@@ -4,6 +4,121 @@ In the end the model will be composed of a model that represents the refridgerat
 
 \subsection{Component models}
 
+\subsubsection{General type refridgerant control volume state eq}
+\textbf{Mass conservation equation} \\
+\begin{equation} \label{eq:GeneralTypeControlVol_MassConservation}
+	\frac{dM}{dt} = \dot{m_{in}} - \dot{m_{out}}
+\end{equation}
+
+where 
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\frac{dM}{dt}$ & is the change in mass inside control volume & [\si{kg}/\si{s}]\\ 
+		$\dot{m_{in}}$ & flow into control volume & [\si{kg}/\si{s}]\\
+		$\dot{m_{out}}$ & flow out of control volume & [\si{kg}/\si{s}]\\
+	\end{tabular}
+\end{center}
+
+\textbf{Energy balance equation}
+\begin{equation}
+	h_{out} = h_{in} + \frac{Q_{in}}{\dot{m}_{in}}
+\end{equation}
+
+where
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$h_{out}$ & enthalpy out of the control volume & [\si{Joule}/\si{kg}]\\ 
+		$h_{in}$ & enthalpy into control volume & [\si{Joule}/\si{kg}]\\ 
+		$Q_{in}$ & energy flow applied to control volume& [\si{Joule}/\si{s}]\\
+		$\dot{m}_{in}$ & flow into control volume & [\si{kg}/\si{s}]\\
+	\end{tabular}
+\end{center}
+
+\subsubsection{Expansion valve}
+
+\begin{equation}
+	\dot{m}= C A \sqrt{\rho\Delta p}
+\end{equation}
+
+where 
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\dot{m}$ & flow through valve & [\si{kg}/\si{s}]\\ 
+		$\Delta p$ & pressure drop across valve & [\si{Pa}]\\
+		$C$ & discharge coefficient of valve & [$\cdot$]\\
+		$A$ & cross sectional area of valve & [\si{m^2}]\\
+		$\rho$ & density of liquid & [\si{kg}/\si{m^3}]\\
+		$C$ & discharge coefficient of valve & [$\cdot$]\\
+	\end{tabular}
+\end{center}
+
+\begin{equation}
+	\dot{m}= D_{on} K  \sqrt{\frac{1}{v_{in} (p_{in} - p_{out})}}
+\end{equation}
+
+where 
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\dot{m}$ & flow through valve & [\si{kg}/\si{s}]\\ 
+		$D_{on}$ & Fraction of each pulse period being on & [$\%$]\\
+		$p_{in}$ & pressure on input side & [\si{Pa}]\\
+		$K$ & $C A$ & [\si{m^2}]\\
+		$v_{in}$ & specific volume of liquid & [\si{m^3}/\si{kg}]\\
+		$p_{out}$ & pressure on output side & [\si{Pa}]\\
+	\end{tabular}
+\end{center}
+
+\textbf{Pipe Joining Junction} \\
+Between compressor $ C_1 $, $ C_2 $ and the economizer (see \cref{fig:HVAC_Diagram}) is a pipe joining junction that connects the three forementioned components.
+
+\begin{equation} \label{eq:PipeJoiningJunction_ChangeOfMass}
+	\frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} + \dot{m}_{out}
+\end{equation}
+
+In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction. 
+
+\begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
+	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
+\end{equation}
+
+In \cref{eq:PipeJoiningJunction_Enthalpy} the enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated.
+
+\textbf{Pipe splitting Junction} \\
+This component is particularly simple, as the only function of it is to split the input flow in two. It is furthermore assumed that the dynamics are fast enough that the they can be modelled as algebraic equations.
+
+\begin{equation} \label{eq:PipeSplittingJunction_Enthalpy}
+	\begin{split}
+		\dot{m}_{in} &= \dot{m}_{out1} + \dot{m}_{out2} \\
+		p_{out1} &= p_{in} \\
+		p_{out2} &= p_{in} \\
+		h_{out1} &= h_{in} \\
+		h_{out1} &= h_{in} \\
+	\end{split}
+\end{equation}
+The pressure and enthalpy on the output flows are equal to the input pressure and enthalpy. The sum of the mass flows out of the Pipe splitting Junction is equal to the input mass flow. \\
+
+\textbf{Compressor} \\
+The compressor stages in the refrigeration cycle consists of two compressor stages that can be described by the same equations.
+The compressor dynamics are assumed to be fast enough compared with the refridgeration cycle that it can be considered constant. Therefore, the equations governing the compressors are algebraic equations. 
+Adiabatic compression is assumed. 
+The two equations describing the compression governs the mass flow and the output enthalpy. The output enthalpy is found via a lookup table (HTP). 
+
+\begin{align}
+	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_2}{v_2}\right) \frac{\omega}{2} \\
+	h_{out} &= HTP(T_{out}, p_{out}) 
+\end{align}
+
+where the specific volume on the output can be found as 
+
+\begin{align}
+	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
+	p_1 &= p_{in} - kl_1 \cdot \omega \\
+	p_2 &= p_{out} + kl_2 \cdot \omega \\
+	\gamma &= C_{cp}/C_{cv} \\
+	T_{out} &= T_{in}\cdot \left(\frac{p_{out}}{p_{in}}\right)^{\frac{\gamma-1}{\gamma}}
+\end{align}
+
+
 \subsubsection{Thermodynamic}
 
 \begin{itemize}
