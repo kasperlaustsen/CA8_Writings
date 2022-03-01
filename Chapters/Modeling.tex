@@ -4,7 +4,9 @@ In the end the model will be composed of a model that represents the refridgerat
 
 \subsection{Component models}
 
-\subsubsection{General type refridgerant control volume state eq}
+\subsubsection{General type refrigerant control volume state eq}
+Many of the components in a refridgeration cycle will be based on similar state equations. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume.
+
 \textbf{Mass conservation equation} \\
 \begin{equation} \label{eq:GeneralTypeControlVol_MassConservation}
 	\frac{dM}{dt} = \dot{m_{in}} - \dot{m_{out}}
@@ -27,16 +29,16 @@ where
 where
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$h_{out}$ & enthalpy out of the control volume & [\si{Joule}/\si{kg}]\\ 
-		$h_{in}$ & enthalpy into control volume & [\si{Joule}/\si{kg}]\\ 
+		$h_{out}$ & specific enthalpy out of the control volume & [\si{Joule}/\si{kg}]\\ 
+		$h_{in}$ & specific enthalpy into control volume & [\si{Joule}/\si{kg}]\\ 
 		$Q_{in}$ & energy flow applied to control volume& [\si{Joule}/\si{s}]\\
 		$\dot{m}_{in}$ & flow into control volume & [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
 
 \subsubsection{Expansion valve}
-
-\begin{equation}
+The flow through an expansion valve is proportional to the square root of the pressure drop across it, where the proportional constants relies on physical properties of the valve and refrigerant.
+\begin{equation} \label{eq:ExpansionValve}
 	\dot{m}= C A \sqrt{\rho\Delta p}
 \end{equation}
 
@@ -52,7 +54,9 @@ where
 	\end{tabular}
 \end{center}
 
-\begin{equation}
+To model the way that the valve is intended to be controlled, an alternative representation is introduced for the mass flow through an expansion valve \cref{eq:ExpansionValve_DutyCycle}
+
+\begin{equation} \label{eq:ExpansionValve_DutyCycle}
 	\dot{m}= D_{on} K  \sqrt{\frac{1}{v_{in} (p_{in} - p_{out})}}
 \end{equation}
 
@@ -60,30 +64,53 @@ where
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\dot{m}$ & flow through valve & [\si{kg}/\si{s}]\\ 
-		$D_{on}$ & Fraction of each pulse period being on & [$\%$]\\
-		$p_{in}$ & pressure on input side & [\si{Pa}]\\
+		$D_{on}$ & fraction of each pulse period being on & [$\%$]\\
+		$p_{in}$ & absolute pressure on input side & [\si{Pa}]\\
 		$K$ & $C A$ & [\si{m^2}]\\
 		$v_{in}$ & specific volume of liquid & [\si{m^3}/\si{kg}]\\
-		$p_{out}$ & pressure on output side & [\si{Pa}]\\
+		$p_{out}$ & absolute pressure on output side & [\si{Pa}]\\
 	\end{tabular}
 \end{center}
 
-\textbf{Pipe Joining Junction} \\
-Between compressor $ C_1 $, $ C_2 $ and the economizer (see \cref{fig:HVAC_Diagram}) is a pipe joining junction that connects the three forementioned components.
+\subsubsection{Pipe Joining Junction} 
+Between compressor $ C_1 $, $ C_2 $ and the economizer (see \cref{fig:HVAC_Diagram}) is a Pipe Joining Junction that connects the three forementioned components.
 
 \begin{equation} \label{eq:PipeJoiningJunction_ChangeOfMass}
 	\frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} + \dot{m}_{out}
 \end{equation}
 
-In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction. 
+where 
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\frac{dM}{dt}$ & is the change in mass inside Pipe Joining Junction		 	& [\si{kg}/\si{s}]\\ 
+		$\dot{m}_{in1}$ & flow into Pipe Joining Junction from Compressor $ C_1 $ 		& [\si{kg}/\si{s}]\\
+		$\dot{m}_{in2}$ & flow into Pipe Joining Junction from Economiser 				& [\si{kg}/\si{s}]\\
+		$\dot{m_{out}}$ & flow into Compressor $ C_2 $ from Pipe Joining Junction		& [\si{kg}/\si{s}]\\
+	\end{tabular}
+\end{center}
+
+In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction. 
 
 \begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
 	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
 \end{equation}
 
-In \cref{eq:PipeJoiningJunction_Enthalpy} the enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated.
+where
 
-\textbf{Pipe splitting Junction} \\
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$h_{out}$ 	& specific enthalpy into Compressor $ C_2 $ from Pipe Joining Junction 		& [\si{Joule}/\si{kg}]\\ 
+		$h_{in1}$ 	& specific enthalpy into Pipe Joining Junction from Compressor $ C_1 $  		& [\si{Joule}/\si{kg}]\\ 
+		$h_{in2}$ 	& specific enthalpy into Pipe Joining Junction from Economiser   			& [\si{Joule}/\si{kg}]\\ 
+		$\dot{m}_{in1}$ & flow into Pipe Joining Junction from Compressor $ C_1 $ 		& [\si{kg}/\si{s}]\\
+		$\dot{m}_{in2}$ & flow into Pipe Joining Junction from Economiser 				& [\si{kg}/\si{s}]\\
+	\end{tabular}
+\end{center}
+In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated.
+
+\subsubsection{Pipe Splitting Junction}
+
 This component is particularly simple, as the only function of it is to split the input flow in two. It is furthermore assumed that the dynamics are fast enough that the they can be modelled as algebraic equations.
 
 \begin{equation} \label{eq:PipeSplittingJunction_Enthalpy}
@@ -95,10 +122,28 @@ This component is particularly simple, as the only function of it is to split th
 		h_{out1} &= h_{in} \\
 	\end{split}
 \end{equation}
-The pressure and enthalpy on the output flows are equal to the input pressure and enthalpy. The sum of the mass flows out of the Pipe splitting Junction is equal to the input mass flow. \\
 
-\textbf{Compressor} \\
-The compressor stages in the refrigeration cycle consists of two compressor stages that can be described by the same equations.
+where
+
+\begin{center}
+	\begin{tabular}{l p{12cm} l}
+		$\dot{m}_{in}$ 		& mass flow into Pipe Splitting Junction from Condenser (reciever?) 						& [\si{kg}/\si{s}]\\
+		$\dot{m}_{out1}$ 	& mass flow into Economiser expansion valve from Pipe Splitting Junction 				& [\si{kg}/\si{s}]\\
+		$\dot{m}_{out2}$ 	& mass flow into Economiser heat exchanger from Pipe Splitting Junction 					& [\si{kg}/\si{s}]\\
+		$p_{in}$ 			& absolute pressure input Pipe Splitting Junction from Condenser (reciever?)		& [\si{Pa}]\\
+		$p_{out1}$ 			& absolute pressure into Economiser expansion valve from Pipe Splitting Junction 	& [\si{Pa}]\\
+		$p_{out2}$ 			& absolute pressure into Economiser heat exchanger from Pipe Splitting Junction 	& [\si{Pa}]\\
+		$h_{in}$ 			& specific enthalpy into Pipe Splitting Junction from Condenser (reciever?)   		& [\si{Joule}/\si{kg}]\\ 
+		$h_{out1}$ 			& specific enthalpy into Economiser expansion valve from Pipe Splitting Junction	& [\si{Joule}/\si{kg}]\\ 
+		$h_{out2}$ 			& specific enthalpy into Economiser heat exchanger from Pipe Splitting Junction		& [\si{Joule}/\si{kg}]\\ 
+	\end{tabular}
+\end{center}
+
+
+The pressure and enthalpy on the output flows are equal to the input pressure and enthalpy. The sum of the mass flows out of the Pipe Splitting Junction is equal to the input mass flow. \\
+
+\subsubsection{Compressor}
+The compressor in the refrigeration cycle consists of two compressor stages that can be described by the same equations.
 The compressor dynamics are assumed to be fast enough compared with the refridgeration cycle that it can be considered constant. Therefore, the equations governing the compressors are algebraic equations. 
 Adiabatic compression is assumed. 
 The two equations describing the compression governs the mass flow and the output enthalpy. The output enthalpy is found via a lookup table (HTP). 
@@ -108,7 +153,21 @@ The two equations describing the compression governs the mass flow and the outpu
 	h_{out} &= HTP(T_{out}, p_{out}) 
 \end{align}
 
-where the specific volume on the output can be found as 
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\dot{m}$				& flow through compressor stage					& [\si{kg}/si{s}]\\ 
+		$h_{out}$				& compressor stage output enthalpy				& [\si{Joule}/\si{kg}]\\ 
+		$V_1$					& cylinder internal volume b.f. stroke			& [\si{Pa}]\\ 
+		$V_C$					& cylinder clearance volume after stroke		& [\si{Pa}]\\ 
+		$v_1$					& refrigerant specific volume b.f. stroke		& [$ \cdot $]\\
+		$v_2$					& refrigerant specific volume after stroke		& [\si{Pa}]\\
+		$\omega$ 				& compressor angular velocity 					& [\si{rad}/\si{s}]\\
+		$T_{out}$ 				& compressor stage output temperature 			& [\si{K}]\\
+		$p_{out}$				& compressor stage output pressure 				& [\si{Pa}]\\
+	\end{tabular}
+\end{center}
 
 \begin{align}
 	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
@@ -117,6 +176,117 @@ where the specific volume on the output can be found as
 	\gamma &= C_{cp}/C_{cv} \\
 	T_{out} &= T_{in}\cdot \left(\frac{p_{out}}{p_{in}}\right)^{\frac{\gamma-1}{\gamma}}
 \end{align}
+
+where 
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$p_{in}$				& compressor stage input pressure 			& [\si{Pa}]\\
+		$p_1$					& piston input pressure						& [\si{Pa}]\\ 
+		$p_2$					& piston output (discharge) pressure 		& [\si{Pa}]\\ 
+		$\gamma$				& heat capacity ratio 						& [$ \cdot $]\\
+		$ kl_1$, $kl_2$			& valve loss constants						& [$ \cdot $]\\
+		$\omega$ 				& compressor angular velocity 				& [\si{rad}/\si{s}]\\
+		$T_{in}$ 				& compressor stage input pressure 			& [\si{K}]\\
+	\end{tabular}
+\end{center}
+
+\subsubsection{Condenser}
+\begin{align}
+	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}} \\
+	\frac{dM_r}{dt} 	& = \dot{m}_{in} - \dot{m}_{out} \\
+	\frac{dT_m}{dt} 	& = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}
+\end{align}
+
+\begin{align}
+	p_{in}	 			& = p_{out} - \lambda \cdot \dot{m}_{in} \\
+	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{ls}
+\end{align}
+
+\begin{align}
+	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)\\
+	Q_{rm}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot U_{fan}
+\end{align}
+
+\subsubsection{Flash tank (can it be modelled as an economiser?)}
+
+\subsubsection{Evaporator}
+
+The calculation of the boundary location 
+\begin{equation}
+	\sigma = \frac{M_l \cdot v_1}{V_i}
+\end{equation}
+
+where
+
+
+Another set of equations:
+\begin{align}
+	Q_{fan} 		& = (155 \cdot U_{fan}^2 + 40 \cdot U_{fan}^3) \cdot 0.2 \\
+	T_{retfan} 		& = T_{ret} + \frac{Q_{fan}}{\dot{m_{air}} \cdot Cp_{air}} \\
+	Q_{amv} 		& = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{retfan} - T_{mv}) \\
+	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m_{air}} \dot Cp_{air}} \\
+	Q_{aml} 		& = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{retsh} - T_{ml}) \\
+	Q_{mvml} 		& = U A_3 \cdot (T_{mv} - T_{ml}) \\
+	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma\\
+	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)
+\end{align}
+where
+XXX
+
+The airflow over the evaporator is xxxx this behaviour is modeled by:
+
+\begin{align}
+	\bar{\dot{m_{air}}} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}}
+	\frac{\Delta \dot{m_{air}}}{\Delta t} & = \frac{\bar{\dot{m_{air}}} - \dot{m_{air}}} {10s}
+\end{align}
+
+where
+
+The remaining state equations are given by equations:
+
+\begin{align}
+	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma} \\
+	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot Cp_m \cdot (1- \sigma)} \\
+	p_out & = PHV \left( h_v, \frac{V_i-V_l}{M_v} \right)\\
+	h_l & = H_{in} + \frac{q_{ml}}{\dot{m_{in}}}\\
+	h_v & = H_{lv} + \frac{Q_{mv}}{\dot{m_{lv}}}\\
+	\frac{dM_l}{dt} & = \dot{m_{in}} - \dot{m_{lv}}\\
+	\frac{DM_v}{dt} & = \dot{m_{lv}} - \dot{m_{out}}\\
+	T_{sup} & = T_{retfan} +  \frac{Q_{aml} + A_{amv}}{CP_{air} \cdot \dot{m_{air}}}
+\end{align}
+
+where
+
+The mass flow between the two volumes is given by:
+\begin{equation}
+	\dot{m_{lv}} = \frac{A_{ml}}{h_{dew} - h_{in}}
+\end{equation}
+
+where
+
+\subsubsection{Box}
+
+\begin{align}
+	\frac{dT_{air}}{dt} & = \frac{Q_{ca} + Q_{aa} + Q_{fa} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp{air}} \\
+	\frac{dT_{floor}}{dt} & = \frac{Q_{af} - Q_{fa}}{M_{floor} \cdot Cp_{floor}} \\
+	\frac{dT_{cargo}}{dt} & = \frac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}}
+\end{align}
+
+where
+
+The temperature difference between the return and supply temperature:
+
+\begin{align}
+	Q_{cool} & = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{ret} - T_{sup})\\
+	Q_{aa} & = (T_{amp} - T_{air}) \cdot U A_{amp} \cdot 0.81\\
+	Q_{af} & = (T_{amp} - T_{floor}) \cdot U A_{amb} \cdot 0.19\\
+	Q_{ca} & = (T_{cargo} - T_{air}) \cdot U A_{cargo}\\
+	Q_{fa} & = (T_{floor} - T_{air}) \cdot U A_{floor}\\
+	Q_{fan} & = (155 \cdot U_{fan}^2 + 40 \cdot U_{fan}^3) \cdot 0.8
+\end{align}
+
+where
 
 
 \subsubsection{Thermodynamic}
