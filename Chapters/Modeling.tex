@@ -29,9 +29,9 @@ where
 where
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$h_{out}$ & specific enthalpy out of the control volume & [\si{Joule}/\si{kg}]\\ 
-		$h_{in}$ & specific enthalpy into control volume & [\si{Joule}/\si{kg}]\\ 
-		$Q_{in}$ & energy flow applied to control volume& [\si{Joule}/\si{s}]\\
+		$h_{out}$ & specific enthalpy out of the control volume & [\si{J}/\si{kg}]\\ 
+		$h_{in}$ & specific enthalpy into control volume & [\si{J}/\si{kg}]\\ 
+		$Q_{in}$ & energy flow applied to control volume& [\si{J}/\si{s}]\\
 		$\dot{m}_{in}$ & flow into control volume & [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
@@ -100,9 +100,9 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$h_{out}$ 	& specific enthalpy into Compressor $ C_2 $ from Pipe Joining Junction 		& [\si{Joule}/\si{kg}]\\ 
-		$h_{in1}$ 	& specific enthalpy into Pipe Joining Junction from Compressor $ C_1 $  		& [\si{Joule}/\si{kg}]\\ 
-		$h_{in2}$ 	& specific enthalpy into Pipe Joining Junction from Economiser   			& [\si{Joule}/\si{kg}]\\ 
+		$h_{out}$ 	& specific enthalpy into Compressor $ C_2 $ from Pipe Joining Junction 		& [\si{J}/\si{kg}]\\ 
+		$h_{in1}$ 	& specific enthalpy into Pipe Joining Junction from Compressor $ C_1 $  		& [\si{J}/\si{kg}]\\ 
+		$h_{in2}$ 	& specific enthalpy into Pipe Joining Junction from Economiser   			& [\si{J}/\si{kg}]\\ 
 		$\dot{m}_{in1}$ & flow into Pipe Joining Junction from Compressor $ C_1 $ 		& [\si{kg}/\si{s}]\\
 		$\dot{m}_{in2}$ & flow into Pipe Joining Junction from Economiser 				& [\si{kg}/\si{s}]\\
 	\end{tabular}
@@ -133,9 +133,9 @@ where
 		$p_{in}$ 			& absolute pressure input Pipe Splitting Junction from Condenser (reciever?)		& [\si{Pa}]\\
 		$p_{out1}$ 			& absolute pressure into Economiser expansion valve from Pipe Splitting Junction 	& [\si{Pa}]\\
 		$p_{out2}$ 			& absolute pressure into Economiser heat exchanger from Pipe Splitting Junction 	& [\si{Pa}]\\
-		$h_{in}$ 			& specific enthalpy into Pipe Splitting Junction from Condenser (reciever?)   		& [\si{Joule}/\si{kg}]\\ 
-		$h_{out1}$ 			& specific enthalpy into Economiser expansion valve from Pipe Splitting Junction	& [\si{Joule}/\si{kg}]\\ 
-		$h_{out2}$ 			& specific enthalpy into Economiser heat exchanger from Pipe Splitting Junction		& [\si{Joule}/\si{kg}]\\ 
+		$h_{in}$ 			& specific enthalpy into Pipe Splitting Junction from Condenser (reciever?)   		& [\si{J}/\si{kg}]\\ 
+		$h_{out1}$ 			& specific enthalpy into Economiser expansion valve from Pipe Splitting Junction	& [\si{J}/\si{kg}]\\ 
+		$h_{out2}$ 			& specific enthalpy into Economiser heat exchanger from Pipe Splitting Junction		& [\si{J}/\si{kg}]\\ 
 	\end{tabular}
 \end{center}
 
@@ -149,7 +149,7 @@ Adiabatic compression is assumed.
 The two equations describing the compression governs the mass flow and the output enthalpy. The output enthalpy is found via a lookup table (HTP). 
 
 \begin{align}
-	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_2}{v_2}\right) \frac{\omega}{2} \\
+	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \\
 	h_{out} &= HTP(T_{out}, p_{out}) 
 \end{align}
 
@@ -157,12 +157,12 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$\dot{m}$				& flow through compressor stage					& [\si{kg}/si{s}]\\ 
-		$h_{out}$				& compressor stage output enthalpy				& [\si{Joule}/\si{kg}]\\ 
-		$V_1$					& cylinder internal volume b.f. stroke			& [\si{Pa}]\\ 
-		$V_C$					& cylinder clearance volume after stroke		& [\si{Pa}]\\ 
-		$v_1$					& refrigerant specific volume b.f. stroke		& [$ \cdot $]\\
-		$v_2$					& refrigerant specific volume after stroke		& [\si{Pa}]\\
+		$\dot{m}$				& flow through compressor stage					& [\si{kg}/\si{s}]\\ 
+		$h_{out}$				& compressor stage output enthalpy				& [\si{J}/\si{kg}]\\ 
+		$V_1$					& cylinder internal volume b.f. stroke			& [$\si{m}^3$]\\ 
+		$V_C$					& cylinder clearance volume after stroke		& [$\si{m}^3$]\\ 
+		$v_1$					& refrigerant specific volume b.f. stroke		& [$\si{m}^3/\si{kg}$]\\
+		$v_2$					& refrigerant specific volume after stroke		& [$\si{m}^3/\si{kg}$]\\
 		$\omega$ 				& compressor angular velocity 					& [\si{rad}/\si{s}]\\
 		$T_{out}$ 				& compressor stage output temperature 			& [\si{K}]\\
 		$p_{out}$				& compressor stage output pressure 				& [\si{Pa}]\\
@@ -182,12 +182,14 @@ where
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$p_{in}$				& compressor stage input pressure 			& [\si{Pa}]\\
-		$p_1$					& piston input pressure						& [\si{Pa}]\\ 
+		$p_1$					& piston input pressure									& [\si{Pa}]\\ 
 		$p_2$					& piston output (discharge) pressure 		& [\si{Pa}]\\ 
-		$\gamma$				& heat capacity ratio 						& [$ \cdot $]\\
-		$ kl_1$, $kl_2$			& valve loss constants						& [$ \cdot $]\\
+		$\gamma$				& heat capacity ratio 								& [$ \cdot $]\\
+		$ kl_1$, $kl_2$			& valve loss constants							& [$ \cdot $]\\
 		$\omega$ 				& compressor angular velocity 				& [\si{rad}/\si{s}]\\
-		$T_{in}$ 				& compressor stage input pressure 			& [\si{K}]\\
+		$T_{in}$ 				& compressor stage input temperature 	& [\si{K}]\\
+		$C_{cp}$ 				& Specific heat capacity - constant pressure 	& [\si{J}/\si{kg}\si{K}]\\
+		$C_{cv} $ 				& Specific heat capacity - constant volume 	& [\si{J}/\si{kg}\si{K}]\\
 	\end{tabular}
 \end{center}
 
