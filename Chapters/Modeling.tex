@@ -245,11 +245,41 @@ And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlo
 \subsubsection{Flash tank (can it be modelled as an economiser?)}
 
 \subsubsection{Evaporator}
+The superheat of the evaporator is the most difficult state to control due to its very nonlinear characteristic.
+The superheat is the difference between the vapor saturation temperature and the actual temperature at the compressor suction inlet. It is a measure of excess energy transferred to the refrigerant. 
+
+The evaporator is split into two control volumes, divided by a moving CV boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor.
+
+Because the heat transfer coefficient between liquid and metal and vapor and metal, the metal is likewise split by the $\sigma$ boundary.
+
+The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality throughout the liquid-vapor mixture.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Graphics/evaporator_CV_stolen.jpeg}
+	\caption{Stolen evaporator CV diagram \cite{Sorensen2013}}
+	\label{fig:evapo_CV}
+\end{figure}
+
+
+
+
+
 
 The calculation of the boundary location 
 \begin{equation}
 	\sigma = \frac{M_l \cdot v_1}{V_i}
 \end{equation}
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\sigma$				& Control Volume boundary 			& [$\cdot$] \\		
+		$M_l$				& Mass of liquid-vapor CV 			& [\si{kg}] \\		
+		$v_1$				& Refrigerant specific volume of vapor-liquid CV	& [$\si{m}^3/\si{kg}$] \\		
+		$V_i$				& Evaporator volume 			& [$\si{m}^3$]
+	\end{tabular}
+\end{center}
+
 
 where
 
