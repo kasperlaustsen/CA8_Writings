@@ -266,9 +266,9 @@ The modeling of $\sigma$ is based on an assumption that the refrigerant has a co
 
 
 
-The calculation of the boundary location 
-\begin{equation}
-	\sigma = \frac{M_l \cdot v_1}{V_i}
+The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary}
+\begin{equation} \label{eq:Evaporator_boundary}
+	\sigma = \frac{M_l \cdot v_1}{V_i} 
 \end{equation}
 
 \begin{center}
@@ -295,8 +295,32 @@ Another set of equations:
 	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma\\
 	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)
 \end{align}
+
 where
-XXX
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$Q_{fan}$			& Heat added from fan to air (heatloss)			& [\si{W}] \\	
+		$Q_{aml}$			& Heat flow from air to metal surrounding liquid-vapor CV			& [\si{W}] \\	
+		$Q_{amv}$			& Heat flow from air to metal surrounding vapor CV			& [\si{W}] \\		
+		$Q_{mvml}$			& Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV			& [\si{W}] \\	
+		$Q_{ml}$			& Heat flow from evaporator metal to liquid-vapor CV			& [\si{W}] \\	
+		$Q_{mv}$			& Heat flow from evaporator metal to vapor CV					& [\si{W}] \\			
+		$U_{fan}$			& Fan speed 			& [rad/s ???? \todo{unit? look in datasheet}] \\
+		$T_{ret}$			& Return temperature of air coming from trailer 			& [\si{K}] \\		
+		$T_{retfan}$		& Temperature of return air after passing through fan			& [\si{K}] \\		
+		$T_{mv}$			& Temperature of metal on the vapor CV			& [\si{K}] \\
+		$T_{ml}$			& Temperature of metal on the liquid-vapor CV			& [\si{K}] \\
+		$T_{retsh}$			& Temperature of air over superheated vapor CV			& [\si{K}] \\
+		$T_{l}$				& Saturation temperature for evaporation of the refrigerant			& [\si{K}] \\	
+		$T_{v}$				& Temperature of refrigerant (vapor) leaving the evaporator		& [\si{K}] \\		
+		$\dot{m}_{air}$		& Mass flow of air through fan			& [\si{kg}/\si{s}] \\		
+		$Cp_{air}$			& Specific heat capacity of air			& [] \\	
+		$UA_1$				& Heat transfer coefficient from metal to liquid			& [\si{J}/\si{K}] \\
+		$UA_2$				& Heat transfer coefficient from metal to vapor			& [\si{J}/\si{K}] \\
+		$UA_3$				& Heat transfer coefficient from metal surrounding vapor CV to metal surrounding liquid-vapor CV?? \todo{hjælp}			& [\si{J}/\si{K}] \\
+	\end{tabular}
+\end{center}
 
 The airflow over the evaporator is xxxx this behaviour is modeled by:
 
