@@ -31,7 +31,7 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$h_{out}$ & specific enthalpy out of the control volume & [\si{J}/\si{kg}]\\ 
 		$h_{in}$ & specific enthalpy into control volume & [\si{J}/\si{kg}]\\ 
-		$Q_{in}$ & energy flow applied to control volume& [\si{J}/\si{s}]\\
+		$Q_{in}$ & energy flow applied to control volume& [\si{W}]\\
 		$\dot{m}_{in}$ & flow into control volume & [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
@@ -194,17 +194,39 @@ where
 \end{center}
 
 \subsubsection{Condenser}
+
+Equations:
 \begin{align}
 	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}} \\
 	\frac{dM_r}{dt} 	& = \dot{m}_{in} - \dot{m}_{out} \\
 	\frac{dT_m}{dt} 	& = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}
 \end{align}
 
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$h_{out}$				&  Condenser output enthalpy			& [\si{J}/\si{kg} ]\\
+		$h_{in}$					&  Condenser input enthalpy 			& [\si{J}/\si{kg}] \\
+		$Q_{rm}$					& Refrigerant to metal heat flow 			& [\si{W}] \\
+		$Q_{ma}$					& Metal to ???? heat flow						& [\si{W}] \\
+		$\dot{m_{in}}$			& Condenser input mass flow 			& [\si{kg}/\si{s}] \\
+		$\dot{m_{out}}$			& Condenser output mass flow 		& [\si{kg}/\si{s}] \\
+		$M_r$						& Refrigerant mass 								& [\si{kg}] \\
+		$M_m$						& Metal mass												& [\si{kg}] \\
+		$T_m$						& Metal temperature 							& [\si{K}]\\
+		$Cp_m$					& Metal heat capacity 						& [\si{J}/\si{K}]\\
+		$$				&  			& []
+
+	\end{tabular}
+\end{center}
+
+Another set of equations:
+
 \begin{align}
 	p_{in}	 			& = p_{out} - \lambda \cdot \dot{m}_{in} \\
 	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{ls}
 \end{align}
 
+ANOTHER SET OF equations:
 \begin{align}
 	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)\\
 	Q_{rm}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot U_{fan}
