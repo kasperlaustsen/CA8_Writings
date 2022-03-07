@@ -206,16 +206,14 @@ Equations:
 	\begin{tabular}{l p{8cm} l}
 		$h_{out}$				&  Condenser output enthalpy			& [\si{J}/\si{kg} ]\\
 		$h_{in}$					&  Condenser input enthalpy 			& [\si{J}/\si{kg}] \\
-		$Q_{rm}$					& Refrigerant to metal heat flow 			& [\si{W}] \\
-		$Q_{ma}$					& Metal to ???? heat flow						& [\si{W}] \\
+		$Q_{rm}$					& Heat flow: Refrigerant to metal			& [\si{W}] \\
+		$Q_{ma}$					& Heat flow: Metal to ambient						& [\si{W}] \\
 		$\dot{m_{in}}$			& Condenser input mass flow 			& [\si{kg}/\si{s}] \\
 		$\dot{m_{out}}$			& Condenser output mass flow 		& [\si{kg}/\si{s}] \\
 		$M_r$						& Refrigerant mass 								& [\si{kg}] \\
-		$M_m$						& Metal mass												& [\si{kg}] \\
+		$M_m$						& Metal mass										& [\si{kg}] \\
 		$T_m$						& Metal temperature 							& [\si{K}]\\
-		$Cp_m$					& Metal heat capacity 						& [\si{J}/\si{K}]\\
-		$$				&  			& []
-
+		$Cp_m$					& Metal heat capacity 						& [\si{J}/\si{K}]
 	\end{tabular}
 \end{center}
 
@@ -226,11 +224,33 @@ Another set of equations:
 	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{ls}
 \end{align}
 
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$p_{out}$				&  Condenser output pressure			& [\si{Pa} ] \\
+		$p_{in}$					&  Condenser input pressure 			& [\si{Pa}] \\
+		$\lambda$				& Pressure drop ratio 						& [\si{bar}\si{s}/\si{kg}] \\
+		$V_i$						& Condenser internal volume				& [$\si{m}^3$] \\
+		$v$							& Refrigerant specific volume 			& [$\si{m}^3/\si{kg}$]
+	\end{tabular}
+\end{center}
+
+
 ANOTHER SET OF equations:
 \begin{align}
 	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)\\
 	Q_{rm}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot U_{fan}
 \end{align}
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$U A_{rm}$			& Overall heat transfer coefficient: Refrigerant to metal		& [\si{V?}] \\
+		$U A_{ma}$			& Overall heat transfer coefficient: Metal to ambient			& [\si{V?}] \\
+		$U_{fan}$				& Condenser fan speed										& [\si{\si{rad}/\si{s}}] \\
+		$T_r$						& Temperature of output refrigerant  					& [si{K}] \\
+		$T_a$					& Temperature of air blown over condenser coil		& [si{K}] \\
+		$T_m$					& Temperature of metal												& [si{K}]
+	\end{tabular}
+\end{center}
 
 \subsubsection{Flash tank (can it be modelled as an economiser?)}
 
@@ -252,7 +272,7 @@ Another set of equations:
 	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m_{air}} \dot Cp_{air}} \\
 	Q_{aml} 		& = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{retsh} - T_{ml}) \\
 	Q_{mvml} 		& = U A_3 \cdot (T_{mv} - T_{ml}) \\
-	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma\\
+	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma \\
 	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)
 \end{align}
 where
