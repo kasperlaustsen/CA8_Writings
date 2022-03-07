@@ -195,62 +195,52 @@ where
 
 \subsubsection{Condenser}
 
-Equations:
+The condenser takes in the discharge pressure vapor from the second compressor stage, at point 4 in \cref{fig:HVAC_Diagram}. The high pressure also yields a high temperature, 
+which enables heat transfer through the condensor to ambient air. This is done mainly through condensation of the refrigerant vapor, yielding high pressure liquid at point 5 in \cref{fig:HVAC_Diagram}.
+The energy balance is modelled in \cref{eq:Condenser_Enthalpy}. The mass balance is modelled in \cref{eq:Condenser_ChangeOfMass}. Finally the temperature of the metal in the condenser is modelled in 
+\cref{eq:Condenser_ChangeOfTemperature}, as the dominant dynamics of the condenser is greatly linked to the temperature of the metal \cite{Sorensen2013}. \cref{eq:Condenser_ChangeOfTemperature} is also 
+derived from the energy balance.
+
 \begin{align}
-	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}} \\
-	\frac{dM_r}{dt} 	& = \dot{m}_{in} - \dot{m}_{out} \\
-	\frac{dT_m}{dt} 	& = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}
+	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}}  	\label{eq:Condenser_Enthalpy} \\
+	\frac{dM_r}{dt} 	& = \dot{m}_{in} - \dot{m}_{out} 				\label{eq:Condenser_ChangeOfMass}\\
+	\frac{dT_m}{dt} 	& = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}		\label{eq:Condenser_ChangeOfTemperature}
 \end{align}
+
+where 
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$h_{out}$				&  Condenser output enthalpy			& [\si{J}/\si{kg} ]\\
 		$h_{in}$					&  Condenser input enthalpy 			& [\si{J}/\si{kg}] \\
-		$Q_{rm}$					& Heat flow: Refrigerant to metal			& [\si{W}] \\
-		$Q_{ma}$					& Heat flow: Metal to ambient						& [\si{W}] \\
+		$Q_{rm}$					& Refrigerant to metal heat flow 			& [\si{W}] \\
+		$Q_{ma}$					& Metal to air heat flow						& [\si{W}] \\
 		$\dot{m_{in}}$			& Condenser input mass flow 			& [\si{kg}/\si{s}] \\
 		$\dot{m_{out}}$			& Condenser output mass flow 		& [\si{kg}/\si{s}] \\
 		$M_r$						& Refrigerant mass 								& [\si{kg}] \\
-		$M_m$						& Metal mass										& [\si{kg}] \\
+		$M_m$						& Metal mass												& [\si{kg}] \\
 		$T_m$						& Metal temperature 							& [\si{K}]\\
-		$Cp_m$					& Metal heat capacity 						& [\si{J}/\si{K}]
+		$Cp_m$					& Metal heat capacity 						& [\si{J}/\si{K}]\\
+		$$				&  			& []
+
 	\end{tabular}
 \end{center}
 
-Another set of equations:
+The pressure differential across the condenser is assumed to be linear, yielding \cref{eq:Condenser_PressureDrop}.
+The mass flow out of the condenser is modelled in \cref{eq:Condenser_MassFlow}.
+
 
 \begin{align}
-	p_{in}	 			& = p_{out} - \lambda \cdot \dot{m}_{in} \\
-	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{1s}
+	p_{in}	 			& = p_{out} - \lambda \cdot \dot{m}_{in}  				\label{eq:Condenser_PressureDrop}\\
+	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{ls}		\label{eq:Condenser_MassFlow}
 \end{align}
 
-\begin{center}
-	\begin{tabular}{l p{8cm} l}
-		$p_{out}$				&  Condenser output pressure			& [\si{Pa} ] \\
-		$p_{in}$					&  Condenser input pressure 			& [\si{Pa}] \\
-		$\lambda$				& Pressure drop ratio 						& [\si{bar}\si{s}/\si{kg}] \\
-		$V_i$						& Condenser internal volume				& [$\si{m}^3$] \\
-		$v$							& Refrigerant specific volume 			& [$\si{m}^3/\si{kg}$]
-	\end{tabular}
-\end{center}
+And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlow_rm}, \cref{eq:Condenser_HeatFlow_ma}
 
-
-ANOTHER SET OF equations:
 \begin{align}
-	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)\\
-	Q_{rm}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot U_{fan}
-\end{align}
-
-\begin{center}
-	\begin{tabular}{l p{8cm} l}
-		$U A_{rm}$			& Overall heat transfer coefficient: Refrigerant to metal		& [\si{W}/\si{K}] \\
-		$U A_{ma}$			& Overall heat transfer coefficient: Metal to ambient			& [\si{W}/\si{K}] \\
-		$U_{fan}$				& Condenser fan speed										& [\si{\si{rad}/\si{s}}] \\
-		$T_r$						& Temperature of output refrigerant  					& [\si{K}] \\
-		$T_a$					& Temperature of air blown over condenser coil		& [\si{K}] \\
-		$T_m$					& Temperature of metal												& [\si{K}]
-	\end{tabular}
-\end{center}
+	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
+	Q_{rm}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot U_{fan}				\label{eq:Condenser_HeatFlow_ma}
+\end{align}	
 
 \subsubsection{Flash tank (can it be modelled as an economiser?)}
 
@@ -272,7 +262,7 @@ Another set of equations:
 	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m_{air}} \dot Cp_{air}} \\
 	Q_{aml} 		& = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{retsh} - T_{ml}) \\
 	Q_{mvml} 		& = U A_3 \cdot (T_{mv} - T_{ml}) \\
-	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma \\
+	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma\\
 	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)
 \end{align}
 where
