@@ -4,7 +4,7 @@ In the end the model will be composed of a model that represents the refridgerat
 
 \subsection{Component models}
 
-\subsubsection{General type refrigerant control volume state eq}
+\subsubsection{General type refrigerant control volume state equation}
 Many of the components in a refridgeration cycle will be based on similar state equations. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume.
 
 \textbf{Mass conservation equation} \\
@@ -332,7 +332,7 @@ Because the heat transfer coefficient between liquid and metal and vapor and met
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Graphics/Evaporator_CV_diagram.drawio.pdf}
+	\includegraphics[width=0.8\textwidth]{Graphics/Evaporator_CV_diagram.pdf}
 	\caption{Diagram of evaporator control volumes. Inspired by  \cite{Sorensen2013} \cite{Borlum2016}}
 	\label{fig:evapo_CV}
 \end{figure}
@@ -530,11 +530,16 @@ where
 	The heat transfer coefficient of the walls and floor are expected to be given by the cooling trailer manufacturer. In the case of the cooling container a heat transfer coefficient was given ($U A_{amb}$) for both the walls and the floor. In this case the ratio of the floor and walls with regards to the total surface area of the container were multiplied with this coefficient as seen in \cref{eq:box_hf_wall-to-air} and \cref{eq:box_hf_floor-to-air}
 
 
-
-
-
-\subsubsection{Thermodynamic}
-
+\clearpage
 \subsection{Collection of components}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/Block Diagram.pdf}
+	\caption{Initial Block Diagram with states}
+	\label{fig:Block_diagram}
+\end{figure}
+
+
 
 \subsubsection{Linearisation}
