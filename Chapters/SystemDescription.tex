@@ -4,6 +4,13 @@ While the trailer usually has its own cooling system made by Schmidt Cargobull, 
 
 The inputs and outputs of the system are the found by investigating the structure of the HVAC system. While the system will be described in detail in section XX, the most important components can be named as refrigerant moves around a loop through various components. These are: A two stage compressor, a condenser, a flash tank, an expansion valve and an evaporator. These can also be observed in \cref{fig_HVAC_Diagram}. The trailer box is also of great importance. The evaporator fan blows cold air all throughout the bottom of the trailer box where it travels up from the t-floor between the cargo to the top where it is pulled back through the cycle past the evaporator.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.85\textwidth]{Graphics/HVAC_Diagram_Fans.pdf}
+	\caption{Illustration of refrigeration cycle}
+	\label{fig:HVAC_Diagram}
+\end{figure}
+
 The controlled inputs are the variables in these components that can be controlled, namely:
 
 \begin{itemize}
@@ -17,14 +24,8 @@ The controlled inputs are the variables in these components that can be controll
 There are many variables such as pressure and temperature throughout the refrigeration cycle, many of which are measured and hence are outputs of the system. 
 The controlled outputs however, are those of interest from a control point of view. These are the outputs that the control strategy seeks to keep at a set point, in this project it will be the trailer box air temperature. The aim of the project is to design a Multiple-Inputs-Multiple-Outputs (MIMO) Controller to keep the temperature inside the container constant despite exogenous inputs (disturbances), specifically the ambient temperature. Furthermore it should do so with the sub-goal of minimizing the energy consumption.
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.85\textwidth]{Graphics/HVAC_Diagram_Fans.pdf}
-	\caption{Illustration of refrigeration cycle}
-	\label{fig:HVAC_Diagram}
-\end{figure}
 
-In \cref{fig:p-h_diagram} something something.
+In \cref{fig:p-h_diagram} a P-h diagram of the refrigeration cycle can be seen. It is not accurate but merely depicts the general idea of how the enthalpy and pressure changes throughout the cycle. The numbers in the figure are also shown in \cref{fig:HVAC_Diagram} for reference. Two cycles can be observed on the diagram. The first is the main cycle which runs along 1 -> 8 and the second is the cycle running along 3 -> 6 -> 9.
 
 \begin{figure}[h!]
 	\centering
