@@ -5,18 +5,18 @@ In the end the model will be composed of a model that represents the refridgerat
 \subsection{Component models}
 
 \subsubsection{General type refrigerant control volume state equation}
-Many of the components in a refridgeration cycle will be based on similar state equations. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume.
+Many of the components in a refrigeration cycle will be based on similar state equations. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume.
 
 \textbf{Mass conservation equation} \\
 \begin{equation} \label{eq:GeneralTypeControlVol_MassConservation}
-	\frac{dM}{dt} = \dot{m_{in}} - \dot{m_{out}}
+	\frac{dM}{dt} = \dot{m}_{in} - \dot{m}_{out}
 \end{equation}
 
 where 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\frac{dM}{dt}$ 	& Change in mass inside control volume & [\si{kg}/\si{s}]\\ 
-		$\dot{m_{in}}$ 		& Flow into control volume & [\si{kg}/\si{s}]\\
+		$\dot{m_{in}}$ 		& Mass flow of refrigerant into control volume & [\si{kg}/\si{s}]\\
 		$\dot{m_{out}}$ 	& Flow out of control volume & [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
@@ -75,6 +75,8 @@ where
 \subsubsection{Pipe Joining Junction} 
 Between compressor $ C_1 $, $ C_2 $ and the flash tank (see \cref{fig:HVAC_Diagram}) is a Pipe Joining Junction that connects the three forementioned components.
 
+In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction. 
+
 \begin{equation} \label{eq:PipeJoiningJunction_ChangeOfMass}
 	\frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} + \dot{m}_{out}
 \end{equation}
@@ -90,7 +92,7 @@ where
 	\end{tabular}
 \end{center}
 
-In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction. 
+In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated.
 
 \begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
 	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
@@ -107,7 +109,7 @@ where
 		$\dot{m}_{in2}$ & Flow into Pipe Joining Junction from Economiser 				& [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
-In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated.
+
 
 %\subsubsection{Pipe Splitting Junction}
 
@@ -149,25 +151,28 @@ Adiabatic compression is assumed.
 The two equations describing the compression governs the mass flow and the output specific enthalpy. The output specific enthalpy is found via a lookup table (HTP). 
 
 \begin{align}
-	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \\
-	h_{out} &= HTP(T_{out}, p_{out}) 
+	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \\ \label{eq:comp_mass_flow}
+	h_{out} &= \Upsilon(T_{out}, p_{out}) 
 \end{align}
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$\dot{m}$				& Flow through compressor stage					& [\si{kg}/\si{s}]\\ 
-		$h_{out}$				& Compressor stage output specific enthalpy				& [\si{J}/\si{kg}]\\ 
-		$V_1$					& Cylinder internal volume b.f. stroke			& [$\si{m}^3$]\\ 
-		$V_C$					& Cylinder clearance volume after stroke		& [$\si{m}^3$]\\ 
-		$v_1$					& Refrigerant specific volume b.f. stroke		& [$\si{m}^3/\si{kg}$]\\
-		$v_2$					& Refrigerant specific volume after stroke		& [$\si{m}^3/\si{kg}$]\\
+		$\dot{m}$				& Flow through compressor stage					& [\si{kg}/\si{s}] \\ 
+		$h_{out}$				& Compressor stage output specific enthalpy				& [\si{J}/\si{kg}] \\ 
+		$V_1$					& Cylinder internal volume b.f. stroke			& [$\si{m}^3$] \\ 
+		$V_C$					& Cylinder clearance volume after stroke		& [$\si{m}^3$] \\ 
+		$v_1$					& Refrigerant specific volume b.f. stroke		& [$\si{m}^3/\si{kg}$] \\
+		$v_2$					& Refrigerant specific volume after stroke		& [$\si{m}^3/\si{kg}$] \\
 		$\omega$ 				& Compressor angular velocity 					& [\si{rad}/\si{s}]\\
-		$T_{out}$ 				& Compressor stage output temperature 			& [\si{K}]\\
-		$p_{out}$				& Compressor stage output pressure 				& [\si{Pa}]\\
+		$\Upsilon$ 				& HTP; Table lookup of the enthalpy based on ???? 			& [$\cdot]$ \\
+		$T_{out}$ 				& Compressor stage output temperature 			& [\si{K}] \\
+		$p_{out}$				& Compressor stage output pressure 				& [\si{Pa}]
 	\end{tabular}
 \end{center}
+
+In \cref{eq:comp_mass_flow} $v_1$ is found from table lookup based on ????.
 
 \begin{align}
 	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
@@ -276,7 +281,7 @@ where
 \subsubsection{Flash tank}
 The flash tank in combination with the condenser throttle valve serves to reduce the amount of high enthalpy flash gas delivered to the evaporator. The condenser throttle valve, the dynamics of which is identical to the expansion valve, lowers the pressure of the liquid from the condenser. This naturally lowers the temperature, but also generates some amount of flash gas. The flash tank then separates the liquid-vapor mixture and passes only the liquid to the expansion valve. The flash gas is returned to the second stage of the compressor, where it is reused. Thus, a lower amount of flash gas will be generated by the expansion valve, as the pressure of the liquid is already quite low.
 
-The modelling will only evaluate the steady state behaviour of the flash tank. This is due to the tedious nature of the problem and the limited scope of the project. 
+The modelling will only evaluate the s5teady state behaviour of the flash tank due to the limited scope of the project. 
 
 In steady state it is first assumed that the pressure of the liquid-vapor mixture entering is the same as the separated liquid and vapor leaving the tank. 
 \begin{align}
