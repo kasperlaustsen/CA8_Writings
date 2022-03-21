@@ -1,11 +1,11 @@
-The most dominant dynamics of a refridgeration container/trailer are thermal dynamics of the metal in heat exchangers (i.e. evaporator and condensor). Some components in the system will have dynamics so much faster than the dominant dynamics that they will be considered static (eg. compressor and expansion valves).
-Ultimately the model will be composed of a model that represents the refridgeration cycle along with a model of the thermal masses (in heat exchangers, other metal parts and cargo)
+The most dominant dynamics of a refridgeration trailer are the large thermal capacitances, both of the metal in heat exchangers (i.e. evaporator and condensor) and of cargo and trailer walls and floor. Some components in the system will have dynamics so much faster than the dominant dynamics that they will be considered static (eg. compressor and expansion valves).
+Ultimately the model will be composed of a model that represents the refridgeration cycle along with a model of the thermal masses.
 
 
 \subsection{Component models}
 
 \subsubsection{General type refrigerant control volume state equation}
-Many of the components in a refrigeration cycle will be based on state equations of similar structure. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume.
+Many of the components in a refrigeration cycle will be based on state equations of similar structure. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume. The energy balance equations are modelled as steady state algebraic equations. This lowers accurracy but reduces complexity of the models.
 
 \textbf{Mass conservation equation} \\
 \begin{equation} \label{eq:GeneralTypeControlVol_MassConservation}
@@ -59,7 +59,7 @@ To model the way that the valve is intended to be controlled, an alternative rep
 
 \begin{equation} \label{eq:ExpansionValve_DutyCycle} 
 	\begin{split}
-		\dot{m} &= f_p(OD) \cdot K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})}\\
+		\dot{m} &= f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})}\\
 		K 			&= C A
 	\end{split}
 \end{equation}
@@ -68,17 +68,18 @@ where
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\dot{m}$	& Flow through valve & [\si{kg}/\si{s}]\\ 
-		$f_p(OD)$ & Flow percentage as function of opening degree & [$\cdot$] \\
-		$D_{on}$ 	& Fraction of each pulse period being on & [$\%$]\\
+		$f_p(\Theta)$ & Flow percentage as function of opening degree & [$\cdot$] \\
+		$ \Theta $ & Opening degree of valve& [$ \cdot $]\\
 		$p_{in}$ 	& Absolute pressure on input side & [\si{Pa}]\\
-		$K$ 		& Constant & [\si{m^2}]\\
-		$v_{in}$ 	& Specific volume of liquid & [\si{m^3}/\si{kg}]\\
 		$p_{out}$ 	& Absolute pressure on output side & [\si{Pa}]\\
+		$K$ 		& Constant, product of discharge coefficient and cross sectional area & [\si{m^2}]\\
+		$v_{in}$ 	& Specific volume of liquid refrigerant & [\si{m^3}/\si{kg}]
+
 	\end{tabular}
 \end{center}
 
 \subsubsection{Pipe Joining Junction} 
-Between compressor $ C_1 $, $ C_2 $ and the flash tank (see \cref{fig:HVAC_Diagram}) is a Pipe Joining Junction that connects the three forementioned components.
+Between compressor stage 1, compressor stage 2 and the flash tank (see \cref{fig:HVAC_Diagram}) is a Pipe Joining Junction that connects the three forementioned components.
 
 In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction. 
 
@@ -151,7 +152,7 @@ where
 %The pressure and specific enthalpy on the output flows are equal to the input pressure and specific enthalpy. The sum of the mass flows out of the Pipe Splitting Junction is equal to the input mass flow. \\
 
 \subsubsection{Compressor}
-The compressor in the refrigeration cycle consists of two compressor stages that can be described by the same equations.
+The compressor in the refrigeration cycle consists of two compressor stages that can be described by the same equations. The compressor type is a scroll compressor.
 The compressor dynamics are assumed to be fast enough compared with the refridgeration cycle that it can be considered constant. Therefore, the equations governing the compressors are algebraic equations. 
 Adiabatic compression is assumed. 
 The two equations describing the compression governs the mass flow and the output specific enthalpy. The output specific enthalpy is found via a lookup table (HTP). 
@@ -172,7 +173,7 @@ where
 		$v_1$					& Refrigerant specific volume b.f. stroke		& [$\si{m}^3/\si{kg}$] \\
 		$v_2$					& Refrigerant specific volume after stroke		& [$\si{m}^3/\si{kg}$] \\
 		$\omega$ 				& Compressor angular velocity 					& [\si{rad}/\si{s}]\\
-		$\Upsilon$ 				& HTP; Table lookup of the enthalpy based on ???? 			& [$\cdot]$ \\
+		$\Upsilon$ 				& HTP; Lookup table of the enthalpy from temperature and pressure 			& [$\cdot]$ \\
 		$T_{out}$ 				& Compressor stage output temperature 			& [\si{K}] \\
 		$p_{out}$				& Compressor stage output pressure 				& [\si{Pa}]
 	\end{tabular}
@@ -181,6 +182,7 @@ where
 In \cref{eq:comp_mass_flow} $v_1$ is found from table lookup based on ????.
 
 \begin{align}
+	v_1 &= \Gamma(T_{in},p_{out}) \\
 	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
 	p_1 &= p_{in} - kl_1 \cdot \omega \\
 	p_2 &= p_{out} + kl_2 \cdot \omega \\
@@ -192,6 +194,7 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
+		$\Gamma$				& VTP; Lookup table of the specific volume from temperature and pressure		& [\si{Pa}]\\
 		$p_{in}$				& Compressor stage input pressure 			& [\si{Pa}]\\
 		$p_1$					& Piston input pressure									& [\si{Pa}]\\ 
 		$p_2$					& Piston output (discharge) pressure 		& [\si{Pa}]\\ 
@@ -235,12 +238,12 @@ where
 	\end{tabular}
 \end{center}
 
-The pressure differential across the condenser is assumed to be linear, yielding \cref{eq:Condenser_PressureDrop}.
+The pressure drop across the condenser is assumed to be linear with respect to mass flow, yielding \cref{eq:Condenser_PressureDrop}.
 The mass flow out of the condenser is modelled in \cref{eq:Condenser_MassFlow}.
 
 
 \begin{align}
-	p_{in}	 			& = p_{out} - \lambda \cdot \dot{m}_{in}  				\label{eq:Condenser_PressureDrop}\\
+	p_{in} 	& =  p_{out} - \lambda \cdot \dot{m}_{in}  				\label{eq:Condenser_PressureDrop}\\
 	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{1s}		\label{eq:Condenser_MassFlow}
 \end{align}
 
@@ -260,11 +263,11 @@ where
 \end{center}
 
 
-And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlow_rm}, \cref{eq:Condenser_HeatFlow_ma}. $ U_{fan}	 $ will have a base value that is non zero ($ \sim $ 0.05) even when the fan is off due to natural convection. \todo[inline]{Fan speed needs to be handled, as the fan is now driven by VFD }
+And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlow_rm}, \cref{eq:Condenser_HeatFlow_ma}. The heat flow from metal to air is assumed to be approximately proportional to the air flow, which is why the speed of the fan is multiplied to the energy flow in \cref{eq:Condenser_HeatFlow_ma}. There is an offset of 0.05 times the energy flow to account for the fact that there will exist a heat flow even though the fan is not operating. 
 
 \begin{align}
-	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
-	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot U_{fan}				\label{eq:Condenser_HeatFlow_ma}
+	Q_{rm}	 			& = U_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
+	Q_{ma}	 			& = U_{ma} \cdot (T_m - T_a)\cdot (0.05 + U_{fan})				\label{eq:Condenser_HeatFlow_ma}
 \end{align}	
 
 where 
@@ -273,12 +276,12 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$Q_{rm}$				&	Heat flow from refridgerant to metal					& [\si{W}] \\
 		$Q_{ma}$				&	Heat flow from metal to air								& [\si{W}] \\
-		$U A_{rm}$				& 	Heat transfer coefficient from refridgerant to metal 	& [\si{J}/\si{K}] \\
-		$U A_{ma}$				& 	Heat transfer coefficient from metal to air				& [\si{J}/\si{K}] \\
+		$U_{rm}$				& 	Heat transfer coefficient from refridgerant to metal 	& [\si{J}/\si{K}] \\
+		$U_{ma}$				& 	Heat transfer coefficient from metal to air				& [\si{J}/\si{K}] \\
 		$T_r$					& 	Temperature of refridgerant 							& [\si{K}] \\	
 		$T_m$					&	Temperature of metal 									& [\si{K}] \\
 		$T_a$					&	Temperature of air 										& [\si{K}] \\
-		$U_{fan}$				&	Fan speed											s	& [\si{rad}/\si{s}] \\
+		$U_{fan}$				&	Fan speed												& [1/\si{s}] \\
 	\end{tabular}
 \end{center}
 
@@ -287,7 +290,7 @@ where
 \subsubsection{Flash tank}
 The flash tank in combination with the condenser throttle valve serves to reduce the amount of high enthalpy flash gas delivered to the evaporator. The condenser throttle valve, the dynamics of which is identical to the expansion valve, lowers the pressure of the liquid from the condenser. This naturally lowers the temperature, but also generates some amount of flash gas. The flash tank then separates the liquid-vapor mixture and passes only the liquid to the expansion valve. The flash gas is returned to the second stage of the compressor, where it is reused. Thus, a lower amount of flash gas will be generated by the expansion valve, as the pressure of the liquid is already quite low.
 
-The modelling will only evaluate the s5teady state behaviour of the flash tank due to the limited scope of the project. 
+The modeling will only evaluate the steady state behaviour of the flash tank due to the limited scope of the project. 
 
 In steady state it is first assumed that the pressure of the liquid-vapor mixture entering is the same as the separated liquid and vapor leaving the tank. 
 \begin{align}
@@ -328,7 +331,7 @@ where
 \end{center}
 
 
-Lastly, it is assumed that the separated liquid and vapor leaves at boiling point and flash point respectively. This last assumption allows us to find the enthalpy of the two substances purely from investigation of the PH diagram and the pressure. In practice, this is performed by a software tool as MATLAB.
+Lastly, it is assumed that the separated liquid and vapor leaves at boiling point and flash point respectively. This last assumption allows us to find the enthalpy of the two substances purely from investigation of the p-h diagram and the pressure. In practice, this is performed by a software tool as MATLAB.
 
 \subsubsection{Subcooling throttle}
 The subcooling throttle valve is used differently from the two other valves in the system. During normal operation it is fully open, acting as a pipe. It can be closed fully allowing for various speciel functionalities. Firstly, shutting it off allows for detecting the amount of refridgerant in the system. This is a convenient diagnostic feature which helps ensuring that the system has enough refridgerant to properly function, and enabling leakage detection. Secondly, closing the valve while fully opening the condenser throttle valve, allows the system to operate as a standard refridgeration system, with only one valve between the evaporator and condenser.
@@ -392,7 +395,7 @@ where
 		$Q_{mvml}$			& Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV			& [\si{W}] \\	
 		$Q_{ml}$			& Heat flow from evaporator metal to liquid-vapor CV			& [\si{W}] \\	
 		$Q_{mv}$			& Heat flow from evaporator metal to vapor CV					& [\si{W}] \\			
-		$U_{fan}$			& Fan speed 	& [rad/s ???? ]\\
+		$U_{fan}$			& Fan speed 	& [1/\si{s}]\\
 		$T_{ret}$			& Return temperature of air coming from trailer 			& [\si{K}] \\		
 		$T_{retfan}$		& Temperature of return air after passing through fan			& [\si{K}] \\		
 		$T_{mv}$			& Temperature of metal on the vapor CV			& [\si{K}] \\
@@ -411,8 +414,8 @@ where
 The airflow over the evaporator is dynamic in itself, as the airflow is driven by a fan that has rotational inertia. Additionally, as the air is a fluid by itself, it contains some inetia too. This behaviour is modeled by:
 
 \begin{align}
-	\bar{\dot{m_{air}}} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\ 
-	\frac{\Delta \dot{m_{air}}}{\Delta t} & = \frac{\bar{\dot{m_{air}}} - \dot{m_{air}}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
+	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\ 
+	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
 \end{align} \todo[inline]{Does this still hold for a Fan with variable frequency drive? If not, maybe we can start out with it modelled statically or without it?}
 
 where
@@ -421,7 +424,7 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$\bar{\dot{m}}_{air}$						& Instant steady state estimate mass flow of air  		& [\si{kg}/\si{s}] \\		
 		$\dot{m}_{air}$								& Actual mass flow of air								& [\si{kg}/\si{s}] \\		
-		$U_{fan}$									& Fan speed 											& [rad/s ????] \\		
+		$U_{fan}$									& Fan speed 											& [1/\si{s}] \\		
 		$\rho_{air}$								& Density of air										& [\si{kg}/\si{m^3}] \\[0.2cm]		
 		$\dfrac{\Delta \dot{m}_{air}}{\Delta t} $ 	& The rate of change of	air flow 						& [\si{kg}/\si{s^2}]
 	\end{tabular}
@@ -434,7 +437,7 @@ The remaining state equations are given by equations below. They describe change
 \begin{align}
 	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma} \\
 	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot Cp_m \cdot (1- \sigma)} \\
-	p_{out} & = PHV \left( h_v, \frac{V_i-V_l}{M_v} \right)\\
+	p_{out} & = \Pi \left( h_v, \frac{V_i-V_l}{M_v} \right)\\
 	h_l & = h_{in} + \frac{Q_{ml}}{\dot{m_{in}}}\\
 	h_v & = h_{lv} + \frac{Q_{mv}}{\dot{m_{lv}}}\\
 	\frac{dM_l}{dt} & = \dot{m_{in}} - \dot{m_{lv}}\\
@@ -464,7 +467,7 @@ where\\
 		$Cp_{air}$					& Specific heat capacity of metal							& [\si{J}/(\si{K}\si{kg})] \\	
 		$Cp_{air}$					& Specific heat capacity of air								& [\si{J}/(\si{K}\si{kg})] \\	
 		$\sigma$					& Control Volume boundary 									& [$\cdot$] \\		
-		$PHV $						& Table lookup of pressure, where inputs are specific enthalpy and density								& [] \\	
+		$\Pi(h,\rho) $						& Table lookup of pressure, where inputs are specific enthalpy and density								& [\si{Pa}] \\	
 		$h_{v} $					& Specific enthalpy of vapor CV								& [\si{J}/\si{kg}] \\	
 		$h_{l} $					& Specific enthalpy of liquid-vapor CV						& [\si{J}/\si{kg}] \\	
 		$h_{in} $					& Specific enthalpy of input liquid refrigerant 			& [\si{J}/\si{kg}] \\	
