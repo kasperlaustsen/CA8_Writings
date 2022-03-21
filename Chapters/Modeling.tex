@@ -31,7 +31,7 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$h_{out}$ 		& Specific enthalpy out of the control volume & [\si{J}/\si{kg}]\\ 
 		$h_{in}$ 		& Specific enthalpy into control volume & [\si{J}/\si{kg}]\\ 
-		$Q_{in}$ 		& Energy flow applied to control volume& [\si{W}]\\
+		$Q_{in}$ 		& Energy flow applied to control volume & [\si{W}]\\
 		$\dot{m}_{in}$ 	& Flow into control volume & [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
@@ -56,17 +56,22 @@ where
 
 To model the way that the valve is intended to be controlled, an alternative representation is introduced for the mass flow through an expansion valve \cref{eq:ExpansionValve_DutyCycle}
 
-\begin{equation} \label{eq:ExpansionValve_DutyCycle}
-	\dot{m}= D_{on} K  \sqrt{\frac{1}{v_{in} (p_{in} - p_{out})}}
+
+\begin{equation}
+	\begin{split}
+		\dot{m} &= f_p(OD) \cdot K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})}\\
+		K 			&= C A
+	\end{split}
 \end{equation}
 
 where 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\dot{m}$	& Flow through valve & [\si{kg}/\si{s}]\\ 
+		$f_p(OD)$ & Flow percentage as function of opening degree & [$\cdot$] \\
 		$D_{on}$ 	& Fraction of each pulse period being on & [$\%$]\\
 		$p_{in}$ 	& Absolute pressure on input side & [\si{Pa}]\\
-		$K$ 		& $C A$ & [\si{m^2}]\\
+		$K$ 		& Constant & [\si{m^2}]\\
 		$v_{in}$ 	& Specific volume of liquid & [\si{m^3}/\si{kg}]\\
 		$p_{out}$ 	& Absolute pressure on output side & [\si{Pa}]\\
 	\end{tabular}
@@ -80,6 +85,7 @@ In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pip
 \begin{equation} \label{eq:PipeJoiningJunction_ChangeOfMass}
 	\frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} + \dot{m}_{out}
 \end{equation}
+
 
 where 
 
