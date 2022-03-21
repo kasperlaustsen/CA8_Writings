@@ -1,11 +1,11 @@
-The most dominant dynamics of a refridgeration container/trailer are thermal dynamics of the metal in heat exchangers (i.e. evaporator and condensor). Some components in the system will have dynamics so much faster than the dominant dynamics that they will be considered static (compressor and expansion valves).
-In the end the model will be composed of a model that represents the refridgeration cycle along with a model of the thermal masses (in heat exchangers, other metal parts and cargo)
+The most dominant dynamics of a refridgeration container/trailer are thermal dynamics of the metal in heat exchangers (i.e. evaporator and condensor). Some components in the system will have dynamics so much faster than the dominant dynamics that they will be considered static (eg. compressor and expansion valves).
+Ultimately the model will be composed of a model that represents the refridgeration cycle along with a model of the thermal masses (in heat exchangers, other metal parts and cargo)
 
 
 \subsection{Component models}
 
 \subsubsection{General type refrigerant control volume state equation}
-Many of the components in a refrigeration cycle will be based on similar state equations. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume.
+Many of the components in a refrigeration cycle will be based on state equations of similar structure. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the energy balance equation of the control volume.
 
 \textbf{Mass conservation equation} \\
 \begin{equation} \label{eq:GeneralTypeControlVol_MassConservation}
@@ -17,7 +17,7 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$\frac{dM}{dt}$ 	& Change in mass inside control volume & [\si{kg}/\si{s}]\\ 
 		$\dot{m_{in}}$ 		& Mass flow of refrigerant into control volume & [\si{kg}/\si{s}]\\
-		$\dot{m_{out}}$ 	& Flow out of control volume & [\si{kg}/\si{s}]\\
+		$\dot{m_{out}}$ 	& Mass flow out of control volume & [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
 
@@ -31,8 +31,8 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$h_{out}$ 		& Specific enthalpy out of the control volume & [\si{J}/\si{kg}]\\ 
 		$h_{in}$ 		& Specific enthalpy into control volume & [\si{J}/\si{kg}]\\ 
-		$Q_{in}$ 		& Energy flow applied to control volume & [\si{W}]\\
-		$\dot{m}_{in}$ 	& Flow into control volume & [\si{kg}/\si{s}]\\
+		$Q_{in}$ 		& Energy flow from heat and work applied to control volume & [\si{W}]\\
+		$\dot{m}_{in}$ 	& Mass flow into control volume & [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
 

@@ -3,7 +3,7 @@ The cooling trailer is an insulated trailer designed and built by Schmidt Cargob
 While the trailer usually has its own cooling system made by Schmidt Cargobull, the trailer in this project utilizes a custom HVAC system designed by Bitzer. This system is built to facilitate testing of advanced control strategies.
 
 The inputs and outputs of the system are the found by investigating the structure of the HVAC system. While the system will be described in detail in section XX, the most important components can be named as refrigerant moves around a loop through various components. These are: A scroll compressor, a condenser, a condenser throttle valve, a flash tank, an expansion valve and an evaporator. These can also be observed in \cref{fig_HVAC_Diagram}. The trailer box is also of great importance. 
-The evaporator fan blows cold air throughout the top of the trailer where it travels down past the cargo to the bottom where it is pulled back through the cycle.
+The evaporator fan blows cold air throughout the top of the trailer, where it travels down past the cargo to the bottom and is pulled back along the floor.
 
 \begin{figure}[h!]
 	\centering
@@ -12,14 +12,14 @@ The evaporator fan blows cold air throughout the top of the trailer where it tra
 	\label{fig:HVAC_Diagram}
 \end{figure}
 
-The controlled inputs are the variables in these components that can be controlled, namely:
+Many of the system components have variables that can be set to change their behavior. These are the controlled inputs, and include:
 
 \begin{itemize}
-	\item The compressor speed(s)
+	\item The compressor speed
 	\item The condenser fan speed
+	\item The evaporator fan speed
 	\item The expansion valve opening degree (OD) to the evaporator
 	\item The condenser throttling valve opening degree to the flash tank
-	\item The evaporator fan speed
 \end{itemize}
 
 There are many variables such as pressure and temperature throughout the refrigeration cycle, many of which are measured and hence are outputs of the system. 
