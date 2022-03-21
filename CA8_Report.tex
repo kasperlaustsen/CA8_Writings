@@ -62,12 +62,15 @@
 
 % *** STUFF WE ADD THAT THE PACKAGE SHOULD HAVE HAD ***
 
-\usepackage{amsmath}
+
+% More clever references
 \usepackage{hyperref}
-\usepackage[capitalise]{cleveref}
 
-
+% Adding to-do notes in the text
 \usepackage{todonotes}
+
+% Set margins - The IEEE margins are WAY too thin..
+\usepackage[letterpaper, left=25mm, right=25mm, bottom=25mm, top=25mm]{geometry}
 
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
@@ -160,6 +163,8 @@
 % You can find documentation about the pdfTeX application at:
 % http://www.tug.org/applications/pdftex
 
+
+% Tikz package: Used to create beautiful diagrams
 \usepackage{tikz}
 \usetikzlibrary{shapes,shapes.geometric, arrows,positioning,calc}
 \tikzset{
@@ -174,7 +179,7 @@
 
 
 % *** MATH PACKAGES ***
-%
+
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -324,6 +329,7 @@
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
+% NOTE: We DID change margins because they were UCKLY!!
 % *** Do not use packages that alter fonts (such as pslatex).         ***
 % There should be no need to do such things with IEEEtran.cls V1.6 and later.
 % (Unless specifically asked to do so by the journal or conference you plan
@@ -337,6 +343,11 @@
 
 % Include SI units
 \usepackage{siunitx}
+
+% cleverref SHOULD be included after amsmath for some reason
+% To use cref(). This includes fig, eq, table and such based on what's referenced
+\usepackage[capitalise]{cleveref}
+
 
 \begin{document}
 %
