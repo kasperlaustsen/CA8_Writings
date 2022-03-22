@@ -365,10 +365,10 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$\sigma$				& Control Volume boundary 			& [$\cdot$] \\
-		$M_l$				& Mass of liquid-vapor CV 			& [\si{kg}] \\
-		$v_1$				& Refrigerant specific volume of vapor-liquid CV	& [$\si{m}^3/\si{kg}$] \\
-		$V_i$				& Evaporator volume 			& [$\si{m}^3$]
+		$\sigma$ & Control Volume boundary                        & [$\cdot$]            \\
+		$M_l$    & Mass of liquid-vapor CV                        & [\si{kg}]            \\
+		$v_1$    & Refrigerant specific volume of vapor-liquid CV & [$\si{m}^3/\si{kg}$] \\
+		$V_i$    & Evaporator volume                              & [$\si{m}^3$]
 	\end{tabular}
 \end{center}
 
@@ -389,39 +389,43 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$Q_{fan}$			& Heat added from fan to air (heatloss)			& [\si{W}] \\
-		$Q_{aml}$			& Heat flow from air to metal surrounding liquid-vapor CV			& [\si{W}] \\
-		$Q_{amv}$			& Heat flow from air to metal surrounding vapor CV			& [\si{W}] \\
-		$Q_{mvml}$			& Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV			& [\si{W}] \\
-		$Q_{ml}$			& Heat flow from evaporator metal to liquid-vapor CV			& [\si{W}] \\
-		$Q_{mv}$			& Heat flow from evaporator metal to vapor CV					& [\si{W}] \\
-		$U_{fan}$			& Fan speed 	& [1/\si{s}]\\
-		$T_{ret}$			& Return temperature of air coming from trailer 			& [\si{K}] \\
-		$T_{retfan}$		& Temperature of return air after passing through fan			& [\si{K}] \\
-		$T_{mv}$			& Temperature of metal on the vapor CV			& [\si{K}] \\
-		$T_{ml}$			& Temperature of metal on the liquid-vapor CV			& [\si{K}] \\
-		$T_{retsh}$			& Temperature of air over superheated vapor CV			& [\si{K}] \\
-		$T_{l}$				& Saturation temperature for evaporation of the refrigerant			& [\si{K}] \\
-		$T_{v}$				& Temperature of refrigerant (vapor) leaving the evaporator		& [\si{K}] \\
-		$\dot{m}_{air}$		& Mass flow of air through fan			& [\si{kg}/\si{s}] \\
-		$Cp_{air}$			& Specific heat capacity of air			& [\si{J}/(\si{K}\si{kg})] \\
-		$UA_1$				& Heat transfer coefficient from metal to liquid			& [\si{J}/\si{K}] \\
-		$UA_2$				& Heat transfer coefficient from metal to vapor			& [\si{J}/\si{K}] \\
-		$UA_3$				& Heat transfer coefficient from metal surrounding vapor CV to metal surrounding liquid-vapor CV			& [\si{J}/\si{K}] \\
+		$Q_{fan}$       & Heat added from fan to air (heatloss)                                                          & [\si{W}]                 \\
+		$Q_{aml}$       & Heat flow from air to metal surrounding liquid-vapor CV                                        & [\si{W}]                 \\
+		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV                                               & [\si{W}]                 \\
+		$Q_{mvml}$      & Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV    & [\si{W}]                 \\
+		$Q_{ml}$        & Heat flow from evaporator metal to liquid-vapor CV                                             & [\si{W}]                 \\
+		$Q_{mv}$        & Heat flow from evaporator metal to vapor CV                                                    & [\si{W}]                 \\
+		$U_{fan}$       & Fan speed                                                                                      & [1/\si{s}]               \\
+		$T_{ret}$       & Return temperature of air coming from trailer                                                  & [\si{K}]                 \\
+		$T_{retfan}$    & Temperature of return air after passing through fan                                            & [\si{K}]                 \\
+		$T_{mv}$        & Temperature of metal on the vapor CV                                                           & [\si{K}]                 \\
+		$T_{ml}$        & Temperature of metal on the liquid-vapor CV                                                    & [\si{K}]                 \\
+		$T_{retsh}$     & Temperature of air over superheated vapor CV                                                   & [\si{K}]                 \\
+		$T_{l}$         & Saturation temperature for evaporation of the refrigerant                                      & [\si{K}]                 \\
+		$T_{v}$         & Temperature of refrigerant (vapor) leaving the evaporator                                      & [\si{K}]                 \\
+		$\dot{m}_{air}$ & Mass flow of air through fan                                                                   & [\si{kg}/\si{s}]         \\
+		$Cp_{air}$      & Specific heat capacity of air                                                                  & [\si{J}/(\si{K}\si{kg})] \\
+		$UA_1$          & Heat transfer coefficient from metal to liquid                                                 & [\si{J}/\si{K}]          \\
+		$UA_2$          & Heat transfer coefficient from metal to vapor                                                  & [\si{J}/\si{K}]          \\
+		$UA_3$          & Heat transfer coefficient from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{J}/\si{K}]
 	\end{tabular}
 \end{center}
 
 The airflow over the evaporator is dynamic in itself, as the airflow is driven by a fan that has rotational inertia. Additionally, as the air is a fluid by itself, it contains some inetia too. This behaviour is modeled by:
 
 \begin{align}
-	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\
+	U_{scaled} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
+	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot U_{scaled}  -0.0044 \cdot U_{scaled}^2\\
+	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}  \label{eq:Evaporator_FanAirInstantMassFlow}\\
+%	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\
 	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
-\end{align} \todo[inline]{Does this still hold for a Fan with variable frequency drive? If not, maybe we can start out with it modelled statically or without it?}
+\end{align} 
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
+		$ U_scaled $ 								& Intermediate \\
 		$\bar{\dot{m}}_{air}$						& Instant steady state estimate mass flow of air  		& [\si{kg}/\si{s}] \\
 		$\dot{m}_{air}$								& Actual mass flow of air								& [\si{kg}/\si{s}] \\
 		$U_{fan}$									& Fan speed 											& [1/\si{s}] \\
@@ -435,15 +439,15 @@ where
 The remaining state equations are given by equations below. They describe change in temperature of metal, pressure, specific enthalpy, mass balance and mass flow.
 
 \begin{align}
-	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma} \\
+	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma}        \\
 	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot Cp_m \cdot (1- \sigma)} \\
-	p_{out} & = \Pi \left( h_v, \frac{V_i-V_l}{M_v} \right)\\
-	h_l & = h_{in} + \frac{Q_{ml}}{\dot{m_{in}}}\\
-	h_v & = h_{lv} + \frac{Q_{mv}}{\dot{m_{lv}}}\\
-	\frac{dM_l}{dt} & = \dot{m_{in}} - \dot{m_{lv}}\\
-	\frac{dM_v}{dt} & = \dot{m_{lv}} - \dot{m_{out}}\\
-	T_{sup} & = T_{retfan} +  \frac{Q_{aml} + Q_{amv}}{Cp_{air} \cdot \dot{m_{air}}} \\
-	\dot{m_{lv}} & = \frac{Q_{ml}}{h_{dew} - h_{in}}
+	p_{out}            & = \Pi \left( h_v, \frac{V_i-V_l}{M_v} \right)                          \\
+	h_l                & = h_{in} + \frac{Q_{ml}}{\dot{m_{in}}}                                 \\
+	h_v                & = h_{lv} + \frac{Q_{mv}}{\dot{m_{lv}}}                                 \\
+	\frac{dM_l}{dt}    & = \dot{m_{in}} - \dot{m_{lv}}                                          \\
+	\frac{dM_v}{dt}    & = \dot{m_{lv}} - \dot{m_{out}}                                         \\
+	T_{sup}            & = T_{retfan} +  \frac{Q_{aml} + Q_{amv}}{Cp_{air} \cdot \dot{m_{air}}} \\
+	\dot{m_{lv}}       & = \frac{Q_{ml}}{h_{dew} - h_{in}}
 \end{align}
 
 where\\
