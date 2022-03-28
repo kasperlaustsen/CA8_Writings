@@ -308,8 +308,8 @@ where
 And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlow_rm}, \cref{eq:Condenser_HeatFlow_ma}. The heat flow from metal to air is assumed to be approximately proportional to the air flow, which is why the speed of the fan is multiplied to the energy flow in \cref{eq:Condenser_HeatFlow_ma}. There is an offset of 0.05 times the energy flow to account for the fact that there will exist a heat flow even though the fan is not operating.
 
 \begin{align}
-	Q_{rm}	 			& = U_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
-	Q_{ma}	 			& = U_{ma} \cdot (T_m - T_a)\cdot (0.05 + U_{fan})				\label{eq:Condenser_HeatFlow_ma}
+	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
+	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot (0.05 + U_{fan})				\label{eq:Condenser_HeatFlow_ma}
 \end{align}
 
 where
@@ -318,8 +318,8 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$Q_{rm}$				&	Heat flow from refridgerant to metal					& [\si{W}] \\
 		$Q_{ma}$				&	Heat flow from metal to air								& [\si{W}] \\
-		$U_{rm}$				& 	Heat transfer coefficient from refridgerant to metal 	& [\si{J}/\si{K}] \\
-		$U_{ma}$				& 	Heat transfer coefficient from metal to air				& [\si{J}/\si{K}] \\
+		$U A_{rm}$				& 	Heat transfer coefficient from refridgerant to metal 	& [\si{J}/\si{K}] \\
+		$U A_{ma}$				& 	Heat transfer coefficient from metal to air				& [\si{J}/\si{K}] \\
 		$T_r$					& 	Temperature of refridgerant 							& [\si{K}] \\
 		$T_m$					&	Temperature of metal 									& [\si{K}] \\
 		$T_a$					&	Temperature of air 										& [\si{K}] \\
@@ -415,16 +415,18 @@ where
 \end{center}
 
 
-The heat flows and temperatures relating to the evaporator is modeled by the following equations:
+The heat flows and temperatures relating to the evaporator is modeled by the following equations. The heat flow from air to  metal of evaporator is modeled based on the assumption that the mass flow of air is cooled down to the metal temperature in \cref{eq:Q_amv} and \cref{eq:Q_aml}. \cref{eq:Q_fan_heatloss} \todo[inline]{correct this equation} are the heat losses from the fan that is being added to the air flow. \cref{eq:Q_mvml}, \cref{eq:Q_ml} and \cref{eq:Q_mv} all model convection heat flows.
+ 
+ 
 \begin{align}
-	Q_{fan} 		& = (155 \cdot U_{fan}^2 + 40 \cdot U_{fan}^3) \cdot 0.2 \\
-	T_{retfan} 		& = T_{ret} + \frac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}} \\
-	Q_{amv} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) \\
-	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m}_{air} \dot Cp_{air}} \\
-	Q_{aml} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) \\
-	Q_{mvml} 		& = U A_3 \cdot (T_{mv} - T_{ml}) \\
-	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma\\
-	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)
+	Q_{fan} 		& = (155 \cdot U_{fan}^2 + 40 \cdot U_{fan}^3) \cdot 0.2  		\label{eq:Q_fan_heatloss} 	\\
+	T_{retfan} 		& = T_{ret} + \frac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}} 		\label{eq:T_retfan} 		\\
+	Q_{amv} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv} 			\\
+	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m}_{air} \dot Cp_{air}} 	\label{eq:T_retsh} 			\\
+	Q_{aml} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) 	\label{eq:Q_aml} 			\\
+	Q_{mvml} 		& = U A_3 \cdot (T_{mv} - T_{ml}) 								\label{eq:Q_mvml} 			\\
+	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma						\label{eq:Q_ml} 			\\
+	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)                \label{eq:Q_mv} 
 \end{align}
 
 where
@@ -453,30 +455,6 @@ where
 	\end{tabular}
 \end{center}
 
-The airflow over the evaporator is dynamic in itself, as the airflow is driven by a fan that has rotational inertia. Additionally, as the air is a fluid by itself, it contains some inetia too. This behaviour is modeled by:
-
-\begin{align}
-	U_{scaled} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
-	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot U_{scaled}  -0.0044 \cdot U_{scaled}^2\\
-	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}  \label{eq:Evaporator_FanAirInstantMassFlow}\\
-%	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\
-	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
-\end{align}
-
-where
-
-\begin{center}
-	\begin{tabular}{l p{8cm} l}
-		$ U_{scaled} $ 								& Intermediate \\
-		$\bar{\dot{m}}_{air}$						& Instant steady state estimate mass flow of air  		& [\si{kg}/\si{s}] \\
-		$\dot{m}_{air}$								& Actual mass flow of air								& [\si{kg}/\si{s}] \\
-		$U_{fan}$									& Fan speed 											& [1/\si{s}] \\
-		$\rho_{air}$								& Density of air										& [\si{kg}/\si{m^3}] \\[0.2cm]
-		$\dfrac{\Delta \dot{m}_{air}}{\Delta t} $ 	& The rate of change of	air flow 						& [\si{kg}/\si{s^2}]
-	\end{tabular}
-\end{center}
-
-\cref{eq:Evaporator_FanAirInstantMassFlow} calculates the steady state air mass flow at new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds. \\
 
 The remaining state equations are given by equations below. They describe change in temperature of metal, pressure, specific enthalpy, mass balance and mass flow.
 
