@@ -78,6 +78,16 @@ where
 	\end{tabular}
 \end{center}
 
+The function $f_p()$ of the opening degree is used the model the non linear behavior of the OD - flow relationship in the valve. The valve is an equal-percentage type valve, meaning for an increase in opening degree you get a relative increase in flow. This is illustrated in \cref{fig:equal_percent_valve}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.55\textwidth]{Graphics/Equal-percentage.png}
+	\caption{Valve characteristics}
+	\label{fig:equal_percent_valve}
+\end{figure}
+
+
 \subsubsection{Pipe Joining Junction}
 Between compressor stage 1, compressor stage 2 and the flash tank (see \cref{fig:HVAC_Diagram}) is a Pipe Joining Junction that connects the three forementioned components.
 
@@ -92,14 +102,14 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$\frac{dM}{dt}$ & Change in mass inside Pipe Joining Junction		 	& [\si{kg}/\si{s}]\\
+		$\dfrac{dM}{dt}$ & Change in mass inside Pipe Joining Junction		 	& [\si{kg}/\si{s}]\\
 		$\dot{m}_{in1}$ & Flow into Pipe Joining Junction from Compressor $ C_1 $ 		& [\si{kg}/\si{s}]\\
 		$\dot{m}_{in2}$ & Flow into Pipe Joining Junction from Flash Tank 				& [\si{kg}/\si{s}]\\
 		$\dot{m_{out}}$ & Flow into Compressor $ C_2 $ from Pipe Joining Junction		& [\si{kg}/\si{s}]\\
 	\end{tabular}
 \end{center}
 
-In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated.
+In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. Additionally it is expected that $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows. 
 
 \begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
 	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
@@ -202,10 +212,42 @@ where
 		$ kl_1$, $kl_2$			& Valve loss constants							& [$ \cdot $]\\
 		$\omega$ 				& Compressor angular velocity 				& [\si{rad}/\si{s}]\\
 		$T_{in}$ 				& Compressor stage input temperature 	& [\si{K}]\\
-		$C_{cp}$ 				& Specific heat capacity - constant pressure 	& [\si{J}/(\si{kg}\si{K})]\\
-		$C_{cv} $ 				& Specific heat capacity - constant volume 	& [\si{J}/(\si{kg}\si{K})]\\
+		$C_{cp}$ 				& Specific heat capacity - constant pressure 	& [\si{J}/(\si{kg}$ \cdot $\si{K})]\\
+		$C_{cv} $ 				& Specific heat capacity - constant volume 	& [\si{J}/(\si{kg}$ \cdot $\si{K})]\\
 	\end{tabular}
 \end{center}
+
+
+\subsubsection{Fan}
+The fans used to move air over the condenser and evaporator are driven by VFD allowing for an assumed continous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modelled with a 2nd order polynomial, as shown below.
+
+The airflows over the evaporator and condenser are dynamic in themselves, as the airflow is driven by fans that have rotational inertia. Additionally, as the air is a fluid by itself, it contains some inetia too. This behaviour is modeled by:
+
+\begin{align}
+	U_{scaled} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
+	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot U_{scaled}  -0.0044 \cdot U_{scaled}^2\\
+	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}  \label{eq:Evaporator_FanAirInstantMassFlow}\\
+	%	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\
+	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$ U_{scaled} $ 								& Intermediate variable												& [1/\si{s}]\\
+		$\bar{\dot{V}}_{air}$						& Estimated steady state volume flow of air for a given fan speed 	& [\si{m^3}/\si{s}] \\
+		$\bar{\dot{m}}_{air}$						& Estimated steady state mass flow of air for a given fan speed 	& [\si{kg}/\si{s}] \\
+		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\            
+		$U_{fan}$									& Fan speed 														& [1/\si{s}] \\                                   
+		$\rho_{air}$								& Density of air													& [\si{kg}/\si{m^3}] \\[0.2cm]               
+		$\dfrac{\Delta \dot{m}_{air}}{\Delta t} $ 	& The rate of change of	air flow 									& [\si{kg}/\si{s^2}]
+	\end{tabular}                                                                                  
+\end{center}
+
+\cref{eq:Evaporator_FanAirInstantMassFlow} calculates the steady state air mass flow at new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds. \\
+
+
 
 \subsubsection{Condenser}
 
@@ -404,7 +446,7 @@ where
 		$T_{l}$         & Saturation temperature for evaporation of the refrigerant                                      & [\si{K}]                 \\
 		$T_{v}$         & Temperature of refrigerant (vapor) leaving the evaporator                                      & [\si{K}]                 \\
 		$\dot{m}_{air}$ & Mass flow of air through fan                                                                   & [\si{kg}/\si{s}]         \\
-		$Cp_{air}$      & Specific heat capacity of air                                                                  & [\si{J}/(\si{K}\si{kg})] \\
+		$Cp_{air}$      & Specific heat capacity of air                                                                  & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
 		$UA_1$          & Heat transfer coefficient from metal to liquid                                                 & [\si{J}/\si{K}]          \\
 		$UA_2$          & Heat transfer coefficient from metal to vapor                                                  & [\si{J}/\si{K}]          \\
 		$UA_3$          & Heat transfer coefficient from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{J}/\si{K}]
@@ -425,7 +467,7 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$ U_scaled $ 								& Intermediate \\
+		$ U_{scaled} $ 								& Intermediate \\
 		$\bar{\dot{m}}_{air}$						& Instant steady state estimate mass flow of air  		& [\si{kg}/\si{s}] \\
 		$\dot{m}_{air}$								& Actual mass flow of air								& [\si{kg}/\si{s}] \\
 		$U_{fan}$									& Fan speed 											& [1/\si{s}] \\
@@ -468,8 +510,8 @@ where\\
 		$M_{v} $					& Mass of vapor												& [\si{kg}] \\
 		$V_{i} $					& Total volume of evaporator								& [\si{m^3}] \\
 		$V_{l} $					& Volume of liquid refrigerant								& [\si{m^3}] \\
-		$Cp_{air}$					& Specific heat capacity of metal							& [\si{J}/(\si{K}\si{kg})] \\
-		$Cp_{air}$					& Specific heat capacity of air								& [\si{J}/(\si{K}\si{kg})] \\
+		$Cp_{air}$					& Specific heat capacity of metal							& [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
+		$Cp_{air}$					& Specific heat capacity of air								& [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
 		$\sigma$					& Control Volume boundary 									& [$\cdot$] \\
 		$\Pi(h,\rho) $						& Table lookup of pressure, where inputs are specific enthalpy and density								& [\si{Pa}] \\
 		$h_{v} $					& Specific enthalpy of vapor CV								& [\si{J}/\si{kg}] \\
