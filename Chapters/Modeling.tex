@@ -300,7 +300,7 @@ where
 		$\dot{m_{out}}$			& 	Condenser output mass flow 					& [\si{kg}/\si{s}] \\
 		$M_{r}$					&	Condenser refridgerant mass					& [\si{kg}] \\
 		$V_{i}$					&	Condenser internal volume					& [\si{m^3}] \\
-		$v$						&	Condenser refridgerant volume				& [\si{m^3}] \\
+		$v$						&	Condenser refridgerant specific volume		& [\si{m^3}/\si{kg}] \\
 	\end{tabular}
 \end{center}
 
@@ -587,20 +587,24 @@ The heat transfer coefficient of the walls, floor and ceiling  ($ U_{amb} $) is 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/Block Diagram.pdf}
+	\includegraphics[width=1\textwidth]{Graphics/Block_Diagram.pdf}
 	\caption{Initial Block Diagram with states}
 	\label{fig:Block_diagram}
 \end{figure}
 
 
 
-\begin{equation} \label{eq:consump_x}
-	f(x,u) =  \dot{\begin{bmatrix}
+\begin{equation} \label{eq:consump_x} \renewcommand{\arraystretch}{2}
+	f(x,u) =  \dfrac{d}{dt} \begin{bmatrix}
 		M_{pjj}		\\
-	\end{bmatrix}}
+		M_{condenser} 	\\
+		T_m 			\\
+	\end{bmatrix}
 	=
 	\begin{bmatrix}
-		\dot{m}_1 + \dot{m}_3 - \dot{m}_2 \\											%pjj
+		\dot{m}_1 + \dot{m}_3 - \dot{m}_2 \\										%pjj
+		\dot{m}_{2} - \dot{m}_{2}	\\												%condenser
+		\dfrac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m} \\									%condenser
 	\end{bmatrix}
 \end{equation}
 
@@ -619,30 +623,28 @@ The heat transfer coefficient of the walls, floor and ceiling  ($ U_{amb} $) is 
 		p_{int2}			\\
 		\gamma					\\
 		T_{3}					\\
+		h_{4}					\\
+		p_{2}					\\
+		\dot{m}_{3}			\\
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
 		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{3}}{ \dot{m}_{2} } \\ 	%pjj
 		\dot{m}_{1} + \dot{m}_{3} \\													%pjj
 		 \left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
-		 \Upsilon(T_{out}, p_{out})		\\												%cs2
-		 \Gamma(T_{in},p_{out}) \\	
-		 \left(\dfrac{p_{int2}}{p_{int1}}\right)^{\frac{-1}{\gamma}} \\
-		 p_{1} - kl_1 \cdot \omega \\
-		 p_{2} + kl_2 \cdot \omega \\
-		 \dfrac{C_{cp}}{C_{cv}} \\
-		 T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}
+		 \Upsilon(T_{3}, p_{2})		\\													%cs2
+		 \Gamma(T_{2},p_{2}) \\															%cs2
+		 \left(\dfrac{p_{int2}}{p_{int1}}\right)^{\frac{-1}{\gamma}} \\					%cs2
+		 p_{1} - kl_1 \cdot \omega \\													%cs2
+		 p_{2} + kl_2 \cdot \omega \\													%cs2
+		 \dfrac{C_{cp}}{C_{cv}} \\														%cs2
+		 T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs2
+		 h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\										%condenser
+		 p_{3} - \lambda \cdot \dot{m}_{2}			\\							%condenser
+		 \dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\							%condenser
 	\end{bmatrix}
 \end{equation}
 
 
-\begin{align}
-	v_1 &= \Gamma(T_{in},p_{out}) \\
-	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
-	p_1 &= p_{in} - kl_1 \cdot \omega \\
-	p_2 &= p_{out} + kl_2 \cdot \omega \\
-	\gamma &= C_{cp}/C_{cv} \\
-	T_{out} &= T_{in}\cdot \left(\frac{p_{out}}{p_{in}}\right)^{\frac{\gamma-1}{\gamma}}
-\end{align}
 \newpage
 \subsubsection{Linearisation}
