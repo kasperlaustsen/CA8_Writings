@@ -94,7 +94,7 @@ Between compressor stage 1, compressor stage 2 and the flash tank (see \cref{fig
 In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction.
 
 \begin{equation} \label{eq:PipeJoiningJunction_ChangeOfMass}
-	\frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} + \dot{m}_{out}
+	\frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} - \dot{m}_{out}
 \end{equation}
 
 
@@ -594,4 +594,55 @@ The heat transfer coefficient of the walls, floor and ceiling  ($ U_{amb} $) is 
 
 
 
+\begin{equation} \label{eq:consump_x}
+	f(x,u) =  \dot{\begin{bmatrix}
+		M_{pjj}		\\
+	\end{bmatrix}}
+	=
+	\begin{bmatrix}
+		\dot{m}_1 + \dot{m}_3 - \dot{m}_2 \\											%pjj
+	\end{bmatrix}
+\end{equation}
+
+
+
+
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g(x,u) =  \begin{bmatrix}
+		h_{2}\\
+		\dot{m}_{2} \\
+		\dot{m}_2   \\
+		h_{3}		\\
+		v_1			\\
+		v_2			\\
+		p_{int1}			\\
+		p_{int2}			\\
+		\gamma					\\
+		T_{3}					\\
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{3}}{ \dot{m}_{2} } \\ 	%pjj
+		\dot{m}_{1} + \dot{m}_{3} \\													%pjj
+		 \left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
+		 \Upsilon(T_{out}, p_{out})		\\												%cs2
+		 \Gamma(T_{in},p_{out}) \\	
+		 \left(\dfrac{p_{int2}}{p_{int1}}\right)^{\frac{-1}{\gamma}} \\
+		 p_{1} - kl_1 \cdot \omega \\
+		 p_{2} + kl_2 \cdot \omega \\
+		 \dfrac{C_{cp}}{C_{cv}} \\
+		 T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}
+	\end{bmatrix}
+\end{equation}
+
+
+\begin{align}
+	v_1 &= \Gamma(T_{in},p_{out}) \\
+	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
+	p_1 &= p_{in} - kl_1 \cdot \omega \\
+	p_2 &= p_{out} + kl_2 \cdot \omega \\
+	\gamma &= C_{cp}/C_{cv} \\
+	T_{out} &= T_{in}\cdot \left(\frac{p_{out}}{p_{in}}\right)^{\frac{\gamma-1}{\gamma}}
+\end{align}
+\newpage
 \subsubsection{Linearisation}
