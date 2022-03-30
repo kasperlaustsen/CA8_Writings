@@ -109,7 +109,7 @@ where
 	\end{tabular}
 \end{center}
 
-In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. Additionally it is expected that $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows. 
+In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. Additionally, it is expected that $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows. 
 
 \begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
 	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
@@ -178,10 +178,10 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$\dot{m}$				& Flow through compressor stage					& [\si{kg}/\si{s}] \\
 		$h_{out}$				& Compressor stage output specific enthalpy				& [\si{J}/\si{kg}] \\
-		$V_1$					& Cylinder internal volume b.f. stroke			& [$\si{m}^3$] \\
-		$V_C$					& Cylinder clearance volume after stroke		& [$\si{m}^3$] \\
-		$v_1$					& Refrigerant specific volume b.f. stroke		& [$\si{m}^3/\si{kg}$] \\
-		$v_2$					& Refrigerant specific volume after stroke		& [$\si{m}^3/\si{kg}$] \\
+		$V_1$					& Cylinder internal volume b.f. 'stroke'			& [$\si{m}^3$] \\
+		$V_C$					& Cylinder clearance volume after 'stroke'		& [$\si{m}^3$] \\
+		$v_1$					& Refrigerant specific volume b.f. 'stroke'		& [$\si{m}^3/\si{kg}$] \\
+		$v_2$					& Refrigerant specific volume after 'stroke'		& [$\si{m}^3/\si{kg}$] \\
 		$\omega$ 				& Compressor angular velocity 					& [\si{rad}/\si{s}]\\
 		$\Upsilon$ 				& HTP; Lookup table of the enthalpy from temperature and pressure 			& [$\cdot]$ \\
 		$T_{out}$ 				& Compressor stage output temperature 			& [\si{K}] \\
@@ -192,7 +192,7 @@ where
 In \cref{eq:comp_mass_flow} $v_1$ is found from table lookup based on ????.
 
 \begin{align}
-	v_1 &= \Gamma(T_{in},p_{out}) \\
+	v_1 &= \Gamma(T_{in},p_{1}) \\
 	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
 	p_1 &= p_{in} - kl_1 \cdot \omega \\
 	p_2 &= p_{out} + kl_2 \cdot \omega \\
