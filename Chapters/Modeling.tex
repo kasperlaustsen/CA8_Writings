@@ -73,7 +73,7 @@ where
 		$p_{in}$ 	& Absolute pressure on input side & [\si{Pa}]\\
 		$p_{out}$ 	& Absolute pressure on output side & [\si{Pa}]\\
 		$K$ 		& Constant, product of discharge coefficient and cross sectional area & [\si{m^2}]\\
-		$v_{in}$ 	& Specific volume of liquid refrigerant & [\si{m^3}/\si{kg}]
+		$v_{in}$ 	& Specific volume of liquid refrigerant into the valve & [\si{m^3}/\si{kg}]
 
 	\end{tabular}
 \end{center}
@@ -309,7 +309,7 @@ And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlo
 
 \begin{align}
 	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
-	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot (0.05 + U_{fan})				\label{eq:Condenser_HeatFlow_ma}
+	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot (0.05 + \dfrac{U_{fan}}{1530})				\label{eq:Condenser_HeatFlow_ma}
 \end{align}
 
 where
@@ -626,24 +626,31 @@ The heat transfer coefficient of the walls, floor and ceiling  ($ U_{amb} $) is 
 		h_{4}					\\
 		p_{2}					\\
 		\dot{m}_{3}			\\
+		\dot{m}_{3}			\\
+		\dot{m}_{5}			\\
 	\end{bmatrix}
-	=
+	-
 	\begin{bmatrix}
 		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{3}}{ \dot{m}_{2} } \\ 	%pjj
 		\dot{m}_{1} + \dot{m}_{3} \\													%pjj
 		 \left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
 		 \Upsilon(T_{3}, p_{2})		\\													%cs2
-		 \Gamma(T_{2},p_{2}) \\															%cs2
+		 \Gamma(T_{2},p_{int1}) \\														%cs2
 		 \left(\dfrac{p_{int2}}{p_{int1}}\right)^{\frac{-1}{\gamma}} \\					%cs2
 		 p_{1} - kl_1 \cdot \omega \\													%cs2
 		 p_{2} + kl_2 \cdot \omega \\													%cs2
 		 \dfrac{C_{cp}}{C_{cv}} \\														%cs2
 		 T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs2
-		 h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\										%condenser
-		 p_{3} - \lambda \cdot \dot{m}_{2}			\\							%condenser
-		 \dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\							%condenser
+		 h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
+		 p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
+		 \dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\					%condenser
+		 f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
+		 f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
 	\end{bmatrix}
+=\textbf{0}
 \end{equation}
+
+
 
 
 \newpage
