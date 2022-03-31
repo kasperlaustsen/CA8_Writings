@@ -109,7 +109,7 @@ where
 	\end{tabular}
 \end{center}
 
-In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. Additionally, it is expected that $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows. 
+In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. Additionally, it is expected that $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows.
 
 \begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
 	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
@@ -238,11 +238,11 @@ where
 %		$ U_{scaled} $ 								& Intermediate variable												& [1/\si{s}]\\
 %		$\bar{\dot{V}}_{air}$						& Estimated steady state volume flow of air for a given fan speed 	& [\si{m^3}/\si{s}] \\
 %		$\bar{\dot{m}}_{air}$						& Estimated steady state mass flow of air for a given fan speed 	& [\si{kg}/\si{s}] \\
-%		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\            
-%		$U_{fan}$									& Fan speed 														& [1/\si{s}] \\                                   
-%		$\rho_{air}$								& Density of air													& [\si{kg}/\si{m^3}] \\[0.2cm]               
+%		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\
+%		$U_{fan}$									& Fan speed 														& [1/\si{s}] \\
+%		$\rho_{air}$								& Density of air													& [\si{kg}/\si{m^3}] \\[0.2cm]
 %		$\dfrac{\Delta \dot{m}_{air}}{\Delta t} $ 	& The rate of change of	air flow 									& [\si{kg}/\si{s^2}]
-%	\end{tabular}                                                                                  
+%	\end{tabular}
 %\end{center}
 %
 %\cref{eq:Evaporator_FanAirInstantMassFlow} calculates the steady state air mass flow at new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds. \\
@@ -383,9 +383,8 @@ The subcooling throttle valve is used differently from the two other valves in t
 The superheat of the evaporator is an important and difficult state to control. It is important as the compressor can be damaged if the refrigerant contains liquid. Additionally the superheat is important from an efficiency point of view.
 The superheat is the difference between the vapor saturation temperature and the actual temperature at the compressor suction inlet. It is a measure of excess energy transferred to the refrigerant.
 
-The evaporator is split into two control volumes, divided by a moving CV boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor, see \cref{fig:evapo_CV}.
-
-Because the heat transfer coefficient between liquid and metal and vapor and metal is different, the metal is likewise split by the $\sigma$ boundary. The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality throughout the liquid-vapor mixture.
+% This clearpage might be removed. I just put it here because it was looking ugly at the time.
+\clearpage
 
 \begin{figure}[h!]
 	\centering
@@ -393,6 +392,10 @@ Because the heat transfer coefficient between liquid and metal and vapor and met
 	\caption{Diagram of evaporator control volumes}
 	\label{fig:evapo_CV}
 \end{figure}
+
+The evaporator is split into two control volumes, divided by a moving CV boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor, see \cref{fig:evapo_CV}.
+
+Because the heat transfer coefficient between liquid and metal and vapor and metal is different, the metal is likewise split by the $\sigma$ boundary. The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality throughout the liquid-vapor mixture.
 
 The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary}
 
@@ -412,7 +415,7 @@ where
 \end{center}
 
 \medskip
-The temperatures of the air which is blown over the evaporator is modeled before and after the evaporator by the two equations below. The fan has some loss in the form of heat which is transferred to the air. 
+The temperatures of the air which is blown over the evaporator is modeled by the two equations below. The fan has some loss in the form of heat which is transferred to the air.
 
 \begin{align}
 	T_{retfan} 		& = T_{ret} + \frac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}} 		\label{eq:T_retfan} 		\\
@@ -434,24 +437,26 @@ where
 \end{center}
 
 \medskip
-The heat flow from air to metal of evaporator is modeled based on the assumption that the mass flow of air is cooled down to the metal temperature in \cref{eq:Q_amv} and \cref{eq:Q_aml}. 
+The heat flow from air to metal of evaporator is modeled based on the assumption that the mass flow of air is cooled down to the metal temperature as seen in \cref{eq:Q_amv} and \cref{eq:Q_aml}.
 
-\cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow. 
+\cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow.
 
 \begin{align}
 	U_{scaled} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \\
 	Q_{fan} & = 177.76 + 223.95 \cdot U_{scaled} + 105.85 \cdot U_{scaled}^2 + 16.74 \cdot U_{scaled}^3
 	\label{eq:Q_fan_heatloss}  \\
-	Q_{amv} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv} 
+	Q_{amv} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv} \\
+	Q_{aml} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) 	\label{eq:Q_aml}
 \end{align}
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$Q_{fan}$       & Heat added from fan to air (heatloss)               & [\si{W}]                          \\
-		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV    & [\si{W}]                          \\
+		$U_{scaled}$    & Scaled fan speed                                    & [1/\si{s}]                        \\
 		$U_{fan}$       & Fan speed                                           & [1/\si{s}]                        \\
+		$Q_{fan}$       & Heat flow from fan to air (heatloss)                & [\si{W}]                          \\
+		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV    & [\si{W}]                          \\
 		$Cp_{air}$      & Specific heat capacity of air                       & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
 		$\dot{m}_{air}$ & Mass flow of air through fan                        & [\si{kg}/\si{s}]                  \\
 		$T_{retfan}$    & Temperature of return air after passing through fan & [\si{K}]                          \\
@@ -461,7 +466,7 @@ where
 
 The fans used to move air over the condenser and evaporator are driven by VFD allowing for an assumed continous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modelled with a 2nd order polynomial, as shown below.
 
-The airflows over the evaporator and condenser are dynamic in themselves, as the airflow is driven by fans that have rotational inertia. Additionally, as the air is a fluid by itself, it contains some inetia too. This behaviour is modeled by:
+The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, as the air is a fluid itself, it contains some inertia too. This behavior is modeled by:
 
 \begin{align}
 	U_{scaled} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
@@ -478,20 +483,16 @@ where
 		$ U_{scaled} $ 								& Intermediate variable												& [1/\si{s}]\\
 		$\bar{\dot{V}}_{air}$						& Estimated steady state volume flow of air for a given fan speed 	& [\si{m^3}/\si{s}] \\
 		$\bar{\dot{m}}_{air}$						& Estimated steady state mass flow of air for a given fan speed 	& [\si{kg}/\si{s}] \\
-		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\            
-		$U_{fan}$									& Fan speed 														& [1/\si{s}] \\                                   
-		$\rho_{air}$								& Density of air													& [\si{kg}/\si{m^3}] \\[0.2cm]               
+		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\
+		$U_{fan}$									& Fan speed 														& [1/\si{s}] \\
+		$\rho_{air}$								& Density of air													& [\si{kg}/\si{m^3}] \\[0.2cm]
 		$\dfrac{\Delta \dot{m}_{air}}{\Delta t} $ 	& The rate of change of	air flow 									& [\si{kg}/\si{s^2}]
-	\end{tabular}                                                                                  
+	\end{tabular}
 \end{center}
 
 \cref{eq:Evaporator_FanAirInstantMassFlow} calculates the steady state air mass flow at new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds. \\
 
-
-
-
-\medskip
-The temperatures of the two evaporator metal CVs are given by the two equations below respectively.
+The temperatures of the evaporator vapor-liquid and vapor metal CVs are modeled by the two equations below respectively.
 
 \begin{align}
 	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma}        \\
@@ -519,7 +520,6 @@ where
 \cref{eq:Q_mvml}, \cref{eq:Q_ml} and \cref{eq:Q_mv} all model convection heat flows.
 
 \begin{align}
-	Q_{aml} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) 	\label{eq:Q_aml} 			\\
 	Q_{mvml} 		& = U A_3 \cdot (T_{mv} - T_{ml}) 								\label{eq:Q_mvml} 			\\
 	Q_{ml} 			& = U A_1 \cdot (T_{ml} - T_l) \cdot \sigma						\label{eq:Q_ml} 			\\
 	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)                \label{eq:Q_mv}
@@ -546,7 +546,7 @@ where
 \end{center}
 
 \medskip
-Output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_lv} describes the flow from the liquid-vapor CV to the vapor CV.
+Output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_lv} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the point at the evaporator pressure where liquid turns to vapor.
 
 \begin{align}
 	p_{out}         & = \Pi \left( h_v, \frac{V_i-V_l}{M_v} \right)		\label{eq:evap_pout}                       \\
@@ -565,30 +565,30 @@ where\\
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$ p_{out} 	$     & Pressure in evaporator                                                                                                  & [\si{Pa}]							\\
-		$\Pi(h,\rho) $   & Table lookup of pressure, where inputs are specific enthalpy and density                                                 & [\si{Pa}]                         \\
-		$h_{v} $         & Specific enthalpy of vapor CV                                                                                            & [\si{J}/\si{kg}]                  \\
-		$h_{l} $         & Specific enthalpy of liquid-vapor CV                                                                                     & [\si{J}/\si{kg}]                  \\
-		$h_{in} $        & Specific enthalpy of input liquid refrigerant                                                                            & [\si{J}/\si{kg}]                  \\
-		$h_{lv} $        & Specific enthalpy of refrigerant moving from liquid-vapor CV to vapor CV                                                 & [\si{J}/\si{kg}]                  \\
-		$h_{dew}$        & Specific enthalpy of dew point specific enthalpy at evaporator pressure, where liquid refrigerant changes phase to vapor & [\si{J}/\si{kg}]                  \\
-		$V_{i} $         & Total volume of evaporator                                                                                               & [\si{m^3}]                        \\
-		$V_{l} $         & Volume of liquid refrigerant                                                                                             & [\si{m^3}]                        \\
-		$M_{v}$          & Mass in	in vapor CV                                                                                                      & [\si{kg}/\si{s}]                  \\
-		$M_{l}$          & Mass in	in liquid-vapor CV                                                                                               & [\si{kg}/\si{s}]                  \\
-		$Q_{ml}$         & Heat flow from evaporator metal to liquid-vapor CV                                                                       & [\si{W}]                          \\
-		$Q_{mv}$         & Heat flow from evaporator metal to vapor CV                                                                              & [\si{W}]                          \\
-		$Q_{aml}$        & Heat flow from air to metal surrounding liquid-vapor CV                                                                  & [\si{W}]                          \\
-		$Q_{amv}$        & Heat flow from air to metal surrounding vapor CV                                                                         & [\si{W}]                          \\
-		$M_{m}$         & Mass of metal                                                                                                            & [\si{kg}]                         \\
-		$M_{v}$         & Mass of vapor                                                                                                            & [\si{kg}]                         \\
-		$Cp_{air}$       & Specific heat capacity of air                                                                                            & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
-		$\dot{m}_{in} $  & Mass flow of input refrigerant                                                                                           & [\si{kg}/\si{s}]                  \\
-		$\dot{m}_{lv} $  & Mass flow of refrigerant from liquid-vapor CV to vapor CV                                                                & [\si{kg}/\si{s}]                  \\
-		$\dot{m}_{out} $ & Mass flow of output refrigerant                                                                                          & [\si{kg}/\si{s}]                  \\
-		$\dot{m}_{air}$  & Actual mass flow of air                                                                                                  & [\si{kg}/\si{s}]                  \\
-		$T_{sup} $       & Temperature of air flowing into trailer box                                                                              & [\si{K}]                          \\
-		$T_{retfan}$     & Temperature of return air after passing through fan                                                                      & [\si{K}]                          
+		$ p_{out} 	$     & Pressure in evaporator                                                  & [\si{Pa}]                         \\
+		$\Pi(h,\rho) $   & Table lookup of pressure, where inputs are specific enthalpy and density & [\si{Pa}]                         \\
+		$h_{v} $         & Specific enthalpy of vapor CV                                            & [\si{J}/\si{kg}]                  \\
+		$h_{l} $         & Specific enthalpy of liquid-vapor CV                                     & [\si{J}/\si{kg}]                  \\
+		$h_{in} $        & Specific enthalpy of input liquid refrigerant                            & [\si{J}/\si{kg}]                  \\
+		$h_{lv} $        & Specific enthalpy of refrigerant moving from liquid-vapor CV to vapor CV & [\si{J}/\si{kg}]                  \\
+		$h_{dew}$        & Specific enthalpy of dew point                                           & [\si{J}/\si{kg}]                  \\
+		$V_{i} $         & Total volume of evaporator                                               & [\si{m^3}]                        \\
+		$V_{l} $         & Volume of liquid refrigerant                                             & [\si{m^3}]                        \\
+		$M_{v}$          & Mass in	in vapor CV                                                     & [\si{kg}/\si{s}]                  \\
+		$M_{l}$          & Mass in	in liquid-vapor CV                                              & [\si{kg}/\si{s}]                  \\
+		$Q_{ml}$         & Heat flow from evaporator metal to liquid-vapor CV                       & [\si{W}]                          \\
+		$Q_{mv}$         & Heat flow from evaporator metal to vapor CV                              & [\si{W}]                          \\
+		$Q_{aml}$        & Heat flow from air to metal surrounding liquid-vapor CV                  & [\si{W}]                          \\
+		$Q_{amv}$        & Heat flow from air to metal surrounding vapor CV                         & [\si{W}]                          \\
+		$M_{m}$          & Mass of metal                                                            & [\si{kg}]                         \\
+		$M_{v}$          & Mass of vapor                                                            & [\si{kg}]                         \\
+		$Cp_{air}$       & Specific heat capacity of air                                            & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
+		$\dot{m}_{in} $  & Mass flow of input refrigerant                                           & [\si{kg}/\si{s}]                  \\
+		$\dot{m}_{lv} $  & Mass flow of refrigerant from liquid-vapor CV to vapor CV                & [\si{kg}/\si{s}]                  \\
+		$\dot{m}_{out} $ & Mass flow of output refrigerant                                          & [\si{kg}/\si{s}]                  \\
+		$\dot{m}_{air}$  & Actual mass flow of air                                                  & [\si{kg}/\si{s}]                  \\
+		$T_{sup} $       & Temperature of air flowing into trailer box                              & [\si{K}]                          \\
+		$T_{retfan}$     & Temperature of return air after passing through fan                      & [\si{K}]
 	\end{tabular}
 \end{center}
 
@@ -597,24 +597,28 @@ where\\
 The trailer box contains by far the greatest thermodynamic capacities due to the large mass of the cargo. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area. The temperatures of the two main thermal capacities are modeled and their state space equations are given as below:
 
 \begin{align}
-	\frac{dT_{air}}{dt} & = \frac{Q_{ca} + Q_{aa} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \\
-	%	\frac{dT_{floor}}{dt} & = \frac{Q_{af} - Q_{fa}}{M_{floor} \cdot Cp_{floor}} \\
+	\frac{dT_{air}}{dt} & = \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \\
+	\frac{dT_{box}}{dt} & = \frac{Q_{amb} - Q_{ba}}{M_{box} \cdot Cp_{box}} \\
 	\frac{dT_{cargo}}{dt} & = \frac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}}
 \end{align}
 
 where
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$Q_{ca}$     & Cargo to air heat flow                        & [\si{W}]                \\
-		$Q_{aa}$     & Ambient (floor, roof, walls) to air heat flow & [\si{W}]                \\
-		$Q_{fan}$    & Fan to air heat flow                          & [\si{W}]                \\
-		$Q_{cool}$   & Air to evaporator heat flow                   & [\si{W}]                \\
-		$T_{air}$    & Air temperature                               & [\si{K}]                \\
-		$T_{cargo}$  & Cargo temperature                             & [\si{K}]                \\
-		$M_{air}$    & Air mass                                      & [\si{kg}]               \\
-		$M_{cargo}$  & Cargo mass                                    & [\si{kg}]               \\
-		$Cp_{air}$   & Air heat capacity                             & [\si{J}/\si{kg} \si{K}] \\
-		$Cp_{cargo}$ & Cargo heat capacity                           & [\si{J}/\si{kg} \si{K}]
+		$Q_{ca}$     & Cargo to air heat flow       & [\si{W}]                \\
+		$Q_{ba}$     & Box to air heat flow         & [\si{W}]                \\
+		$Q_{fan}$    & Fan to air heat flow         & [\si{W}]                \\
+		$Q_{cool}$   & Air to evaporator heat flow  & [\si{W}]                \\
+		$Q_{amb}$    & Ambient to box heat flow     & [\si{W}]                \\
+		$T_{air}$    & Air temperature              & [\si{K}]                \\
+		$T_{box}$    & Box temperature              & [\si{K}]                \\
+		$T_{cargo}$  & Cargo temperature            & [\si{K}]                \\
+		$M_{air}$    & Air mass                     & [\si{kg}]               \\
+		$M_{box}$    & Trailer box aluminum mass    & [\si{kg}]               \\
+		$M_{cargo}$  & Cargo mass                   & [\si{kg}]               \\
+		$Cp_{air}$   & Air specific heat capacity   & [\si{J}/\si{kg} \si{K}] \\
+		$Cp_{cargo}$ & Cargo specific heat capacity & [\si{J}/\si{kg} \si{K}] \\
+		$Cp_{box}$   & Cargo specific heat capacity & [\si{J}/\si{kg} \si{K}]
 	\end{tabular}
 \end{center}
 
@@ -639,32 +643,34 @@ where
 	%	\end{tabular}
 %\end{center}
 
-The heat flows are modeled as
+The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qfan}. $ U_{scaled} $ in \cref{eq:box_Uscaled} is simply an intermediate scaled fan speed used in modeling the fan heat loss $ Q_{fan} $.
 
 \begin{align}
-	Q_{cool} & = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{ret} - T_{sup}) \label{eq:box_Qcool}  \\
-	Q_{aa}   & = (T_{amp} - T_{air}) \cdot U A_{amb} \cdot 0.81 \label{eq:box_hf_wall-to-air} \\
-	Q_{ca}   & = (T_{cargo} - T_{air}) \cdot U A_{cargo}                                      \\
-	Q_{fan}  & = (155 \cdot U_{fan}^2 + 40 \cdot U_{fan}^3) \cdot 0.8
+	Q_{cool}   & = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{ret} - T_{sup})	\label{eq:box_Qcool}                                 \\
+	Q_{amb}    & = (T_{ambi} - T_{box}) \cdot U A_{amb}						\label{eq:box_Qab}                                                \\
+	Q_{ba}     & = (T_{box} - T_{air}) \cdot U A_{ba}						\label{eq:box_Qba}                                                  \\
+	Q_{ca}     & = (T_{cargo} - T_{air}) \cdot U A_{cargo}                                                                     \\
+	Q_{fan}    & = 177.76 + 223.95 \cdot U_{scaled} + 105.85 \cdot U_{scaled}^2 + 16.74 \cdot U_{scaled}^3 \label{eq:box_Qfan} \\
+	U_{scaled} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \label{eq:box_Uscaled}
 \end{align}
 
 where
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$\dot{m}_{air}$ & Air mass flow                                     & [\si{kg}/{\si{s}}] \\
-		$T_{ret}$       & Return air temperature                            & [\si{K}]           \\
-		$T_{sup}$       & Supply air temperature                            & [\si{K}]           \\
-		$T_{amb}$       & Wall, floor and ceiling temperature               & [\si{K}]           \\
-		$U A_{amb}$     & Wall, floor and ceiling heat transfer coefficient & [\si{W}/\si{K}]    \\
-		$U A_{cargo}$   & Cargo heat transfer coefficient                   & [\si{W}/\si{K}]    \\
-		$U_{fan}$       & Fan                                               & [$\cdot$]
+		$\dot{m}_{air}$ & Air mass flow                                & [\si{kg}/{\si{s}}] \\
+		$T_{ret}$       & Return air temperature                       & [\si{K}]           \\
+		$T_{sup}$       & Supply air temperature                       & [\si{K}]           \\
+		$T_{ambi}$      & Ambient air temperature                      & [\si{K}]           \\
+		$T_{box}$       & Box aluminum temperature                     & [\si{K}]           \\
+		$U A_{amb}$     & Ambient air to box heat transfer coefficient & [\si{W}/\si{K}]    \\
+		$U A_{ba}$      & Box to air heat transfer coefficient         & [\si{W}/\si{K}]    \\
+		$U A_{cargo}$   & Cargo to air heat transfer coefficient       & [\si{W}/\si{K}]    \\
+		$U_{fan}$       & Fan speed                                    & [$\cdot$]          \\
+		$U_{scaled}$    & Scaled fan speed                             & [$\cdot$]
 	\end{tabular}
 \end{center}
 
 $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on the difference between the temperature of the air returning from the box ($T_{ret}$) and the temperature of the air supplied to the box $T_{sup}$ as seen in \cref{eq:box_Qcool}
-
-The heat transfer coefficient of the walls, floor and ceiling  ($ U_{amb} $) is expected to be given by the cooling trailer manufacturer.
-
 
 
 \clearpage
