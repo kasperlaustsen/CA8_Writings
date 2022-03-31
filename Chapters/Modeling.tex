@@ -672,8 +672,8 @@ where
 
 $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on the difference between the temperature of the air returning from the box ($T_{ret}$) and the temperature of the air supplied to the box $T_{sup}$ as seen in \cref{eq:box_Qcool}
 
-
 \clearpage
+\newpage
 \subsection{Collection of components}
 
 \begin{figure}[h!]
@@ -701,47 +701,210 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 
 
 
-
 \begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g(x,u) =  \begin{bmatrix}
-		h_{2}\\
-		\dot{m}_{2} \\
-		\dot{m}_2   \\
-		h_{3}		\\
-		v_1			\\
-		v_2			\\
-		p_{int1}			\\
-		p_{int2}			\\
-		\gamma					\\
-		T_{3}					\\
-		h_{4}					\\
-		p_{2}					\\
-		\dot{m}_{3}			\\
-		\dot{m}_{3}			\\
-		\dot{m}_{5}			\\
+	g_{PJJ}(x,u) =  \begin{bmatrix}
+		h_{2}				\\ %pjj
+		\dot{m}_{2}			\\ %pjj
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
 		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{3}}{ \dot{m}_{2} } \\ 	%pjj
 		\dot{m}_{1} + \dot{m}_{3} \\													%pjj
-		 \left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
-		 \Upsilon(T_{3}, p_{2})		\\													%cs2
-		 \Gamma(T_{2},p_{int1}) \\														%cs2
-		 \left(\dfrac{p_{int2}}{p_{int1}}\right)^{\frac{-1}{\gamma}} \\					%cs2
-		 p_{1} - kl_1 \cdot \omega \\													%cs2
-		 p_{2} + kl_2 \cdot \omega \\													%cs2
-		 \dfrac{C_{cp}}{C_{cv}} \\														%cs2
-		 T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs2
-		 h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
-		 p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
-		 \dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\					%condenser
-		 f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
-		 f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
 	\end{bmatrix}
-=\textbf{0}
+	=\textbf{0}
 \end{equation}
 
 
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g_{CS2}(x,u) =  \begin{bmatrix}
+		\dot{m}_2  		 	\\ %cs2
+		h_{3}				\\ %cs2
+		v_{1_{CS2}}			\\ %cs2
+		v_{2\_cs2}			\\ %cs2
+		p_{int1\_cs2}		\\ %cs2
+		p_{int2\_cs2}		\\ %cs2
+		\gamma				\\ %cs2
+		T_{3}				\\ %cs2
+	\end{bmatrix}
+	-
+	\begin{bmatrix}
+		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
+		\Upsilon(T_{3}, p_{2})		\\													%cs2
+		\Gamma(T_{2},p_{int1\_cs2}) \\													%cs2
+		\left(\dfrac{p_{int2\_cs2}}{p_{int1\_cs2}}\right)^{\frac{-1}{\gamma}} \\		%cs2
+		p_{1} - kl_1 \cdot \omega \\													%cs2
+		p_{2} + kl_2 \cdot \omega \\													%cs2
+		\dfrac{C_{cp}}{C_{cv}} \\														%cs2
+		T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs2
+	\end{bmatrix}
+	=\textbf{0}
+\end{equation}
+
+
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g_{Condenser}(x,u) =  \begin{bmatrix}
+		h_{4}				\\ %condenser
+		p_{2}				\\ %condenser
+		\dot{m}_{3}			\\ %condenser
+	\end{bmatrix}
+	-
+	\begin{bmatrix}
+		h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
+		p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
+		\dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\						%condenser
+	\end{bmatrix}
+	=\textbf{0}
+\end{equation}
+
+
+
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g_{Valves}(x,u) =  \begin{bmatrix}
+		\dot{m}_{3}			\\ %condenser valve
+
+		\dot{m}_{5}			\\ %expansion valve
+	\end{bmatrix}
+	-
+	\begin{bmatrix}
+		f_p(\Theta) \cdot K  \sqrt{\dfrac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
+		f_p(\Theta) \cdot K  \sqrt{\dfrac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
+	\end{bmatrix}
+	=\textbf{0}
+\end{equation}
+
+
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g_{Evaporator}(x,u) =  \begin{bmatrix}
+		\dot{m}_1  		 	\\ %cs1
+		h_{1}				\\ %cs1
+		v_{1\_cs1}			\\ %cs1
+		v_{2\_cs1}			\\ %cs1
+		p_{int1\_cs1}		\\ %cs1
+		p_{int2\_cs1}		\\ %cs1
+		\gamma				\\ %cs1
+		T_{1}				\\ %cs1
+	\end{bmatrix}
+	-
+	\begin{bmatrix}
+		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs1
+		\Upsilon(T_{1}, p_{1})		\\													%cs1
+		\Gamma(T_{7},p_{int1\_cs1}) \\													%cs1
+		\left(\dfrac{p_{int2\_cs1}}{p_{int1\_cs1}}\right)^{\frac{-1}{\gamma}} \\		%cs1
+		p_{5} - kl_1 \cdot \omega \\													%cs1
+		p_{1} + kl_2 \cdot \omega \\													%cs1
+		\dfrac{C_{cp}}{C_{cv}} delete? \\												%cs1
+		T_{7}\cdot \left(\dfrac{p_{1}}{p_{5}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs1
+	\end{bmatrix}
+	=\textbf{0}
+\end{equation}
+
+
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g_{CS1}(x,u) =  \begin{bmatrix}
+		\dot{m}_1  		 	\\ %cs1
+		h_{1}				\\ %cs1
+		v_{1\_cs1}			\\ %cs1
+		v_{2\_cs1}			\\ %cs1
+		p_{int1\_cs1}		\\ %cs1
+		p_{int2\_cs1}		\\ %cs1
+		\gamma				\\ %cs1
+		T_{1}				\\ %cs1
+	\end{bmatrix}
+	-
+	\begin{bmatrix}
+		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs1
+		\Upsilon(T_{1}, p_{1})		\\													%cs1
+		\Gamma(T_{7},p_{int1\_cs1}) \\													%cs1
+		\left(\dfrac{p_{int2\_cs1}}{p_{int1\_cs1}}\right)^{\frac{-1}{\gamma}} \\		%cs1
+		p_{5} - kl_1 \cdot \omega \\													%cs1
+		p_{1} + kl_2 \cdot \omega \\													%cs1
+		\dfrac{C_{cp}}{C_{cv}} delete? \\												%cs1
+		T_{7}\cdot \left(\dfrac{p_{1}}{p_{5}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs1
+	\end{bmatrix}
+	=\textbf{0}
+\end{equation}
+
+
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g(x,u) =  \begin{bmatrix}
+		g_{PJJ}(x,u)  		 	\\ %cs1
+		g_{CS2}(x,u)				\\ %cs1
+		g_{Condenser}(x,u)			\\ %cs1
+		g_{Valves}(x,u)			\\ %cs1
+		g_{FlashTank}(x,u)		\\ %cs1
+		g_{Evaporator}(x,u)		\\ %cs1
+		g_{CS1}(x,u)			\\
+	\end{bmatrix}
+	= \textbf{0}
+\end{equation}
+
+
+
+
+%\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+%	g(x,u) =  \begin{bmatrix}
+	%		h_{2}				\\ %pjj
+	%		\dot{m}_{2}			\\ %pjj
+	%
+	%		\dot{m}_2  		 	\\ %cs2
+	%		h_{3}				\\ %cs2
+	%		v_{1_{CS2}}			\\ %cs2
+	%		v_{2\_cs2}			\\ %cs2
+	%		p_{int1\_cs2}		\\ %cs2
+	%		p_{int2\_cs2}		\\ %cs2
+	%		\gamma				\\ %cs2
+	%		T_{3}				\\ %cs2
+	%
+	%		h_{4}				\\ %condenser
+	%		p_{2}				\\ %condenser
+	%		\dot{m}_{3}			\\ %condenser
+	%
+	%		\dot{m}_{3}			\\ %condenser valve
+	%
+	%		\dot{m}_{5}			\\ %expansion valve
+	%
+	%		\dot{m}_1  		 	\\ %cs1
+	%		h_{1}				\\ %cs1
+	%		v_{1\_cs1}			\\ %cs1
+	%		v_{2\_cs1}			\\ %cs1
+	%		p_{int1\_cs1}		\\ %cs1
+	%		p_{int2\_cs1}		\\ %cs1
+	%		\gamma				\\ %cs1
+	%		T_{1}				\\ %cs1
+	%	\end{bmatrix}
+%	-
+%	\begin{bmatrix}
+	%		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{3}}{ \dot{m}_{2} } \\ 	%pjj
+	%		\dot{m}_{1} + \dot{m}_{3} \\													%pjj
+	%
+	%		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
+	%		\Upsilon(T_{3}, p_{2})		\\													%cs2
+	%		\Gamma(T_{2},p_{int1\_cs2}) \\													%cs2
+	%		\left(\dfrac{p_{int2\_cs2}}{p_{int1\_cs2}}\right)^{\frac{-1}{\gamma}} \\		%cs2
+	%		p_{1} - kl_1 \cdot \omega \\													%cs2
+	%		p_{2} + kl_2 \cdot \omega \\													%cs2
+	%		\dfrac{C_{cp}}{C_{cv}} \\														%cs2
+	%		T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs2
+	%
+	%		h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
+	%		p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
+	%		\dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\					%condenser
+	%
+	%		f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
+	%
+	%		f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
+	%
+	%		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs1
+	%		\Upsilon(T_{1}, p_{1})		\\													%cs1
+	%		\Gamma(T_{7},p_{int1\_cs1}) \\													%cs1
+	%		\left(\dfrac{p_{int2\_cs1}}{p_{int1\_cs1}}\right)^{\frac{-1}{\gamma}} \\		%cs1
+	%		p_{5} - kl_1 \cdot \omega \\													%cs1
+	%		p_{1} + kl_2 \cdot \omega \\													%cs1
+	%		\dfrac{C_{cp}}{C_{cv}} delete? \\												%cs1
+	%		T_{7}\cdot \left(\dfrac{p_{1}}{p_{5}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs1
+	%	\end{bmatrix}
+%	=\textbf{0}
+%\end{equation}
 
 
 \newpage
