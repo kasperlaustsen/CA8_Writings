@@ -373,7 +373,22 @@ where
 \end{center}
 
 
-Lastly, it is assumed that the separated liquid and vapor leaves at boiling point and flash point respectively. This last assumption allows us to find the enthalpy of the two substances purely from investigation of the p-h diagram and the pressure. In practice, this is performed by a software tool as MATLAB.
+Lastly, it is assumed that the separated liquid and vapor leaves at boiling point and flash point respectively. This last assumption allows us to find the enthalpy of the two substances purely from investigation of the p-h diagram since the pressure is known. In practice, this is performed by a software tool as MATLAB. We express this as:
+
+\begin{align}
+	h_{l}  & = M(p)\\
+	h_{l}  & = N(p)\\
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$M(p)$			&  Lookup table of the enthalpy of saturated liquid	at pressure p		& [\si{J}/\si{kg}]\\
+		$N(p)$			&  Lookup table of the enthalpy of saturated vapour	at pressure p		& [\si{J}/\si{kg}] \\
+		
+	\end{tabular}
+\end{center}
 
 \subsubsection{Subcooling throttle}
 The subcooling throttle valve is used differently from the two other valves in the system. During normal operation it is fully open, acting as a pipe. It can be closed fully allowing for various speciel functionalities. Firstly, shutting it off allows for detecting the amount of refridgerant in the system. This is a convenient diagnostic feature which helps ensuring that the system has enough refridgerant to properly function, and enabling leakage detection. Secondly, closing the valve while fully opening the condenser throttle valve, allows the system to operate as a standard refridgeration system, with only one valve between the evaporator and condenser.
@@ -419,7 +434,7 @@ The temperatures of the air which is blown over the evaporator is modeled by the
 
 \begin{align}
 	T_{retfan} 		& = T_{ret} + \frac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}} 		\label{eq:T_retfan} 		\\
-	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m}_{air} \dot Cp_{air}} 	\label{eq:T_retsh}
+	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m}_{air} \cdot Cp_{air}} 	\label{eq:T_retsh}
 \end{align}
 
 where
@@ -685,19 +700,31 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 
 
 
-\begin{equation} \label{eq:consump_x} \renewcommand{\arraystretch}{2}
+\begin{equation} \label{eq:consump_x} \renewcommand{\arraystretch}{2.4}
 	f(x,u) =  \dfrac{d}{dt} \begin{bmatrix}
-		M_{pjj}		\\
-		M_{condenser} 	\\
-		T_m 			\\
+		M_{pjj}		\\					%pjj
+		M_{condenser} 	\\				%condenser
+		T_m 			\\				%condenser
+		\dot{m}_{air}	\\				%evaporator
+		T_{ml}			\\				%evaporator
+		T_{mv}			\\				%evaporator
+		M_l				\\				%evaporator
+		M_v				\\				%evaporator
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
 		\dot{m}_1 + \dot{m}_3 - \dot{m}_2 \\										%pjj
 		\dot{m}_{2} - \dot{m}_{2}	\\												%condenser
 		\dfrac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m} \\									%condenser
+		\dfrac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
+		\dfrac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma}        \\	%evaporator
+		\dfrac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot Cp_m \cdot (1- \sigma)}	\\	%evaporator
+		\dot{m}_{5} - \dot{m}_{lv}		\\											%evaporator
+		\dot{m}_{lv} - \dot{m}_{1}	\\												%evaporator
 	\end{bmatrix}
 \end{equation}
+
+
 
 
 
@@ -746,15 +773,20 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 		h_{4}				\\ %condenser
 		p_{2}				\\ %condenser
 		\dot{m}_{3}			\\ %condenser
+		Q_{rm}				\\
+		Q_{ma}				\\
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
 		h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
 		p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
 		\dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\						%condenser
+		U A_{rm} \cdot (T_r - T_m) \\
+		U A_{ma} \cdot (T_m - T_a)\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right) \\
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
+
 
 
 
@@ -766,37 +798,76 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		f_p(\Theta) \cdot K  \sqrt{\dfrac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
-		f_p(\Theta) \cdot K  \sqrt{\dfrac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
+		f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
+		f_p(\Theta_2) \cdot K  \sqrt{\dfrac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
+
+\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+	g_{FlashTank}(x,u) =  \begin{bmatrix}
+		\dot{m}_{5}			\\
+		\dot{m}_{5}				\\
+		h_{5}  \\
+		h_{6} \\
+	\end{bmatrix}
+	-
+	\begin{bmatrix}
+		\dfrac{\dot{m}_{3} \cdot h_4 - \dot{m}_{4} \cdot h_5}{h_6}					\\
+		\dot{m}_{3} - \dot{m}_{4}					\\
+		N(p_1)\\
+		M(p_1)\\
+	\end{bmatrix}
+	=\textbf{0}
+\end{equation}
+
 
 
 \begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
 	g_{Evaporator}(x,u) =  \begin{bmatrix}
-		\dot{m}_1  		 	\\ %cs1
-		h_{1}				\\ %cs1
-		v_{1\_cs1}			\\ %cs1
-		v_{2\_cs1}			\\ %cs1
-		p_{int1\_cs1}		\\ %cs1
-		p_{int2\_cs1}		\\ %cs1
-		\gamma				\\ %cs1
-		T_{1}				\\ %cs1
+		\sigma		\\
+		T_{retfan}	\\
+		T_{retsh}	\\
+		U_{scaled}	\\
+		Q_{fan}		\\
+		Q_{amv}		\\
+		Q_{aml}		\\
+		U_{scaled}	\\
+		\bar{\dot{V}}_{air}		\\
+		\bar{\dot{m}}_{air}		\\
+		Q_{mvml}	\\
+		Q_{ml}		\\
+		Q_{mv}		\\
+		p_{out}		\\
+		h_l			\\
+		h_v 		\\
+		T_{sup}		\\
+		\dot{m}_{lv}\\
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs1
-		\Upsilon(T_{1}, p_{1})		\\													%cs1
-		\Gamma(T_{7},p_{int1\_cs1}) \\													%cs1
-		\left(\dfrac{p_{int2\_cs1}}{p_{int1\_cs1}}\right)^{\frac{-1}{\gamma}} \\		%cs1
-		p_{5} - kl_1 \cdot \omega \\													%cs1
-		p_{1} + kl_2 \cdot \omega \\													%cs1
-		\dfrac{C_{cp}}{C_{cv}} delete? \\												%cs1
-		T_{7}\cdot \left(\dfrac{p_{1}}{p_{5}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs1
+		\dfrac{M_l \cdot v_{Evaporator}}{V_i}							\\
+		T_{ret} + \dfrac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}}			\\
+		T_{retfan} - \dfrac{Q_{amv}}{\dot{m}_{air} \cdot Cp_{air}}		\\
+		\left( \dfrac{U_{fan_2}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \\
+		177.76 + 223.95 \cdot U_{scaled} + 105.85 \cdot U_{scaled}^2 + 16.74 \cdot U_{scaled}^3 \\
+		Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	 \\
+		Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) \\
+		(U_{fan_2} - 2270.4)\cdot 0.0017 \\
+		0.7273 + 0.1202 \cdot U_{scaled}  -0.0044 \cdot U_{scaled}^2\\
+		\bar{\dot{V}}_{air} \cdot \rho_{air}	\\
+		U A_3 \cdot (T_{mv} - T_{ml})	\\
+		U A_1 \cdot (T_{ml} - T_l) \cdot \sigma	\\
+		U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)	\\
+		\Pi \left( h_v, \dfrac{V_i-V_l}{M_v} \right)		\\
+		h_{in} + \dfrac{Q_{ml}}{\dot{m}_{in}}			\\
+		h_{lv} + \dfrac{Q_{mv}}{\dot{m}_{lv}}   		\\
+		T_{retfan} +  \dfrac{Q_{aml} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \\
+		\dfrac{Q_{ml}}{h_{dew} - h_{in}}		\\
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
+
 
 
 \begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
