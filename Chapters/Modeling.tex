@@ -224,8 +224,8 @@ where
 %The airflows over the evaporator and condenser are dynamic in themselves, as the airflow is driven by fans that have rotational inertia. Additionally, as the air is a fluid by itself, it contains some inetia too. This behaviour is modeled by:
 %
 %\begin{align}
-%	U_{scaled} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
-%	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot U_{scaled}  -0.0044 \cdot U_{scaled}^2\\
+%	U_* & = (U_{fan} - 2270.4)\cdot 0.0017 \\
+%	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot U_*  -0.0044 \cdot U_*^2\\
 %	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}  \label{eq:Evaporator_FanAirInstantMassFlow}\\
 %	%	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\
 %	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
@@ -235,7 +235,7 @@ where
 %
 %\begin{center}
 %	\begin{tabular}{l p{8cm} l}
-%		$ U_{scaled} $ 								& Intermediate variable												& [1/\si{s}]\\
+%		$ U_* $ 								& Intermediate variable												& [1/\si{s}]\\
 %		$\bar{\dot{V}}_{air}$						& Estimated steady state volume flow of air for a given fan speed 	& [\si{m^3}/\si{s}] \\
 %		$\bar{\dot{m}}_{air}$						& Estimated steady state mass flow of air for a given fan speed 	& [\si{kg}/\si{s}] \\
 %		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\
@@ -457,8 +457,8 @@ The heat flow from air to metal of evaporator is modeled based on the assumption
 \cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow.
 
 \begin{align}
-	U_{scaled} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \\
-	Q_{fan} & = 177.76 + 223.95 \cdot U_{scaled} + 105.85 \cdot U_{scaled}^2 + 16.74 \cdot U_{scaled}^3
+	U_{*_P} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \\
+	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3
 	\label{eq:Q_fan_heatloss}  \\
 	Q_{amv} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv} \\
 	Q_{aml} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) 	\label{eq:Q_aml}
@@ -468,7 +468,7 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$U_{scaled}$    & Scaled fan speed                                    & [1/\si{s}]                        \\
+		$U_{*_P}$    & Scaled fan speed                                    & [1/\si{s}]                        \\
 		$U_{fan}$       & Fan speed                                           & [1/\si{s}]                        \\
 		$Q_{fan}$       & Heat flow from fan to air (heatloss)                & [\si{W}]                          \\
 		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV    & [\si{W}]                          \\
@@ -484,8 +484,8 @@ The fans used to move air over the condenser and evaporator are driven by VFD al
 The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, as the air is a fluid itself, it contains some inertia too. This behavior is modeled by:
 
 \begin{align}
-	U_{scaled} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
-	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot U_{scaled}  -0.0044 \cdot U_{scaled}^2\\
+	U_{*_{\dot{m}}} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
+	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot 	U_{*_{\dot{m}}}^2\\
 	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}  \label{eq:Evaporator_FanAirInstantMassFlow}\\
 	%	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\
 	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
@@ -495,7 +495,7 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$ U_{scaled} $ 								& Intermediate variable												& [1/\si{s}]\\
+		$ 	U_{*_{\dot{m}}} $ 								& Intermediate variable												& [1/\si{s}]\\
 		$\bar{\dot{V}}_{air}$						& Estimated steady state volume flow of air for a given fan speed 	& [\si{m^3}/\si{s}] \\
 		$\bar{\dot{m}}_{air}$						& Estimated steady state mass flow of air for a given fan speed 	& [\si{kg}/\si{s}] \\
 		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\
@@ -658,15 +658,15 @@ where
 	%	\end{tabular}
 %\end{center}
 
-The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qfan}. $ U_{scaled} $ in \cref{eq:box_Uscaled} is simply an intermediate scaled fan speed used in modeling the fan heat loss $ Q_{fan} $.
+The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qfan}. $ U_* $ in \cref{eq:box_Uscaled} is simply an intermediate scaled fan speed used in modeling the fan heat loss $ Q_{fan} $.
 
 \begin{align}
 	Q_{cool}   & = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{ret} - T_{sup})	\label{eq:box_Qcool}                                 \\
 	Q_{amb}    & = (T_{ambi} - T_{box}) \cdot U A_{amb}						\label{eq:box_Qab}                                                \\
 	Q_{ba}     & = (T_{box} - T_{air}) \cdot U A_{ba}						\label{eq:box_Qba}                                                  \\
 	Q_{ca}     & = (T_{cargo} - T_{air}) \cdot U A_{cargo}                                                                     \\
-	Q_{fan}    & = 177.76 + 223.95 \cdot U_{scaled} + 105.85 \cdot U_{scaled}^2 + 16.74 \cdot U_{scaled}^3 \label{eq:box_Qfan} \\
-	U_{scaled} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \label{eq:box_Uscaled}
+	Q_{fan}    & = 177.76 + 223.95 \cdot U_* + 105.85 \cdot U_*^2 + 16.74 \cdot U_*^3 \label{eq:box_Qfan} \\
+	U_* & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \label{eq:box_Uscaled}
 \end{align}
 
 where
@@ -681,7 +681,7 @@ where
 		$U A_{ba}$      & Box to air heat transfer coefficient         & [\si{W}/\si{K}]    \\
 		$U A_{cargo}$   & Cargo to air heat transfer coefficient       & [\si{W}/\si{K}]    \\
 		$U_{fan}$       & Fan speed                                    & [$\cdot$]          \\
-		$U_{scaled}$    & Scaled fan speed                             & [$\cdot$]
+		$U_*$    & Scaled fan speed                             & [$\cdot$]
 	\end{tabular}
 \end{center}
 
@@ -699,7 +699,6 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 \end{figure}
 
 
-
 \begin{equation} \label{eq:consump_x} \renewcommand{\arraystretch}{2.4}
 	f(x,u) =  \dfrac{d}{dt} \begin{bmatrix}
 		M_{pjj}		\\					%pjj
@@ -714,7 +713,7 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 	=
 	\begin{bmatrix}
 		\dot{m}_1 + \dot{m}_3 - \dot{m}_2 \\										%pjj
-		\dot{m}_{2} - \dot{m}_{2}	\\												%condenser
+		\dot{m}_{2} - \dot{m}_{3}	\\												%condenser
 		\dfrac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m} \\									%condenser
 		\dfrac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
 		\dfrac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma}        \\	%evaporator
@@ -728,8 +727,37 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 
 
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g_{PJJ}(x,u) =  \begin{bmatrix}
+
+\begin{equation} \label{eq:f_noSub} \renewcommand{\arraystretch}{3.4}
+	f(x,u) =  \dfrac{d}{dt} \begin{bmatrix}
+		M_{_{PJJ}}		\\					%pjj
+		M_{Con} 	\\				%condenser
+		T_m 			\\				%condenser
+		\dot{m}_{air}	\\				%evaporator
+		T_{ml}			\\				%evaporator
+		T_{mv}			\\				%evaporator
+		M_l				\\				%evaporator
+		M_v				\\				%evaporator
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\left(\dfrac{V_1}{v_{1_{COM1}}} - \dfrac{V_C}{v_{2_{COM1}}}\right) \dfrac{\omega}{2} + f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{_{CTV_{in}}}} (p_{3} - p_{1})} - \left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} \\										%pjj
+		\left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} - f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{_{CTV_{in}}}} (p_{3} - p_{1})}	\\												%condenser
+		\dfrac{U A_{rm} \cdot (T_r - T_m) - U A_{ma} \cdot (T_m - T_a)\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right)}{M_m \cdot Cp_m} \\									%condenser
+		\dfrac{\left( 0.7273 + 0.1202 \cdot U_{*_{\dot{m}}}  -0.0044 \cdot	U_{*_{\dot{m}}}^2 \right) \cdot \rho_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
+		\dfrac{Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml})-U A_1 \cdot (T_{ml} - T_l) \cdot \sigma + U A_3 \cdot (T_{mv} - T_{ml})}{M_m \cdot Cp_m \cdot \sigma}        \\	%evaporator
+		\dfrac{Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) - U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) - U A_3 \cdot (T_{mv} - T_{ml})}{M_m \cdot Cp_m \cdot (1- \sigma)}	\\	%evaporator
+		f_p(\Theta_2) \cdot K  \sqrt{\dfrac{1}{v_{_{EV_{in}}}} (p_{1} - p_{4})} - \dfrac{U A_1 \cdot (T_{ml} - T_l) \cdot \sigma}{h_{dew} - h_{6}}		\\											%evaporator
+		\dfrac{U A_1 \cdot (T_{ml} - T_l) \cdot \sigma}{h_{dew} - h_{6}} - \left(\dfrac{V_1}{v_{1_{COM1}}} - \dfrac{V_C}{v_{2_{COM1}}}\right) \dfrac{\omega}{2}	\\												%evaporator
+	\end{bmatrix}
+\end{equation}
+
+
+
+
+
+\begin{equation} \label{eq:Gpjj}\renewcommand{\arraystretch}{2.5}
+	g_{_{PJJ}}(x,u) =  \begin{bmatrix}
 		h_{2}				\\ %pjj
 		\dot{m}_{2}			\\ %pjj
 	\end{bmatrix}
@@ -742,34 +770,34 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 \end{equation}
 
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g_{CS2}(x,u) =  \begin{bmatrix}
-		\dot{m}_2  		 	\\ %cs2
-		h_{3}				\\ %cs2
-		v_{1_{CS2}}			\\ %cs2
-		v_{2\_cs2}			\\ %cs2
-		p_{int1\_cs2}		\\ %cs2
-		p_{int2\_cs2}		\\ %cs2
-		\gamma				\\ %cs2
-		T_{3}				\\ %cs2
+\begin{equation} \label{eq:Gcs2}\renewcommand{\arraystretch}{2.5}
+	g_{_{COM2}}(x,u) =  \begin{bmatrix}
+		\dot{m}_2  		 	\\ %COM2
+		h_{3}				\\ %COM2
+		v_{1_{COM2}}			\\ %COM2
+		v_{2_{COM2}}			\\ %COM2
+		p_{i1_{COM2}}		\\ %COM2
+		p_{i2_{COM2}}		\\ %COM2
+		\gamma				\\ %COM2
+		T_{3}				\\ %COM2
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
-		\Upsilon(T_{3}, p_{2})		\\													%cs2
-		\Gamma(T_{2},p_{int1\_cs2}) \\													%cs2
-		\left(\dfrac{p_{int2\_cs2}}{p_{int1\_cs2}}\right)^{\frac{-1}{\gamma}} \\		%cs2
-		p_{1} - kl_1 \cdot \omega \\													%cs2
-		p_{2} + kl_2 \cdot \omega \\													%cs2
-		\dfrac{C_{cp}}{C_{cv}} \\														%cs2
-		T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs2
+		\left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} \\			%COM2
+		\Upsilon(T_{3}, p_{2})		\\													%COM2
+		\Gamma(T_{2},p_{i1_{COM2}}) \\													%COM2
+		\left(\dfrac{p_{i2_{COM2}}}{p_{i1_{COM2}}}\right)^{\frac{-1}{\gamma}} \\		%COM2
+		p_{1} - kl_1 \cdot \omega \\													%COM2
+		p_{2} + kl_2 \cdot \omega \\													%COM2
+		\dfrac{C_{cp}}{C_{cv}} \\														%COM2
+		T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%COM2
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
 
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g_{Condenser}(x,u) =  \begin{bmatrix}
+\begin{equation} \label{eq:Gcondenser}\renewcommand{\arraystretch}{2.5}
+	g_{_{Con}}(x,u) =  \begin{bmatrix}
 		h_{4}				\\ %condenser
 		p_{2}				\\ %condenser
 		\dot{m}_{3}			\\ %condenser
@@ -778,9 +806,9 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
+		h_{3} - \dfrac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
 		p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
-		\dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\						%condenser
+		\dot{m}_{2} + \dfrac{M_{con} - \frac{V_i}{v_{Con}}}{1s}	\\						%condenser
 		U A_{rm} \cdot (T_r - T_m) \\
 		U A_{ma} \cdot (T_m - T_a)\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right) \\
 	\end{bmatrix}
@@ -790,22 +818,22 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 
 
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g_{Valves}(x,u) =  \begin{bmatrix}
+\begin{equation} \label{eq:Gvalves}\renewcommand{\arraystretch}{2.5}
+	g_{_{Val}}(x,u) =  \begin{bmatrix}
 		\dot{m}_{3}			\\ %condenser valve
 
 		\dot{m}_{5}			\\ %expansion valve
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
-		f_p(\Theta_2) \cdot K  \sqrt{\dfrac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
+		f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{_{CTV_{in}}}} (p_{3} - p_{1})}\\		%condenser valve
+		f_p(\Theta_2) \cdot K  \sqrt{\dfrac{1}{v_{_{EV_{in}}}} (p_{1} - p_{4})}\\			%expansion valve
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g_{FlashTank}(x,u) =  \begin{bmatrix}
+\begin{equation} \label{eq:Gflashtank}\renewcommand{\arraystretch}{2.5}
+	g_{_{FT}}(x,u) =  \begin{bmatrix}
 		\dot{m}_{5}			\\
 		\dot{m}_{5}				\\
 		h_{5}  \\
@@ -823,22 +851,22 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 
 
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g_{Evaporator}(x,u) =  \begin{bmatrix}
+\begin{equation} \label{eq:Gevaporator}\renewcommand{\arraystretch}{2.5}
+	g_{_{Eva}}(x,u) =  \begin{bmatrix}
 		\sigma		\\
 		T_{retfan}	\\
 		T_{retsh}	\\
-		U_{scaled}	\\
-		Q_{fan}		\\
+		U_{*_P}	\\
+		Q_{fan_2}		\\
 		Q_{amv}		\\
 		Q_{aml}		\\
-		U_{scaled}	\\
+		U_{*_{\dot{m}}}	\\
 		\bar{\dot{V}}_{air}		\\
 		\bar{\dot{m}}_{air}		\\
 		Q_{mvml}	\\
 		Q_{ml}		\\
 		Q_{mv}		\\
-		p_{out}		\\
+		p_{5}		\\
 		h_l			\\
 		h_v 		\\
 		T_{sup}		\\
@@ -846,136 +874,70 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		\dfrac{M_l \cdot v_{Evaporator}}{V_i}							\\
-		T_{ret} + \dfrac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}}			\\
+		\dfrac{M_l \cdot v_{_{Eva}}}{V_i}							\\
+		T_{ret} + \dfrac{Q_{fan_2}}{\dot{m}_{air} \cdot Cp_{air}}			\\
 		T_{retfan} - \dfrac{Q_{amv}}{\dot{m}_{air} \cdot Cp_{air}}		\\
 		\left( \dfrac{U_{fan_2}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \\
-		177.76 + 223.95 \cdot U_{scaled} + 105.85 \cdot U_{scaled}^2 + 16.74 \cdot U_{scaled}^3 \\
+		177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3 \\
 		Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	 \\
 		Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) \\
 		(U_{fan_2} - 2270.4)\cdot 0.0017 \\
-		0.7273 + 0.1202 \cdot U_{scaled}  -0.0044 \cdot U_{scaled}^2\\
+		0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot	U_{*_{\dot{m}}}^2\\
 		\bar{\dot{V}}_{air} \cdot \rho_{air}	\\
 		U A_3 \cdot (T_{mv} - T_{ml})	\\
 		U A_1 \cdot (T_{ml} - T_l) \cdot \sigma	\\
 		U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)	\\
 		\Pi \left( h_v, \dfrac{V_i-V_l}{M_v} \right)		\\
-		h_{in} + \dfrac{Q_{ml}}{\dot{m}_{in}}			\\
+		h_{6} + \dfrac{Q_{ml}}{\dot{m}_{in}}			\\
 		h_{lv} + \dfrac{Q_{mv}}{\dot{m}_{lv}}   		\\
 		T_{retfan} +  \dfrac{Q_{aml} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \\
-		\dfrac{Q_{ml}}{h_{dew} - h_{in}}		\\
+		\dfrac{Q_{ml}}{h_{dew} - h_{6}}		\\
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
 
 
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-	g_{CS1}(x,u) =  \begin{bmatrix}
-		\dot{m}_1  		 	\\ %cs1
-		h_{1}				\\ %cs1
-		v_{1\_cs1}			\\ %cs1
-		v_{2\_cs1}			\\ %cs1
-		p_{int1\_cs1}		\\ %cs1
-		p_{int2\_cs1}		\\ %cs1
-		\gamma				\\ %cs1
-		T_{1}				\\ %cs1
+\begin{equation} \label{eq:Gcs1}\renewcommand{\arraystretch}{2.5}
+	g_{_{COM1}}(x,u) =  \begin{bmatrix}
+		\dot{m}_1  		 	\\ %COM1
+		h_{1}				\\ %COM1
+		v_{1_{COM1}}			\\ %COM1
+		v_{2_{COM1}}			\\ %COM1
+		p_{i1_{COM1}}		\\ %COM1
+		p_{i2_{COM1}}		\\ %COM1
+		\gamma				\\ %COM1
+		T_{1}				\\ %COM1
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs1
-		\Upsilon(T_{1}, p_{1})		\\													%cs1
-		\Gamma(T_{7},p_{int1\_cs1}) \\													%cs1
-		\left(\dfrac{p_{int2\_cs1}}{p_{int1\_cs1}}\right)^{\frac{-1}{\gamma}} \\		%cs1
-		p_{5} - kl_1 \cdot \omega \\													%cs1
-		p_{1} + kl_2 \cdot \omega \\													%cs1
-		\dfrac{C_{cp}}{C_{cv}} delete? \\												%cs1
-		T_{7}\cdot \left(\dfrac{p_{1}}{p_{5}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs1
+		\left(\dfrac{V_1}{v_{1_{COM1}}} - \dfrac{V_C}{v_{2_{COM1}}}\right) \dfrac{\omega}{2} \\			%COM1
+		\Upsilon(T_{1}, p_{1})		\\													%COM1
+		\Gamma(T_{7},p_{i1_{COM1}}) \\													%COM1
+		\left(\dfrac{p_{i2_{COM1}}}{p_{i1_{COM1}}}\right)^{\frac{-1}{\gamma}} \\		%COM1
+		p_{5} - kl_1 \cdot \omega \\													%COM1
+		p_{1} + kl_2 \cdot \omega \\													%COM1
+		\dfrac{C_{cp}}{C_{cv}} \\												%COM1
+		T_{7}\cdot \left(\dfrac{p_{1}}{p_{5}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%COM1
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
 
 
-\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
+\begin{equation} \label{eq:Gtotal}\renewcommand{\arraystretch}{2.5}
 	g(x,u) =  \begin{bmatrix}
-		g_{PJJ}(x,u)  		 	\\ %cs1
-		g_{CS2}(x,u)				\\ %cs1
-		g_{Condenser}(x,u)			\\ %cs1
-		g_{Valves}(x,u)			\\ %cs1
-		g_{FlashTank}(x,u)		\\ %cs1
-		g_{Evaporator}(x,u)		\\ %cs1
-		g_{CS1}(x,u)			\\
+		g_{_{PJJ}}(x,u)  		 	\\ %COM1
+		g_{_{COM2}}(x,u)				\\ %COM1
+		g_{_{Con}}(x,u)			\\ %COM1
+		g_{_{Val}}(x,u)			\\ %COM1
+		g_{_{FT}}(x,u)		\\ %COM1
+		g_{_{Eva}}(x,u)		\\ %COM1
+		g_{_{COM1}}(x,u)			\\
 	\end{bmatrix}
 	= \textbf{0}
 \end{equation}
 
 
-
-
-%\begin{equation} \label{eq:consump_x}\renewcommand{\arraystretch}{2.5}
-%	g(x,u) =  \begin{bmatrix}
-	%		h_{2}				\\ %pjj
-	%		\dot{m}_{2}			\\ %pjj
-	%
-	%		\dot{m}_2  		 	\\ %cs2
-	%		h_{3}				\\ %cs2
-	%		v_{1_{CS2}}			\\ %cs2
-	%		v_{2\_cs2}			\\ %cs2
-	%		p_{int1\_cs2}		\\ %cs2
-	%		p_{int2\_cs2}		\\ %cs2
-	%		\gamma				\\ %cs2
-	%		T_{3}				\\ %cs2
-	%
-	%		h_{4}				\\ %condenser
-	%		p_{2}				\\ %condenser
-	%		\dot{m}_{3}			\\ %condenser
-	%
-	%		\dot{m}_{3}			\\ %condenser valve
-	%
-	%		\dot{m}_{5}			\\ %expansion valve
-	%
-	%		\dot{m}_1  		 	\\ %cs1
-	%		h_{1}				\\ %cs1
-	%		v_{1\_cs1}			\\ %cs1
-	%		v_{2\_cs1}			\\ %cs1
-	%		p_{int1\_cs1}		\\ %cs1
-	%		p_{int2\_cs1}		\\ %cs1
-	%		\gamma				\\ %cs1
-	%		T_{1}				\\ %cs1
-	%	\end{bmatrix}
-%	-
-%	\begin{bmatrix}
-	%		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{3}}{ \dot{m}_{2} } \\ 	%pjj
-	%		\dot{m}_{1} + \dot{m}_{3} \\													%pjj
-	%
-	%		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs2
-	%		\Upsilon(T_{3}, p_{2})		\\													%cs2
-	%		\Gamma(T_{2},p_{int1\_cs2}) \\													%cs2
-	%		\left(\dfrac{p_{int2\_cs2}}{p_{int1\_cs2}}\right)^{\frac{-1}{\gamma}} \\		%cs2
-	%		p_{1} - kl_1 \cdot \omega \\													%cs2
-	%		p_{2} + kl_2 \cdot \omega \\													%cs2
-	%		\dfrac{C_{cp}}{C_{cv}} \\														%cs2
-	%		T_{2}\cdot \left(\dfrac{p_{2}}{p_{1}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs2
-	%
-	%		h_{3} - \frac{Q_{rm}}{\dot{m}_{2}}	\\											%condenser
-	%		p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
-	%		\dot{m}_{2} + \dfrac{M_{condenser} - \frac{V_i}{v}}{1s}	\\					%condenser
-	%
-	%		f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{CondValveIn}} (p_{3} - p_{1})}\\		%condenser valve
-	%
-	%		f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{ExpValveIn}} (p_{1} - p_{4})}\\			%expansion valve
-	%
-	%		\left(\dfrac{V_1}{v_1} - \dfrac{V_C}{v_2}\right) \dfrac{\omega}{2} \\			%cs1
-	%		\Upsilon(T_{1}, p_{1})		\\													%cs1
-	%		\Gamma(T_{7},p_{int1\_cs1}) \\													%cs1
-	%		\left(\dfrac{p_{int2\_cs1}}{p_{int1\_cs1}}\right)^{\frac{-1}{\gamma}} \\		%cs1
-	%		p_{5} - kl_1 \cdot \omega \\													%cs1
-	%		p_{1} + kl_2 \cdot \omega \\													%cs1
-	%		\dfrac{C_{cp}}{C_{cv}} delete? \\												%cs1
-	%		T_{7}\cdot \left(\dfrac{p_{1}}{p_{5}}\right)^{\frac{\gamma-1}{\gamma}}	\\		%cs1
-	%	\end{bmatrix}
-%	=\textbf{0}
-%\end{equation}
 
 
 \newpage
