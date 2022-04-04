@@ -565,8 +565,8 @@ Output pressure, specific enthalpies and mass balances are given by equations \c
 
 \begin{align}
 	p_{out}         & = \Pi \left( h_v, \frac{V_i-V_l}{M_v} \right)		\label{eq:evap_pout}                       \\
-	h_l             & = h_{in} + \frac{Q_{ml}}{\dot{m}_{in}}                                                       \\
-	h_v             & = h_{lv} + \frac{Q_{mv}}{\dot{m}_{lv}}                                                       \\
+	h_lv             & = h_{in} + \frac{Q_{ml}}{\dot{m}_{in}}                                                       \\
+	h_v             & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{lv}}                                                       \\
 	\frac{dM_l}{dt} & = \dot{m}_{in} - \dot{m}_{lv}                                                                \\
 	\frac{dM_v}{dt} & = \dot{m}_{lv} - \dot{m}_{out}                   \label{eq:evap_dMvdt}                       \\
 	T_{sup}         & = T_{retfan} +  \frac{Q_{aml} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \label{eq:evap_Tsup} \\
@@ -583,9 +583,9 @@ where\\
 		$ p_{out} 	$     & Pressure in evaporator                                                  & [\si{Pa}]                         \\
 		$\Pi(h,\rho) $   & Table lookup of pressure, where inputs are specific enthalpy and density & [\si{Pa}]                         \\
 		$h_{v} $         & Specific enthalpy of vapor CV                                            & [\si{J}/\si{kg}]                  \\
-		$h_{l} $         & Specific enthalpy of liquid-vapor CV                                     & [\si{J}/\si{kg}]                  \\
+		$h_{lv} $         & Specific enthalpy of liquid-vapor CV                                     & [\si{J}/\si{kg}]                  \\
 		$h_{in} $        & Specific enthalpy of input liquid refrigerant                            & [\si{J}/\si{kg}]                  \\
-		$h_{lv} $        & Specific enthalpy of refrigerant moving from liquid-vapor CV to vapor CV & [\si{J}/\si{kg}]                  \\
+		%$h_{lv} $        & Specific enthalpy of refrigerant moving from liquid-vapor CV to vapor CV & [\si{J}/\si{kg}]                  \\
 		$h_{dew}$        & Specific enthalpy of dew point                                           & [\si{J}/\si{kg}]                  \\
 		$V_{i} $         & Total volume of evaporator                                               & [\si{m^3}]                        \\
 		$V_{l} $         & Volume of liquid refrigerant                                             & [\si{m^3}]                        \\
@@ -699,7 +699,7 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 \end{figure}
 
 
-\begin{equation} \label{eq:consump_x} \renewcommand{\arraystretch}{2.4}
+\begin{equation} \label{eq:f_noSub} \renewcommand{\arraystretch}{2.4}
 	f(x,u) =  \dfrac{d}{dt} \begin{bmatrix}
 		M_{pjj}		\\					%pjj
 		M_{condenser} 	\\				%condenser
@@ -728,10 +728,10 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 
 
 
-\begin{equation} \label{eq:f_noSub} \renewcommand{\arraystretch}{3.4}
-	f(x,u) =  \dfrac{d}{dt} \begin{bmatrix}
-		M_{_{PJJ}}		\\					%pjj
-		M_{Con} 	\\				%condenser
+\begin{equation} \label{eq:f_Sub} \renewcommand{\arraystretch}{3.4}
+	f(x,u) =   \dfrac{d}{dt} \begin{bmatrix}
+		M_{_{PJJ}}		\\				%pjj
+		M_{Con} 		\\				%condenser
 		T_m 			\\				%condenser
 		\dot{m}_{air}	\\				%evaporator
 		T_{ml}			\\				%evaporator
@@ -867,7 +867,7 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 		Q_{ml}		\\
 		Q_{mv}		\\
 		p_{5}		\\
-		h_l			\\
+		h_{lv}			\\
 		h_v 		\\
 		T_{sup}		\\
 		\dot{m}_{lv}\\
@@ -889,7 +889,7 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 		U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)	\\
 		\Pi \left( h_v, \dfrac{V_i-V_l}{M_v} \right)		\\
 		h_{6} + \dfrac{Q_{ml}}{\dot{m}_{in}}			\\
-		h_{lv} + \dfrac{Q_{mv}}{\dot{m}_{lv}}   		\\
+		h_{dew} + \dfrac{Q_{mv}}{\dot{m}_{lv}}   		\\
 		T_{retfan} +  \dfrac{Q_{aml} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \\
 		\dfrac{Q_{ml}}{h_{dew} - h_{6}}		\\
 	\end{bmatrix}
