@@ -395,7 +395,7 @@ Lastly, it is assumed that the separated liquid and vapor leaves at boiling poin
 
 \begin{align}
 	h_{l}  & = M(p)\\
-	h_{l}  & = N(p)\\
+	h_{v}  & = N(p)\\
 \end{align}
 
 where
@@ -730,7 +730,7 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
-		\dot{m}_1 + \dot{m}_3 - \dot{m}_2 \\										%pjj
+		\dot{m}_1 + \dot{m}_4 - \dot{m}_2 \\										%pjj
 		\dot{m}_{2} - \dot{m}_{3}	\\												%condenser
 		\dfrac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m} \\									%condenser
 		\dfrac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
@@ -759,7 +759,7 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
-		\left(\dfrac{V_1}{v_{1_{COM1}}} - \dfrac{V_C}{v_{2_{COM1}}}\right) \dfrac{\omega}{2} + f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{_{CTV_{in}}}} (p_{3} - p_{1})} - \left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} \\										%pjj
+		\left(\dfrac{V_1}{v_{1_{COM1}}} - \dfrac{V_C}{v_{2_{COM1}}}\right) \dfrac{\omega}{2} + \dfrac{\dot{m}_{3} \cdot h_4 - \dot{m}_{5} \cdot h_6}{h_5} - \left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} \\										%pjj
 		\left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} - f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{_{CTV_{in}}}} (p_{3} - p_{1})}	\\												%condenser
 		\dfrac{U A_{rm} \cdot (T_r - T_m) - U A_{ma} \cdot (T_m - T_a)\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right)}{M_m \cdot Cp_m} \\									%condenser
 		\dfrac{\left( 0.7273 + 0.1202 \cdot U_{*_{\dot{m}}}  -0.0044 \cdot	U_{*_{\dot{m}}}^2 \right) \cdot \rho_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
@@ -781,8 +781,8 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{3}}{ \dot{m}_{2} } \\ 	%pjj
-		\dot{m}_{1} + \dot{m}_{3} \\													%pjj
+		\dfrac{h_{1} \cdot \dot{m}_{1} + h_{5} \cdot \dot{m}_{4}}{ \dot{m}_{2} } \\ 	%pjj
+		\dot{m}_{1} + \dot{m}_{4} \\													%pjj
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}
@@ -852,14 +852,14 @@ $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on 
 
 \begin{equation} \label{eq:Gflashtank}\renewcommand{\arraystretch}{2.5}
 	g_{_{FT}}(x,u) =  \begin{bmatrix}
-		\dot{m}_{5}			\\
+		\dot{m}_{4}			\\
 		\dot{m}_{5}				\\
 		h_{5}  \\
 		h_{6} \\
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
-		\dfrac{\dot{m}_{3} \cdot h_4 - \dot{m}_{4} \cdot h_5}{h_6}					\\
+		\dfrac{\dot{m}_{3} \cdot h_4 - \dot{m}_{5} \cdot h_6}{h_5}					\\
 		\dot{m}_{3} - \dot{m}_{4}					\\
 		N(p_1)\\
 		M(p_1)\\
