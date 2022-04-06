@@ -8,7 +8,9 @@
 
 \subsubsection{State variables}
 
-Through the modelling section the dynamics of the system were thoroughly described. Due to the large variance in the dynamic speed of the system parameters, many of the fast variables were defined algebraically, as their dynamic behaviour was insignificant compared to the slow parameters. These slow parameters have been 
+Through the component model section the behavior of the system components was described. Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modelled with differential equations. \\
+While including the dynamics of the faster parameters would yield a potentially more accurate model, it is unnecessary from a control point of view, as this model is intended for control of the slow dynamics. In addition, the added accuracy will likely be unnoticable due to various uncertanties in the model. The specific decision of which parameters to model dynamically is heavily inspired by previous work \cite{Sorensen2013}.\\
+The parameters described with differential equations are the system states. The differential equations are collected and put in vector form in \cref{eq:f_noSub}. The function $f(x,u)$ is thus the nonlinear model of the system. It contains 11 states, 5 control inputs and 1 disturbance. 
 
 
 \begin{equation} \label{eq:f_noSub} \renewcommand{\arraystretch}{2.4}
@@ -62,7 +64,7 @@ Through the modelling section the dynamics of the system were thoroughly describ
 	\begin{bmatrix}
 		\left(\dfrac{V_1}{v_{1_{COM1}}} - \dfrac{V_C}{v_{2_{COM1}}}\right) \dfrac{\omega}{2} + \dfrac{\dot{m}_{3} \cdot h_4 - \dot{m}_{5} \cdot h_6}{h_5} - \left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} \\										%pjj
 		\left(\dfrac{V_1}{v_{1_{COM2}}} - \dfrac{V_C}{v_{2_{COM2}}}\right) \dfrac{\omega}{2} - f_p(\Theta_1) \cdot K  \sqrt{\dfrac{1}{v_{_{CTV_{in}}}} (p_{3} - p_{1})}	\\												%condenser
-		\dfrac{U A_{rm} \cdot (T_r - T_m) - U A_{ma} \cdot (T_m - T_a)\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right)}{M_m \cdot Cp_m} \\									%condenser
+		\dfrac{U A_{rm} \cdot (T_r - T_m) - U A_{ma} \cdot (T_m - T_{ambi})\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right)}{M_m \cdot Cp_m} \\									%condenser
 		\dfrac{\left( 0.7273 + 0.1202 \cdot U_{*_{\dot{m}}}  -0.0044 \cdot	U_{*_{\dot{m}}}^2 \right) \cdot \rho_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
 		\dfrac{Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml})-U A_1 \cdot (T_{ml} - T_l) \cdot \sigma + U A_3 \cdot (T_{mv} - T_{ml})}{M_m \cdot Cp_m \cdot \sigma}        \\	%evaporator
 		\dfrac{Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) - U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) - U A_3 \cdot (T_{mv} - T_{ml})}{M_m \cdot Cp_m \cdot (1- \sigma)}	\\	%evaporator
@@ -129,7 +131,7 @@ Through the modelling section the dynamics of the system were thoroughly describ
 		p_{3} - \lambda \cdot \dot{m}_{2}			\\									%condenser
 		\dot{m}_{2} + \dfrac{M_{con} - \frac{V_i}{v_{Con}}}{1s}	\\						%condenser
 		U A_{rm} \cdot (T_r - T_m) \\
-		U A_{ma} \cdot (T_m - T_a)\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right) \\
+		U A_{ma} \cdot (T_m - T_{ambi})\cdot \left(0.05 + \dfrac{U_{fan_1}}{1530}\right) \\
 	\end{bmatrix}
 	=\textbf{0}
 \end{equation}

@@ -320,7 +320,7 @@ And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlo
 
 \begin{align}
 	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
-	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_a)\cdot (0.05 + \dfrac{U_{fan}}{1530})				\label{eq:Condenser_HeatFlow_ma}
+	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_{ambi})\cdot (0.05 + \dfrac{U_{fan}}{1530})				\label{eq:Condenser_HeatFlow_ma}
 \end{align}
 
 where
@@ -333,7 +333,7 @@ where
 		$U A_{ma}$				& 	Heat transfer coefficient from metal to air				& [\si{J}/\si{K}] \\
 		$T_r$					& 	Temperature of refridgerant 							& [\si{K}] \\
 		$T_m$					&	Temperature of metal 									& [\si{K}] \\
-		$T_a$					&	Temperature of air 										& [\si{K}] \\
+		$T_{ambi}$				&	Temperature of ambient air 								& [\si{K}] \\
 		$U_{fan}$				&	Fan speed												& [1/\si{s}] \\
 	\end{tabular}
 \end{center}
@@ -478,7 +478,7 @@ The heat flow from air to metal of evaporator is modeled based on the assumption
 	U_{*_P} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335                                         \\
 	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3	\label{eq:Q_fan_heatloss} \\
 	Q_{amv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv}                                \\
-	Q_{aml} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) 	\label{eq:Q_aml}
+	Q_{amlv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{mlv}) 	\label{eq:Q_aml}
 \end{align}
 
 where
@@ -492,7 +492,8 @@ where
 		$Cp_{air}$      & Specific heat capacity of air                       & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
 		$\dot{m}_{air}$ & Mass flow of air through fan                        & [\si{kg}/\si{s}]                  \\
 		$T_{retfan}$    & Temperature of return air after passing through fan & [\si{K}]                          \\
-		$T_{mv}$        & Temperature of metal on the vapor CV                & [\si{K}]
+		$T_{mv}$        & Temperature of metal surrounding the vapor CV                & [\si{K}]\\
+		$T_{mlv}$       & Temperature of metal surrounding the liquid-vapor CV & [\si{K}]
 	\end{tabular}
 \end{center}
 
@@ -522,25 +523,25 @@ where
 	\end{tabular}
 \end{center}
 
-The evaporator contains one of the greater thermodynamic capacitances due to the large mass of metal in the heat exchanger. Therefore the temperatures of the evaporator vapor-liquid and vapor metal CVs are modeled by the two dynamic equations below respectively. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{aml}, Q_{ml}, Q_{mvml} $ in \cref{eq:evap_dT_ml} and $ Q_{amv}, Q_{mv}, Q_{mvml} $ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$).
+The evaporator contains one of the greater thermodynamic capacitances due to the large mass of metal in the heat exchanger. Therefore the temperatures of the evaporator vapor-liquid and vapor metal CVs are modeled by the two dynamic equations below respectively. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{amlv}, Q_{mlv}, Q_{mvmlv} $ in \cref{eq:evap_dT_ml} and $ Q_{amv}, Q_{mv}, Q_{mvmlv} $ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$).
 
 % ALTERNATIVE MORE COMPACT WAY OF WRITING THE ABOVE:
 %The metal temperature change is governed by the heat flows to and from the metal ($Q$) and the mass of the metal in that CV ($M_m \cdot \sigma$ and $M_m \cdot (1 - \sigma)$) multiplied with the specific heat capacity of the metal ($Cp_m$).
 
 \begin{align}
-	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot \sigma \cdot Cp_m}        \label{eq:evap_dT_ml} \\
-	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot (1 - \sigma) \cdot Cp_m } \label{eq:evap_dT_mv}
+	\frac{dT_{ml}}{dt} & = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m}        \label{eq:evap_dT_ml} \\
+	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } \label{eq:evap_dT_mv}
 \end{align}
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$T_{ml} $  & Metal temperature in liquid-vapor CV                                                        & [\si{K}/\si{s}]                   \\%[0.3cm]
+		$T_{mlv} $  & Metal temperature in liquid-vapor CV                                                        & [\si{K}/\si{s}]                   \\%[0.3cm]
 		$T_{mv} $  & Metal temperature in vapor CV                                                               & [\si{K}/\si{s}]                   \\%[0.3cm]
-		$Q_{aml}$  & Heat flow from air to metal surrounding liquid-vapor CV                                     & [\si{W}]                          \\
-		$Q_{ml}$   & Heat flow from evaporator metal to liquid-vapor CV                                          & [\si{W}]                          \\
-		$Q_{mvml}$ & Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{W}]                          \\
+		$Q_{amlv}$  & Heat flow from air to metal surrounding liquid-vapor CV                                     & [\si{W}]                          \\
+		$Q_{mlv}$   & Heat flow from evaporator metal to liquid-vapor CV                                          & [\si{W}]                          \\
+		$Q_{mvmlv}$ & Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{W}]                          \\
 		$Q_{amv}$  & Heat flow from air to metal surrounding vapor CV                                            & [\si{W}]                          \\
 		$Q_{mv}$   & Heat flow from evaporator metal to vapor CV                                                 & [\si{W}]                          \\
 		$M_{m} $   & Mass of metal                                                                               & [\si{kg}]                         \\
