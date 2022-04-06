@@ -423,14 +423,14 @@ The superheat is the difference between the vapor saturation temperature and the
 	\centering
 	\includegraphics[width=0.8\textwidth]{Graphics/Evaporator_CV_diagram.pdf}
 	\caption{Diagram of evaporator control volumes}
-	\label{fig:evapo_CV}
+	\label{fig:evap_CV}
 \end{figure}
 
-The evaporator is split into two control volumes, divided by a moving CV boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor, see \cref{fig:evapo_CV}.
+The evaporator is split into two control volumes, divided by a moving CV boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor, see \cref{fig:evap_CV}.
 
-Because the heat transfer coefficient between liquid and metal and vapor and metal is different, the metal is likewise split by the $\sigma$ boundary. The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality throughout the liquid-vapor mixture.
+Because the heat transfer coefficient between liquid and metal and vapor and metal is different, the metal is likewise split by the $\sigma$ boundary. The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality ($X_e = 0.1$) throughout the liquid-vapor mixture. The specific volume $v_1$ is then found from the output pressure ($p_{out}$) and said average quality constant.
 
-The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary}
+The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary}.
 
 \begin{equation} \label{eq:Evaporator_boundary}
 	\sigma = \frac{M_l \cdot v_1}{V_i}
@@ -475,18 +475,17 @@ The heat flow from air to metal of evaporator is modeled based on the assumption
 \cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow.
 
 \begin{align}
-	U_{*_P} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \\
-	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3
-	\label{eq:Q_fan_heatloss}  \\
-	Q_{amv} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv} \\
-	Q_{aml} 		& = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) 	\label{eq:Q_aml}
+	U_{*_P} & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335                                         \\
+	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3	\label{eq:Q_fan_heatloss} \\
+	Q_{amv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv}                                \\
+	Q_{aml} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml}) 	\label{eq:Q_aml}
 \end{align}
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$U_{*_P}$    & Scaled fan speed                                    & [1/\si{s}]                        \\
+		$U_{*_P}$    	& Scaled fan speed                                    & [1/\si{s}]                        \\
 		$U_{fan}$       & Fan speed                                           & [1/\si{s}]                        \\
 		$Q_{fan}$       & Heat flow from fan to air (heatloss)                & [\si{W}]                          \\
 		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV    & [\si{W}]                          \\
@@ -497,23 +496,23 @@ where
 	\end{tabular}
 \end{center}
 
-The fans used to move air over the condenser and evaporator are driven by VFD allowing for an assumed continous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modelled with a 2nd order polynomial, as shown below.
+The fans used to move air over the condenser and evaporator are driven by VFD allowing for a continuous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modeled with a 2nd order polynomial, as shown in \cref{eq:evap_Vbardot_air}.
 
-The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, as the air is a fluid itself, it contains some inertia too. This behavior is modeled by:
+The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, as the air is a fluid itself, it contains some inertia too. This behavior is modeled by \cref{eq:evap_U_star_mdot} $\rightarrow$ \cref{eq:Evaporator_FanAirRateOfChange}. \cref{eq:Evaporator_FanAirInstantMassFlow} calculates the estimated steady state air mass flow at a new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds.
 
 \begin{align}
-	U_{*_{\dot{m}}} & = (U_{fan} - 2270.4)\cdot 0.0017 \\
-	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot 	U_{*_{\dot{m}}}^2\\
-	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}  \label{eq:Evaporator_FanAirInstantMassFlow}\\
-	%	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}} \label{eq:Evaporator_FanAirInstantMassFlow}\\
-	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s} \label{eq:Evaporator_FanAirRateOfChange}
+	U_{*_{\dot{m}}} & = (U_{fan} - 2270.4)\cdot 0.0017 \label{eq:evap_U_star_mdot}\\
+	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot 	U_{*_{\dot{m}}}^2	\label{eq:evap_Vbardot_air} \\
+	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}	\label{eq:Evaporator_FanAirInstantMassFlow} \\
+	%	\bar{\dot{m}}_{air} & = \frac{U_{fan}^2 \cdot 3400.5 + U_{fan}^3 \cdot -1103.5} {3600 \cdot \rho_{air}}	\label{eq:Evaporator_FanAirInstantMassFlow} \\
+	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s}	\label{eq:Evaporator_FanAirRateOfChange}
 \end{align}
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$ 	U_{*_{\dot{m}}} $ 								& Intermediate variable												& [1/\si{s}]\\
+		$ 	U_{*_{\dot{m}}} $ 						& Intermediate variable												& [1/\si{s}]\\
 		$\bar{\dot{V}}_{air}$						& Estimated steady state volume flow of air for a given fan speed 	& [\si{m^3}/\si{s}] \\
 		$\bar{\dot{m}}_{air}$						& Estimated steady state mass flow of air for a given fan speed 	& [\si{kg}/\si{s}] \\
 		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\
@@ -523,21 +522,22 @@ where
 	\end{tabular}
 \end{center}
 
-\cref{eq:Evaporator_FanAirInstantMassFlow} calculates the steady state air mass flow at new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds. \\
+The evaporator contains one of the greater thermodynamic capacitances due to the large mass of metal in the heat exchanger. Therefore the temperatures of the evaporator vapor-liquid and vapor metal CVs are modeled by the two dynamic equations below respectively. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{aml}, Q_{ml}, Q_{mvml} $ in \cref{eq:evap_dT_ml} and $ Q_{amv}, Q_{mv}, Q_{mvml} $ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$).
 
-The temperatures of the evaporator vapor-liquid and vapor metal CVs are modeled by the two equations below respectively.
+% ALTERNATIVE MORE COMPACT WAY OF WRITING THE ABOVE:
+%The metal temperature change is governed by the heat flows to and from the metal ($Q$) and the mass of the metal in that CV ($M_m \cdot \sigma$ and $M_m \cdot (1 - \sigma)$) multiplied with the specific heat capacity of the metal ($Cp_m$).
 
 \begin{align}
-	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma}        \\
-	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot Cp_m \cdot (1- \sigma)}
+	\frac{dT_{ml}}{dt} & = \frac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot \sigma \cdot Cp_m}        \label{eq:evap_dT_ml} \\
+	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot (1 - \sigma) \cdot Cp_m } \label{eq:evap_dT_mv}
 \end{align}
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$T_{ml} $  & Metal temperature in liquid-vapor CV                                                        & [\si{K}/\si{s}]                   \\[0.3cm]
-		$T_{mv} $  & Metal temperature in vapor CV                                                               & [\si{K}/\si{s}]                   \\[0.3cm]
+		$T_{ml} $  & Metal temperature in liquid-vapor CV                                                        & [\si{K}/\si{s}]                   \\%[0.3cm]
+		$T_{mv} $  & Metal temperature in vapor CV                                                               & [\si{K}/\si{s}]                   \\%[0.3cm]
 		$Q_{aml}$  & Heat flow from air to metal surrounding liquid-vapor CV                                     & [\si{W}]                          \\
 		$Q_{ml}$   & Heat flow from evaporator metal to liquid-vapor CV                                          & [\si{W}]                          \\
 		$Q_{mvml}$ & Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{W}]                          \\
@@ -550,7 +550,7 @@ where
 \end{center}
 
 \medskip
-\cref{eq:Q_mvml}, \cref{eq:Q_ml} and \cref{eq:Q_mv} all model convection heat flows.
+\cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empiracally from steady-state tests. The temperature of the refrigerant leaving the evaporator is found from output pressure and enthalpy
 
 \begin{align}
 	Q_{mvml} 		& = U A_3 \cdot (T_{mv} - T_{ml}) 								\label{eq:Q_mvml} 			\\
@@ -579,7 +579,7 @@ where
 \end{center}
 
 \medskip
-Output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_lv} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the point at the evaporator pressure where liquid turns to vapor.
+Output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_lv} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the point at the evaporator pressure where liquid turns to vapor. The pressure in \cref{eq:evap_pout} is found from table lookup using the specific volume of the refrigerant in the vapor CV and the enthalpy .
 
 \begin{align}
 	p_{out}         & = \Pi \left( h_v, \frac{V_i-V_l}{M_v} \right)		\label{eq:evap_pout}                       \\
@@ -627,7 +627,7 @@ where\\
 
 
 \subsubsection{Box}
-The trailer box contains by far the greatest thermodynamic capacities due to the large mass of the cargo. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area. The temperatures of the two main thermal capacities are modeled and their state space equations are given as below:
+The trailer box contains by far the greatest thermodynamic capacities due to the large mass of the cargo. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area. The temperatures of the two main thermal capacities are modeled and their state space equations are given as below. $Q_{fan}$ is the heat loss from the evaporator fan and it is defined in \cref{eq:Q_fan_heatloss}.
 
 \begin{align}
 	\frac{dT_{air}}{dt} & = \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \\
@@ -676,15 +676,13 @@ where
 	%	\end{tabular}
 %\end{center}
 
-The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qfan}. $ U_* $ in \cref{eq:box_Uscaled} is simply an intermediate scaled fan speed used in modeling the fan heat loss $ Q_{fan} $.
+The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qca}.
 
 \begin{align}
-	Q_{cool}   & = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{ret} - T_{sup})	\label{eq:box_Qcool}                                 \\
-	Q_{amb}    & = (T_{ambi} - T_{box}) \cdot U A_{amb}						\label{eq:box_Qab}                                                \\
-	Q_{ba}     & = (T_{box} - T_{air}) \cdot U A_{ba}						\label{eq:box_Qba}                                                  \\
-	Q_{ca}     & = (T_{cargo} - T_{air}) \cdot U A_{cargo}                                                                     \\
-	Q_{fan}    & = 177.76 + 223.95 \cdot U_* + 105.85 \cdot U_*^2 + 16.74 \cdot U_*^3 \label{eq:box_Qfan} \\
-	U_* & = \left( \frac{U_{fan}}{3060}\cdot 100 - 55.56 \right) \cdot 0.0335 \label{eq:box_Uscaled}
+	Q_{cool}   & = Cp_{air} \cdot \dot{m_{air}} \cdot (T_{ret} - T_{sup})	\label{eq:box_Qcool} \\
+	Q_{amb}    & = (T_{ambi} - T_{box}) \cdot U A_{amb}						\label{eq:box_Qab}   \\
+	Q_{ba}     & = (T_{box} - T_{air}) \cdot U A_{ba}						\label{eq:box_Qba}   \\
+	Q_{ca}     & = (T_{cargo} - T_{air}) \cdot U A_{ca}                  	\label{eq:box_Qca}   \\
 \end{align}
 
 where
@@ -697,9 +695,7 @@ where
 		$T_{box}$       & Box aluminum temperature                     & [\si{K}]           \\
 		$U A_{amb}$     & Ambient air to box heat transfer coefficient & [\si{W}/\si{K}]    \\
 		$U A_{ba}$      & Box to air heat transfer coefficient         & [\si{W}/\si{K}]    \\
-		$U A_{cargo}$   & Cargo to air heat transfer coefficient       & [\si{W}/\si{K}]    \\
-		$U_{fan}$       & Fan speed                                    & [$\cdot$]          \\
-		$U_*$    & Scaled fan speed                             & [$\cdot$]
+		$U A_{ca}$   & Cargo to air heat transfer coefficient       & [\si{W}/\si{K}]    \\
 	\end{tabular}
 \end{center}
 
