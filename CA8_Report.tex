@@ -21,7 +21,7 @@
 %% Legal Notice:
 %% This code is offered as-is without any warranty either expressed or
 %% implied; without even the implied warranty of MERCHANTABILITY or
-%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% FITNESS FOR A PARTICULAR PURPOSE!
 %% User assumes all risk.
 %% In no event shall the IEEE or any contributor to this code be liable for
 %% any damages or losses, including, but not limited to, incidental,
@@ -123,7 +123,7 @@
 
 
 % *** GRAPHICS RELATED PACKAGES ***
-% 
+%
 %\usepackage{graphicx}
 \ifCLASSINFOpdf
    \usepackage[]{graphicx}
@@ -146,7 +146,7 @@
 % graphicx was written by David Carlisle and Sebastian Rahtz. It is
 % required if you want graphics, photos, etc. graphicx.sty is already
 % installed on most LaTeX systems. The latest version and documentation
-% can be obtained at: 
+% can be obtained at:
 % http://www.ctan.org/pkg/graphicx
 % Another good source of documentation is "Using Imported Graphics in
 % LaTeX2e" by Keith Reckdahl which can be found at:
@@ -169,7 +169,7 @@
 \usetikzlibrary{shapes,shapes.geometric, arrows,positioning,calc}
 \tikzset{
 	block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
-	tmp/.style  = {coordinate}, 
+	tmp/.style  = {coordinate},
 	sum/.style= {draw, fill=white, circle, node distance=1cm},
 	input/.style = {coordinate},
 	output/.style= {coordinate},
@@ -378,10 +378,10 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 
 % for over three affiliations, or if they all won't fit within the width
 % of the page, use this alternative format:
-% 
+%
 %\author{\IEEEauthorblockN{Michael Shell\IEEEauthorrefmark{1},
 %Homer Simpson\IEEEauthorrefmark{2},
-%James Kirk\IEEEauthorrefmark{3}, 
+%James Kirk\IEEEauthorrefmark{3},
 %Montgomery Scott\IEEEauthorrefmark{3} and
 %Eldon Tyrell\IEEEauthorrefmark{4}}
 %\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Electrical and Computer Engineering\\
@@ -429,36 +429,61 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 \clearpage
 \tableofcontents
 
+% INTRODUCTION
+% ---------------------------
 \clearpage
 \section{Introduction}
 \input{Chapters/Introduction}
 
+% SYSTEM DESCRIPTION
+% ---------------------------
 \section{System Description}
 \input{Chapters/SystemDescription}
 
-\newpage 
-\section{Modeling}
+% MODELING
+% ---------------------------
+\newpage
+\section{Modeling} % Incl. Subsection "Component Models"
 \input{Chapters/Modeling}
+
+\subsection{Component models}
+\input{Chapters/Modeling_ComponentModels}
 
 \newpage
 \subsection{Collection of components}
 \input{Chapters/Modeling_CollectionOfComponents}
+
 \newpage
 \subsubsection{Linearisation}
 \input{Chapters/Modeling_Linearisation}
 
+% CONTROLLER DESIGN
+% ---------------------------
+\newpage
 \section{Controller Design}
 \input{Chapters/ControllerDesign}
 
+% ROBUSTNESS OF CONTROLLER
+% ---------------------------
+\newpage
 \section{Robustness of Controller}
 \input{Chapters/Robustness}
 
+% TEST - SIMULATION
+% ---------------------------
+\newpage
 \section{Test - Simulation}
 \input{Chapters/TestSimulation}
 
+% TEST - REAL SYSTEM
+% ---------------------------
+\newpage
 \section{Test - Real System}
 \input{Chapters/TestReal}
 
+% CONCLUSION
+% ---------------------------
+\newpage
 \section{Conclusion}
 
 
@@ -478,7 +503,7 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 %\begin{figure}[!t]
 %\centering
 %\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex, 
+% where an .eps filename suffix will be assumed under latex,
 % and a .pdf suffix will be assumed for pdflatex; or what has been declared
 % via \DeclareGraphicsExtensions.
 %\caption{Simulation results for the network.}
@@ -494,7 +519,7 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 % The subfigure \label commands are set within each subfloat command,
 % and the \label for the overall figure must come after \caption.
 % \hfil is used as a separator to get equal spacing.
-% Watch out that the combined width of all the subfigures on a 
+% Watch out that the combined width of all the subfigures on a
 % line do not exceed the text width or a line break will occur.
 %
 %\begin{figure*}[!t]
@@ -551,7 +576,7 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 % in-text middle ("here") positioning is typically not used, but it
 % is allowed and encouraged for Computer Society conferences (but
 % not Computer Society journals). Most IEEE journals/conferences use
-% top floats exclusively. 
+% top floats exclusively.
 % Note that, LaTeX2e, unlike IEEE journals/conferences, places
 % footnotes above bottom floats. This can be corrected via the
 % \fnbelowfloat command of the stfloats package.
