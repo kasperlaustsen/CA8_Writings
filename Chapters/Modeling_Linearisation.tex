@@ -12,13 +12,13 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$x$       & state vector                    &  \\
+		$x$       & State vector                    &  \\
 		$\dot{x}$ & Time derivative of state vector &  \\
-		$y$       & output vector                   &  \\
-		$d$       & disturbance vector              &  \\
+		$y$       & Output vector                   &  \\
+		$d$       & Disturbance vector              &  \\
 		$A$       & System matrix                   &  \\
 		$B$       & Controllable input matrix       &  \\
-		$B_d$       & Disturbance input matrix        &  \\
+		$B_d$     & Disturbance input matrix        &  \\
 		$C$       & Output matrix                   &
 	\end{tabular}
 \end{center}
@@ -34,13 +34,17 @@ Consider some system $\dot{\textbf{x}} = f(\textbf{x},\textbf{u},\textbf{d})$ wi
 	\dot{\textbf{x}}   \approx   f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +   \left. \dfrac{\partial f}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o}
 \end{equation}
 
-In \cref{eq:taylor} the partial derivatives become Jacobian matrices and $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an EQUILIBRIAN.
+In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives become Jacobian matrices on the form seen in \cref{eq:jacobian_general} where n is the number of states and e the number of equations.
 
-UDSKRIV JACOBIAN
-
-\begin{equation} \label{eq:}
-	1=1
+\begin{equation} \label{eq:jacobian_general}
+	\nabla f = 	\begin{bmatrix}
+					\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} & \\
+					\vdots & \ddots & \vdots & \\
+					\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_n} &
+				\end{bmatrix}
 \end{equation}
+
+
 
 \begin{equation} \label{eq:}
 	1=1
