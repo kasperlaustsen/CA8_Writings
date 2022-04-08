@@ -1,1 +1,47 @@
-This is linearisation.
+A general state space system is typically defined on the following form in \cref{eq:state_space}. It is observed that the change in states is
+
+\begin{equation} \label{eq:state_space}
+	\begin{split}
+		\dot{x} & = Ax + Bu + B_dd \\
+		y 		& = Cx
+	\end{split}
+\end{equation}
+
+where
+
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$x$       & state vector                    &  \\
+		$\dot{x}$ & Time derivative of state vector &  \\
+		$y$       & output vector                   &  \\
+		$d$       & disturbance vector              &  \\
+		$A$       & System matrix                   &  \\
+		$B$       & Controllable input matrix       &  \\
+		$B$       & Disturbance input matrix        &  \\
+		$C$       & Output matrix                   &
+	\end{tabular}
+\end{center}
+
+A prerequisite for making a controller is that the system model used for making the controller is linear. This chapter examines the linearisation of the non-linear model found in \cref{sec:mod}. Linearisation is achieved through a first order Taylor expansion.
+
+Consider some system $\dot{\textbf{x}} = f(\textbf{x},\textbf{u},\textbf{d})$ with \textbf{x} a vector of system states, \textbf{u} a vector of controlled inputs, and \textbf{d} a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($\textbf{x}_o, \textbf{u}_o, \textbf{d}_o$)as such:
+
+
+\begin{equation} \label{eq:taylor}
+	\dot{\textbf{x}}   \approx   f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +   \left. \dfrac{\partial f}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o}
+\end{equation}
+
+In \cref{eq:tayler} the partial derivative become Jacobian matrices and $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an operating point.
+
+\begin{equation} \label{eq:}
+	1=1
+\end{equation}
+
+\begin{equation} \label{eq:}
+	1=1
+\end{equation}
+
+\begin{equation} \label{eq:}
+	1=1
+\end{equation}
