@@ -1,4 +1,4 @@
-A general state space system is typically defined on the following form in \cref{eq:state_space}. It is observed that the change in states is
+A general state space system is typically defined on the form in \cref{eq:state_space}. It is observed that a change in states over time is defined as a linear combination of vectors and matrices. Having a model on such a state space form is a prerequisite for state-space controller design.
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
@@ -18,21 +18,25 @@ where
 		$d$       & disturbance vector              &  \\
 		$A$       & System matrix                   &  \\
 		$B$       & Controllable input matrix       &  \\
-		$B$       & Disturbance input matrix        &  \\
+		$B_d$       & Disturbance input matrix        &  \\
 		$C$       & Output matrix                   &
 	\end{tabular}
 \end{center}
 
 A prerequisite for making a controller is that the system model used for making the controller is linear. This chapter examines the linearisation of the non-linear model found in \cref{sec:mod}. Linearisation is achieved through a first order Taylor expansion.
 
-Consider some system $\dot{\textbf{x}} = f(\textbf{x},\textbf{u},\textbf{d})$ with \textbf{x} a vector of system states, \textbf{u} a vector of controlled inputs, and \textbf{d} a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($\textbf{x}_o, \textbf{u}_o, \textbf{d}_o$)as such:
+Consider some system $\dot{\textbf{x}} = f(\textbf{x},\textbf{u},\textbf{d})$ with \textbf{x} a vector of system states, \textbf{u} a vector of controlled inputs, and \textbf{d} a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($\textbf{x}_o, \textbf{u}_o, \textbf{d}_o$) as such:
+
+
 
 
 \begin{equation} \label{eq:taylor}
 	\dot{\textbf{x}}   \approx   f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +   \left. \dfrac{\partial f}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o}
 \end{equation}
 
-In \cref{eq:tayler} the partial derivative become Jacobian matrices and $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an operating point.
+In \cref{eq:taylor} the partial derivatives become Jacobian matrices and $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an EQUILIBRIAN.
+
+UDSKRIV JACOBIAN
 
 \begin{equation} \label{eq:}
 	1=1
