@@ -1,7 +1,7 @@
-The purpose of this chapter is to derive a model of the refrigeration system to enable the 'making' of a controller. The main goal is to capture the dynamics that are important for the box air temperature while leaving out dynamics that are of little interest or importance from a control perspective.
+The purpose of this chapter is to derive a model of the refrigeration system to enable the design of a controller. The main goal is to capture the dynamics that are important for the box air temperature as this is the primary control objective, while leaving out dynamics that are of little interest or importance from a control perspective.
 
 A modular approach is used to model the refrigeration cycle where the components of the refrigeration cycle are modeled separately. Each component has inputs and outputs where the output of a component is fed into the input of the adjacent component. Some components may also include internal equations which describe some variables or states that model some dynamics that are important without being output. The dynamics in several components are so fast compared to the dominant dynamics that they can be considered static (eg. compressor and expansion valves) and are thus replaced by algebraic equations.
 
 Although not apparent from the refrigeration cycle, a model of the thermal masses in the trailer box is also made and connected to the refrigeration cycle model.
 
-The most dominant dynamics of a refrigeration trailer are the large thermal capacitances, both of the metal in heat exchangers (i.e. evaporator and condenser) and of cargo and trailer box.
+The most dominant dynamics of a refrigeration trailer are the large thermal capacitances, both of the metal in heat exchangers (i.e. evaporator and condenser) and of cargo and trailer box. The component which is modeled in greatest detail is the evaporator, which is very important for efficiency of the refrigeration cycle. 
