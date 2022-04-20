@@ -38,8 +38,8 @@ The parameters described with differential equations are the system states. The 
 		\dfrac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
 		\dfrac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma}        \\	%evaporator
 		\dfrac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot Cp_m \cdot (1- \sigma)}	\\	%evaporator
-		\dot{m}_{5} - \dot{m}_{bub}		\\											%evaporator
-		\dot{m}_{bub} - \dot{m}_{1}	\\												%evaporator
+		\dot{m}_{5} - \dot{m}_{dew}		\\											%evaporator
+		\dot{m}_{dew} - \dot{m}_{1}	\\												%evaporator
 		\dfrac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \\		%box
 		\dfrac{Q_{amb} - Q_{ba}}{M_{box} \cdot Cp_{box}} \\							%box
 		\dfrac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}}									%box
@@ -70,7 +70,7 @@ The parameters described with differential equations are the system states. The 
 		\dfrac{\left( 0.7273 + 0.1202 \cdot U_{*_{\dot{m}}}  -0.0044 \cdot	U_{*_{\dot{m}}}^2 \right) \cdot \rho_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
 		\dfrac{Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{ml})-U A_1 \cdot (T_{ml} - T_l) \cdot \sigma + U A_3 \cdot (T_{mv} - T_{ml})}{M_m \cdot Cp_m \cdot \sigma}        \\	%evaporator
 		\dfrac{Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) - U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) - U A_3 \cdot (T_{mv} - T_{ml})}{M_m \cdot Cp_m \cdot (1- \sigma)}	\\	%evaporator
-		f_p(\Theta_2) \cdot K  \sqrt{\dfrac{1}{v_{_{EV_{in}}}} (p_{1} - p_{4})} - \dfrac{U A_1 \cdot (T_{ml} - T_l) \cdot \sigma}{h_{dew} - h_{6}}		\\											%evaporator
+		f_p(\Theta_2) \cdot K  \sqrt{\dfrac{1}{v_{_{EV_{in}}}} (p_{1} - p_{4})} - \dfrac{U A_1 \cdot (T_{ml} - T_l) \cdot \sigma}{h_{} - h_{6}}		\\											%evaporator
 		\dfrac{U A_1 \cdot (T_{ml} - T_l) \cdot \sigma}{h_{dew} - h_{6}} - \left(\dfrac{V_1}{v_{1_{COM1}}} - \dfrac{V_C}{v_{2_{COM1}}}\right) \dfrac{\omega}{2}	\\												%evaporator
 	\end{bmatrix}
 \end{equation}
@@ -194,7 +194,7 @@ The parameters described with differential equations are the system states. The 
 		h_{lv}			\\
 		h_v 		\\
 		T_{sup}		\\
-		\dot{m}_{lv}\\
+		\dot{m}_{dew}\\
 	\end{bmatrix}
 	-
 	\begin{bmatrix}
@@ -213,7 +213,7 @@ The parameters described with differential equations are the system states. The 
 		U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)	\\
 		\Pi \left( h_v, \dfrac{V_i-V_l}{M_v} \right)		\\
 		h_{6} + \dfrac{Q_{ml}}{\dot{m}_{5}}			\\
-		h_{dew} + \dfrac{Q_{mv}}{\dot{m}_{lv}}   		\\
+		h_{dew} + \dfrac{Q_{mv}}{\dot{m}_{dew}}   		\\
 		T_{retfan} +  \dfrac{Q_{aml} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \\
 		\dfrac{Q_{ml}}{h_{dew} - h_{6}}		\\
 	\end{bmatrix}
