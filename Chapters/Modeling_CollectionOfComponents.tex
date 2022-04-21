@@ -284,4 +284,48 @@ The parameters described with differential equations are the system states. The 
 \end{equation}
 
 
+\begin{equation} \renewcommand{\arraystretch}{2.5}
+\left(\begin{array}{c}
+	{\dot{M} }_{\textrm{PJJ}} \\
+	{\dot{M} }_{\textrm{Con}} \\
+	{\dot{T} }_m \\
+	{\dot{m} }_{\textrm{air}} \\
+	{\dot{T} }_{\textrm{mlv}} \\
+	{\dot{T} }_{\textrm{mv}} \\
+	{\dot{M} }_{\textrm{lv}} \\
+	{\dot{M} }_v \\
+	{\dot{T} }_{\textrm{air}} \\
+	{\dot{T} }_{\textrm{box}} \\
+	{\dot{T} }_{\textrm{cargo}}
+\end{array}\right)
+=
+\left(\begin{array}{c}
+	{\dot{m} }_1 +{\dot{m} }_4 -{\dot{m} }_{2,\textrm{COM2}} \\
+	{\dot{m} }_{2,\textrm{COM2}} -{\dot{m} }_{3,\textrm{Val}} \\
+	-\dfrac{Q_{\textrm{ma}} -Q_{\textrm{rm}} }{{\textrm{Cp}}_m \,M_{m,\textrm{Con}} }\\
+	\dfrac{{\dot{\bar{m} } }_{\textrm{air}} }{10}-\dfrac{{\dot{m} }_{\textrm{air}} }{10}\\
+	\dfrac{Q_{\textrm{amlv}} -Q_{\textrm{mlv}} +Q_{\textrm{mvmlv}} }{{\textrm{Cp}}_m \,M_{m,\textrm{Eva}} \,\sigma }\\
+	\dfrac{Q_{\textrm{mv}} -Q_{\textrm{amv}} +Q_{\textrm{mvmlv}} }{{\textrm{Cp}}_m \,M_{m,\textrm{Eva}} \,{\left(\sigma -1\right)}}\\
+	{\dot{m} }_{5,\textrm{Val}} -{\dot{m} }_{\textrm{dew}} \\
+	{\dot{m} }_{\textrm{dew}} -{\dot{m} }_1 \\
+	\dfrac{Q_{\textrm{ba}} +Q_{\textrm{ca}} -Q_{\textrm{cool}} +Q_{\textrm{fan},2} }{{\textrm{Cp}}_{\textrm{air}} +M_{\textrm{air}} }\\
+	\dfrac{Q_{\textrm{amb}} -Q_{\textrm{ba}} }{{\textrm{Cp}}_{\textrm{box}} \,M_{\textrm{box}} }\\
+	-\dfrac{Q_{\textrm{ca}} }{{\textrm{Cp}}_{\textrm{cargo}} \,M_{\textrm{cargo}} }
+\end{array}\right)
+\end{equation}
+
+
+
+% Template for matlab livescript -> latex maffz
+% 1. Insert left side at 1
+% 2. Insert right side at 2
+% 3. Replace frac w. dfrad (highlight text and press ctrl+r & replace all)
+\begin{equation} \renewcommand{\arraystretch}{2.5}
+	1
+	=
+	2
+\end{equation}
+
+
+
 

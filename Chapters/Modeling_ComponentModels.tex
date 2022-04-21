@@ -474,7 +474,7 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$U_{*_P}$       & Transformed fan speed                                     & [1/\si{s}]                        \\
+		$U_{*_P}$       & Transformed fan speed                                & [1/\si{s}]                        \\
 		$U_{fan}$       & Fan speed                                            & [1/\si{s}]                        \\
 		$Q_{fan}$       & Heat flow from fan to air (heatloss)                 & [\si{W}]                          \\
 		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV     & [\si{W}]                          \\
@@ -514,9 +514,6 @@ where
 
 The evaporator contains one of the greater thermal masses due to the large mass of metal in the heat exchanger.The temperature of the evaporator metal is divided into two parts corresponding to the liquid-vapor control volume \cref{eq:evap_dT_ml} and the vapor control volume \cref{eq:evap_dT_mv}. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{amlv}, Q_{mlv}, Q_{mvmlv} $ in \cref{eq:evap_dT_ml} and $ Q_{amv}, Q_{mv}, Q_{mvmlv} $ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$). The heat flows are illustrated in \cref{fig:evap_CV}
 
-% ALTERNATIVE MORE COMPACT WAY OF WRITING THE ABOVE:
-%The metal temperature change is governed by the heat flows to and from the metal ($Q$) and the mass of the metal in that CV ($M_m \cdot \sigma$ and $M_m \cdot (1 - \sigma)$) multiplied with the specific heat capacity of the metal ($Cp_m$).
-
 \begin{align}
 	\frac{dT_{mlv}}{dt} & = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m}        \label{eq:evap_dT_ml} \\
 	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } \label{eq:evap_dT_mv}
@@ -540,31 +537,33 @@ where
 \end{center}
 
 \medskip
-\cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system. The temperature of the refrigerant leaving the evaporator is found from output pressure and enthalpy
+\cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system. The temperature of the vapor refrigerant leaving the evaporator is found from output pressure and enthalpy in \cref{eq:T_v}
 
 \begin{align}
-	Q_{mvmlv} 		& = U A_3 \cdot (T_{mv} - T_{mlv}) 								\label{eq:Q_mvml} 			\\
-	Q_{mlv} 			& = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma						\label{eq:Q_ml} 			\\
-	Q_{mv} 			& = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma)                \label{eq:Q_mv}
+	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml}             \\
+	Q_{mlv}   & = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma	\label{eq:Q_ml}  \\
+	Q_{mv}    & = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) \label{eq:Q_mv} \\
+	T_v       & = \Phi(p_{out}, h_{out}) \label{eq:T_v}
 \end{align}
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$Q_{amlv}$      & Heat flow from air to metal surrounding liquid-vapor CV                                        & [\si{W}]                          \\
-		$Q_{mvmlv}$     & Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV    & [\si{W}]                          \\
-		$Q_{mlv}$       & Heat flow from evaporator metal to liquid-vapor CV                                             & [\si{W}]                          \\
-		$Q_{mv}$        & Heat flow from evaporator metal to vapor CV                                                    & [\si{W}]                          \\
-		$U_{fan}$       & Fan speed                                                                                      & [1/\si{s}]                        \\
-		$Cp_{air}$      & Specific heat capacity of air                                                                  & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
-		$\dot{m}_{air}$ & Mass flow of air through fan                                                                   & [\si{kg}/\si{s}]                  \\
-		$T_{retsh}$     & Temperature of air over superheated vapor CV                                                   & [\si{K}]                          \\
-		$T_{mlv}$       & Temperature of metal on the liquid-vapor CV                                                    & [\si{K}]                          \\
-		$T_{mv}$        & Temperature of metal on the vapor CV                                                           & [\si{K}]                          \\
-		$T_{lv}$        & Saturation temperature for evaporation of the refrigerant                                      & [\si{K}]                          \\
-		$T_{v}$         & Temperature of refrigerant (vapor) leaving the evaporator                                      & [\si{K}]                          \\
-		$UA_1$          & Heat transfer coefficient from metal to liquid                                                 & [\si{J}/\si{K}]                   \\
-		$UA_2$          & Heat transfer coefficient from metal to vapor                                                  & [\si{J}/\si{K}]                   \\
-		$UA_3$          & Heat transfer coefficient from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{J}/\si{K}]
+		$Q_{amlv}$      & Heat flow from air to metal surrounding liquid-vapor CV                           & [\si{W}]                          \\
+		$Q_{mvmlv}$     & Heat flow from through from vapor CV metal to liquid-vapor CV metal               & [\si{W}]                          \\
+		$Q_{mlv}$       & Heat flow from evaporator metal to liquid-vapor CV                                & [\si{W}]                          \\
+		$Q_{mv}$        & Heat flow from evaporator metal to vapor CV                                       & [\si{W}]                          \\
+		$U_{fan}$       & Fan speed                                                                         & [1/\si{s}]                        \\
+		$Cp_{air}$      & Specific heat capacity of air                                                     & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
+		$\dot{m}_{air}$ & Mass flow of air through fan                                                      & [\si{kg}/\si{s}]                  \\
+		$T_{retsh}$     & Temperature of air over superheated vapor CV                                      & [\si{K}]                          \\
+		$T_{mlv}$       & Temperature of metal on the liquid-vapor CV                                       & [\si{K}]                          \\
+		$T_{mv}$        & Temperature of metal on the vapor CV                                              & [\si{K}]                          \\
+		$T_{lv}$        & Saturation temperature for evaporation of the refrigerant                         & [\si{K}]                          \\
+		$T_{v}$         & Temperature of refrigerant (vapor) leaving the evaporator                         & [\si{K}]                          \\
+		$UA_1$          & Heat transfer coefficient from metal to liquid                                    & [\si{J}/\si{K}]                   \\
+		$UA_2$          & Heat transfer coefficient from metal to vapor                                     & [\si{J}/\si{K}]                   \\
+		$UA_3$          & Heat transfer coefficient from vapor CV metal to liquid-vapor CV metal            & [\si{J}/\si{K}]                   \\
+		$\Phi(p,h)$     & TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
 	\end{tabular}
 \end{center}
 
@@ -572,7 +571,7 @@ where
 The output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_{lv}} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the specific enthalpy level in the evaporator where liquid vapor mixture has completely changed phase to vapor. The pressure in \cref{eq:evap_pout} is found from table lookup using the specific volume of the refrigerant in the vapor CV and the specific enthalpy.
 
 \begin{align}
-	p_{out}            & = \Pi \left( h_v, \frac{V_i-V_{lv}}{M_v} \right)		\label{eq:evap_pout}                       \\
+	p_{out}            & = \Pi \left( h_v, \frac{M_v}{V_i-V_{lv}} \right)		\label{eq:evap_pout}                       \\
 	V_{lv}             & = \sigma \cdot V_i                                                                           \\
 	h_{lv}             & = h_{in} + \frac{Q_{mlv}}{\dot{m}_{in}}                                                      \\
 	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}                                                     \\
@@ -590,12 +589,11 @@ where\\
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$ p_{out} 	$     & Pressure in evaporator                                                   & [\si{Pa}]                         \\
-		$\Pi(h,\rho) $   & Table lookup of pressure, where inputs are specific enthalpy and density & [\si{Pa}]                         \\
+		$ p_{out} $      & Pressure in evaporator                                                   & [\si{Pa}]                         \\
+		$\Pi(h,\rho) $   & Table lookup of pressure from specific enthalpy and density              & [\si{Pa}]                         \\
 		$h_{v} $         & Specific enthalpy of vapor CV                                            & [\si{J}/\si{kg}]                  \\
 		$h_{lv} $        & Specific enthalpy of liquid-vapor CV                                     & [\si{J}/\si{kg}]                  \\
-		$h_{in} $        & Specific enthalpy of input liquid refrigerant                            & [\si{J}/\si{kg}]                  \\ %$h_{lv} $        & Specific enthalpy of refrigerant moving from liquid-vapor CV to vapor CV & [\si{J}/\si{kg}]
-		%$h_{lv} $       & Specific enthalpy of refrigerant moving from liquid-vapor CV to vapor CV & [\si{J}/\si{kg}]                  \\
+		$h_{in} $        & Specific enthalpy of input liquid refrigerant                            & [\si{J}/\si{kg}]                  \\
 		$h_{out}$        & Specific enthalpy out of evaporator                                      & [\si{J}/\si{kg}]                  \\
 		$h_{dew}$        & Specific enthalpy of dew point                                           & [\si{J}/\si{kg}]                  \\
 		$V_{i} $         & Total volume of evaporator                                               & [\si{m^3}]                        \\
@@ -648,26 +646,6 @@ where
 	\end{tabular}
 \end{center}
 
-%where
-%\begin{center}
-%	\begin{tabular}{l p{8cm} l}
-	%		$Q_{ca}$			& Cargo to air heat flow					& [\si{W}] \\
-	%		$Q_{aa}$			& Ambient (walls and roof) to air heat flow		& [\si{W}] \\
-	%		$Q_{fa}$			& Floor to air heat flow 						& [\si{W}] \\
-	%		$Q_{af}$			& Ambient (floor) to floor heat flow 	& [\si{W}] \\
-	%		$Q_{fan}$			& Fan to air heat flow 						& [\si{W}] \\
-	%		$Q_{cool}$			& Air to evaporator heat flow  			& [\si{W}] \\
-	%		$T_{air}$			& Air temperature 								& [\si{K}] \\
-	%		$T_{floor}$			& Floor temperature						& [\si{K}] \\
-	%		$T_{cargo}$		& Cargo temperature							& [\si{K}] \\
-	%		$M_{air}$			& Air mass										& [\si{kg}] \\
-	%		$M_{floor}$			& Floor mass								& [\si{kg}] \\
-	%		$M_{cargo}$		& Cargo mass								& [\si{kg}] \\
-	%		$Cp_{air}$			& Air heat capacity							& [\si{J}/\si{kg} \si{K}] \\
-	%		$Cp_{floor}$	& Floor heat capacity						& [\si{J}/\si{kg} \si{K}] \\
-	%		$Cp_{cargo}$	& Cargo heat capacity					& [\si{J}/\si{kg} \si{K}]
-	%	\end{tabular}
-%\end{center}
 
 The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qca}.
 
