@@ -2,8 +2,8 @@ A general state space system is typically defined on the form in \cref{eq:state_
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
-		\dot{x} & = Ax + Bu + B_dd \\
-		y 		& = Cx
+		\dot{\textbf{x}} & = \textbf{A}\textbf{x} + \textbf{B}\textbf{u} + \textbf{B}_d\textbf{d} \\
+		\textbf{y} 		& = \textbf{C}\textbf{x}
 	\end{split}
 \end{equation}
 
@@ -12,48 +12,80 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$x$       & State vector                    &  \\
-		$\dot{x}$ & Time derivative of state vector &  \\
-		$y$       & Output vector                   &  \\
-		$d$       & Disturbance vector              &  \\
-		$A$       & System matrix                   &  \\
-		$B$       & Controllable input matrix       &  \\
-		$B_d$     & Disturbance input matrix        &  \\
-		$C$       & Output matrix                   &
+		$\textbf{x}$       & State vector                    &  \\
+		$\dot{\textbf{x}}$ & Time derivative of state vector &  \\
+		$\textbf{y}$       & Output vector                   &  \\
+		$\textbf{d}$       & Disturbance vector              &  \\
+		$\textbf{A}$       & System matrix                   &  \\
+		$\textbf{B}$       & Controllable input matrix       &  \\
+		$\textbf{B}_d$     & Disturbance input matrix        &  \\
+		$\textbf{C}$       & Output matrix                   &
 	\end{tabular}
 \end{center}
 
 A prerequisite for making a controller is that the system model used for making the controller is linear. This chapter examines the linearisation of the non-linear model found in \cref{sec:mod}. Linearisation is achieved through a first order Taylor expansion.
 
-Consider some system $\dot{\textbf{x}} = f(\textbf{x},\textbf{u},\textbf{d})$ with \textbf{x} a vector of system states, \textbf{u} a vector of controlled inputs, and \textbf{d} a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($\textbf{x}_o, \textbf{u}_o, \textbf{d}_o$) as such:
+Consider some system $\dot{\textbf{x}} = \textbf{f}(\textbf{x},\textbf{u},\textbf{d})$ with \textbf{x} a vector of system states, \textbf{u} a vector of controlled inputs, and \textbf{d} a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($\textbf{x}_o, \textbf{u}_o, \textbf{d}_o$) as such:
 
 
 
 
 \begin{equation} \label{eq:taylor}
-	\dot{\textbf{x}}   \approx   f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +   \left. \dfrac{\partial f}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} + \left. \dfrac{\partial f}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o}
+	\dot{\textbf{x}}   \approx   \textbf{f}(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +   
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{x}-\textbf{x}_0) + 
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{u}-\textbf{u}_0) + 
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{d}-\textbf{d}_0)
 \end{equation}
 
-In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives become Jacobian matrices on the form seen in \cref{eq:jacobian_general} where n is the number of states and e the number of equations.
+In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organised in Jacobian matrices on the form seen in \cref{eq:jacobian_states} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, iputs and disturbances). 
 
-\begin{equation} \label{eq:jacobian_general}
-	\nabla f = 	\begin{bmatrix}
-					\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} & \\
-					\vdots & \ddots & \vdots & \\
-					\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_n} &
-				\end{bmatrix}
+\begin{equation} \label{eq:jacobian_states}
+	\dfrac{\partial \textbf{f}}{\partial \textbf{x}} =
+		\begin{bmatrix}
+			\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} & \\
+			\vdots & \ddots & \vdots & \\
+			\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_n} &
+		\end{bmatrix}, \
+	\dfrac{\partial \textbf{f}}{\partial \textbf{u}} = 	
+		\begin{bmatrix}
+			\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_n} & \\
+			\vdots & \ddots & \vdots & \\
+			\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_n} &
+		\end{bmatrix}, \ 
+	\dfrac{\partial \textbf{f}}{\partial \textbf{d}} = 	
+		\begin{bmatrix}
+			\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_n} & \\
+			\vdots & \ddots & \vdots & \\
+			\dfrac{\partial f_e}{\partial d_1} & \cdots & \dfrac{\partial f_e}{\partial d_n} &
+		\end{bmatrix}
 \end{equation}
 
 
+%\begin{equation} \label{eq:jacobian_inputs}
+%	\dfrac{\partial \textbf{f}}{\partial \textbf{u}} = 	\begin{bmatrix}
+%	\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_n} & \\
+%	\vdots & \ddots & \vdots & \\
+%	\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_n} &
+%	\end{bmatrix}, \ 
+%\end{equation}
+%
+%\begin{equation} \label{eq:jacobian_disturbances}
+%		\dfrac{\partial \textbf{f}}{\partial \textbf{d}} = 	\begin{bmatrix}
+%		\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_n} & \\
+%		\vdots & \ddots & \vdots & \\
+%		\dfrac{\partial f_e}{\partial d_1} & \cdots & \dfrac{\partial f_e}{\partial d_n} &
+%		\end{bmatrix}
+%\end{equation}
 
-\begin{equation} \label{eq:}
-	1=1
+When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ \textbf{A} $, $ \textbf{B} $ and $ \textbf{B}_d  $ of the linear system
+
+\begin{equation}
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{A}, \
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{B}, \
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{B}_d
 \end{equation}
 
-\begin{equation} \label{eq:}
-	1=1
-\end{equation}
-
+The only difference from a standard state space system such en
 
 \textbf{Simplification}
 To model the behaviour of the simulation model, we do some simplifications with respect to the real system. 
