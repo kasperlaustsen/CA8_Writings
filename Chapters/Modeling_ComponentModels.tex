@@ -647,7 +647,8 @@ where
 \end{center}
 
 
-The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qca}.
+The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qca}. $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on the difference between the temperature of the air returning from the box ($T_{ret}$) and the temperature of the air supplied to the box $T_{sup}$ as seen in \cref{eq:box_Qcool}. The other heat flows in \cref{eq:box_Qab}, \cref{eq:box_Qba} and \cref{eq:box_Qca} are convective heat flows.
+
 
 \begin{align}
 	Q_{cool}   & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{ret} - T_{sup})	\label{eq:box_Qcool} \\
@@ -670,8 +671,8 @@ where
 	\end{tabular}
 \end{center}
 
-$Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on the difference between the temperature of the air returning from the box ($T_{ret}$) and the temperature of the air supplied to the box $T_{sup}$ as seen in \cref{eq:box_Qcool}. The other heat flows in \cref{eq:box_Qab}, \cref{eq:box_Qba} and \cref{eq:box_Qca} are convective heat flows.
 
+The return air temperature which is located before the evaporator fan is equal to the
 
 
 
