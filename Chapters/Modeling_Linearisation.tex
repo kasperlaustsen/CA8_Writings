@@ -9,7 +9,6 @@ A general state space system is typically defined on the form in \cref{eq:state_
 
 where
 
-
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\textbf{x}$       & State vector                    &  \\
@@ -27,9 +26,6 @@ A prerequisite for making a controller is that the system model used for making 
 
 Consider some system $\dot{\textbf{x}} = \textbf{f}(\textbf{x},\textbf{u},\textbf{d})$ with \textbf{x} a vector of system states, \textbf{u} a vector of controlled inputs, and \textbf{d} a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($\textbf{x}_o, \textbf{u}_o, \textbf{d}_o$) as such:
 
-
-
-
 \begin{equation} \label{eq:taylor}
 	\dot{\textbf{x}}   \approx   \textbf{f}(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +
 	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{x}-\textbf{x}_0) +
@@ -37,7 +33,7 @@ Consider some system $\dot{\textbf{x}} = \textbf{f}(\textbf{x},\textbf{u},\textb
 	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{d}-\textbf{d}_0)
 \end{equation}
 
-In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organised in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, iputs and disturbances).
+In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, inputs and disturbances).
 
 \begin{equation} \label{eq:jacobians}
 	\dfrac{\partial \textbf{f}}{\partial \textbf{x}} =
@@ -60,24 +56,7 @@ In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because th
 		\end{bmatrix}
 \end{equation}
 
-
-%\begin{equation} \label{eq:jacobian_inputs}
-%	\dfrac{\partial \textbf{f}}{\partial \textbf{u}} = 	\begin{bmatrix}
-%	\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_n} & \\
-%	\vdots & \ddots & \vdots & \\
-%	\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_n} &
-%	\end{bmatrix}, \
-%\end{equation}
-%
-%\begin{equation} \label{eq:jacobian_disturbances}
-%		\dfrac{\partial \textbf{f}}{\partial \textbf{d}} = 	\begin{bmatrix}
-%		\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_n} & \\
-%		\vdots & \ddots & \vdots & \\
-%		\dfrac{\partial f_e}{\partial d_1} & \cdots & \dfrac{\partial f_e}{\partial d_n} &
-%		\end{bmatrix}
-%\end{equation}
-
-When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ \textbf{A} $, $ \textbf{B} $ and $ \textbf{B}_d  $ of the linear system
+When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ \textbf{A} $, $ \textbf{B} $ and $ \textbf{B}_d  $ of the linear system:
 
 \begin{equation}
 	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{A}, \
@@ -85,10 +64,11 @@ When the Jacobian matrices are evaluated at the operating point, they in fact be
 	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{B}_d
 \end{equation}
 
-The only difference from a standard state space system such en
+The only difference from a standard state space system...
 
-\textbf{Simplification}
-To model the behaviour of the simulation model, we do some simplifications with respect to the real system.
+\subsubsection{Model Simplifications}
+To model the behavior of the Hi-Fi simulation model, some simplifications with respect to the real system are made.
+
 \begin{enumerate}
 	\item valve is modeled as linear type
 	\item coefficient XX is modelled as..
@@ -96,5 +76,6 @@ To model the behaviour of the simulation model, we do some simplifications with 
 	\item
 	\item
 	\item
-
 \end{enumerate}
+
+From observing the system matrix (A) it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states except themselves. They are not important with regards to any of the controlled states and are thus simply deleted from the system. In practice this means removing the first two: rows and columns of A, rows of B and columns of C.
