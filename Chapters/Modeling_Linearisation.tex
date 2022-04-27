@@ -1,4 +1,4 @@
-A general state space system is typically defined on the form in \cref{eq:state_space}. It is observed that a change in states over time is defined as a linear combination of vectors and matrices. Having a model on such a state space form is a prerequisite for state-space controller design.
+A general state space system is typically defined on the form in \cref{eq:state_space}. It is observed that a change in states over time is defined as a linear combination of vectors and matrices. Having a model on such a state space form is a necessary for state-space controller design.
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
@@ -79,3 +79,6 @@ To model the behavior of the Hi-Fi simulation model, some simplifications with r
 \end{enumerate}
 
 From observing the system matrix (A) it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states except themselves. They are not important with regards to any of the controlled states and are thus simply deleted from the system. In practice this means removing the first two: rows and columns of A, rows of B and columns of C.
+
+When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error \todo[inline]{sikkert ikke sandt så skal sikkert rettes} and a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state. It is apparent that the system model does not in any way hold true to the physics of the real system and therefore such a fix which does not make sense in any physical context is considered acceptable.
+
