@@ -36,9 +36,44 @@ If \cref{fig:state_space_fb} is analyzed by looking at the how $\dot{x}$ is calc
 In Matlab pole placement can be performed by the \textit{Place(A, B, poles)} function where "A" is the system matrix, "B" the input matrix and "poles" an array of the desired poles. The \textit{place()} function works for both SISO and MIMO systems.
 
 
+\subsection{Linear Quadratic Regulator}
+In order to be able to easily and fast get a controller running to test the model from \cref{sec:mod} a Linear Quadratic Regulator or more specifically an infinite-horizon LQR is implemented. The LQR is an optimal control algorithm with respect to some cost function. It relies on a dynamic model of the controlled process which is available from the linearization done in \cref{sec:mod_lin}.
 
+Consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ representing the system states and $y(k)$ the measured outputs.
 
+\begin{equation} \label{eq:lqr_discrete_sys}
+	\begin{split}
+		x(k+1) 	& = Ax(k) + Bu(k) \\
+		y(k) 	& = Cx(k)
+	\end{split}
+\end{equation}
 
+For such a system the discrete IH-LQR algorithm could minimize a cost function of the type:
+
+\begin{equation} \label{eq:lqr_cost_fcn}
+	J = \sum_{k=0}^{\infty}\left( x(k)^TQx(k) + u(k)^TRu(k) + 2x(k)^TNu(k) \right)
+\end{equation}
+
+where
+
+\begin{center}
+	\begin{tabular}{l r l }
+		weight & $R$         & $ > 0$ (positive definite) and symmetric       \\
+		weight & $Q$ and $N$ & $\ge 0$ (positive semi-definite) and symmetric
+	\end{tabular}
+\end{center}
+
+The cross-term is ignored in this case by setting $N=0$. For such a cost function the squared of the states and control signals, multiplied with the weights Q and R, are minimized. Each element in the diagonal elements of Q and R are the costs associated with each state or input in the state and input vectors.\\
+
+In matlab the lqr(A,B,Q,R, N) function is used to find the controller gain $(K)$.
+
+Inherently since LQR is a regulator it will always drive the states and inputs to zero. From the linearisation in \cref{sec:mod_lin} it was shown that the A, B and Bd matrices were the Jacobian matrices. In \cref{eq:taylor} it is obvious that the continuous model is approximated from the deviation of the states, inputs and disturbances from the operating points. Thus the cost function with no cross-term cost becomes:
+
+\begin{equation} \label{eq:lqr_cost_fcn}
+	J = \sum_{k=0}^{\infty}\left( \bar{x}(k)^TQ\bar{x}(k) + \bar{u}(k)^TR\bar{u}(k) \right)
+\end{equation}
+
+with $\bar{x} = x-x_o$ and $\bar{u} = u-u_o$ where $x_o$, $u_o$ are the linearisation equilibrium operating points of the states and inputs. In conclusion the LQR algorithm will keep the system close to the operating points. This is very appealing because of the linear system only being a good approximation exactly at the operating point.
 
 \subsection{LMI / MPC controller}
 Model Predictive Control (MPC) is, like the Linear Quadratic Regulator (LQR), an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints.\\
@@ -72,7 +107,7 @@ where
 
 \begin{center}
 	\begin{tabular}{l r l }
-		                   & $||x||_M$               & $= \sqrt{\left(w^TMw\right)}$                    \\
+		                   & $||x||_M$               & $= \sqrt{\left(w^TMw\right)}$         \\
 		prediction horizon & $H_p$                   & $\ge$ $H_u$ control horizon           \\
 		window horizon     & $H_p$                   & $\ge 1$                               \\
 		weights            & $Q(i), R(i)$            & $\ge 0$ (positive semi-definite)      \\
@@ -118,34 +153,6 @@ An important characteristic of MPC is the ability to include constraints. Constr
 \end{itemize}
 
 \noindent with E, F and G having appropriate dimensions.
-
-
-\subsection{Linear Quadratic Regulator}
-In order to be able to easily and fast get a controller running to test the model from \cref{sec:mod} a Linear Quadratic Regulator or more specifically a finite-horizon LQR is implemented. The LQR is an optimal control algorithm with respect to some cost function. It relies on a dynamic model of the controlled process which is available from the linearization done in \cref{sec:mod_lin}.
-
-Consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ representing the system states and $y(k)$ the measured outputs.
-
-\begin{equation} \label{eq:lqr_discrete_sys}
-	\begin{split}
-		x(k+1) 	& = Ax(k) + Bu(k) \\
-		y(k) 	& = Cx(k)
-	\end{split}
-\end{equation}
-
-For such a system the FH-LQR algorithm could minimize a cost function of the type:
-
-\begin{equation} \label{eq:lqr_cost_fcn}
-	J = \sum_{k=0}^{N-1}\left( x(k)^TQx(k) + u(k)^TRu(k) \right)
-\end{equation}
-
-where the weights Q and R are positive semi-definite.
-
-
-$Q(i), Q(i), H_p, H_u, H_w$ are considered the MPC tuning parameters.\\
-
-For such a cost function the squared of the states and control signals, multiplied with some weight Q and R, are minimized. Each element in the diagonal elements of Q and R are the costs associated with each state or input in the state and input vectors.
-
-
 
 
 

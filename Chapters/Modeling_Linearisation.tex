@@ -31,28 +31,28 @@ Consider some system $\dot{\textbf{x}} = \textbf{f}(\textbf{x},\textbf{u},\textb
 
 
 \begin{equation} \label{eq:taylor}
-	\dot{\textbf{x}}   \approx   \textbf{f}(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +   
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{x}-\textbf{x}_0) + 
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{u}-\textbf{u}_0) + 
+	\dot{\textbf{x}}   \approx   \textbf{f}(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{x}-\textbf{x}_0) +
+	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{u}-\textbf{u}_0) +
 	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{d}-\textbf{d}_0)
 \end{equation}
 
-In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organised in Jacobian matrices on the form seen in \cref{eq:jacobian_states} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, iputs and disturbances). 
+In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organised in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, iputs and disturbances).
 
-\begin{equation} \label{eq:jacobian_states}
+\begin{equation} \label{eq:jacobians}
 	\dfrac{\partial \textbf{f}}{\partial \textbf{x}} =
 		\begin{bmatrix}
 			\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} & \\
 			\vdots & \ddots & \vdots & \\
 			\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_n} &
 		\end{bmatrix}, \
-	\dfrac{\partial \textbf{f}}{\partial \textbf{u}} = 	
+	\dfrac{\partial \textbf{f}}{\partial \textbf{u}} =
 		\begin{bmatrix}
 			\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_n} & \\
 			\vdots & \ddots & \vdots & \\
 			\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_n} &
-		\end{bmatrix}, \ 
-	\dfrac{\partial \textbf{f}}{\partial \textbf{d}} = 	
+		\end{bmatrix}, \
+	\dfrac{\partial \textbf{f}}{\partial \textbf{d}} =
 		\begin{bmatrix}
 			\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_n} & \\
 			\vdots & \ddots & \vdots & \\
@@ -66,7 +66,7 @@ In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because th
 %	\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_n} & \\
 %	\vdots & \ddots & \vdots & \\
 %	\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_n} &
-%	\end{bmatrix}, \ 
+%	\end{bmatrix}, \
 %\end{equation}
 %
 %\begin{equation} \label{eq:jacobian_disturbances}
@@ -88,7 +88,7 @@ When the Jacobian matrices are evaluated at the operating point, they in fact be
 The only difference from a standard state space system such en
 
 \textbf{Simplification}
-To model the behaviour of the simulation model, we do some simplifications with respect to the real system. 
+To model the behaviour of the simulation model, we do some simplifications with respect to the real system.
 \begin{enumerate}
 	\item valve is modeled as linear type
 	\item coefficient XX is modelled as..
@@ -96,5 +96,5 @@ To model the behaviour of the simulation model, we do some simplifications with 
 	\item
 	\item
 	\item
-	
+
 \end{enumerate}
