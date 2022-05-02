@@ -286,21 +286,23 @@ The mass flow out of the condenser is modelled in \cref{eq:Condenser_MassFlow}.
 
 \begin{align}
 	p_{in} 	& =  p_{out} - \lambda \cdot \dot{m}_{in}  				\label{eq:Condenser_PressureDrop}\\
-	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{1s}		\label{eq:Condenser_MassFlow}
+	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{1s}		\label{eq:Condenser_MassFlow} \\
+	v & = Z(h_{in}, p_{in})
 \end{align}
 
 where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$p_{in}$				&	Condenser input pressure					& [\si{Pa}] \\
-		$p_{out}$				&	Condenser output pressure					& [\si{Pa}] \\
-		$\lambda$				& 	Pressure drop constant	 					& [$\cdot$] \\
-		$\dot{m_{in}}$			& 	Condenser input mass flow 					& [\si{kg}/\si{s}] \\
-		$\dot{m_{out}}$			& 	Condenser output mass flow 					& [\si{kg}/\si{s}] \\
-		$M_{r}$					&	Condenser refridgerant mass					& [\si{kg}] \\
-		$V_{i}$					&	Condenser internal volume					& [\si{m^3}] \\
-		$v$						&	Condenser refridgerant specific volume		& [\si{m^3}/\si{kg}] \\
+		$p_{in}$        & Condenser input pressure                                   & [\si{Pa}]          \\
+		$p_{out}$       & Condenser output pressure                                  & [\si{Pa}]          \\
+		$\lambda$       & Pressure drop constant                                     & [$\cdot$]          \\
+		$\dot{m_{in}}$  & Condenser input mass flow                                  & [\si{kg}/\si{s}]   \\
+		$\dot{m_{out}}$ & Condenser output mass flow                                 & [\si{kg}/\si{s}]   \\
+		$M_{r}$         & Condenser refridgerant mass                                & [\si{kg}]          \\
+		$V_{i}$         & Condenser internal volume                                  & [\si{m^3}]         \\
+		$v$             & Condenser refridgerant specific volume                     & [\si{m^3}/\si{kg}] \\
+		$Z(h,p)$        & Table lookup of specific volume from enthalpy and pressure & []
 	\end{tabular}
 \end{center}
 
@@ -391,8 +393,8 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$M(p)$			&  Lookup table of the enthalpy of saturated liquid	at pressure p		& [\si{J}/\si{kg}]\\
-		$N(p)$			&  Lookup table of the enthalpy of saturated vapour	at pressure p		& [\si{J}/\si{kg}] \\
+		$M(p)$			&  Lookup table of the specific enthalpy of saturated liquid	at pressure p		& [\si{J}/\si{kg}]\\
+		$N(p)$			&  Lookup table of the specific enthalpy of saturated vapour	at pressure p		& [\si{J}/\si{kg}] \\
 
 	\end{tabular}
 \end{center}
@@ -421,18 +423,20 @@ Because the heat transfer coefficient from liquid to metal and from vapor to met
 
 The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary}.
 
-\begin{equation} \label{eq:Evaporator_boundary}
-	\sigma = \frac{M_{lv} \cdot v_1}{V_i}
-\end{equation}
+\begin{align} \label{eq:Evaporator_boundary}
+	\sigma = \frac{M_{lv} \cdot v_1}{V_i} \\
+	v_1 = \Lambda(p_{out},X_e)
+\end{align}
 
 where
 
 \begin{center}
-	\begin{tabular}{l p{8cm} l}
-		$\sigma$ & Control Volume boundary                        & [$\cdot$]            \\
-		$M_{lv}$ & Mass of liquid-vapor CV                        & [\si{kg}]            \\
-		$v_1$    & Refrigerant specific volume of vapor-liquid CV & [$\si{m}^3/\si{kg}$] \\
-		$V_i$    & Evaporator volume                              & [$\si{m}^3$]
+	\begin{tabular}{l p{10cm} l}
+		$\sigma$   & Control Volume boundary                                           & [$\cdot$]            \\
+		$M_{lv}$   & Mass of liquid-vapor CV                                           & [\si{kg}]            \\
+		$v_1$      & Refrigerant specific volume of vapor-liquid CV                    & [$\si{m}^3/\si{kg}$] \\
+		$V_i$      & Evaporator volume                                                 & [$\si{m}^3$]         \\
+		$\Lambda(p,X)$ & Table lookup of specific volume from pressure and average quality & [$\si{m}^3$]
 	\end{tabular}
 \end{center}
 
@@ -539,10 +543,11 @@ where
 \cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system. The temperature of the vapor refrigerant leaving the evaporator is found from output pressure and enthalpy in \cref{eq:T_v}
 
 \begin{align}
-	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml}             \\
-	Q_{mlv}   & = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma	\label{eq:Q_ml}  \\
-	Q_{mv}    & = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) \label{eq:Q_mv} \\
-	T_v       & = \Phi(p_{out}, h_{out}) \label{eq:T_v}
+	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml}             &  \\
+	Q_{mlv}   & = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma	\label{eq:Q_ml}&  \\
+	Q_{mv}    & = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) \label{eq:Q_mv} &  \\
+	T_v       & = \Phi(p_{out}, h_{out}) \label{eq:T_v}                        &  \\
+	T_{lv}    & = \Phi(p_{in}, h_{in}) \label{eq:T_v}                          &
 \end{align}
 
 where
