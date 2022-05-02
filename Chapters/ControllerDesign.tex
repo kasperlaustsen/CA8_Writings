@@ -37,9 +37,7 @@ In Matlab pole placement can be performed by the \textit{Place(A, B, poles)} fun
 
 
 \subsection{Linear Quadratic Regulator}
-In order to be able to easily and fast get a controller running to test the model from \cref{sec:mod} a Linear Quadratic Regulator or more specifically an infinite-horizon LQR is implemented. The LQR is an optimal control algorithm with respect to some cost function. It relies on a dynamic model of the controlled process which is available from the linearization done in \cref{sec:mod_lin}.
-
-Consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ representing the system states and $y(k)$ the measured outputs.
+The first control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referered to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ representing the system states, $u(k)$ the control inputs and $y(k)$ the measured outputs.\\\\
 
 \begin{equation} \label{eq:lqr_discrete_sys}
 	\begin{split}
@@ -48,7 +46,7 @@ Consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ repr
 	\end{split}
 \end{equation}
 
-For such a system the discrete IH-LQR algorithm could minimize a cost function of the type:
+A relevant cost function for this LQR problem would be on this form:
 
 \begin{equation} \label{eq:lqr_cost_fcn}
 	J = \sum_{k=0}^{\infty}\left( x(k)^TQx(k) + u(k)^TRu(k) + 2x(k)^TNu(k) \right)
@@ -63,17 +61,37 @@ where
 	\end{tabular}
 \end{center}
 
-The cross-term is ignored in this case by setting $N=0$. For such a cost function the squared of the states and control signals, multiplied with the weights Q and R, are minimized. Each element in the diagonal elements of Q and R are the costs associated with each state or input in the state and input vectors.\\
+The cross-term is typically ignored by setting $N=0$. The matrices Q and R are introduced to add weighs to the various states and inputs. This allows the engineer to penalize critical states and inputs harder than others. This is obviously generally useful, especially if deviations in certain states or inputs negatively impact the system energy consumption or could cause dangerous system behavior.\\
+%The algorithm requires access to all system states, either through measurement or estimation. The latter is achieved by the linear model designed in \cref{sec:mod_lin}. \\
 
-In matlab the lqr(A,B,Q,R, N) function is used to find the controller gain $(K)$.
+The fact that the LQR problem aims to set the states equal to zero, may sound like a undesirable goal. If a state is representative of a temperature measured in Kelvin, driving it to 0 is likely neither a realistic nor useful goal. However, lets recall the linearization of the system performed in \cref{sec:mod_lin}. The Taylor expansion did not only linearize the system, it also changed the psyical interpretation of the system states. Rather than being an absolute value, it is now the difference between the actual value and the equilibrium point used for linearization. This means that the LQR problem will seek to set this difference to 0, thus driving the system to the equilibrium point.\\
 
-Inherently since LQR is a regulator it will always drive the states and inputs to zero. From the linearisation in \cref{sec:mod_lin} it was shown that the A, B and Bd matrices were the Jacobian matrices. In \cref{eq:taylor} it is obvious that the continuous model is approximated from the deviation of the states, inputs and disturbances from the operating points. Thus the cost function with no cross-term cost becomes:
+Thus the cost function with no cross-term cost becomes:
 
 \begin{equation} \label{eq:lqr_cost_fcn}
 	J = \sum_{k=0}^{\infty}\left( \bar{x}(k)^TQ\bar{x}(k) + \bar{u}(k)^TR\bar{u}(k) \right)
 \end{equation}
 
-with $\bar{x} = x-x_o$ and $\bar{u} = u-u_o$ where $x_o$, $u_o$ are the linearisation equilibrium operating points of the states and inputs. In conclusion the LQR algorithm will keep the system close to the operating points. This is very appealing because of the linear system only being a good approximation exactly at the operating point.
+with $\bar{x} = x-x_o$ and $\bar{u} = u-u_o$ where $x_o$, $u_o$ are the linearisation equilibrium operating points of the states and inputs.
+
+The optimal feedback gain K can be shown to be
+
+\begin{equation} \label{eq:lqr_K}
+	K = R^{-1}B^{T}P
+\end{equation}
+
+where P is the unique solution to the algebraic Ricatti equation 
+\begin{equation} \label{eq:ricatti}
+	A^TP + PA - PBR^{-1}B^TP+Q = 0
+\end{equation}
+
+While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it is noted that it is found by following Pontryagin's minimum principle. Briefly described the process is to first define the Hamiltonian associated with the optimization problem. Differentiating the Hamiltonian with respect to the control signal u, yields the control gradient. By then setting the gradient equal to 0 and solving for u, the optimal control input is found.
+\\
+
+
+LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a gueranteed 6dB gain and $60^\circ$ phase margin.
+
+
 
 \subsection{LMI / MPC controller}
 Model Predictive Control (MPC) is, like the Linear Quadratic Regulator (LQR), an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints.\\
