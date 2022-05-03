@@ -64,7 +64,23 @@ When the Jacobian matrices are evaluated at the operating point, they in fact be
 	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{B}_d
 \end{equation}
 
-The only difference from a standard state space system...
+The linear model can then be expressed as such:
+
+\begin{equation} \label{eq:state_space_linear}
+	\begin{split}
+		\dot{x} & = A\bar{x} + B\bar{u} + B_d\bar{d} \\
+		\bar{y} & = C\bar{x}
+	\end{split}
+\end{equation}
+
+with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be described in section \cref{sec:ctrl}.\\
+\subsubsection{The Hartman-Grobman theorem}
+
+The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
+A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies the opposite: the state will follow a trajectory going from a fixed point to infinity as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
+
+While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and linearization should be performed at another equilibrium.
+
 
 \subsubsection{Model Simplifications}
 To model the behavior of the Hi-Fi simulation model, some simplifications with respect to the real system are made.
@@ -82,3 +98,92 @@ From observing the system matrix (A) it is apparent that the first two states ($
 
 When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error \todo[inline]{sikkert ikke sandt så skal sikkert rettes} and a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state. It is apparent that the system model does not in any way hold true to the physics of the real system and therefore such a fix which does not make sense in any physical context is considered acceptable.
 
+
+
+
+
+\subsubsection{Controllability and observability}
+When evaluating a state space system, it is highly relevant to investigate wether the system is controllable and observable. \\
+A system is said to be controllable iff there exists a control signal u(t), that can achieve $x(T) = \zeta$, for any $\zeta \in \mathbb{R} ^{n}$, under the constraints $T>0$ and $x(0)=0$. In practice, this means that the actuators are sufficient and able to alter all the states of the system. As a counter example, an uncontrollable system would have at least one state, which cannot be driven to \textit{any} value by the controller.\\
+Kalman's test for controlability allows for evaluation of the system. The test is to define the controlability matrix of the system:
+\begin{equation} 
+	Q_c = [A|B] = \begin{bmatrix}
+		B & AB & A^2B & \cdots & A^{n-1}B
+	\end{bmatrix}
+\end{equation}
+
+If $Q_c$ does not have full rank, the system is not controllable and action must be taken. This can be in form of adding the needed actuators or performing a Kalman decomposition, as discussed in the next section.\\
+
+Similarly to controlability, the system observability is highly relevant. A system is observable iff $y(t)=0 \Rightarrow x(t)=0$. This means that non of the states of system can have a non-zero value, if the measured outputs are zero. This guerantees that no dynamical action is happening that cannot be observed by measuring the outputs.\\
+
+Kalman's test for observability is comparable to the test for controlability. The observability matrix is defined.
+
+\begin{equation} 
+	Q_o = [A|C] = \begin{bmatrix}
+		C \\ CA \\ CA^2 \\ \vdots \\ CA^{n-1}
+	\end{bmatrix}
+\end{equation}
+
+If $Q_o$ does not have full rank, the system is not observable and action must be taken. This can be in form of adding the needed sensors or performing a Kalman decomposition, as discussed in the next section.\\
+
+
+\subsubsection{Kalman decomposition}
+If a system with n states is not fully observable, that is $Rank[A|C] = l < n$, it is nessesary to perform a decomposition of the system. This is known as a Kalman decomposition, and it seperates the system into its observable and unobservable parts. Note, that this is the Kalman decomposition for an unobservable system. There exists a Kalman decomposition for uncontrollable systems as well, but it is not presented here. The Kalman decomposition is in essence a change of basis $z=Px$, which will in turn transform the A, B, B$_d$ and C matrices of the system:
+
+
+\begin{equation} 
+	\begin{split}
+		\dot{x} & = Ax + Bu + B_dd \\
+		y & = Cx
+	\end{split}
+\end{equation}
+
+We define $x = P^{-1}z$ and substitute it for x
+
+\begin{equation} 
+	\begin{split}
+		P^{-1}\dot{z} & = AP^{-1}z + Bu + B_dd \\
+		y & = CP^{-1}z
+	\end{split}
+\end{equation}
+
+Isolating $\dot{z}$ yields
+
+\begin{equation} 
+	\begin{split}
+		\dot{z} & = PAP^{-1}z + PBu + PB_dd \\
+		y & = CP^{-1}z
+	\end{split}
+\end{equation}
+
+For the Kalman decomposition, there exists a nonsingular P  $\in \mathbb{R} ^{n x n}$ such that 
+\begin{equation} 
+	PAP^{-1} = \begin{bmatrix}
+		A_{11}       & 0 \\
+		A_{21}       & A_{22} \\
+	\end{bmatrix}
+\end{equation}
+
+and 
+
+\begin{equation} 
+	CP^{-1} = \begin{bmatrix}
+		C_{1}       & 0 \\
+	\end{bmatrix}
+\end{equation}
+
+where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, where p is the number of outputs.\\Futhermore the input and disturbance matrices are transformed as such:
+
+\begin{equation} 
+	PB = \begin{bmatrix}
+		B_1 \\
+		B_2
+	\end{bmatrix}, \
+	PB_d = \begin{bmatrix}
+		{B_d}_1 \\
+		{B_d}_2
+	\end{bmatrix}
+\end{equation}
+
+
+The matrices $A_{11}$ and $C_{1}$ constitute an observable subsystem, for which a controller can be designed. This controller will not have information about the state of the unobservable subsystem $A_{22}$. This necessitates that $A_{22}$ has to be internally stable, meaning its eigenvalues has to have negative real part, resulting in stable behavior when unperturbed.
