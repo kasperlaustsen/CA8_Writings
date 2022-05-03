@@ -362,6 +362,7 @@ where
 
 
 Secondly, it is assumed that the energy of the mixture does not change, meaning the energy flow in equals the energy flow out.
+
 \begin{align}
 	\dot{m}_{lv} \cdot  h_{lv}  - \dot{m}_{l} \cdot  h_{l} - \dot{m}_{v} \cdot  h_{v} & = 0
 	\label{eq:Flash_tank_energyflow}
@@ -393,9 +394,8 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$M(p)$			&  Lookup table of the specific enthalpy of saturated liquid	at pressure p		& [\si{J}/\si{kg}]\\
-		$N(p)$			&  Lookup table of the specific enthalpy of saturated vapour	at pressure p		& [\si{J}/\si{kg}] \\
-
+		$M(p)$ & Lookup table of bubble point specific enthalpy from pressure & [\si{J}/\si{kg}] \\
+		$N(p)$ & Lookup table of dew point specific enthalpy from pressure    & [\si{J}/\si{kg}]
 	\end{tabular}
 \end{center}
 
@@ -546,7 +546,7 @@ where
 	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml}             &  \\
 	Q_{mlv}   & = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma	\label{eq:Q_ml}&  \\
 	Q_{mv}    & = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) \label{eq:Q_mv} &  \\
-	T_v       & = \Phi(p_{out}, h_{out}) \label{eq:T_v}                        &  \\
+	T_v       & = THIS IS WRONG: \Phi(p_{out}, h_{out}) \label{eq:T_v}                        &  \\
 	T_{lv}    & = \Phi(p_{in}, h_{in}) \label{eq:T_v}                          &
 \end{align}
 
@@ -554,18 +554,18 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$Q_{amlv}$      & Heat flow from air to metal surrounding liquid-vapor CV                           & [\si{W}]                          \\
-		$Q_{mvmlv}$     & Heat flow from through from vapor CV metal to liquid-vapor CV metal               & [\si{W}]                          \\
-		$Q_{mlv}$       & Heat flow from evaporator metal to liquid-vapor CV                                & [\si{W}]                          \\
-		$Q_{mv}$        & Heat flow from evaporator metal to vapor CV                                       & [\si{W}]                          \\
-		$T_{mlv}$       & Temperature of metal on the liquid-vapor CV                                       & [\si{K}]                          \\
-		$T_{mv}$        & Temperature of metal on the vapor CV                                              & [\si{K}]                          \\
-		$T_{lv}$        & Saturation temperature for evaporation of the refrigerant                         & [\si{K}]                          \\
-		$T_{v}$         & Temperature of refrigerant (vapor) leaving the evaporator                         & [\si{K}]                          \\
-		$UA_1$          & Heat transfer coefficient from metal to liquid                                    & [\si{J}/\si{K}]                   \\
-		$UA_2$          & Heat transfer coefficient from metal to vapor                                     & [\si{J}/\si{K}]                   \\
-		$UA_3$          & Heat transfer coefficient from vapor CV metal to liquid-vapor CV metal            & [\si{J}/\si{K}]                   \\
-		$\Phi(p,h)$     & TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
+		$Q_{amlv}$  & Heat flow from air to metal surrounding liquid-vapor CV                           & [\si{W}]        \\
+		$Q_{mvmlv}$ & Heat flow from through from vapor CV metal to liquid-vapor CV metal               & [\si{W}]        \\
+		$Q_{mlv}$   & Heat flow from evaporator metal to liquid-vapor CV                                & [\si{W}]        \\
+		$Q_{mv}$    & Heat flow from evaporator metal to vapor CV                                       & [\si{W}]        \\
+		$T_{mlv}$   & Temperature of metal on the liquid-vapor CV                                       & [\si{K}]        \\
+		$T_{mv}$    & Temperature of metal on the vapor CV                                              & [\si{K}]        \\
+		$T_{lv}$    & Saturation temperature for evaporation of the refrigerant                         & [\si{K}]        \\
+		$T_{v}$     & Temperature of refrigerant (vapor) leaving the evaporator                         & [\si{K}]        \\
+		$UA_1$      & Heat transfer coefficient from metal to liquid                                    & [\si{J}/\si{K}] \\
+		$UA_2$      & Heat transfer coefficient from metal to vapor                                     & [\si{J}/\si{K}] \\
+		$UA_3$      & Heat transfer coefficient from vapor CV metal to liquid-vapor CV metal            & [\si{J}/\si{K}] \\
+		$\Phi(p,h)$ & TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
 	\end{tabular}
 \end{center}
 
@@ -578,6 +578,7 @@ The output pressure, specific enthalpies and mass balances are given by equation
 	h_{lv}             & = h_{in} + \frac{Q_{mlv}}{\dot{m}_{in}}                                                      \\
 	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}                                                     \\
 	h_{out}            & = h_v                                                                                        \\
+	T_{out}            & = T_v                                                                                        \\
 	\frac{dM_{lv}}{dt} & = \dot{m}_{in} - \dot{m}_{dew}                                                               \\
 	\frac{dM_v}{dt}    & = \dot{m}_{dew} - \dot{m}_{out}                   \label{eq:evap_dMvdt}                      \\
 	T_{sup}            & = T_{retfan} +  \frac{Q_{amlv} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \label{eq:evap_Tsup} \\
@@ -674,7 +675,11 @@ where
 \end{center}
 
 
-The return air temperature which is located before the evaporator fan is equal to the
+The return air temperature which is located before the evaporator fan is assumed to be equal to the box air temperature:
+
+\begin{equation} \label{eq:box_Tref}
+	T_{ret} = T_{air}
+\end{equation}
 
 
 
