@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-05-03T08:57:14.134Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="zf9kyAAi87l305dLjsqc" version="17.5.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-05-03T08:58:34.671Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="zDJxdLt_zQWXt1EQK8yE" version="17.5.0" type="github">
   <diagram id="maX6PPkqGkgQO3d0mOUZ" name="New">
     <mxGraphModel dx="475" dy="245" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
       <root>
@@ -569,7 +569,7 @@
           <mxGeometry x="295.5" y="359" width="80" height="57" as="geometry" />
         </mxCell>
         <mxCell id="2IGsuQoMTE90SmOeLrJ3-23" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: helvetica; font-style: normal; font-weight: normal; letter-spacing: normal; text-align: center; text-indent: 0px; text-transform: none; word-spacing: 0px; background-color: rgb(248, 249, 250); text-decoration: none; display: inline; float: none; font-size: 14px;&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;\begin{bmatrix} T_{air}, T_{box}, T_{cargo} \end{bmatrix}&lt;/font&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="a6acP2pozzWjvfzwrBKU-1">
-          <mxGeometry x="28" y="362" width="80" height="57" as="geometry" />
+          <mxGeometry x="14" y="360" width="80" height="57" as="geometry" />
         </mxCell>
         <mxCell id="2IGsuQoMTE90SmOeLrJ3-24" value="" style="endArrow=classic;html=1;rounded=0;jumpStyle=arc;jumpSize=10;fontSize=14;" edge="1" parent="a6acP2pozzWjvfzwrBKU-1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
