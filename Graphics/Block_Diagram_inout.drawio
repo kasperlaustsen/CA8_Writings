@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-05-03T08:58:34.671Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="zDJxdLt_zQWXt1EQK8yE" version="17.5.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-05-03T09:00:09.478Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="YVoy3G294q9CHAL3FZGK" version="17.5.0" type="github">
   <diagram id="maX6PPkqGkgQO3d0mOUZ" name="New">
-    <mxGraphModel dx="475" dy="245" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
+    <mxGraphModel dx="1732" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
       <root>
         <mxCell id="a6acP2pozzWjvfzwrBKU-0" />
         <mxCell id="a6acP2pozzWjvfzwrBKU-1" parent="a6acP2pozzWjvfzwrBKU-0" />
@@ -33,25 +33,25 @@
             <mxPoint x="671" y="380" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-0" value="Compressor &lt;br style=&quot;font-size: 14px;&quot;&gt;stage 1&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-0" value="Compressor &lt;br style=&quot;font-size: 14px&quot;&gt;stage 1&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="297.5" y="70" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-2" value="&lt;div style=&quot;font-size: 14px;&quot;&gt;Compressor&amp;nbsp;&lt;/div&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;div style=&quot;font-size: 14px;&quot;&gt;stage 2&lt;/div&gt;&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/div&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;align=center;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-2" value="&lt;div style=&quot;font-size: 14px&quot;&gt;Compressor&amp;nbsp;&lt;/div&gt;&lt;span style=&quot;font-size: 14px&quot;&gt;&lt;div style=&quot;font-size: 14px&quot;&gt;stage 2&lt;/div&gt;&lt;div style=&quot;font-size: 14px&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;/div&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;align=center;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="897.5000000000002" y="70" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-4" value="Condenser&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-4" value="Condenser&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="897.5000000000002" y="320.0000000000001" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-6" value="Condenser throttle&lt;br style=&quot;font-size: 14px;&quot;&gt;valve&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-6" value="Condenser throttle&lt;br style=&quot;font-size: 14px&quot;&gt;valve&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="897.5000000000002" y="570" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-8" value="Flash tank&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-8" value="Flash tank&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="597.5000000000002" y="570" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-10" value="Evaporator&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-10" value="Evaporator&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="297.5" y="320.0000000000001" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-12" value="Expansion valve&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-12" value="Expansion valve&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="297.5" y="570" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
         <mxCell id="EQVUS-7tTAIxQR2iRs7y-19" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.006;entryY=0.875;entryDx=0;entryDy=0;fontSize=14;edgeStyle=orthogonalEdgeStyle;entryPerimeter=0;dashed=1;dashPattern=1 1;" parent="a6acP2pozzWjvfzwrBKU-1" edge="1">
@@ -126,13 +126,13 @@
             <mxPoint x="10" y="-10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="EQVUS-7tTAIxQR2iRs7y-34" value="Pipe Joining &lt;br style=&quot;font-size: 14px;&quot;&gt;Junction&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="EQVUS-7tTAIxQR2iRs7y-34" value="Pipe Joining &lt;br style=&quot;font-size: 14px&quot;&gt;Junction&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="597.5000000000005" y="70" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
         <mxCell id="M3D5h5YDdG_GwLnv0Bj_-5" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;\dot{m}_5&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
           <mxGeometry x="520.1275000000005" y="652.0000000000002" as="geometry" />
         </mxCell>
-        <mxCell id="f2Dl9Xk0tZvhv3cU8BBC-0" value="Box&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
+        <mxCell id="f2Dl9Xk0tZvhv3cU8BBC-0" value="Box&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="5" y="320.0000000000001" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
         <mxCell id="f2Dl9Xk0tZvhv3cU8BBC-8" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=14;dashed=1;dashPattern=1 1;" parent="a6acP2pozzWjvfzwrBKU-1" target="EQVUS-7tTAIxQR2iRs7y-4" edge="1">
