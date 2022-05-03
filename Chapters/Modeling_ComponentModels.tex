@@ -361,11 +361,11 @@ where
 \end{center}
 
 
-Secondly, it is assumed that the energy of the mixture does not change, meaning the energy flow in equals the energy flow out.
+Secondly, it is assumed that the energy of the mixture and mass of mixture does not change, meaning the energy flow and mass flow in equals the energy flow and mass flow out respectively.
 
 \begin{align}
-	\dot{m}_{lv} \cdot  h_{lv}  - \dot{m}_{l} \cdot  h_{l} - \dot{m}_{v} \cdot  h_{v} & = 0
-	\label{eq:Flash_tank_energyflow}
+	\dot{m}_{lv} \cdot  h_{lv}  - \dot{m}_{l} \cdot  h_{l} - \dot{m}_{v} \cdot  h_{v} & = 0 \label{eq:Flash_tank_energyflow} \\
+	\dot{m}_{lv} - \dot{m}_{l} - \dot{m}_{v} & = 0  \label{eq:Flash_tank_massflow} \\
 \end{align}
 
 where
@@ -387,7 +387,7 @@ Lastly, it is assumed that the separated liquid and vapor leaves at boiling poin
 
 \begin{align}
 	h_{l}  & = M(p)\\
-	h_{v}  & = N(p)\\
+	h_{v}  & = N(p)
 \end{align}
 
 where
@@ -398,6 +398,8 @@ where
 		$N(p)$ & Lookup table of dew point specific enthalpy from pressure    & [\si{J}/\si{kg}]
 	\end{tabular}
 \end{center}
+
+The knowledge of the specific enthalpy from the look up tables leaves \cref{eq:Flash_tank_energyflow} and \cref{eq:Flash_tank_massflow} with two unknowns that can be solved, namely $ m_l $ and $ m_v $.
 
 \subsubsection{Subcooling throttle}
 The subcooling throttle valve is used differently from the two other valves in the system. During normal operation it is fully open, acting as a pipe. It can be closed fully allowing for various speciel functionalities. Firstly, shutting it off allows for detecting the amount of refridgerant in the system. This is a convenient diagnostic feature which helps ensuring that the system has enough refridgerant to properly function, and enabling leakage detection. Secondly, closing the valve while fully opening the condenser throttle valve, allows the system to operate as a standard refridgeration system, with only one valve between the evaporator and condenser.
