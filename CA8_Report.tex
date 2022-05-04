@@ -73,6 +73,11 @@
 % Set margins - The IEEE margins are WAY too thin..
 \usepackage[letterpaper, left=25mm, right=25mm, bottom=25mm, top=25mm]{geometry}
 
+% Allows highlighting of equations with red box around
+\usepackage[skins,theorems]{tcolorbox}
+\tcbset{highlight math style={enhanced,
+		colframe=red,colback=white,arc=0pt,boxrule=1pt}}
+
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
 

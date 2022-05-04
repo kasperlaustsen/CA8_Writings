@@ -337,12 +337,12 @@ where
 \end{center}
 
 
-To accommodate the missing pressure $ p_3 $ in \cref{fig:Block_diagram_inout}, a new state is needed for the pressure in the condenser. The following shows the derivation of that state from the mass balance in \cref{eq:Condenser_ChangeOfMass}.
+To accommodate the missing pressure $ p_3 $ in \cref{fig:Block_diagram_inout}, a new state is needed for the pressure in the condenser. The following shows the derivation of that state from the mass balance in \cref{eq:Condenser_ChangeOfMass}. We use the fact that the mass in the control volume consists of two seperate masses, the liquid mass $ M_l $ and the vapor mass $ M_v $. 
 
 \begin{align}
 		 		\frac{d \bigl(M_{l} + M_{v}\bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t) 		\label{eq:Condenser_pres1}\\
-		 		\frac{d \Bigl(\cdot V_l(t) + \rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres2}\\
-		 		\frac{d \bigl(\cdot V_l(t)\bigr)}{dt} + \frac{d \Bigl(\rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres3}
+		 		\frac{d \Bigl(\rho_{l}\bigl(P(t)\bigr)\cdot V_l(t) + \rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres2}\\
+		 		\frac{d \Bigl(\rho_{l}\bigl(P(t)\bigr)\cdot V_l(t)\Bigr)}{dt} + \frac{d \Bigl(\rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres3}
 \end{align}
 
 Utilizing the product rule for differentiation for each of the derivative terms on the LHS of \cref{eq:Condenser_pres3} yields \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5}. 
@@ -353,8 +353,8 @@ Utilizing the product rule for differentiation for each of the derivative terms 
 The first term of the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} can then be expanded using the chain rule as seen in \cref{eq:Condenser_pres6}
 
 \begin{align}
-	\frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} 				& =   \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt}	\label{eq:Condenser_pres6} \\
-		\frac{d \rho_{v}\bigl(P(t)\bigr)}{dt} 			& =   \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt}	\label{eq:Condenser_pres7} 
+	\frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} 				& =   \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt}	\label{eq:Condenser_pres6} \\
+		\frac{d \rho_{v}\bigl(P(t)\bigr)}{dt} 			& =   \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt}	\label{eq:Condenser_pres7} 
 \end{align}
 
 Now the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} are substituted into the LHS of \cref{eq:Condenser_pres3} yielding \cref{eq:Condenser_pres8}. \\
@@ -378,7 +378,7 @@ Now the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} are subst
 
 \begin{equation}\label{eq:Condenser_pres9}
 	\begin{split}
-		& \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +   
+		& \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +   
 		\rho_{v}\bigl(P(t)\bigr)\cdot\frac{d \bigl(V_{tot} - V_l(t)\bigr)}{dt}  \\ &= \dot{m}_{in}(t) - \dot{m}_{out}(t)
 	\end{split}
 \end{equation}
@@ -386,13 +386,24 @@ Now the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} are subst
 To simplify the equation we assume that the volumes of the liquid and vapor parts are constant, i.e. $ V_l(t) = c_1$, yielding \cref{eq:Condenser_pres10}
 
 \begin{align}
-		\frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot \bigl(V_{tot} - c_1\bigr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres10} \\
-		 \frac{P(t)}{dt} \cdot \Biggl( \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) \Biggr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres11}  
+		\frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot \bigl(V_{tot} - c_1\bigr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres10} \\
+		 \frac{dP(t)}{dt} \cdot \Biggl( \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) \Biggr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres11}  
 \end{align}
+Now the state equation for the pressure can be found be isolating $ P(t) $ as in \cref{eq:Condenser_pres12}
 \begin{align}
-	\frac{P(t)}{dt} & = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \dfrac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \dfrac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) } \label{eq:Condenser_pres12} 
+	\frac{dP(t)}{dt} & = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \dfrac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \dfrac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) } \label{eq:Condenser_pres12} 
 \end{align}
 
+We can then use table lookups to evaluate the derivatives of the density with respect to the pressure as in \cref{eq:Condenser_pres13} for respectively saturated vapor and saturated liquid.
+
+\begin{align}
+		\left. \dfrac{d \rho_l\bigl(P(t)\bigr)}{P(t)} \right |_{P = P(t)} & = \mathcal{F}(P(t)) \label{eq:Condenser_pres13} \\
+		\left. \dfrac{d \rho_v\bigl(P(t)\bigr)}{P(t)} \right |_{P = P(t)} & = \mathcal{G}(P(t)) \label{eq:Condenser_pres14}
+\end{align}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dP(t)}{dt} = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \mathcal{F}(P) \cdot c_1 +  \mathcal{G}(P) \cdot \bigl(V_{tot} - c_1\bigr) }}
+\end{equation}
 
 \subsubsection{Flash tank}
 The flash tank in combination with the condenser throttle valve serves to reduce the amount of high enthalpy flash gas delivered to the evaporator. The condenser throttle valve, whose model is identical to the expansion valve, lowers the pressure of the liquid from the condenser. This naturally lowers the temperature, but also generates some amount of flash gas. The flash tank then separates the liquid-vapor mixture and passes only the liquid to the expansion valve. The flash gas is returned to the second stage of the compressor, where it is reused. Thus, a lower amount of flash gas will be generated by the expansion valve, as the pressure of the liquid is already lowered, and the resulting flash gas from the condenser throttle valve is led to compressor stage 2.
