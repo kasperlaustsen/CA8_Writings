@@ -31,7 +31,7 @@ where
 \end{center}
 
 \subsubsection{Expansion valve}
-The flow through an expansion valve is proportional to the square root of the pressure drop across it, where the proportional constants relies on physical properties of the valve and refrigerant.
+Because of the very small internal volume of the expansion valve it can be considered an adiabatic process. Therefore it can be modeled purely algebraically as in \cref{eq:ExpansionValve}. The flow through the expansion valve is proportional to the square root of the pressure drop across it, where the proportional constants relies on physical properties of the valve and refrigerant.
 \begin{equation} \label{eq:ExpansionValve}
 	\dot{m}= C A \sqrt{\rho\Delta p}
 \end{equation}
@@ -48,17 +48,18 @@ where
 	\end{tabular}
 \end{center}
 
-To model the way that the valve is intended to be controlled, an alternative representation is introduced for the mass flow through an expansion valve in \cref{eq:ExpansionValve_DutyCycle}
+To model the way that the valve is intended to be controlled, an alternative representation is introduced for the mass flow through an expansion valve in \cref{eq:ExpansionValve_Alt}. If the valve characteristics C and A are not available they can be combined into a single constant (K) which is found from empirical tests.
 
 
-\begin{equation} \label{eq:ExpansionValve_DutyCycle}
+\begin{equation} \label{eq:ExpansionValve_Alt}
 	\begin{split}
-		\dot{m} &= f_p(\Theta) \cdot K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})}\\
-		K 			&= C A
+		\dot{m} & = f_p(\Theta) K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})} \\
+		K       & = C A
 	\end{split}
 \end{equation}
 
 where
+
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\dot{m}$     & Flow through valve                                                  & [\si{kg}/\si{s}]   \\
@@ -71,7 +72,13 @@ where
 	\end{tabular}
 \end{center}
 
-The function $f_p()$ of the opening degree is used to model the non linear behavior of the opening degree ($ \Theta $) - flow ($ \dot{m} $) relationship in the valve. The valve is an equal-percentage type valve, meaning for an increase in opening degree you get a relative increase in flow. This is illustrated in \cref{fig:equal_percent_valve}.
+Rewriting the equation to solve for $p_{out}$ it becomes the following. A real assumption is that the flow is always moving in one direction and therefore the flow is simply squared without regard for keeping flow sign.
+
+\begin{equation}
+	p_{out} = p_{in} - \dot{m}^2 \dfrac{v_{in}}{(f_p(\Theta) K)^2}
+\end{equation}
+
+The function $f_p()$ of the opening degree is used to model the non linear behavior of the opening degree ($ \Theta $) - flow ($ \dot{m} $) relationship in the valve. The valve is an equal-percentage type valve, meaning for an increase in opening degree a relative increase in flow is achieved. This is illustrated in \cref{fig:equal_percent_valve}.
 
 \begin{figure}[h!]
 	\centering
