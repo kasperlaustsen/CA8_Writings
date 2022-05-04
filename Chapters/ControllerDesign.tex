@@ -37,19 +37,19 @@ In Matlab pole placement can be performed by the \textit{Place(A, B, poles)} fun
 
 
 \subsection{Linear Quadratic Regulator}
-The first control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referered to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ representing the system states, $u(k)$ the control inputs and $y(k)$ the measured outputs.\\\\
+The first control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referered to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ representing the system states, $u(k)$ the control inputs and $y(k)$ the measured outputs.\\
 
 \begin{equation} \label{eq:lqr_discrete_sys}
 	\begin{split}
-		x(k+1) 	& = Ax(k) + Bu(k) \\
-		y(k) 	& = Cx(k)
+		\dot{x} 	& = Ax + Bu \\
+		y 	& = Cx
 	\end{split}
 \end{equation}
 
 A relevant cost function for this LQR problem would be on this form:
 
 \begin{equation} \label{eq:lqr_cost_fcn}
-	J = \sum_{k=0}^{\infty}\left( x(k)^TQx(k) + u(k)^TRu(k) + 2x(k)^TNu(k) \right)
+	J = \int_0^{\infty} \left(x^TQx + u^TRu + 2x^TNu\right)dt
 \end{equation}
 
 where
@@ -61,15 +61,18 @@ where
 	\end{tabular}
 \end{center}
 
-The cross-term is typically ignored by setting $N=0$. The matrices Q and R are introduced to add weighs to the various states and inputs. This allows the engineer to penalize critical states and inputs harder than others. This is obviously generally useful, especially if deviations in certain states or inputs negatively impact the system energy consumption or could cause dangerous system behavior.\\
+The cross-term is typically ignored by defining $N=0$. The matrices Q and R are introduced to add weights to the various states and inputs. This allows the engineer to penalize critical states and inputs more than others. This is obviously generally useful, especially if deviations in certain states or inputs negatively impact the system energy consumption or could cause dangerous system behavior.\\
 %The algorithm requires access to all system states, either through measurement or estimation. The latter is achieved by the linear model designed in \cref{sec:mod_lin}. \\
 
-The fact that the LQR problem aims to set the states equal to zero, may sound like a undesirable goal. If a state is representative of a temperature measured in Kelvin, driving it to 0 is likely neither a realistic nor useful goal. However, lets recall the linearization of the system performed in \cref{sec:mod_lin}. The Taylor expansion did not only linearize the system, it also changed the psyical interpretation of the system states. Rather than being an absolute value, it is now the difference between the actual value and the equilibrium point used for linearization. This means that the LQR problem will seek to set this difference to 0, thus driving the system to the equilibrium point.\\
+The value of Q and R is a choice the control engineer must make. While it in practicality requires some amount of trial-and-error iteration, there are methods for choosing a reasonable starting value. An often used tuning method to obtain initial Q and R matrices is following Bryson's rule. It states that the state x$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(x_{\textit{i}}\right)^2}$. Similarly the control input u$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(u_{\textit{i}}\right)^2}$. This effectively scales the maximum value of all entries in the cost function J to 1. This is particularly useful, when the states and inputs are have numerically large differences.\\
+
+
+The fact that the LQR problem aims to set the states equal to zero, may sound like a undesirable goal. If a state is representative of a temperature measured in Kelvin, driving it to 0 is likely neither a realistic nor useful goal. However, lets recall the linearization of the system performed in \cref{sec:mod_lin}. The first order Taylor expansion did not only linearize the system, it also changed the psyical interpretation of the system states. Rather than being an absolute value, it is now the difference between the actual value and the equilibrium point used for linearization. This means that the LQR problem will seek to set this difference to 0, thus driving the system to the equilibrium point.\\
 
 Thus the cost function with no cross-term cost becomes:
 
 \begin{equation} \label{eq:lqr_cost_fcn}
-	J = \sum_{k=0}^{\infty}\left( \bar{x}(k)^TQ\bar{x}(k) + \bar{u}(k)^TR\bar{u}(k) \right)
+	J = \int_0^{\infty} \left( \bar{x}^TQ\bar{x} + \bar{u}^TR\bar{u} \right)dt
 \end{equation}
 
 with $\bar{x} = x-x_o$ and $\bar{u} = u-u_o$ where $x_o$, $u_o$ are the linearisation equilibrium operating points of the states and inputs.
@@ -89,7 +92,7 @@ While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it 
 \\
 
 
-LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a gueranteed 6dB gain and $60^\circ$ phase margin.
+LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a gueranteed 6dB gain- and $60^\circ$ phase margin.
 
 
 
