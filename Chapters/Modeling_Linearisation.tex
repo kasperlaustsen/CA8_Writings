@@ -2,8 +2,8 @@ A general state space system is typically defined on the form in \cref{eq:state_
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
-		\dot{\textbf{x}} & = \textbf{A}\textbf{x} + \textbf{B}\textbf{u} + \textbf{B}_d\textbf{d} \\
-		\textbf{y} 		& = \textbf{C}\textbf{x}
+		\dot{x} & = Ax + Bu + B_dd \\
+		y 		& = Cx
 	\end{split}
 \end{equation}
 
@@ -11,44 +11,44 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$\textbf{x}$       & State vector                    &  \\
-		$\dot{\textbf{x}}$ & Time derivative of state vector &  \\
-		$\textbf{y}$       & Output vector                   &  \\
-		$\textbf{d}$       & Disturbance vector              &  \\
-		$\textbf{A}$       & System matrix                   &  \\
-		$\textbf{B}$       & Controllable input matrix       &  \\
-		$\textbf{B}_d$     & Disturbance input matrix        &  \\
-		$\textbf{C}$       & Output matrix                   &
+		$x$       & State vector                    &  \\
+		$\dot{x}$ & Time derivative of state vector &  \\
+		$y$       & Output vector                   &  \\
+		$d$       & Disturbance vector              &  \\
+		$A$       & System matrix                   &  \\
+		$B$       & Controllable input matrix       &  \\
+		$B_d$     & Disturbance input matrix        &  \\
+		$C$       & Output matrix                   &
 	\end{tabular}
 \end{center}
 
-A prerequisite for making a controller is that the system model used for making the controller is linear. This chapter examines the linearisation of the non-linear model found in \cref{sec:mod}. Linearisation is achieved through a first order Taylor expansion.
+A prerequisite for controller design is that the system model used for making the controller is linear. This chapter examines the linearisation of the non-linear model found in \cref{sec:mod}. Linearisation is achieved through a first order Taylor expansion.
 
-Consider some system $\dot{\textbf{x}} = \textbf{f}(\textbf{x},\textbf{u},\textbf{d})$ with \textbf{x} a vector of system states, \textbf{u} a vector of controlled inputs, and \textbf{d} a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($\textbf{x}_o, \textbf{u}_o, \textbf{d}_o$) as such:
+Consider some system $\dot{x} = f(x,u,d)$ with \textbf{x} a vector of system states, u a vector of controlled inputs, and d a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
 
 \begin{equation} \label{eq:taylor}
-	\dot{\textbf{x}}   \approx   \textbf{f}(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o)   +
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{x}-\textbf{x}_0) +
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{u}-\textbf{u}_0) +
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} \cdot (\textbf{d}-\textbf{d}_0)
+	\dot{x}   \approx   f(x_o, u_o, d_o)   +
+	\left. \dfrac{\partial f}{\partial x} \right |_{x_o, u_o, d_o} \cdot (x-x_0) +
+	\left. \dfrac{\partial f}{\partial u} \right |_{x_o, u_o, d_o} \cdot (u-u_0) +
+	\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} \cdot (d-d_0)
 \end{equation}
 
-In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, inputs and disturbances).
+In \cref{eq:taylor} $f(x_o, u_o, d_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, inputs and disturbances).
 
 \begin{equation} \label{eq:jacobians}
-	\dfrac{\partial \textbf{f}}{\partial \textbf{x}} =
+	\dfrac{\partial f}{\partial x} =
 		\begin{bmatrix}
 			\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} & \\
 			\vdots & \ddots & \vdots & \\
 			\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_n} &
 		\end{bmatrix}, \
-	\dfrac{\partial \textbf{f}}{\partial \textbf{u}} =
+	\dfrac{\partial f}{\partial u} =
 		\begin{bmatrix}
 			\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_n} & \\
 			\vdots & \ddots & \vdots & \\
 			\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_n} &
 		\end{bmatrix}, \
-	\dfrac{\partial \textbf{f}}{\partial \textbf{d}} =
+	\dfrac{\partial f}{\partial d} =
 		\begin{bmatrix}
 			\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_n} & \\
 			\vdots & \ddots & \vdots & \\
@@ -56,12 +56,12 @@ In \cref{eq:taylor} $f(\textbf{x}_o, \textbf{u}_o, \textbf{d}_o) = 0$ because th
 		\end{bmatrix}
 \end{equation}
 
-When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ \textbf{A} $, $ \textbf{B} $ and $ \textbf{B}_d  $ of the linear system:
+When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ A $, $ B $ and $ B_d  $ of the linear system:
 
 \begin{equation}
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{x}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{A}, \
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{u}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{B}, \
-	\left. \dfrac{\partial \textbf{f}}{\partial \textbf{d}} \right |_{\textbf{x}_o, \textbf{u}_o, \textbf{d}_o} = \textbf{B}_d
+	\left. \dfrac{\partial f}{\partial x} \right |_{x_o, u_o, d_o} = A, \;\;\;\;\;\;\;\;\;\;
+	\left. \dfrac{\partial f}{\partial u} \right |_{x_o, u_o, d_o} = B, \;\;\;\;\;\;\;\;\;\;
+	\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} = B_d
 \end{equation}
 
 The linear model can then be expressed as such:
@@ -73,13 +73,13 @@ The linear model can then be expressed as such:
 	\end{split}
 \end{equation}
 
-with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be described in section \cref{sec:ctrl}.\\
+with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in section \cref{sec:ctrl}.\\
 \subsubsection{The Hartman-Grobman theorem}
 
 The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
 A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies the opposite: the state will follow a trajectory going from a fixed point to infinity as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
 
-While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and linearization should be performed at another equilibrium.
+While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearization should be performed at another equilibrium.
 
 
 \subsubsection{Model Simplifications}
