@@ -94,10 +94,23 @@ While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it 
 
 LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a gueranteed 6dB gain- and $60^\circ$ phase margin.
 
+\subsubsection{Integral action}
+In most control problems it is often the goal to keep an output at a reference value. The methods of achiving this are many, but the most commonly used are reference scaling and integral action. Reference
 
+LQR does not inherently have integral action, in the definition that it does not drive the output to a reference value. As stated previously, it attempts to set the states to zero. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
+ \begin{equation} \label{eq:ricatti}
+ 	\tilde{x} = \begin{bmatrix}
+ 		x \\ x_i
+ 	\end{bmatrix}
+ \end{equation}
+
+where $x_i = y-r$.\\
+
+This approach allows the user to set a reference for this state, and design a controller that minimizes the difference between the two. If the reference for $x_i$ is 0, the controller will set $x_i = 0$, which satisfies $y = r$. This poses a conflicting objective for the LQR algorithm however, as it will attempt to set \textit{all} states equal to zero. Since y is a linear function of the state vector $y = Cx$, where x is already being driving to zero, requiring $y=r$ is only sensible if $r=0$.
+Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. The result is that achieving $$
 
 \subsection{LMI / MPC controller}
-Model Predictive Control (MPC) is, like the Linear Quadratic Regulator (LQR), an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints.\\
+Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints.\\
 
 At every time sample the MPC controller
 \begin{enumerate}
