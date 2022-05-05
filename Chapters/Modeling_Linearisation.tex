@@ -78,7 +78,7 @@ with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_
 Following the linearisation we obtain the following system matrices:
 
 \begin{equation}  \label{eq:A_full}
-	A_{Full} = 
+	A_{Full} =
 	\left(\begin{array}{ccccccccccc}
 		0 & 0 & \text{1.9828e-04} & 0 & 0 & 0 & 0 & \text{3.8170e-09} & 0 & 0 & 0\\
 		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
@@ -120,6 +120,26 @@ Removing states 1 and 2, which are $M_{PJJ}$ and $M_{Con}$, results in the follo
 
 
 
+
+
+
+
+
+
+
+
+\subsubsection{The Hartman-Grobman theorem}
+
+The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
+A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies the opposite: the state will follow a trajectory going from a fixed point to infinity as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
+
+While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearization should be performed at another equilibrium.
+
+
+\subsubsection{Model Simplifications}
+To reduce the complexity of the model and controller synthesis we seek to reduce the number of states.
+From observing the linearised system matrix \cref{eq:A_full} it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states except themselves. They are therefore omitted leaving us with smaller dimensions. In practice this means removing the first two rows and columns of A, rows of B and columns of C, yielding \cref{eq:A} \cref{eq:B} \cref{eq:C}
+
 \begin{equation}  \label{eq:A}
 	A = \left(\begin{array}{ccccccccc}
 		-0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
@@ -154,33 +174,7 @@ Removing states 1 and 2, which are $M_{PJJ}$ and $M_{Con}$, results in the follo
 	\end{array}\right)
 \end{equation}
 
-
-
-
-
-
-
-
-
-
-\subsubsection{The Hartman-Grobman theorem}
-
-The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
-A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies the opposite: the state will follow a trajectory going from a fixed point to infinity as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
-
-While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearization should be performed at another equilibrium.
-
-
-\subsubsection{Model Simplifications}
-To reduce the complexity of the model and controller synthesis we seek to reduce the number of states.
-From observing the linearised system matrix (A) it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states except themselves.
-
-
-They are not important with regards to any of the controlled states and are thus simply deleted from the system. In practice this means removing the first two: rows and columns of A, rows of B and columns of C.
-
-When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error \todo[inline]{sikkert ikke sandt så skal sikkert rettes} and a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state. It is apparent that the system model does not in any way hold true to the physics of the real system and therefore such a fix which does not make sense in any physical context is considered acceptable.
-
-
+When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error and a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state.
 
 
 
