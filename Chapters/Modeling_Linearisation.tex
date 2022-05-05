@@ -123,6 +123,7 @@ If $Q_o$ does not have full rank, the system is not observable and action must b
 
 
 \subsubsection{Kalman decomposition}
+\label{sec:kalman}
 If a system with n states is not fully observable, that is $Rank[A|C] = l < n$, it is nessesary to perform a decomposition of the system. This is known as a Kalman decomposition, and it seperates the system into its observable and unobservable parts. Note, that this is the Kalman decomposition for an unobservable system. There exists a Kalman decomposition for uncontrollable systems as well, but it is not presented here. The Kalman decomposition is in essence a change of basis $z=Px$, which will in turn transform the A, B, B$_d$ and C matrices of the system:
 
 

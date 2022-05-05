@@ -1,1 +1,9 @@
-Benchmark against Bitzers current controller
+\subsection{Reduced model verification}
+
+The model derived in \cref{sec:kalman} is to be used as an observer for the system. Control signals will be calculated using the esimated states from this model. To verify the model, it is initially tested as an observer to the larger model from \cref{sec:mod_lin}.\\
+
+A Luenberg observer gain has been designed to ensure accuracy in the estimated output of the reduced model. Any error between the actual output and estimated output will be multiplied by L and added to the $\dot{\hat{x}}$. If $A-LC$ is stable, this topology will ensure $y = \hat{y}$ and if the states are observable (which the Kalman Decomposition ensures they are) $x=\hat{x}$. This is only true in the absence of disturbances. If any such are present, the proportional observer gain will not be sufficient to estimate the states, and integral action should be included.
+
+The observer poles $\text{eig}(A-LC)$ are chosen to be have the same angle as the closed loop poles $\text{eig}(A-BK)$ but with a 5 times larger magnitude. This ensures the observer is always faster then the system dynamics, and nothing happens with $x$ that is not clear by looking the observer states $\hat{x}$.\\
+
+For the test all states $x$ are initialised with the value 1. This is an arbitrary value, and merely chosen to verify that all states are driven to zero, and the observed state vector $\hat{x}$ converges to $x$. We briefly recall that in this coordinate system $x=0$ physically means $x-x_o = 0 \rightarrow x=x_o$. The control signal u is defined as $u=K\hat{x}$.
