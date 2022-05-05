@@ -77,7 +77,50 @@ with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_
 
 Following the linearisation we obtain the following system matrices:
 
-\begin{equation}
+\begin{equation}  \label{eq:A_full}
+	A_{Full} = 
+	\left(\begin{array}{ccccccccccc}
+		0 & 0 & \text{1.9828e-04} & 0 & 0 & 0 & 0 & \text{3.8170e-09} & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		0 & 0 & -0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0.6452 & -0.4726 & 0.1702 & -1.1899 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & -0.3475 & 0.0069 & -0.2684 & -0.3600 & 0 & 0.0953 & 0 & 0\\
+		0 & 0 & 0 & 0 & -0.0064 & 0 & -0.0251 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0.0064 & 0 & 0.0251 & -\text{3.8170e-09} & 0 & 0 & 0\\
+		0 & 0 & 0 & -0.2624 & 0.6293 & 0 & 0 & 0 & -2.4729 & 0.0228 & 1.8208\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \text{5.6180e-05} & -\text{1.1236e-04} & 0\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045
+	\end{array}\right)
+\end{equation}
+
+\begin{equation}  \label{eq:B_full}
+	B_{Full} = \left(\begin{array}{ccccc}
+		-0.0227 & -\text{2.3156e-04} & 0.0021 & 0 & 0\\
+		0.0230 & 0 & -0.0020 & 0 & 0\\
+		0 & 0 & 0 & -0.0101 & 0\\
+		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
+		0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & \text{8.3101e-04}\\
+		0 & \text{5.0703e-04} & 0 & 0 & 0\\
+		\text{5.6955e-07} & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0.0055\\
+		0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0
+	\end{array}\right)
+\end{equation}
+
+\begin{equation}  \label{eq:C_full}
+	C_{Full} =\left(\begin{array}{ccccccccccc}
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
+	\end{array}\right)
+\end{equation}
+
+Removing states 1 and 2, which are $M_{PJJ}$ and $M_{Con}$, results in the following reduced model:
+
+
+
+\begin{equation}  \label{eq:A}
 	A = \left(\begin{array}{ccccccccc}
 		-0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
 		0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
@@ -91,7 +134,7 @@ Following the linearisation we obtain the following system matrices:
 	\end{array}\right)
 \end{equation}
 
-\begin{equation}
+\begin{equation}  \label{eq:B}
 	B = \left(\begin{array}{ccccc}
 		0 & 0 & 0 & -0.0101 & 0\\
 		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
@@ -105,11 +148,17 @@ Following the linearisation we obtain the following system matrices:
 	\end{array}\right)
 \end{equation}
 
-\begin{equation}
+\begin{equation}  \label{eq:C}
 	C =\left(\begin{array}{ccccccccc}
 		0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
 	\end{array}\right)
 \end{equation}
+
+
+
+
+
+
 
 
 
@@ -224,7 +273,7 @@ The matrices $A_{11}$ and $C_{1}$ constitute an observable subsystem, for which 
 
 The matrices $A_{11}$, $B_{1}$ and $C_{1}$ are obtained:
 
-\begin{equation}
+\begin{equation}  \label{eq:A11}
 	A_{11} = \left(\begin{array}{ccccccc}
 		-0.1000 & 0 & 0 & 0 & 0 & 0 & 0\\
 		0.6452 & -0.4726 & 0.1702 & -1.1899 & 0 & 0 & 0\\
@@ -236,7 +285,7 @@ The matrices $A_{11}$, $B_{1}$ and $C_{1}$ are obtained:
 	\end{array}\right)
 \end{equation}
 
-\begin{equation}
+\begin{equation}  \label{eq:B1}
 	B_1 = \left(\begin{array}{ccccc}
 		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
 		0 & 0 & 0 & 0 & 0\\
@@ -248,7 +297,7 @@ The matrices $A_{11}$, $B_{1}$ and $C_{1}$ are obtained:
 	\end{array}\right)
 \end{equation}
 
-\begin{equation}
+\begin{equation}  \label{eq:C1}
 	C_1 =\left(\begin{array}{ccccccc}
 		0 & 0 & 0 & 0 & 1 & 0 & 0
 	\end{array}\right)
