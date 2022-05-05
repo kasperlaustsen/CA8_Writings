@@ -95,19 +95,21 @@ While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it 
 LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a gueranteed 6dB gain- and $60^\circ$ phase margin.
 
 \subsubsection{Integral action}
-In most control problems it is often the goal to keep an output at a reference value. The methods of achiving this are many, but the most commonly used are reference scaling and integral action. Reference
-
-LQR does not inherently have integral action, in the definition that it does not drive the output to a reference value. As stated previously, it attempts to set the states to zero. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
- \begin{equation} \label{eq:ricatti}
- 	\tilde{x} = \begin{bmatrix}
- 		x \\ x_i
- 	\end{bmatrix}
- \end{equation}
+In most control problems it is the objective to keep an output at a reference value. While there are many methods of achiving this, the most commonly used are reference scaling and integral action. Reference scaling involves inserting a gain in the forward path of the reference signal. The value of the gain is the reciprocal of the system DC gain, resulting in the output settling at the value of the reference. This method requires accurate knowledge of the system to calculate the DC gain, and is thus very sensitive to variations. Integral action is far more robust. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
+\begin{equation} \label{eq:ricatti}
+	\tilde{x} = \begin{bmatrix}
+		x \\ x_i
+	\end{bmatrix}
+\end{equation}
 
 where $x_i = y-r$.\\
 
-This approach allows the user to set a reference for this state, and design a controller that minimizes the difference between the two. If the reference for $x_i$ is 0, the controller will set $x_i = 0$, which satisfies $y = r$. This poses a conflicting objective for the LQR algorithm however, as it will attempt to set \textit{all} states equal to zero. Since y is a linear function of the state vector $y = Cx$, where x is already being driving to zero, requiring $y=r$ is only sensible if $r=0$.
-Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. The result is that achieving $$
+This approach allows the user to set a reference for this state, and design a controller that minimizes the difference between the two. If the reference for $x_i$ is 0, the controller will set $x_i = 0$, which satisfies $y = r$. 
+
+LQR does not inherently have integral action, in the definition that it does not drive the output to a reference value. The method of introducing an integral state poses a conflicting objective for the LQR algorithm, as it will attempt to set \textit{all} states equal to zero. Since y is a linear function of the state vector $y = Cx$, where x is already being driving to zero, requiring $y=r$ is only sensible if $r=0$.
+
+Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. This means if the system is internally stable, it will settle at $x=0 \rightarrow y=r$. At this point the control inputs are also zero, but since these are in fact $u-u_o$, it means the operating point control signal is fed to the plant. \\
+Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task. 
 
 \subsection{LMI / MPC controller}
 Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints.\\
