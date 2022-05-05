@@ -75,6 +75,44 @@ The linear model can then be expressed as such:
 
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in section \cref{sec:ctrl}.\\
 
+Following the linearisation we obtain the following system matrices:
+
+\begin{equation}
+	A = \left(\begin{array}{ccccccccc}
+		-0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+		0 & 0.6451 & -0.4720 & 0.1702 & -1.1899 & 0 & 0 & 0 & 0\\
+		0 & -0.3474 & 0.0068 & -0.2680 & -0.3600 & 0 & 0.0953 & 0 & 0\\
+		0 & 0 & -0.0060 & 0 & -0.0250 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0.0060 & 0 & 0.0250 & 0 & 0 & 0 & 0\\
+		0 & -0.2624 & 0.6293 & 0 & 0 & 0 & -2.4729 & 0.0228 & 1.8200\\
+		0 & 0 & 0 & 0 & 0 & 0 & \text{5.6000e-05} & -\text{1.1200e-04} & 0\\
+		0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045
+	\end{array}\right)
+\end{equation}
+
+\begin{equation}
+	B = \left(\begin{array}{ccccc}
+		0 & 0 & 0 & -0.0101 & 0\\
+		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
+		0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & \text{8.3101e-04}\\
+		0 & \text{5.0703e-04} & 0 & 0 & 0\\
+		\text{5.0000e-07} & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0.0055\\
+		0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0
+	\end{array}\right)
+\end{equation}
+
+\begin{equation}
+	C =\left(\begin{array}{ccccccccc}
+		0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
+	\end{array}\right)
+\end{equation}
+
+
+
 
 \subsubsection{The Hartman-Grobman theorem}
 
@@ -183,3 +221,37 @@ where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, wher
 
 
 The matrices $A_{11}$ and $C_{1}$ constitute an observable subsystem, for which a controller can be designed. This controller will not have information about the state of the unobservable subsystem $A_{22}$. This necessitates that $A_{22}$ has to be internally stable, meaning its eigenvalues has to have negative real part, resulting in stable behavior when unperturbed.
+
+The matrices $A_{11}$, $B_{1}$ and $C_{1}$ are obtained:
+
+\begin{equation}
+	A_{11} = \left(\begin{array}{ccccccc}
+		-0.1000 & 0 & 0 & 0 & 0 & 0 & 0\\
+		0.6452 & -0.4726 & 0.1702 & -1.1899 & 0 & 0 & 0\\
+		-0.3475 & 0.0069 & -0.2684 & -0.3600 & 0.0953 & 0 & 0\\
+		0 & -0.0064 & 0 & -0.0251 & 0 & 0 & 0\\
+		-0.2624 & 0.6293 & 0 & 0 & -2.4729 & 0.0228 & 1.8208\\
+		0 & 0 & 0 & 0 & \text{5.6180e-05} & -\text{1.1236e-04} & 0\\
+		0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045
+	\end{array}\right)
+\end{equation}
+
+\begin{equation}
+	B_1 = \left(\begin{array}{ccccc}
+		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
+		0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & \text{8.3101e-04}\\
+		0 & \text{5.0703e-04} & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0.0055\\
+		0 & 0 & 0 & 0 & 0\\
+		0 & 0 & 0 & 0 & 0
+	\end{array}\right)
+\end{equation}
+
+\begin{equation}
+	C_1 =\left(\begin{array}{ccccccc}
+		0 & 0 & 0 & 0 & 1 & 0 & 0
+	\end{array}\right)
+\end{equation}
+
+
