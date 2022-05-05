@@ -3,7 +3,7 @@ Many of the components in a refrigeration cycle will be based on equations of si
 
 \textbf{Mass conservation equation} \\
 \begin{equation} \label{eq:GeneralTypeControlVol_MassConservation}
-	\frac{dM}{dt} = \\dot{m}_{in}(t) - \dot{m}_{out}(t)
+	\frac{dM}{dt} = \dot{m}_{in}(t) - \dot{m}_{out}(t)
 \end{equation}
 
 where
@@ -266,7 +266,7 @@ derived from the energy balance. In \cref{fig:condenser_CV} a diagram of the con
 
 \begin{align}
 	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}}  	\label{eq:Condenser_Enthalpy} \\
-	\frac{dM_r}{dt} 	& = \\dot{m}_{in}(t) - \dot{m}_{out}(t) 				\label{eq:Condenser_ChangeOfMass}\\
+	\frac{dM_r}{dt} 	& = \dot{m}_{in}(t) - \dot{m}_{out}(t) 				\label{eq:Condenser_ChangeOfMass}\\
 	\frac{dT_m}{dt} 	& = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}		\label{eq:Condenser_ChangeOfTemperature}
 \end{align}
 
@@ -337,15 +337,15 @@ where
 \end{center}
 
 
-To accommodate the missing pressure $ p_3 $ in \cref{fig:Block_diagram_inout}, a new state is needed for the pressure in the condenser. The following shows the derivation of that state from the mass balance in \cref{eq:Condenser_ChangeOfMass}.
+To accommodate the missing pressure $ p_3 $ in \cref{fig:Block_diagram_inout}, a new state is needed for the pressure in the condenser. The following shows the derivation of that state from the mass balance in \cref{eq:Condenser_ChangeOfMass}. We use the fact that the mass in the control volume consists of two seperate masses, the liquid mass $ M_l $ and the vapor mass $ M_v $.
 
 \begin{align}
 		 		\frac{d \bigl(M_{l} + M_{v}\bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t) 		\label{eq:Condenser_pres1}\\
-		 		\frac{d \Bigl(\cdot V_l(t) + \rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres2}\\
-		 		\frac{d \bigl(\cdot V_l(t)\bigr)}{dt} + \frac{d \Bigl(\rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres3}
+		 		\frac{d \Bigl(\rho_{l}\bigl(P(t)\bigr)\cdot V_l(t) + \rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres2}\\
+		 		\frac{d \Bigl(\rho_{l}\bigl(P(t)\bigr)\cdot V_l(t)\Bigr)}{dt} + \frac{d \Bigl(\rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres3}
 \end{align}
 
-Utilizing the product rule for differentiation for each of the derivative terms on the LHS of \cref{eq:Condenser_pres3} yields \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5}. 
+Utilizing the product rule for differentiation for each of the derivative terms on the LHS of \cref{eq:Condenser_pres3} yields \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5}.
 \begin{align}
 	\frac{d \Bigl(\rho_{l}\bigl(P(t)\bigr)\cdot V_l(t)\Bigr)}{dt}  				& =   \frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} 	\label{eq:Condenser_pres4} \\
 	\frac{d \Bigl(\rho_{v}\bigl(P(t)\bigr)\cdot (V_{tot} - V_l(t))\Bigr) }{dt} 	& =  \frac{d \rho_{v}\bigl(P(t)\bigr)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +   \rho_{v}\bigl(P(t)\bigr)\cdot\frac{d \bigl(V_{tot} - V_l(t)\bigr)}{dt} 	\label{eq:Condenser_pres5}
@@ -353,32 +353,32 @@ Utilizing the product rule for differentiation for each of the derivative terms 
 The first term of the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} can then be expanded using the chain rule as seen in \cref{eq:Condenser_pres6}
 
 \begin{align}
-	\frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} 				& =   \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt}	\label{eq:Condenser_pres6} \\
-		\frac{d \rho_{v}\bigl(P(t)\bigr)}{dt} 			& =   \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt}	\label{eq:Condenser_pres7} 
+	\frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} 				& =   \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt}	\label{eq:Condenser_pres6} \\
+		\frac{d \rho_{v}\bigl(P(t)\bigr)}{dt} 			& =   \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt}	\label{eq:Condenser_pres7}
 \end{align}
 
 Now the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} are substituted into the LHS of \cref{eq:Condenser_pres3} yielding \cref{eq:Condenser_pres8}. \\
 
 %\begin{align}
-%			 		\frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +	
+%			 		\frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +
 %			 		\frac{d \rho_{v}\bigl(P(t)\bigr)}{dt} \cdot (V_{tot} - V_l(t))   +   \rho_{v}\bigl(P(t)\bigr)\cdot\frac{d (V_{tot} - V_l(t))}{dt}
-%			 			& = \dot{m}_{in}(t) - \dot{m}_{out}(t)  \label{eq:Condenser_pres8} 
+%			 			& = \dot{m}_{in}(t) - \dot{m}_{out}(t)  \label{eq:Condenser_pres8}
 %\end{align}
 
 \begin{equation}\label{eq:Condenser_pres8}
 	\begin{split}
-		& \frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +	
+		& \frac{d \rho_{l}\bigl(P(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +
 		\frac{d \rho_{v}\bigl(P(t)\bigr)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +   \rho_{v}\bigl(P(t)\bigr)\cdot\frac{d \bigl(V_{tot} - V_l(t)\bigr)}{dt} \\
 		& = \dot{m}_{in}(t) - \dot{m}_{out}(t)
 	\end{split}
 \end{equation}
 
 
-\cref{eq:Condenser_pres6} and \cref{eq:Condenser_pres7} are substituted into \cref{eq:Condenser_pres8} yielding \cref{eq:Condenser_pres9}.  
+\cref{eq:Condenser_pres6} and \cref{eq:Condenser_pres7} are substituted into \cref{eq:Condenser_pres8} yielding \cref{eq:Condenser_pres9}.
 
 \begin{equation}\label{eq:Condenser_pres9}
 	\begin{split}
-		& \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +   
+		& \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(P(t)\bigr)\cdot\frac{d V_l(t)}{dt} +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +
 		\rho_{v}\bigl(P(t)\bigr)\cdot\frac{d \bigl(V_{tot} - V_l(t)\bigr)}{dt}  \\ &= \dot{m}_{in}(t) - \dot{m}_{out}(t)
 	\end{split}
 \end{equation}
@@ -386,13 +386,24 @@ Now the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} are subst
 To simplify the equation we assume that the volumes of the liquid and vapor parts are constant, i.e. $ V_l(t) = c_1$, yielding \cref{eq:Condenser_pres10}
 
 \begin{align}
-		\frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{P(t)}{dt} \cdot \bigl(V_{tot} - c_1\bigr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres10} \\
-		 \frac{P(t)}{dt} \cdot \Biggl( \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) \Biggr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres11}  
+		\frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \frac{dP(t)}{dt} \cdot \bigl(V_{tot} - c_1\bigr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres10} \\
+		 \frac{dP(t)}{dt} \cdot \Biggl( \frac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \frac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) \Biggr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres11}
 \end{align}
+Now the state equation for the pressure can be found be isolating $ P(t) $ as in \cref{eq:Condenser_pres12}
 \begin{align}
-	\frac{P(t)}{dt} & = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \dfrac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \dfrac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) } \label{eq:Condenser_pres12} 
+	\frac{dP(t)}{dt} & = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \dfrac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \dfrac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) } \label{eq:Condenser_pres12}
 \end{align}
 
+We can then use table lookups to evaluate the derivatives of the density with respect to the pressure as in \cref{eq:Condenser_pres13} for respectively saturated vapor and saturated liquid.
+
+\begin{align}
+		\left. \dfrac{d \rho_l\bigl(P(t)\bigr)}{P(t)} \right |_{P = P(t)} & = \mathcal{F}(P(t)) \label{eq:Condenser_pres13} \\
+		\left. \dfrac{d \rho_v\bigl(P(t)\bigr)}{P(t)} \right |_{P = P(t)} & = \mathcal{G}(P(t)) \label{eq:Condenser_pres14}
+\end{align}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dP(t)}{dt} = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \mathcal{F}(P) \cdot c_1 +  \mathcal{G}(P) \cdot \bigl(V_{tot} - c_1\bigr) }}
+\end{equation}
 
 \subsubsection{Flash tank}
 The flash tank in combination with the condenser throttle valve serves to reduce the amount of high enthalpy flash gas delivered to the evaporator. The condenser throttle valve, whose model is identical to the expansion valve, lowers the pressure of the liquid from the condenser. This naturally lowers the temperature, but also generates some amount of flash gas. The flash tank then separates the liquid-vapor mixture and passes only the liquid to the expansion valve. The flash gas is returned to the second stage of the compressor, where it is reused. Thus, a lower amount of flash gas will be generated by the expansion valve, as the pressure of the liquid is already lowered, and the resulting flash gas from the condenser throttle valve is led to compressor stage 2.
@@ -641,8 +652,8 @@ The output pressure, specific enthalpies and mass balances are given by equation
 	p_{out}            & = \Pi \left( h_v, \frac{M_v}{V_i-V_{lv}} \right)		\label{eq:evap_pout}                       \\
 	V_{lv}             & = \sigma \cdot V_i                                                                           \\
 	h_{lv}             & = h_{in} + \frac{Q_{mlv}}{\dot{m}_{in}}                                                      \\
-	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}                                                     \\
-	h_{out}            & = h_v                                                                                        \\
+	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}               \label{eq:evap_hv}                                       \\
+	h_{out}            & = h_v                                                                                       \\
 	T_{out}            & = T_v                                                                                        \\
 	\frac{dM_{lv}}{dt} & = \dot{m}_{in} - \dot{m}_{dew}                                                               \\
 	\frac{dM_v}{dt}    & = \dot{m}_{dew} - \dot{m}_{out}                   \label{eq:evap_dMvdt}                      \\
@@ -683,6 +694,47 @@ where\\
 		$T_{retfan}$     & Temperature of return air after passing through fan                      & [\si{K}]
 	\end{tabular}
 \end{center}
+
+
+To accommodate the missing temperature $ T_7 $ in \cref{fig:Block_diagram_inout}, a new state is needed for the temperature in the evaporator vapor control volume. The following shows the derivation of that state from the energy balance in \cref{eq:Evaporator_EnergyBalance}.
+
+\begin{align}
+	\frac{ d\bigl(M_{v}(t) h_v(t) \bigr)}{dt} & = Q_{mv}(t) + \dot{m}_{in}(t)h_{in}(t) - \dot{m}_{out}(t)h_{out}(t) 		\label{eq:Evaporator_EnergyBalance}\\
+	\frac{ d\Bigl(M_{v}(t) h_v \bigl(T_v(t)\bigr) \Bigr)}{dt} & = Q_{mv}(t) + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr)		\label{eq:Evaporator_EnergyBalance2}
+\end{align}
+
+The specific enthalpy of vapor $ h_v\bigl(T(t)\bigr) $ is known as in \cref{eq:evap_hv}. \\
+Utilizing the product rule for differentiation the derivative term on the LHS of \cref{eq:Evaporator_EnergyBalance2} yields \cref{eq:Evaporator_EnergyBalance3}.
+
+
+\begin{align}
+	\frac{ dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr) + M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr)		\label{eq:Evaporator_EnergyBalance3}
+\end{align}
+
+The last term of the LHS of \cref{eq:Evaporator_EnergyBalance3} and can then be expanded using the chain rule as seen in \cref{eq:Evaporator_EnergyBalance4}
+\begin{align}
+	\frac{ dh_v \bigl(T_v(t)\bigr)}{dt}  & = \frac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}	\label{eq:Evaporator_EnergyBalance4} \\
+	& \Downarrow \\
+	\frac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr) + M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr)	\\
+	& \Updownarrow
+\end{align}
+
+\begin{align}
+	 M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr) - \frac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)  \label{eq:Evaporator_EnergyBalance5} \\
+	 \frac{dT_v(t)}{dt}  & = \dfrac{Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr) - \dfrac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)}{M_{v}(t) \dfrac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} }  \label{eq:Evaporator_EnergyBalance6}
+\end{align}
+
+with the derivative of the specific enthalpy wrt. temperature being a table look up as in
+\begin{equation}
+	\left. \dfrac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \right |_{T = T(t)}= \mathcal{J}(T_v(t)) \label{eq:Evaporator_EnergyBalance7}
+\end{equation}
+
+yielding \cref{eq:Evaporator_EnergyBalance8} as the state equation for the temperature in the vapor control volume of the evaporator:
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_v(t)}{dt}  = \dfrac{Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr) - \dfrac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)}{M_{v}(t) \mathcal{J}(T_v(t)) } } \label{eq:Evaporator_EnergyBalance8}
+\end{equation}
+
 
 
 \subsubsection{Box}
