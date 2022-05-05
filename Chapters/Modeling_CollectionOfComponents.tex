@@ -1,15 +1,9 @@
-This section will covers the collection of the component models into two matrices containing the states and the constraints respectively. In \cref{fig:Block_diagram} a simple block diagram is observed which contains all possible refrigerant interface variables in the refrigerant cycle. Not all variables are used by all blocks. The inputs to each component are also visible along with the interaction between the box and the evaporator.\\
+This section covers the collection of the component models into non-linear state space form, of two vectors containing the state equations and the constraint equations respectively $f(x,u)$ and $ g(x,u) $.
 
-\textbf{NOTE: Currently the constraint of the system (the algebraic equations) are removed from this section because they are deprecated at the moment and will be updated later. They contain the equations that are defined in the modeling section \cref{sec:mod} and thus the correctness of the model should be determined based on those anyway.}
+\textbf{NOTE: Currently the constraints of the system (the algebraic equations) are removed from this section because they are too extensive}
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=1\textwidth]{Graphics/Block_Diagram.pdf}
-	\caption{Block diagram of refrigerant cycle components with their interface variables and inputs}
-	\label{fig:Block_diagram}
-\end{figure}
 
-In \cref{fig:Block_diagram_inout} the interface variables are split out to show which variables are used inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are currently not found as an output of a component. Steady State values (operating points) for these are found from the Hi-Fi simulation. Blue variables are outputs of components which are currently not used by the following component. Each component block also contains the names of the states they contain.
+In \cref{fig:Block_diagram_inout} the interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are currently not found as an output of a component. Steady State values (operating points) for these are found from the Hi-Fi simulation. Blue variables are outputs of components which are currently not used by the following component. Each component block also contains the names of the states they contain.
 
 \begin{figure}[h!]
 	\centering
@@ -25,7 +19,6 @@ In \cref{fig:Block_diagram_inout} the interface variables are split out to show 
 Through the component model section the behavior of the system components was described. Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. \\
 While including the dynamics of the faster parameters would yield a potentially more accurate model, it is unnecessary from a control perspective, as this model is intended for control of the slow dynamics. In addition, the added accuracy will likely be unnoticeable due to various uncertainties in the model. The specific decision of which parameters to model dynamically is heavily inspired by previous work \cite{Sorensen2013}.\\
 The parameters described with differential equations are the system states. The differential equations are collected and put in vector form in \cref{eq:f_noSub}. The function $f(x,u)$ is thus the nonlinear model of the system. It contains 11 states, 5 control inputs and 1 disturbance.
-
 
 
 % F: States

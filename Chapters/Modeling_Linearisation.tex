@@ -74,6 +74,8 @@ The linear model can then be expressed as such:
 \end{equation}
 
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in section \cref{sec:ctrl}.\\
+
+
 \subsubsection{The Hartman-Grobman theorem}
 
 The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
@@ -83,18 +85,11 @@ While the formal definition of the Hartman-Grobman theorem may seem too theoreti
 
 
 \subsubsection{Model Simplifications}
-To model the behavior of the Hi-Fi simulation model, some simplifications with respect to the real system are made.
+To reduce the complexity of the model and controller synthesis we seek to reduce the number of states.
+From observing the linearised system matrix (A) it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states except themselves.
 
-\begin{enumerate}
-	\item valve is modeled as linear type
-	\item coefficient XX is modelled as..
-	\item
-	\item
-	\item
-	\item
-\end{enumerate}
 
-From observing the system matrix (A) it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states except themselves. They are not important with regards to any of the controlled states and are thus simply deleted from the system. In practice this means removing the first two: rows and columns of A, rows of B and columns of C.
+They are not important with regards to any of the controlled states and are thus simply deleted from the system. In practice this means removing the first two: rows and columns of A, rows of B and columns of C.
 
 When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error \todo[inline]{sikkert ikke sandt så skal sikkert rettes} and a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state. It is apparent that the system model does not in any way hold true to the physics of the real system and therefore such a fix which does not make sense in any physical context is considered acceptable.
 
@@ -106,7 +101,7 @@ When simulating the non-linear system model with inputs held constant at the ope
 When evaluating a state space system, it is highly relevant to investigate wether the system is controllable and observable. \\
 A system is said to be controllable iff there exists a control signal u(t), that can achieve $x(T) = \zeta$, for any $\zeta \in \mathbb{R} ^{n}$, under the constraints $T>0$ and $x(0)=0$. In practice, this means that the actuators are sufficient and able to alter all the states of the system. As a counter example, an uncontrollable system would have at least one state, which cannot be driven to \textit{any} value by the controller.\\
 Kalman's test for controlability allows for evaluation of the system. The test is to define the controlability matrix of the system:
-\begin{equation} 
+\begin{equation}
 	Q_c = [A|B] = \begin{bmatrix}
 		B & AB & A^2B & \cdots & A^{n-1}B
 	\end{bmatrix}
@@ -118,7 +113,7 @@ Similarly to controlability, the system observability is highly relevant. A syst
 
 Kalman's test for observability is comparable to the test for controlability. The observability matrix is defined.
 
-\begin{equation} 
+\begin{equation}
 	Q_o = [A|C] = \begin{bmatrix}
 		C \\ CA \\ CA^2 \\ \vdots \\ CA^{n-1}
 	\end{bmatrix}
@@ -131,7 +126,7 @@ If $Q_o$ does not have full rank, the system is not observable and action must b
 If a system with n states is not fully observable, that is $Rank[A|C] = l < n$, it is nessesary to perform a decomposition of the system. This is known as a Kalman decomposition, and it seperates the system into its observable and unobservable parts. Note, that this is the Kalman decomposition for an unobservable system. There exists a Kalman decomposition for uncontrollable systems as well, but it is not presented here. The Kalman decomposition is in essence a change of basis $z=Px$, which will in turn transform the A, B, B$_d$ and C matrices of the system:
 
 
-\begin{equation} 
+\begin{equation}
 	\begin{split}
 		\dot{x} & = Ax + Bu + B_dd \\
 		y & = Cx
@@ -140,7 +135,7 @@ If a system with n states is not fully observable, that is $Rank[A|C] = l < n$, 
 
 We define $x = P^{-1}z$ and substitute it for x
 
-\begin{equation} 
+\begin{equation}
 	\begin{split}
 		P^{-1}\dot{z} & = AP^{-1}z + Bu + B_dd \\
 		y & = CP^{-1}z
@@ -149,24 +144,24 @@ We define $x = P^{-1}z$ and substitute it for x
 
 Isolating $\dot{z}$ yields
 
-\begin{equation} 
+\begin{equation}
 	\begin{split}
 		\dot{z} & = PAP^{-1}z + PBu + PB_dd \\
 		y & = CP^{-1}z
 	\end{split}
 \end{equation}
 
-For the Kalman decomposition, there exists a nonsingular P  $\in \mathbb{R} ^{n x n}$ such that 
-\begin{equation} 
+For the Kalman decomposition, there exists a nonsingular P  $\in \mathbb{R} ^{n x n}$ such that
+\begin{equation}
 	PAP^{-1} = \begin{bmatrix}
 		A_{11}       & 0 \\
 		A_{21}       & A_{22} \\
 	\end{bmatrix}
 \end{equation}
 
-and 
+and
 
-\begin{equation} 
+\begin{equation}
 	CP^{-1} = \begin{bmatrix}
 		C_{1}       & 0 \\
 	\end{bmatrix}
@@ -174,7 +169,7 @@ and
 
 where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, where p is the number of outputs.\\Futhermore the input and disturbance matrices are transformed as such:
 
-\begin{equation} 
+\begin{equation}
 	PB = \begin{bmatrix}
 		B_1 \\
 		B_2
