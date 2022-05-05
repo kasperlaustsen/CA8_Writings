@@ -1,39 +1,8 @@
-This chapter contains the controller design for the refrigeration system model developed in \cref{sec:mod}. A simple pole-placement method controller will be made as an initial step to verify that the model is sufficient and to get a feel for the system before moving on to a more complex controller. An MPC controller is chosen due to its ability to handle constraints which is essential for handling the actuator limitations in a reefer system. Both the pole-placement and MPC controller will be benchmarked against the coupled PID controllers currently implemented at BITZER.
+This chapter contains the controller design for the refrigeration system model developed in \cref{sec:mod}. Two optimal control strategies are pursued for this MIMO problem. Firstly, the Linear Quadratic Regulator will be implemented, followed by the more complex and customizable Model Predictive Control algorithm. Both controllers will be tested and benchmarked against each other, while also comparing them to the coupled PID control setup currently implemented at BITZER.
 
 
-\subsection{State space controller - Pole placement}
-The poles of a controllable state space system is the eigenvalues of the system matrix $(A)$. When the states of a state space system is fed back through a feedback gain $(K)$ the system matrix of the closed-loop system becomes:
-
-\begin{equation} \label{eq:A_cl}
-	A_{cl} = A-BK
-\end{equation}
-
-If \cref{fig:state_space_fb} is analyzed by looking at the how $\dot{x}$ is calculated from $x$ this becomes obvious. A controllable system has the appealing property of  pole placement. This means that in theory the poles of the system can be moved anywhere to achieve some specific behavior. Such a change could be to make the system faster by placing them further to the left in the complex plane.
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.60\textwidth]{Graphics/State_space_feedback.pdf}
-	\caption{Generic state-space system with feedback}
-	\label{fig:state_space_fb}
-\end{figure}
 
 
-% SIXO system pole placement algorithm
-%For a \underline{SISO} system the poles can be placed by hand from the following algorithm:
-%\begin{enumerate}
-%	\item defining desired pole placements for all system poles and writing out the characteristic polynomial for these wanted system poles e.g.
-%	$(s-p_1)(s-p_2) \cdots (s-p_n) = s^n + a_{cl_1} \cdot s^{n-1} + a_{cl_2} \cdot s^{n-2} \cdots a_{cl_n}$
-%	\item calculating the eigenvalues of \cref{eq:A_cl} which yields the characteristic polynomial of the feedback system e.g.
-%	$det(A_{sys}) = s^n + (a_{sys_1}-k_1) \cdot s^{n-1} + (a_{sys_2}-k_2) \cdot s^{n-2} \cdots (a_{sys_n}-k_n)$
-%	\item setting the coefficients of the characteristic polynomial of the native system equal to the coefficients of the desired pole placement and solving for the entries in K e.g.
-%	$ k_1 = a_{sys_1}-a_{cl_1}, k_2 = a_{sys_2}-a_{cl_2} \cdots k_n = a_{sys_n}-a_{cl_n} $
-%	 This yields the $ K = [k_1, k_2 \cdots k_n]^T $ which places the poles at the desired location.
-%	\item x is fed back through K to the input yielding \cref{eq:A_cl}.
-%\end{enumerate}
-%
-%In Matlab the above algorithm can be performed by the simple function \textit{Place(A, B, poles)} where "A" is the system matrix, "B" the input matrix and "poles" an array of the desired poles. The \textit{place()} works for both SISO and MIMO systems.
-
-In Matlab pole placement can be performed by the \textit{Place(A, B, poles)} function where "A" is the system matrix, "B" the input matrix and "poles" an array of the desired poles. The \textit{place()} function works for both SISO and MIMO systems.
 
 
 \subsection{Linear Quadratic Regulator}
@@ -96,23 +65,24 @@ LQR is chosen as the initial control strategy due to its intuitive way of use, a
 
 \subsubsection{Integral action}
 In most control problems it is the objective to keep an output at a reference value. While there are many methods of achiving this, the most commonly used are reference scaling and integral action. Reference scaling involves inserting a gain in the forward path of the reference signal. The value of the gain is the reciprocal of the system DC gain, resulting in the output settling at the value of the reference. This method requires accurate knowledge of the system to calculate the DC gain, and is thus very sensitive to variations. Integral action is far more robust. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
-\begin{equation} \label{eq:ricatti}
+\begin{equation} 
 	\tilde{x} = \begin{bmatrix}
 		x \\ x_i
 	\end{bmatrix}
 \end{equation}
 
-where $x_i = y-r$.\\
+where
+\begin{equation}
+	x_i(t) = \int_{0}^{t}(r-y)dt
+\end{equation}
 
-This approach allows the user to set a reference for this state, and design a controller that minimizes the difference between the two. If the reference for $x_i$ is 0, the controller will set $x_i = 0$, which satisfies $y = r$. 
-
-LQR does not inherently have integral action, in the definition that it does not drive the output to a reference value. The method of introducing an integral state poses a conflicting objective for the LQR algorithm, as it will attempt to set \textit{all} states equal to zero. Since y is a linear function of the state vector $y = Cx$, where x is already being driving to zero, requiring $y=r$ is only sensible if $r=0$.
+The method of introducing an integral state poses a conflicting objective for the LQR algorithm, as it will attempt to set \textit{all} states equal to zero. Since y is a linear function of the state vector $y = Cx$, where x is already being driving to zero, requiring $y=r$ is only sensible if $r=0$.
 
 Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. This means if the system is internally stable, it will settle at $x=0 \rightarrow y=r$. At this point the control inputs are also zero, but since these are in fact $u-u_o$, it means the operating point control signal is fed to the plant. \\
 Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task. 
 
-\subsection{LMI / MPC controller}
-Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints.\\
+\subsection{Model Predictive Control}
+Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints. This is particularly useful in this problem, since the actuators are limitied to control signals between 0 and 100.\\
 
 At every time sample the MPC controller
 \begin{enumerate}
