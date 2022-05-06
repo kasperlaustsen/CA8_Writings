@@ -1,11 +1,8 @@
-This section covers the collection of the component models into non-linear state space form, of two vectors containing the state equations and the constraint equations respectively $f(x,u)$ and $ g(x,u) $.
+In the previous section each component of the system was modeled with differential and algebraic equations. The modeling format is such that every component takes some inputs, and from those calculates some states and some outputs which are used for the adjacent components. In order to make a complete non-linear model it is necessary to connect the inputs and outputs of the system. This section provides insight into how components are interfaced and collected into a complete non-linear state space form.
 
-\todo[inline]{Vi bruger egentlig ikke g-matricerne til noget. Måske skal det helt udelades og beholdes på den form det er nu.}
+A block diagram is made to give an overview of the system interface variables and states. All differential equations are states of the system and they are collected in a vector $f(x,u)$ where $u$ encapsulates both the controlled and uncontrolled inputs (disturbances). The algebraic constraint equations are substituted into the state vector variables until the state derivatives are functions only of states, inputs and disturbances.\\
 
-\textbf{NOTE: Currently the constraints of the system (the algebraic equations) are removed from this section because they are too extensive}
-
-
-In \cref{fig:Block_diagram_inout} the interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are currently not found as an output of a component. Steady State values (operating points) for these are found from the Hi-Fi simulation. Blue variables are outputs of components which are currently not used by the following component. Each component block also contains the names of the states they contain.
+In \cref{fig:Block_diagram_inout} the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) for these are found from the Hi-Fi simulation and used. Blue variables are outputs of components which are currently not used by the following component. Each component block also contains the names of the states they contain.
 
 \begin{figure}[h!]
 	\centering
@@ -16,13 +13,14 @@ In \cref{fig:Block_diagram_inout} the interface variables are split out to show 
 
 
 \newpage
+
 \subsubsection{State variables}
 
-Through the component model section the behavior of the system components was described. Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. \\
-\todo[inline]{Diskuter "fast"}
+Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. This is possible because the fast variables settle to steady state values without oscillatory behavior. \\
 
-While including the dynamics of the faster parameters would yield a potentially more accurate model, it is unnecessary from a control perspective, as this model is intended for control of the slow dynamics. In addition, the added accuracy will likely be unnoticeable due to various uncertainties in the model. The specific decision of which parameters to model dynamically is heavily inspired by previous work \cite{Sorensen2013}.\\
-The parameters described with differential equations are the system states. The differential equations are collected and put in vector form in \cref{eq:f_noSub}. The function $f(x,u)$ is thus the nonlinear model of the system. It contains 11 states, 5 control inputs and 1 disturbance.
+While including the dynamics of the faster parameters would yield a potentially more accurate model, it is unnecessary from a control perspective, as this model is intended for control of the slow dynamics. In addition, the added accuracy will likely be unnoticeable due to various uncertainties in the model. The specific decision of which parameters to model dynamically is heavily inspired by previous work \cite{Sorensen2013}.
+
+The differential equations are collected in the state vector in \cref{eq:f_noSub}.
 
 
 % F: States
@@ -60,3 +58,24 @@ The parameters described with differential equations are the system states. The 
 \end{equation}
 
 
+As mentioned all variables which are not states, inputs and disturbances in \cref{eq:f_noSub} are substituted with the algebraic equations. As such the states, inputs and disturbances are included in the state derivatives. The function $f(x,u)$ is thus the non-linear model of the system. Writing out the full state space system is infeasible due to the sheer size of expressions when substitution is performed. The model contains 11 states, 5 control inputs and 1 disturbance.
+
+The control inputs are:
+
+\begin{center}
+	\begin{tabular}{l p{10cm}}
+		$ \Theta_1 $  & The valve opening degree of the \\
+		$ \Theta_2 $  & The valve opening degree of the \\
+		$ U_{fan_1} $ & The condenser fan speed         \\
+		$ U_{fan_2} $ & The evaporator fan speed        \\
+		$ \omega $    & The compressor speed
+	\end{tabular}
+\end{center}
+
+The disturbance is:
+
+\begin{center}
+	\begin{tabular}{l p{10cm}}
+		$ T_{ambi} $  & The ambient air temperature
+	\end{tabular}
+\end{center}
