@@ -93,10 +93,10 @@ Between compressor stage 1, compressor stage 2 and the flash tank (see \cref{fig
 
 In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction.
 
-\begin{equation} \label{eq:PipeJoiningJunction_ChangeOfMass}
-	\frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} - \dot{m}_{out}
-\end{equation}
 
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ \frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} - \dot{m}_{out} }       \label{eq:PipeJoiningJunction_ChangeOfMass}   
+\end{equation}
 
 where
 
@@ -183,7 +183,7 @@ where
 		$v_1$      & Refrigerant specific volume b.f. 'stroke'                       & [$\si{m}^3/\si{kg}$] \\
 		$v_2$      & Refrigerant specific volume after 'stroke'                      & [$\si{m}^3/\si{kg}$] \\
 		$\omega$   & Compressor angular velocity                                     & [\si{rad}/\si{s}]    \\
-		$\Upsilon$ & HTP; Lookup table of the enthalpy from temperature and pressure & [$\cdot]$            \\
+		$\Upsilon(T,p)$ & HTP; Lookup table of the enthalpy from temperature and pressure & [$\cdot]$            \\
 		$T_{out}$  & Compressor stage output temperature                             & [\si{K}]             \\
 		$p_{out}$  & Compressor stage output pressure                                & [\si{Pa}]
 	\end{tabular}
@@ -205,7 +205,7 @@ where
 
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$\Gamma$        & VTP; Lookup table of the specific volume from temperature and pressure & [\si{Pa}]                         \\
+		$\Gamma(T,p)$   & VTP; Lookup table of the specific volume from temperature and pressure & [\si{Pa}]                         \\
 		$p_{in}$        & Compressor stage input pressure                                        & [\si{Pa}]                         \\
 		$p_1$           & 'Piston' input pressure                                                  & [\si{Pa}]                         \\
 		$p_2$           & 'Piston' output (discharge) pressure                                     & [\si{Pa}]                         \\
@@ -215,7 +215,7 @@ where
 		$T_{in}$        & Compressor stage input temperature                                     & [\si{K}]                          \\
 		$C_{cp}$        & Specific heat capacity - constant pressure                             & [\si{J}/(\si{kg}$ \cdot $\si{K})] \\
 		$C_{cv} $       & Specific heat capacity - constant volume                               & [\si{J}/(\si{kg}$ \cdot $\si{K})] \\
-		$\Phi$ 		& TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
+		$\Phi(h,p)$ 	& TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
 	\end{tabular}
 \end{center}
 
@@ -268,9 +268,16 @@ derived from the energy balance. In \cref{fig:condenser_CV} a diagram of the con
 
 \begin{align}
 	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}}  	\label{eq:Condenser_Enthalpy} \\
-	\frac{dM_r}{dt} 	& = \dot{m}_{in}(t) - \dot{m}_{out}(t) 				\label{eq:Condenser_ChangeOfMass}\\
-	\frac{dT_m}{dt} 	& = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}		\label{eq:Condenser_ChangeOfTemperature}
 \end{align}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dM_r}{dt} 	 = \dot{m}_{in}(t) - \dot{m}_{out}(t) }     	\label{eq:Condenser_ChangeOfMass}   
+\end{equation}
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dT_m}{dt} 	 = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}	 }     \label{eq:Condenser_ChangeOfTemperature}      
+\end{equation}
+
+
 
 where
 
@@ -311,7 +318,7 @@ where
 		$M_{r}$         & Condenser refridgerant mass                                & [\si{kg}]          \\
 		$V_{i}$         & Condenser internal volume                                  & [\si{m^3}]         \\
 		$v$             & Condenser refridgerant specific volume                     & [\si{m^3}/\si{kg}] \\
-		$\mathcal{Z}$        & Table lookup of specific volume from enthalpy and pressure & []
+		$\mathcal{Z}(h,p)$        & Table lookup of specific volume from enthalpy and pressure & []
 	\end{tabular}
 \end{center}
 
@@ -602,10 +609,15 @@ where
 
 The evaporator contains one of the greater thermal masses due to the large mass of metal in the heat exchanger.The temperature of the evaporator metal is divided into two parts corresponding to the liquid-vapor control volume \cref{eq:evap_dT_ml} and the vapor control volume \cref{eq:evap_dT_mv}. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{amlv}, Q_{mlv}, Q_{mvmlv} $ in \cref{eq:evap_dT_ml} and $ Q_{amv}, Q_{mv}, Q_{mvmlv} $ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$). The heat flows are illustrated in \cref{fig:evap_CV}
 
-\begin{align}
-	\frac{dT_{mlv}}{dt} & = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m}        \label{eq:evap_dT_ml} \\
-	\frac{dT_{mv}}{dt} & = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } \label{eq:evap_dT_mv}
-\end{align}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dT_{mlv}}{dt}  = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m}  }    \label{eq:evap_dT_ml}        
+\end{equation}
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ \frac{dT_{mv}}{dt} = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } }     \label{eq:evap_dT_mv}       
+\end{equation}
+
+
 
 where
 
@@ -649,7 +661,7 @@ where
 		$UA_1$      & Heat transfer coefficient from metal to liquid                                    & [\si{J}/\si{K}] \\
 		$UA_2$      & Heat transfer coefficient from metal to vapor                                     & [\si{J}/\si{K}] \\
 		$UA_3$      & Heat transfer coefficient from vapor CV metal to liquid-vapor CV metal            & [\si{J}/\si{K}] \\
-		$\Phi$ 		& TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
+		$\Phi(p,h)$ 		& TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
 	\end{tabular}
 \end{center}
 
@@ -663,13 +675,17 @@ The output pressure, specific enthalpies and mass balances are given by equation
 	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}               \label{eq:evap_hv}                                       \\
 	h_{out}            & = h_v                                                                                       \\
 	T_{out}            & = T_v                                                                                        \\
-	\frac{dM_{lv}}{dt} & = \dot{m}_{in} - \dot{m}_{dew}                                                               \\
-	\frac{dM_v}{dt}    & = \dot{m}_{dew} - \dot{m}_{out}                   \label{eq:evap_dMvdt}                      \\
 	T_{sup}            & = T_{retfan} +  \frac{Q_{amlv} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \label{eq:evap_Tsup} \\
 	\dot{m}_{dew}      & = \frac{Q_{mlv}}{h_{dew} - h_{in}} \label{eq:evap_mdot_{lv}}
 \end{align}
 
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dM_{lv}}{dt} = \dot{m}_{in} - \dot{m}_{dew}  } 
+\end{equation}
 
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dM_v}{dt}   = \dot{m}_{dew} - \dot{m}_{out}  }  \label{eq:evap_dMvdt}            
+\end{equation}
 
 where\\
 
@@ -758,11 +774,18 @@ yielding \cref{eq:Evaporator_EnergyBalance8} as the state equation for the tempe
 \subsubsection{Box}
 The trailer box contains by far the greatest thermal masses due to the large mass of the cargo and aluminum of the trailer. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area. The temperatures of the three thermal masses are modeled by their state equations are given in \cref{eq:box_dT_air}, \cref{eq:box_dT_box} and \cref{eq:box_dT_cargo}. $Q_{fan}$ is the heat loss from the evaporator fan and it is defined in \cref{eq:Q_fan_heatloss}.
 
-\begin{align}
-	\frac{dT_{air}}{dt} & = \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} 		\label{eq:box_dT_air}\\
-	\frac{dT_{box}}{dt} & = \frac{Q_{amb} - Q_{ba}}{M_{box} \cdot Cp_{box}} 						\label{eq:box_dT_box}\\
-	\frac{dT_{cargo}}{dt} & = \frac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}}							\label{eq:box_dT_cargo}
-\end{align}
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_{air}}{dt} = \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}}} \label{eq:box_dT_air}
+\end{equation}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_{box}}{dt} = \frac{Q_{amb} - Q_{ba}}{M_{box} \cdot Cp_{box}}} \label{eq:box_dT_box}
+\end{equation}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_{cargo}}{dt} = \frac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}}} \label{eq:box_dT_cargo}
+\end{equation}
+
 
 where
 \begin{center}
