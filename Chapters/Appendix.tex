@@ -21,3 +21,28 @@ Assuming the reader is familiar with the definition of absolute pressure and spe
 \subsubsection{Internal energy}
 The internal energy of a mass can be viewed as primarily the 'sensible heat' kinetic energy that dictates the movement of molecules. From a higher 'movement' of molecules, e.g. more energy, the temperature of a mass (that consists of the molecules) increases. The amount of energy required to increase a unit of mass by one degree is known as the specific heat capacity of the given material.
 Secondly the internal energy also consists of the latent energy. The latent energy is the energy that is embedded in phase changes of a systems state, e.g. from or to solid, liquid and vapor from either one. Analogously to the specific heat capacity for the sensible heat, for latent energy has a similar definition. The amound of energy required to change phase from one state to another is called the latent heat capacity of the material. It differs to material to material and also from whether its from solid to liquid or from liquid to vapor/gas. 
+
+\subsection{List of table lookup symbols}
+
+\renewcommand{\arraystretch}{1.5}
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{@{}ccclc@{}}
+		\toprule
+		\textbf{Symbol} & \textbf{Outputs}                      & \textbf{Inputs} & \textbf{Comments}                                   & \textbf{Component} \\ \midrule
+		$\Upsilon$      & $h$                                   & $T, p$          &                                                     & Compressor         \\
+		$\Gamma$        & $v$                                   & $T, p$          &                                                     & Compressor         \\
+		$\Phi$          & $T$                                   & $h, p$          &                                                     & Compressor         \\
+		$\mathcal{Z}$   & $v$                                   & $h,p$           &                                                     & Condenser          \\
+		$\mathcal{F}$   & $\frac{d\rho(p)}{dp}$                 & $p$             & \multicolumn{1}{c}{Saturated liquid (Bubble point)} & Condenser          \\
+		$\mathcal{G}$   & $\frac{d\rho(p)}{dp}$                 & $p$             & \multicolumn{1}{c}{Saturated vapor (Dew point)}     & Condenser          \\
+		$\mathcal{M}$   & $h_l$                                 & $p$             & \multicolumn{1}{c}{Saturated liquid (Bubble point)} & Flash tank         \\
+		$\mathcal{N}$   & $h_v$                                 & $p$             & \multicolumn{1}{c}{Saturated vapor (Dew point)}     & Flash tank         \\
+		$\Lambda$       & $v$                                   & $p, x$          &                                                     & Evaporator         \\
+		$\Pi$           & $p$                                   & $h, \rho$       &                                                     & Evaporator         \\
+		$\mathcal{J}$   & $\dfrac{ dh_v \bigl(T_v\bigr)}{dT_v}$ & $T_v$           & \multicolumn{1}{c}{Saturated vapor (Dew point)}     & Evaporator         \\ \bottomrule
+	\end{tabular}
+\end{table}
