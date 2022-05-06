@@ -45,7 +45,7 @@ with $\bar{x} = x-x_o$ and $\bar{u} = u-u_o$ where $x_o$, $u_o$ are the linearis
 The optimal feedback gain K can be shown to be
 
 \begin{equation} \label{eq:lqr_K}
-	K = R^{-1}B^{T}P
+	K = -R^{-1}B^{T}P
 \end{equation}
 
 where P is the unique solution to the algebraic Ricatti equation
@@ -57,17 +57,20 @@ While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it 
 \\
 
 
-LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a gueranteed 6dB gain- and $60^\circ$ phase margin.
+LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a guaranteed 6dB gain- and $60^\circ$ phase margin \cite{Doyle}.
 
 \subsubsection{Integral action}
 In most control problems it is the objective to keep an output at a reference value. While there are many methods of achiving this, the most commonly used are reference scaling and integral action. Reference scaling involves inserting a gain in the forward path of the reference signal. The value of the gain is the reciprocal of the system DC gain, resulting in the output settling at the value of the reference. This method requires accurate knowledge of the system to calculate the DC gain, and is thus very sensitive to variations. Integral action is far more robust. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
+
 \begin{equation}
 	\tilde{x} = \begin{bmatrix}
-		x \\ x_i
+		x \\
+		x_i
 	\end{bmatrix}
 \end{equation}
 
 where
+
 \begin{equation}
 	x_i(t) = \int_{0}^{t}(r-y)dt
 \end{equation}
@@ -78,6 +81,7 @@ Instead one must perform a state transformation to a coordinate system, where $x
 Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task.
 
 Using Q and R as identitity matrices of appropriate dimensions the following optimal feedback gain is calculated:
+
 \begin{equation}
 	K = \left(\begin{array}{ccccccc}
 		0 & 0 & 0 & 0 & 0 & 0 & 0\\

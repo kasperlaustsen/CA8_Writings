@@ -1,5 +1,6 @@
-A general state space system is typically defined on the form in \cref{eq:state_space}. It is observed that a change in states over time is defined as a linear combination of vectors and matrices. Having a model on such a state space form is a necessary for state-space controller design.
-\todo[inline]{Skriv ovenstående mindre "KLUMSET?!?!?!" :)}
+A general state space system is typically defined on the form seen in \cref{eq:state_space}. It is observed that a change in states over time is defined as a linear combination of vectors and matrices. Having a model on such a state space form is a necessary for state-space controller design.
+
+In order to make a state space controller a model on the typical state space form such as the one seen in \cref{eq:state_space} is necessary. In the previous section a non-linear model was made by substituting the algebraic constraint equations into the state derivative vector. Now, in order to reach a model on the necessary form, a linearisation is necessary. This section will explore how a first order Taylor expansion can be utilized to get the \textit{A}, \textit{B}, \textit{$B_d$} and \textit{C} matrices of the state space system representation.
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
@@ -23,9 +24,9 @@ where
 	\end{tabular}
 \end{center}
 
-A prerequisite for controller design is that the system model used for making the controller is linear. This chapter examines the linearisation of the non-linear model found in \cref{sec:mod}. Linearisation is achieved through a first order Taylor expansion.
+As mentioned a first order Taylor expansion is used to achieve the desired linear system of equations and in the following the procedure is described.\\
 
-Consider some system $\dot{x} = f(x,u,d)$ with x a vector of system states, u a vector of controlled inputs, and d a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
+Consider some system $\dot{x} = f(x,u,d)$ with x a vector of system states, u a vector of controlled inputs, and d a vector of disturbances. Such a system can be approximated with a first order Taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
 
 \begin{equation} \label{eq:taylor}
 	\dot{x}   \approx   f(x_o, u_o, d_o)   +
@@ -34,7 +35,7 @@ Consider some system $\dot{x} = f(x,u,d)$ with x a vector of system states, u a 
 	\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} \cdot (d-d_0)
 \end{equation}
 
-In \cref{eq:taylor} $f(x_o, u_o, d_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd are the number of states, inputs and disturbances respectively.
+In \cref{eq:taylor} $f(x_o, u_o, d_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd being the number of states, inputs and disturbances respectively.
 
 \begin{equation} \label{eq:jacobians}
 	\dfrac{\partial f}{\partial x} =
@@ -74,7 +75,12 @@ The linear model can then be expressed as such:
 	\end{split}
 \end{equation}
 
-with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in section \cref{sec:ctrl}.\\
+with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in section \cref{sec:ctrl}.
+
+By now it is apparent that a set of operating points are vital for the linearisation to work and thus these must be found. They are found by/from.... Eramus... Take it away my boiiiiii!
+
+
+
 
 Following the linearisation we obtain the following system matrices:
 
