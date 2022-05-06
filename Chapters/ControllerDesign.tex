@@ -2,9 +2,9 @@ This chapter contains the controller design for the refrigeration system model d
 
 
 \subsection{Linear Quadratic Regulator}
-The first control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referered to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the discrete-time system in \cref{eq:lqr_discrete_sys} with $x(k)$ representing the system states, $u(k)$ the control inputs and $y(k)$ the measured outputs.\\
+The first control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referered to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the system in \cref{eq:lqr_sys} with $x$ representing the system states, $u$ the control inputs and $y$ the measured outputs.\\
 
-\begin{equation} \label{eq:lqr_discrete_sys}
+\begin{equation} \label{eq:lqr_sys}
 	\begin{split}
 		\dot{x} 	& = Ax + Bu \\
 		y 	& = Cx
@@ -48,7 +48,7 @@ The optimal feedback gain K can be shown to be
 	K = R^{-1}B^{T}P
 \end{equation}
 
-where P is the unique solution to the algebraic Ricatti equation 
+where P is the unique solution to the algebraic Ricatti equation
 \begin{equation} \label{eq:ricatti}
 	A^TP + PA - PBR^{-1}B^TP+Q = 0
 \end{equation}
@@ -61,7 +61,7 @@ LQR is chosen as the initial control strategy due to its intuitive way of use, a
 
 \subsubsection{Integral action}
 In most control problems it is the objective to keep an output at a reference value. While there are many methods of achiving this, the most commonly used are reference scaling and integral action. Reference scaling involves inserting a gain in the forward path of the reference signal. The value of the gain is the reciprocal of the system DC gain, resulting in the output settling at the value of the reference. This method requires accurate knowledge of the system to calculate the DC gain, and is thus very sensitive to variations. Integral action is far more robust. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
-\begin{equation} 
+\begin{equation}
 	\tilde{x} = \begin{bmatrix}
 		x \\ x_i
 	\end{bmatrix}
@@ -75,7 +75,7 @@ where
 The method of introducing an integral state poses a conflicting objective for the LQR algorithm, as it will attempt to set \textit{all} states equal to zero. Since y is a linear function of the state vector $y = Cx$, where x is already being driving to zero, requiring $y=r$ is only sensible if $r=0$.
 
 Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. This means if the system is internally stable, it will settle at $x=0 \rightarrow y=r$. At this point the control inputs are also zero, but since these are in fact $u-u_o$, it means the operating point control signal is fed to the plant. \\
-Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task. 
+Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task.
 
 Using Q and R as identitity matrices of appropriate dimensions the following optimal feedback gain is calculated:
 \begin{equation}

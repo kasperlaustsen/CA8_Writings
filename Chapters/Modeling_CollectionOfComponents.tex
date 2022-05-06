@@ -18,11 +18,10 @@ In \cref{fig:Block_diagram_inout} the interface variables are split out to show 
 \newpage
 \subsubsection{State variables}
 
-Through the component model section the behavior of the system components was described. Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. \\
-\todo[inline]{Diskuter "fast"}
+Through the component model section the behavior of the system components was described. Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. This is possible since the fast variables settle to steady state values without oscillatory behavior. \\
 
 While including the dynamics of the faster parameters would yield a potentially more accurate model, it is unnecessary from a control perspective, as this model is intended for control of the slow dynamics. In addition, the added accuracy will likely be unnoticeable due to various uncertainties in the model. The specific decision of which parameters to model dynamically is heavily inspired by previous work \cite{Sorensen2013}.\\
-The parameters described with differential equations are the system states. The differential equations are collected and put in vector form in \cref{eq:f_noSub}. The function $f(x,u)$ is thus the nonlinear model of the system. It contains 11 states, 5 control inputs and 1 disturbance.
+The parameters described with differential equations are the system states. The differential equations are collected a vector in \cref{eq:f_noSub}.
 
 
 % F: States
@@ -60,3 +59,24 @@ The parameters described with differential equations are the system states. The 
 \end{equation}
 
 
+Most variables in \cref{eq:f_noSub} are substituted with the algebraic equations defined for the different model components. As such the states, inputs and disturbances are included in the state derivatives. The function $f(x,u)$ is thus the nonlinear model of the system. It contains 11 states, 5 control inputs and 1 disturbance.
+
+The control inputs are:
+
+\begin{center}
+	\begin{tabular}{l p{10cm}}
+		$ \Theta_1 $  & The valve opening degree of the \\
+		$ \Theta_2 $  & The valve opening degree of the \\
+		$ U_{fan_1} $ & The condenser fan speed         \\
+		$ U_{fan_2} $ & The evaporator fan speed        \\
+		$ \omega $    & The compressor speed
+	\end{tabular}
+\end{center}
+
+The disturbance is:
+
+\begin{center}
+	\begin{tabular}{l p{10cm}}
+		$ T_{ambi} $  & The ambient air temperature
+	\end{tabular}
+\end{center}

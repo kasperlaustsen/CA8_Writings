@@ -39,21 +39,21 @@ In \cref{eq:taylor} $f(x_o, u_o, d_o) = 0$ because the linearisation is done at 
 \begin{equation} \label{eq:jacobians}
 	\dfrac{\partial f}{\partial x} =
 		\begin{bmatrix}
-			\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_n} & \\
+			\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_{nx}} & \\
 			\vdots & \ddots & \vdots & \\
-			\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_n} &
+			\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_{nx}} &
 		\end{bmatrix}, \
 	\dfrac{\partial f}{\partial u} =
 		\begin{bmatrix}
-			\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_n} & \\
+			\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_{nu}} & \\
 			\vdots & \ddots & \vdots & \\
-			\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_n} &
+			\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_{nu}} &
 		\end{bmatrix}, \
 	\dfrac{\partial f}{\partial d} =
 		\begin{bmatrix}
-			\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_n} & \\
+			\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_{nd}} & \\
 			\vdots & \ddots & \vdots & \\
-			\dfrac{\partial f_e}{\partial d_1} & \cdots & \dfrac{\partial f_e}{\partial d_n} &
+			\dfrac{\partial f_e}{\partial d_1} & \cdots & \dfrac{\partial f_e}{\partial d_{nd}} &
 		\end{bmatrix}
 \end{equation}
 
@@ -122,7 +122,7 @@ Following the linearisation we obtain the following system matrices:
 \subsubsection{The Hartman-Grobman theorem}
 
 The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
-A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies the opposite: the state will follow a trajectory going from a fixed point to infinity as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
+A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies that opposite: the state will not converge to a fixed point as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
 
 While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearization should be performed at another equilibrium.
 
@@ -170,18 +170,19 @@ When simulating the non-linear system model with inputs held constant at the ope
 
 
 \subsubsection{Controllability and observability}
-When evaluating a state space system, it is highly relevant to investigate wether the system is controllable and observable. \\
-A system is said to be controllable iff there exists a control signal u(t), that can achieve $x(T) = \zeta$, for any $\zeta \in \mathbb{R} ^{n}$, under the constraints $T>0$ and $x(0)=0$. In practice, this means that the actuators are sufficient and able to alter all the states of the system. As a counter example, an uncontrollable system would have at least one state, which cannot be driven to \textit{any} value by the controller.\\
-Kalman's test for controlability allows for evaluation of the system. The test is to define the controlability matrix of the system:
-\begin{equation}
-	Q_c = [A|B] = \begin{bmatrix}
-		B & AB & A^2B & \cdots & A^{n-1}B
-	\end{bmatrix}
+When evaluating a state space system, it is highly relevant to investigate whether the system is controllable and observable. \\
+A system is said to be controllable iff there exists a control signal u(t), that can achieve $x(T) = \zeta$, for any $\zeta \in \mathbb{R} ^{n}$, under the constraints $T>0$ and $x(0)=0$. In practice, this means that the actuators are sufficient and able to alter all the states of the system. As a counter example, an uncontrollable system would have at least one state for which there are some values that cannot be reached by the controller.\\
+Kalman's test for controllability checks whether the system is controllable. The test is to check whether the controllability matrix which is defined in \cref{eq:ctrb} has full rank.
+
+\begin{equation} \label{eq:ctrb}
+	Q_c = [A|B] = \begin{bmatrix}  B & AB & A^2B & \cdots & A^{n-1}B  \end{bmatrix}
 \end{equation}
 
 If $Q_c$ does not have full rank, the system is not controllable and action must be taken. This can be in form of adding the needed actuators or performing a Kalman decomposition, as discussed in the next section.\\
 
-Similarly to controlability, the system observability is highly relevant. A system is observable iff $y(t)=0 \Rightarrow x(t)=0$. This means that non of the states of system can have a non-zero value, if the measured outputs are zero. This guerantees that no dynamical action is happening that cannot be observed by measuring the outputs.\\
+Similarly to controlability, the system observability is highly relevant.
+
+\noindent A system is observable iff $y(t) \equiv 0 \Rightarrow x(t) \equiv 0$. This means that non of the states of system can have a non-zero value, if the measured outputs are zero. This guerantees that no dynamical action is happening that cannot be observed by measuring the outputs.\\
 
 Kalman's test for observability is comparable to the test for controlability. The observability matrix is defined.
 
