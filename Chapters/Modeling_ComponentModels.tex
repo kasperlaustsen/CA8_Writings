@@ -339,6 +339,8 @@ where
 
 To accommodate the missing pressure $ p_3 $ in \cref{fig:Block_diagram_inout}, a new state is needed for the pressure in the condenser. The following shows the derivation of that state from the mass balance in \cref{eq:Condenser_ChangeOfMass}. We use the fact that the mass in the control volume consists of two seperate masses, the liquid mass $ M_l $ and the vapor mass $ M_v $.
 
+\todo[inline]{Add descriptions of variables}
+
 \begin{align}
 		 		\frac{d \bigl(M_{l} + M_{v}\bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t) 		\label{eq:Condenser_pres1}\\
 		 		\frac{d \Bigl(\rho_{l}\bigl(P(t)\bigr)\cdot V_l(t) + \rho_{v}\bigl(P(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres2}\\
@@ -394,12 +396,17 @@ Now the state equation for the pressure can be found be isolating $ P(t) $ as in
 	\frac{dP(t)}{dt} & = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \dfrac{d \rho_{l}\bigl(P(t)\bigr)}{P(t)} \cdot c_1 +  \dfrac{d \rho_{v}\bigl(P(t)\bigr)}{P(t)} \cdot \bigl(V_{tot} - c_1\bigr) } \label{eq:Condenser_pres12}
 \end{align}
 
+\todo[inline]{John asked if the denominator of eq 35 should be equal to zero? }
+
 We can then use table lookups to evaluate the derivatives of the density with respect to the pressure as in \cref{eq:Condenser_pres13} for respectively saturated vapor and saturated liquid.
 
 \begin{align}
 		\left. \dfrac{d \rho_l\bigl(P(t)\bigr)}{P(t)} \right |_{P = P(t)} & = \mathcal{F}(P(t)) \label{eq:Condenser_pres13} \\
 		\left. \dfrac{d \rho_v\bigl(P(t)\bigr)}{P(t)} \right |_{P = P(t)} & = \mathcal{G}(P(t)) \label{eq:Condenser_pres14}
 \end{align}
+
+\todo[inline]{P(t) = P and F(P) not F(P(t))}
+\todo[inline]{Lookup skal defineres inden eq 36}
 
 \begin{equation}
 	\tcbhighmath[boxrule = 0.5pt]{\frac{dP(t)}{dt} = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \mathcal{F}(P) \cdot c_1 +  \mathcal{G}(P) \cdot \bigl(V_{tot} - c_1\bigr) }}
@@ -703,6 +710,8 @@ To accommodate the missing temperature $ T_7 $ in \cref{fig:Block_diagram_inout}
 	\frac{ d\Bigl(M_{v}(t) h_v \bigl(T_v(t)\bigr) \Bigr)}{dt} & = Q_{mv}(t) + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr)		\label{eq:Evaporator_EnergyBalance2}
 \end{align}
 
+\todo[inline]{Sæt flere ord på ovenstående ligninger}
+
 The specific enthalpy of vapor $ h_v\bigl(T(t)\bigr) $ is known as in \cref{eq:evap_hv}. \\
 Utilizing the product rule for differentiation the derivative term on the LHS of \cref{eq:Evaporator_EnergyBalance2} yields \cref{eq:Evaporator_EnergyBalance3}.
 
@@ -718,6 +727,8 @@ The last term of the LHS of \cref{eq:Evaporator_EnergyBalance3} and can then be 
 	\frac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr) + M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr)	\\
 	& \Updownarrow
 \end{align}
+
+\todo[inline]{Ret equation numre på arrows}
 
 \begin{align}
 	 M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T(t)\bigr) - \frac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)  \label{eq:Evaporator_EnergyBalance5} \\

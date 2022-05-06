@@ -1,4 +1,5 @@
 A general state space system is typically defined on the form in \cref{eq:state_space}. It is observed that a change in states over time is defined as a linear combination of vectors and matrices. Having a model on such a state space form is a necessary for state-space controller design.
+\todo[inline]{Skriv ovenstående mindre "KLUMSET?!?!?!" :)}
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
@@ -24,7 +25,7 @@ where
 
 A prerequisite for controller design is that the system model used for making the controller is linear. This chapter examines the linearisation of the non-linear model found in \cref{sec:mod}. Linearisation is achieved through a first order Taylor expansion.
 
-Consider some system $\dot{x} = f(x,u,d)$ with \textbf{x} a vector of system states, u a vector of controlled inputs, and d a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
+Consider some system $\dot{x} = f(x,u,d)$ with x a vector of system states, u a vector of controlled inputs, and d a vector of disturbances. Such a system can be approximated with a first order taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
 
 \begin{equation} \label{eq:taylor}
 	\dot{x}   \approx   f(x_o, u_o, d_o)   +
@@ -33,7 +34,7 @@ Consider some system $\dot{x} = f(x,u,d)$ with \textbf{x} a vector of system sta
 	\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} \cdot (d-d_0)
 \end{equation}
 
-In \cref{eq:taylor} $f(x_o, u_o, d_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system, and n is the number of variables to be differentiated with respect to, (e.g. number of states, inputs and disturbances).
+In \cref{eq:taylor} $f(x_o, u_o, d_o) = 0$ because the linearisation is done at an equilibrium point. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd are the number of states, inputs and disturbances respectively.
 
 \begin{equation} \label{eq:jacobians}
 	\dfrac{\partial f}{\partial x} =
@@ -78,7 +79,7 @@ with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_
 Following the linearisation we obtain the following system matrices:
 
 \begin{equation}  \label{eq:A_full}
-	A_{Full} =
+	A =
 	\left(\begin{array}{ccccccccccc}
 		0 & 0 & \text{1.9828e-04} & 0 & 0 & 0 & 0 & \text{3.8170e-09} & 0 & 0 & 0\\
 		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
@@ -95,7 +96,7 @@ Following the linearisation we obtain the following system matrices:
 \end{equation}
 
 \begin{equation}  \label{eq:B_full}
-	B_{Full} = \left(\begin{array}{ccccc}
+	B = \left(\begin{array}{ccccc}
 		-0.0227 & -\text{2.3156e-04} & 0.0021 & 0 & 0\\
 		0.0230 & 0 & -0.0020 & 0 & 0\\
 		0 & 0 & 0 & -0.0101 & 0\\
@@ -111,20 +112,10 @@ Following the linearisation we obtain the following system matrices:
 \end{equation}
 
 \begin{equation}  \label{eq:C_full}
-	C_{Full} =\left(\begin{array}{ccccccccccc}
+	C = \left(\begin{array}{ccccccccccc}
 		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
 	\end{array}\right)
 \end{equation}
-
-Removing states 1 and 2, which are $M_{PJJ}$ and $M_{Con}$, results in the following reduced model:
-
-
-
-
-
-
-
-
 
 
 
@@ -138,7 +129,7 @@ While the formal definition of the Hartman-Grobman theorem may seem too theoreti
 
 \subsubsection{Model Simplifications}
 To reduce the complexity of the model and controller synthesis we seek to reduce the number of states.
-From observing the linearised system matrix \cref{eq:A_full} it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states except themselves. They are therefore omitted leaving us with smaller dimensions. In practice this means removing the first two rows and columns of A, rows of B and columns of C, yielding \cref{eq:A} \cref{eq:B} \cref{eq:C}
+From observing the linearised system matrix \cref{eq:A_full} it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states. They are therefore omitted leaving us with smaller dimensions. In practice this means removing the first two rows and columns of A, rows of B and columns of C, yielding \cref{eq:A} \cref{eq:B} \cref{eq:C}
 
 \begin{equation}  \label{eq:A}
 	A = \left(\begin{array}{ccccccccc}
@@ -174,7 +165,7 @@ From observing the linearised system matrix \cref{eq:A_full} it is apparent that
 	\end{array}\right)
 \end{equation}
 
-When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error and a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state.
+When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error. From a physical standpoint it does not make sense for vapor mass to accumulate indefinitely and thus a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state.
 
 
 
