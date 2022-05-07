@@ -589,10 +589,11 @@ The airflow over the evaporator and condenser are dynamic because they are drive
 \begin{align}
 	U_{*_{\dot{m}}} & = (U_{fan}*3060 - 2270.4)\cdot 0.0017 \label{eq:evap_U_star_mdot}\\
 	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot 	U_{*_{\dot{m}}}^2	\label{eq:evap_Vbardot_air} \\
-	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}	\label{eq:Evaporator_FanAirInstantMassFlow} \\
-	\frac{\Delta \dot{m}_{air}}{\Delta t} & = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s}	\label{eq:Evaporator_FanAirRateOfChange}
+	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}	\label{eq:Evaporator_FanAirInstantMassFlow}
 \end{align}
-
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{\Delta \dot{m}_{air}}{\Delta t} = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}}{10s}  }  \label{eq:Evaporator_FanAirRateOfChange}       
+\end{equation}
 where
 
 \begin{center}
