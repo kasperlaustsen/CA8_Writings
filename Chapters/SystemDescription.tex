@@ -1,9 +1,10 @@
-The cooling trailer is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods which need specific environmental conditions during transportation. The cooling system used to control the internal climate of the trailer is powered by a battery located in the trailer. This allows the trailer cooling to be powered independent of the truck.
+The refrigeration trailer (hereafter referred to as reefer trailer) is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that requires specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independent of the truck.
 
 While the trailer usually has its own cooling system made by Schmidt Cargobull, the trailer in this project utilizes a custom HVAC system designed by Bitzer. This system is built to facilitate testing of advanced control strategies.
 
 %The inputs and outputs of the system are the identified by investigating the structure of the HVAC system. 
-The cooling system works as a closed loop environment where refridgerant flows through various components. As seen in \cref{fig:HVAC_Diagram}, these are: A scroll compressor, a condenser, a condenser throttle valve, a flash tank, an expansion valve and an evaporator. While moving through these components the refridgerant changes temperature, pressure and enthalpy, and goes through phase shifts. These changes are nessesary to ensure that adequately cold liquid refridgerant enters the evaporator. Here warm air from the cargo hold is blown over the evaporator pipes, cooling the air before it returns to the cool air to the cargo hold. 
+The cooling system works as a closed loop environment where refridgerant flows through various components. As seen in \cref{fig:HVAC_Diagram}, these are: A two stage scroll compressor, a condenser, a condenser throttle valve, a flash tank, a subcooling throttle valve, an expansion valve and an evaporator. The subcooling throttle valve is only used for debugging purposes, and is considered a pipe in terms of the refrigeration cycle.
+While the refrigerant moves through these components the refridgerant changes temperature, pressure and enthalpy, and goes through phase shifts. These changes are nessesary to ensure that adequately cold liquid refridgerant enters the evaporator to extract heat from the cargo hod. Warm air from the cargo hold is blown over the evaporator pipes, cooling the air before it returns to the cargo hold, effectively cooling the cargo in the reefer trailer. 
 
 %The system componentsd will be described in detail in \cref{sec:mod}, the important components can be named as refrigerant moves around a loop through various components.  The trailer box is also of great importance. 
 %The evaporator fan blows cold air throughout the top of the trailer, where it travels down past the cargo to the bottom and is pulled back along the floor.
@@ -16,9 +17,9 @@ The cooling system works as a closed loop environment where refridgerant flows t
 \end{figure}
 
 
-In \cref{fig:p-h_diagram} a p-h diagram of the refrigeration cycle can be seen. It is not accurate but merely depicts the concept of how the enthalpy and pressure changes throughout the cycle. The numbers in the figure are also shown in \cref{fig:HVAC_Diagram} for reference. Two cycles can be observed on the diagram. The first is the main cycle which runs along $1 \rightarrow 8$ and the second is the cycle running along $3\rightarrow 6 \rightarrow 9$. 
+In \cref{fig:p-h_diagram} an illustrative p-h diagram of the refrigeration cycle can be seen. It is not accurate but merely depicts the concept of how the enthalpy and pressure changes throughout the cycle. The numbers in the figure are also shown in \cref{fig:HVAC_Diagram} for reference. Two cycles can be observed on the diagram. The first is the main cycle which runs along the cycle from point $1 \rightarrow 2\rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 7 \rightarrow 8 \rightarrow 1$ and the second is the cycle running along the cycle from $3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 9 \rightarrow 3$. 
 
-Typical depictions of a refridgeration cycle contain only one loop. This project however has two valves rather than one, which are seperated by a flash tank. The purpose of the flash tank is to remove flash gas from the first expansion, thus making the enthalpy of refridgerant continuing to the expansion valve lower. This naturally increases the cooling efficiency.\\
+Typical depictions of a refridgeration cycle contain only one loop. This project however has two valves rather than one, which are seperated by a flash tank. The purpose of the flash tank is to remove flash gas from the first expansion of the gas in the condenser throttle valve. This reduces the enthalpy of refridgerant continuing to the expansion valve which increases the cooling efficiency of the refrigeration.\\
 
 \begin{figure}[h!]
 	\centering
@@ -28,44 +29,27 @@ Typical depictions of a refridgeration cycle contain only one loop. This project
 \end{figure}
 
 
-Many of the system components have variables that can be set to control their behavior. These are the controlled inputs:
+The system components have variables that can be set to control their behavior. These are the controlled inputs:
 
 \begin{itemize}
-	\item The compressor speed
-	\item The condenser fan speed
-	\item The evaporator fan speed
-	\item The expansion valve opening degree
-	\item The condenser throttling valve opening degree
+	\item The compressor speed $ \omega $
+	\item The condenser fan speed $ U_{fan1} $
+	\item The evaporator fan speed  $ U_{fan2} $
+	\item The condenser throttling valve opening degree $ \Theta_1 $
+	\item The expansion valve opening degree $ \Theta_2 $
 \end{itemize}
 
 There are several variables such as pressure and temperature throughout the refrigeration cycle, which are measured and hence are outputs of the system. 
 
-The controlled outputs however, are those of interest from a control point of view. These are the outputs that the control strategy seeks to keep at a set point. In this project it will be the trailer box air temperature and the evaporator superheat. Controlling the air temperatur is nessesary to ensure proper storage conditions for the cargo. Regulating the superheat is a more complex objective, as having a large amount of superheat is wasteful and decreases the overall energy efficiency of the trailer. There should however be some amount of superheat, to ensure no liquid refridgerant enters the compressor, since that is destructive the mechanical system.\\
+The controlled outputs however, are those of interest from a control point of view. These are the outputs that the control strategy seeks to keep at a set point. In this project it will be the trailer box air temperature and the evaporator superheat. Controlling the air temperatur is nessesary to ensure proper storage conditions for the cargo. Regulating the superheat is a more complex objective, as having a large amount of superheat is wasteful and decreases the overall energy efficiency of the trailer. There should however be some amount of superheat, to ensure no liquid refridgerant enters the compressor, since that is destructive to the mechanical system.\\
 
 The aim of the project is to design a Multiple-Inputs-Multiple-Outputs (MIMO) state space controller to keep the temperature inside the container constant despite exogenous inputs (disturbances), specifically the ambient temperature. Furthermore it should do so with the sub-goal of minimizing the energy consumption, primarily by regulating the superheat.
 
 \subsection{Problem structure}
 
-The controller will require access to relevant system information. In the context of state space control, this is the values of the system states. The states will be discussed in details later in the report. The states are used for feedback when choosing the proper control signals. Since the states of complex systems are usually not directly measurable, a simple model will be developed for controller design. The model is then to used as a state observer for the actual system. \\
+The controller will require access to relevant system information. In the context of state space control, this is the values of the system states. The states will be discussed in details later in the report. The states are used for feedback when choosing the proper control signals. Since the states of complex systems are usually not directly measurable, a simple model will be developed for controller design. The model is then to be used as a state observer for the actual system. \\
 
 The control model will be developed by means of first principle modelling. Doing so yields a likely accurate but non-linear model. To apply linear control strategies, the model must be linearised. Optimal control strategies will be implemented on the linear model, as the control objectives can be well formulated as an optimization problem.\\
 
-
-
-	
-NOT DONE
-Inputs / outputs
-
-Control objectives
-\begin{itemize}
-	\item Constant temperature
-		\begin{itemize}
-			\item Disturbances
-		\end{itemize}
-	\item Minimum energy consumption
-		\begin{itemize}
-			\item Cost of batteries and prices of electricity
-		\end{itemize}
-\end{itemize}
 
 		
