@@ -1,6 +1,14 @@
-A general state space system is typically defined on the form seen in \cref{eq:state_space}. It is observed that a change in states over time is defined as a linear combination of vectors and matrices. Having a model on such a state space form is a necessary for state-space controller design.
 
-In order to make a state space controller a model on the typical state space form such as the one seen in \cref{eq:state_space} is necessary. In the previous section a non-linear model was made by substituting the algebraic constraint equations into the state derivative vector. Now, in order to reach a model on the necessary form, a linearisation is necessary. This section will explore how a first order Taylor expansion can be utilized to get the \textit{A}, \textit{B}, \textit{$B_d$} and \textit{C} matrices of the state space system representation.
+
+
+
+
+
+
+
+The model derived in \cref{sec:mod_collec} is highly non-linear and thus not useful for the control strategies intended for this project. Therefore a linearisation must be performed, where a linear approximation of the model is found at a given point. This will remove all non-linear dynamics of the model, facilitating the intended control strategies. It does however decrease model accuracy, especially when the system isn't operating near the linearisation point. All these issues will be touched upon in this section, as the linearisation is discussed.\\
+
+A continuous state space system is typically defined as seen in \cref{eq:state_space}. The state derivatives are defined as a linear combination of states and inputs, while the outputs are a function of the states. Having a model on such a state space form is a necessary for state-space controller design.\\
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
@@ -24,7 +32,7 @@ where
 	\end{tabular}
 \end{center}
 
-As mentioned a first order Taylor expansion is used to achieve the desired linear system of equations and in the following the procedure is described.\\
+To transform the non-linear model \cref{eq:f_noSub} to this form, a first order Taylor expansion is used. Performing this method of linearisation will directly output the \textit{A}, \textit{B}, \textit{$B_d$} and \textit{C} matrices of the linear state space representation.
 
 Consider some system $\dot{x} = f(x,u,d)$ with x a vector of system states, u a vector of controlled inputs, and d a vector of disturbances. Such a system can be approximated with a first order Taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
 
@@ -77,9 +85,9 @@ The linear model can then be expressed as such:
 
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in section \cref{sec:ctrl}.
 
-By now it is apparent that a set of operating points are vital for the linearisation to work and thus these must be found. They are found by/from.... Eramus... Take it away my boiiiiii!
+Before a Taylor expansion can be performed on the non-linear model \cref{eq:f_noSub}, a linearisation point must be chosen. As discussed, linearising at an equilibrium is nessesary, as it removes the offset term from the Taylor expansion. Ideally this point should be a hyperbolic equilibrium, for reasons discussed in \cref{sec:hartman}. Furthermore, it is natural to linearise at a point where the system is expected to be operating during normal use. \\
 
-
+As such, the chosen operating point is found using the High-Fidelity simulation, provided by BITZER. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once settled steady state values for control inputs, disturbances and some states can be directly measured. Not all of our states are readily available from the simulation, in which case they have been estimated based on other relavant measurements. This method ensures that the linearisation point is an equilibrium as all variables of the simulation have settled.\\
 
 
 Following the linearisation we obtain the following system matrices:
@@ -123,18 +131,9 @@ Following the linearisation we obtain the following system matrices:
 	\end{array}\right)
 \end{equation}
 
-
-
-\subsubsection{The Hartman-Grobman theorem}
-
-The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
-A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies that opposite: the state will not converge to a fixed point as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
-
-While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearization should be performed at another equilibrium.
-
+These matrices constitute the linear state space model of the system. The following subsection will discuss how the model complexity is reduced, allowing for easier controller synthesis.
 
 \subsubsection{Model Simplifications}
-To reduce the complexity of the model and controller synthesis we seek to reduce the number of states.
 From observing the linearised system matrix \cref{eq:A_full} it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states. They are therefore omitted leaving us with smaller dimensions. In practice this means removing the first two rows and columns of A, rows of B and columns of C, yielding \cref{eq:A} \cref{eq:B} \cref{eq:C}
 
 \begin{equation}  \label{eq:A}
@@ -171,9 +170,16 @@ From observing the linearised system matrix \cref{eq:A_full} it is apparent that
 	\end{array}\right)
 \end{equation}
 
-When simulating the non-linear system model with inputs held constant at the operating point the state $M_v$ has a constant derivative which makes the state integrate towards infinity. This error is considered as a numeric error. From a physical standpoint it does not make sense for vapor mass to accumulate indefinitely and thus a simple fix is used to omit it. The slope of the error is subtracted from the definition of the derivative of the state.
+One issue encountered when performing the linearisation concerned the state $M_v$. When simulating the non-linear system model with inputs held constant at the operating point the derivative of the state $M_v$ converges to a non-zero constant, which makes the state integrate towards infinity. This error is considered as a numeric error. From a physical standpoint it does not make sense for vapor mass to accumulate indefinitely and thus a simple fix is used to omit it: The constant value of the derivative was subtracted. \\
 
+In details, the constant was discovered to be a function of the compressor speed. The value subtracted is thus also a function of the compressor speed. This removed the integrating effect, but may imply that some numerical errors were present in the non-linear model. Further investegations of the phenomenon were performed but did not reveal the origin of the error. No further actions were thus taken.
 
+\subsubsection{The Hartman-Grobman theorem} \label{sec:hartman}
+
+The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
+A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies that opposite: the state will not converge to a fixed point as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
+
+While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a very simple and rather effective takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearization should be performed at another equilibrium.
 
 \subsubsection{Controllability and observability}
 When evaluating a state space system, it is highly relevant to investigate whether the system is controllable and observable. \\
@@ -295,4 +301,4 @@ The matrices $A_{11}$, $B_{1}$ and $C_{1}$ are obtained:
 	\end{array}\right)
 \end{equation}
 
-
+These matrices define an observable and controllable system model. It is noted that the removal of the unobservable states left the columns 1, 3 and 4 in $B_1$ empty. This means that the 3 corresponding control inputs does not affect the subsystem. Initutively this is not true for the physical system, but for this simplified model, which is accurate around the equilibrium point, they will be held constant. 

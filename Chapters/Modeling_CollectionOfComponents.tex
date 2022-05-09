@@ -1,8 +1,8 @@
-In the previous section each component of the system was modeled with differential and algebraic equations. The modeling format is such that every component takes some inputs, and from those calculates some states and some outputs which are used for the adjacent components. In order to make a complete non-linear model it is necessary to connect the inputs and outputs of the system. This section provides insight into how components are interfaced and collected into a complete non-linear state space form.
+%In the previous section each component of the system was modeled with differential and algebraic equations. The modeling format is such that every component takes some inputs, and from those calculates some states and some outputs which are used for the adjacent components. In order to make a complete non-linear model it is necessary to connect the inputs and outputs of the system. This section provides insight into how components are interfaced and collected into a complete non-linear state space form.
 
-A block diagram is made to give an overview of the system interface variables and states. All differential equations are states of the system and they are collected in a vector $f(x,u)$ where $u$ encapsulates both the controlled and uncontrolled inputs (disturbances). The algebraic constraint equations are substituted into the state vector variables until the state derivatives are functions only of states, inputs and disturbances.\\
+In the previous section each component of the system was modeled with differential and algebraic equations. The equations for one component generally require values from the previous block, and use these to generate values used for the next component. The aim of this section is to create a state space model which encapsulates all these interconnections. The model will be expectedly be non-linear as a direct result of the generelly non-linear physics that describe thermodynamical systems. \cref{sec:mod_lin} will cover how the model is linearised.\\
 
-In \cref{fig:Block_diagram_inout} the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) for these are found from the Hi-Fi simulation and used. Blue variables are outputs of components which are currently not used by the following component. Each component block also contains the names of the states they contain.
+A block diagram \cref{fig:Block_diagram_inout} is made to give an overview of the system interface variables and states. In the diagram the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) are used for these. The values are found by investigating a high-fidelity simulation of the system, provided by BITZER. Blue variables are outputs of components which are currently not used by the following component. Each component block also contains the names of the states they contain.
 
 \begin{figure}[h!]
 	\centering
@@ -16,13 +16,36 @@ In \cref{fig:Block_diagram_inout} the component interface variables are split ou
 
 \subsubsection{State variables}
 
-Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. This is possible because the fast variables settle to steady state values without oscillatory behavior. \\
+Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations in \cref{sec:mod}. This modelling choice is valid since the fast variables rapidly settle to steady state values without oscillatory behavior. \\
 
 While including the dynamics of the faster parameters would yield a potentially more accurate model, it is unnecessary from a control perspective, as this model is intended for control of the slow dynamics. In addition, the added accuracy will likely be unnoticeable due to various uncertainties in the model. The specific decision of which parameters to model dynamically is heavily inspired by previous work \cite{Sorensen2013}.
 
-The differential equations are collected in the state vector in \cref{eq:f_noSub}.
 
+The variables, which in \cref{sec:mod} were defined with differential equations are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
+\begin{equation} \label{eq:xu} \renewcommand{\arraystretch}{2.4}
+	x = \begin{bmatrix}
+		M_{pjj}			\\				%pjj
+		M_{con} 		\\				%condenser
+		T_m 			\\				%condenser
+		\dot{m}_{air}	\\				%evaporator
+		T_{mlv}			\\				%evaporator
+		T_{mv}			\\				%evaporator
+		M_{lv}			\\				%evaporator
+		M_v				\\				%evaporator
+		T_{air}			\\				%box
+		T_{box}			\\				%box
+		T_{cargo}		\\				%box
+	\end{bmatrix} \;\;\;\;\;\;\;\;\;
+	u = \begin{bmatrix}
+		\Theta_1			\\				%pjj
+		\Theta_2 		\\				%condenser
+		U_{fan_1}			\\				%condenser
+		U_{fan_2}	\\				%evaporator
+		\omega			\\				%evaporator
+\end{bmatrix}
+\end{equation}
 
+We define a function $f(x,u)$ as a vector of the state derivatives:
 % F: States
 % ------------------------------------
 
@@ -57,25 +80,24 @@ The differential equations are collected in the state vector in \cref{eq:f_noSub
 	\end{bmatrix}
 \end{equation}
 
+\cref{eq:f_noSub} does not immediately look like a typical set of ODE's. However, all the variables on the right most side of the equation, can be substituted with the algebraic equations from the modelling section. Once no more substitutions can be made $f(x,u)$ will be a function of the system states, inputs and disturbance. The function $f(x,u)$ is thus the non-linear model of the system. The model contains 11 states, 5 control inputs and 1 disturbance. Writing out the full equation is infeasible due to the sheer size of expressions when substitution is performed.
 
-As mentioned all variables which are not states, inputs and disturbances in \cref{eq:f_noSub} are substituted with the algebraic equations. As such the states, inputs and disturbances are included in the state derivatives. The function $f(x,u)$ is thus the non-linear model of the system. Writing out the full state space system is infeasible due to the sheer size of expressions when substitution is performed. The model contains 11 states, 5 control inputs and 1 disturbance.
+%The control inputs are:
 
-The control inputs are:
+%\begin{center}
+%	\begin{tabular}{l p{10cm}}
+%		$ \Theta_1 $  & The valve opening degree of the \\
+%		$ \Theta_2 $  & The valve opening degree of the \\
+%		$ U_{fan_1} $ & The condenser fan speed         \\
+%		$ U_{fan_2} $ & The evaporator fan speed        \\
+%		$ \omega $    & The compressor speed
+%	\end{tabular}
+%\end{center}
 
-\begin{center}
-	\begin{tabular}{l p{10cm}}
-		$ \Theta_1 $  & The valve opening degree of the \\
-		$ \Theta_2 $  & The valve opening degree of the \\
-		$ U_{fan_1} $ & The condenser fan speed         \\
-		$ U_{fan_2} $ & The evaporator fan speed        \\
-		$ \omega $    & The compressor speed
-	\end{tabular}
-\end{center}
+%The disturbance is:
 
-The disturbance is:
-
-\begin{center}
-	\begin{tabular}{l p{10cm}}
-		$ T_{ambi} $  & The ambient air temperature
-	\end{tabular}
-\end{center}
+%\begin{center}
+%	\begin{tabular}{l p{10cm}}
+%		$ T_{ambi} $  & The ambient air temperature
+%	\end{tabular}
+%\end{center}
