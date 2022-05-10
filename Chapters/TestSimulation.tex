@@ -4,11 +4,11 @@ As discussed in previous sections, the model is to be used as a state observer f
 
 The control model must initially be tested to accurately estimate the observable states of the full 9-state model. In the test framework, the two models run in parallel, with the control signals $u$ equally applied to both systems. The control signals are computed by the controller K, based on the states of the control model. This framework is seen in \cref{fig:sim_modelSS_obs}. \\
 
-Additionally, an Luenberger observer gain $L$ has been designed. Any error between the actual output and estimated output will be multiplied by $L$ and added to the $\dot{\hat{x}}$. If $A-LC$ is stable, this topology will ensure $\hat{y}$ converges to $y$. If the states are observable (which the Kalman Decomposition ensures) and there is no present disturbance then $\hat{x}$ will converge to $x$. If a disturbance is present, the proportional observer gain will not be sufficient to estimate the states, and integral action should be included. For the purpose of these tests however, the error introduced by the disturbance is not handled by integral observer action. \\
+Additionally, a Luenberger observer gain $L$ has been designed. Any error between the actual output and estimated output will be multiplied by $L$ and added to the $\dot{\hat{x}}$. If $A-LC$ is stable, this topology will ensure $\hat{y}$ converges to $y$. If the states are observable (which the Kalman Decomposition ensures) and there is no present disturbance then $\hat{x}$ will converge to $x$. If a disturbance is present, the proportional observer gain will not be sufficient to estimate the states, and integral action should be included. For the purpose of these tests however, the error introduced by the disturbance is not handled by integral observer action. \\
 
-The observer poles (the eigenvalues of $(A-LC)$) are chosen to be have the same angle as the closed loop poles (eigenvalues of $(A-BK)$) but with a 5 times larger magnitude. This ensures the observer is always faster then the system dynamics. Resultingly all state information is available by looking at the observer states ($\hat{x}$).\\
+The observer poles (the eigenvalues of $(A-LC)$) are chosen to be have the same angle as the closed loop poles (eigenvalues of $(A-BK)$) but with a 5 times larger magnitude. This ensures the observer is always faster than the system dynamics. Resultingly all state information is available by looking at the observer states ($\hat{x}$).\\
 
-For this test, the ambient temperature is set to 20$^{\circ}$C, which is its operating point value, such that not disturbance is present. This is clear by recalling that $\tilde{d} = d-d_o$
+For this test, the ambient temperature is set to 20$^{\circ}$C, which is its operating point value, such that no disturbance is present. This is clear by recalling that $\tilde{d} = d-d_o$
 
 \begin{figure}[h!]
 	\centering

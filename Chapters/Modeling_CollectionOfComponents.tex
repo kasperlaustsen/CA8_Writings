@@ -16,9 +16,7 @@ A block diagram in \cref{fig:Block_diagram_inout} gives an overview of the syste
 
 \subsubsection{State variables}
 
-Due to the large variance in the dynamic speed of the system parameters, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations in \cref{sec:mod}. This modelling choice is valid since the fast variables rapidly settle to steady state values without oscillatory behavior. \\
-
-While including the dynamics of the faster parameters would yield a potentially more accurate model, it is unnecessary from a control perspective, as this model is intended for control of the slow dynamics. In addition, the added accuracy will likely be unnoticeable due to various uncertainties in the model. The specific decision of which parameters to model dynamically is heavily inspired by previous work \cite{Sorensen2013}.
+As described in \cref{sec:mod}, there is a large variance in dynamical speed across the system parameters. Therefore, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. This modelling choice is valid since the fast variables rapidly settle to steady state values without oscillatory behavior. \\
 
 
 The variables, which in \cref{sec:mod} were defined with differential equations are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
@@ -102,6 +100,10 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 \end{equation}
 
 \cref{eq:f_noSub} does not immediately look like a typical set of ODE's. However, all the variables on the right most side of the equation, can be substituted with the algebraic equations from the modelling section. Once no more substitutions can be made $f(x,u)$ will be a function of the system states, inputs and disturbance. The function $f(x,u)$ is thus the non-linear model of the system. The model contains 11 states, 5 control inputs and 1 disturbance. Writing out the full equation is infeasible due to the sheer size of expressions when substitution is performed.
+
+One issue encountered when observing the behavior of the non-linear model concerned the state $M_v$. When simulating the non-linear system model with inputs held constant at the operating point the derivative of the state $M_v$ converges to a non-zero constant, which makes the state integrate towards infinity. This error is considered as a numeric error. From a physical standpoint it does not make sense for vapor mass to accumulate indefinitely and thus a simple fix is used to omit it: The constant value of the derivative was subtracted. \\
+
+In details, the constant was discovered to be a function of the compressor speed. The value subtracted is thus also a function of the compressor speed. This removed the integrating effect, but may imply that some numerical errors were present in the non-linear model. Further investegations of the phenomenon were performed but did not reveal the origin of the error. No further actions were thus taken.
 
 %The control inputs are:
 
