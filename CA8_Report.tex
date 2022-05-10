@@ -81,6 +81,12 @@
 % Required by tables generator
 \usepackage{booktabs}
 \usepackage{multirow}
+
+% tocless command
+\newcommand{\tocless}[2]{\bgroup\let\addcontentsline=\nocontentsline#1{#2}\egroup} % Kommando til at ekskludere sektion fra TOC, del 2
+
+
+
 % Some very useful LaTeX packages include:
 % (uncomment the ones you want to load)
 
@@ -601,6 +607,9 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 % conference papers do not normally have an appendix
 \section{Appendix}
 \input{Chapters/Appendix}
+
+\section{Documentation and tests}
+\input{Chapters/Appendix_documentation_and_tests}
 
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page

@@ -670,7 +670,8 @@ where
 The output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_{lv}} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the specific enthalpy level in the evaporator where liquid vapor mixture has completely changed phase to vapor. The pressure in \cref{eq:evap_pout} is found from table lookup using the specific volume of the refrigerant in the vapor CV and the specific enthalpy.
 
 \begin{align}
-	p_{out}            & = \Pi \left( h_v, \frac{M_v}{V_i-V_{lv}} \right)		\label{eq:evap_pout}                       \\
+%	p_{out}            & = \Pi \left( h_v, \frac{M_v}{V_i-V_{lv}} \right)		\label{eq:evap_pout}                       \\
+	p_{out}            & = p_{in}								\label{eq:evap_pout}                       \\
 	V_{lv}             & = \sigma \cdot V_i                                                                           \\
 	h_{lv}             & = h_{in} + \frac{Q_{mlv}}{\dot{m}_{in}}                                                      \\
 	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}               \label{eq:evap_hv}                                       \\
@@ -694,7 +695,7 @@ where\\
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$ p_{out} $      & Pressure in evaporator                                                   & [\si{Pa}]                         \\
-		$\Pi(h,d) $   & Table lookup of pressure from specific enthalpy and density              & [\si{Pa}]                         \\
+%		$\Pi(h,d) $   & Table lookup of pressure from specific enthalpy and density              & [\si{Pa}]                         \\
 		$h_{v} $         & Specific enthalpy of vapor CV                                            & [\si{J}/\si{kg}]                  \\
 		$h_{lv} $        & Specific enthalpy of liquid-vapor CV                                     & [\si{J}/\si{kg}]                  \\
 		$h_{in} $        & Specific enthalpy of input liquid refrigerant                            & [\si{J}/\si{kg}]                  \\
