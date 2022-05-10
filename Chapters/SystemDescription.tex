@@ -1,4 +1,4 @@
-The refrigeration trailer (hereafter referred to as reefer trailer) is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that requires specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independent of the truck.
+The refrigeration trailer (hereafter referred to as reefer trailer) is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that require specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independent of the truck.
 
 While the trailer usually has its own cooling system made by Schmidt Cargobull, the trailer in this project utilizes a custom HVAC system designed by Bitzer. This system is built to facilitate testing of advanced control strategies.
 
@@ -47,9 +47,9 @@ The aim of the project is to design a Multiple-Inputs-Multiple-Outputs (MIMO) st
 
 \subsection{Problem structure}
 
-The controller will require access to relevant system information. In the context of state space control, this is the values of the system states. The states will be discussed in details later in the report. The states are used for feedback when choosing the proper control signals. Since the states of complex systems are usually not directly measurable, a simple model will be developed for controller design. The model is then to be used as a state observer for the actual system. \\
+The controller will require access to relevant system information. In the context of state space control, this is the values of the system states. The states will be discussed in details later in the report. The states are used for feedback when choosing the proper control signals. Since the states of complex systems are usually not directly measurable, a simple model will be developed for state observation. The model is then to be used for controller design. \\
 
-The control model will be developed by means of first principle modelling. Doing so yields a likely accurate but non-linear model. To apply linear control strategies, the model must be linearised. Optimal control strategies will be implemented on the linear model, as the control objectives can be well formulated as an optimization problem.\\
+The control model will be developed by means of first principle modelling. Doing so yields a non-linear model, due to the non-linear physical properties of thermodynamical systems. To apply linear control strategies, the model must be linearised. Optimal control strategies will be implemented on the linear model, as the control objectives can be well formulated as an optimization problem. The optimization problem in this project will be to keep the controlled outputs fixed, while minimizing the energy consumption of the system.\\
 
 
 		
