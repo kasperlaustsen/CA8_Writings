@@ -45,6 +45,16 @@ The controlled outputs however, are those of interest from a control point of vi
 
 The aim of the project is to design a Multiple-Inputs-Multiple-Outputs (MIMO) state space controller to keep the temperature inside the container constant despite exogenous inputs (disturbances), specifically the ambient temperature. Furthermore it should do so with the sub-goal of minimizing the energy consumption, primarily by regulating the superheat.
 
+\subsection{High-Fidelity model}
+When working with a any large scale plant, testing iteratively on the physical system is often impractical. Slow dynamics and inconvienient test procedures make the proces tedious for the user, but there is also the risk of equipment damage. Therefore, it is common practice to develop a high-fidelity model of the system. Testing can be performed efficiently and with no risk on the model. \\
+
+BITZER has created such a Hi-Fi model for the cooling trailer in Simulink. The model has been shown to be highly accurate and can be trusted to mimic the real system behavior in most use-cases. The Hi-Fi model simulates the refridgeration system in \cref{fig:HVAC_Diagram}. The controlled inputs are regulated by a decoupled PID network. The cargo hold air temperature is regulated to -5$^{\circ}$C.\\
+
+The control strategy developed in this project, will first and foremost be tested on the Hi-Fi model. 
+
+
+
+
 \subsection{Problem structure}
 
 The controller will require access to relevant system information. In the context of state space control, this is the values of the system states. The states will be discussed in details later in the report. The states are used for feedback when choosing the proper control signals. Since the states of complex systems are usually not directly measurable, a simple model will be developed for state observation. The model is then to be used for controller design. \\

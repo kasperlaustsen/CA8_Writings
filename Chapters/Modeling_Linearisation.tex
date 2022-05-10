@@ -140,7 +140,27 @@ Following the linearisation we obtain the following system matrices:
 	\end{array}\right)
 \end{equation}
 
-These matrices constitute the linear state space model of the system. The following subsection will discuss how the model complexity is reduced, allowing for easier controller synthesis.
+These matrices constitute the linear state space model of the system. The following subsection will discuss how the model complexity is reduced, allowing for easier controller synthesis.\\
+
+%	Rank of \text{[A$|$C]}
+
+
+%\centering{\textbf{Model status}}\\
+
+
+\begin{table}[h]\centering\caption{Model status}
+	\begin{tabular}{ll}
+		
+		\textbf{Linearity status}          & Non-linear   \\ \toprule
+		\textbf{Number of states}          & 11           \\
+		\textbf{Number of inputs}          & 5            \\
+		\textbf{Number of outputs}         & 1            \\ \toprule
+		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
+		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
+		\textbf{Eigenvalues}               & -1 , -2 , -3 \\
+		\textbf{A matrix condition number} & 10           \\ 
+	\end{tabular}
+\end{table}
 
 \subsubsection{Model Simplifications}
 From observing the linearised system matrix \cref{eq:A_full} it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states. They are therefore omitted leaving us with smaller dimensions. In practice this means removing the first two rows and columns of A, rows of B and columns of C, yielding \cref{eq:A} \cref{eq:B} \cref{eq:C}
@@ -180,7 +200,19 @@ From observing the linearised system matrix \cref{eq:A_full} it is apparent that
 \end{equation}
 
 
-
+\begin{table}[h]\centering\caption{Model status}
+	\begin{tabular}{ll}
+		\toprule
+		\textbf{Linearity status}          & Non-linear   \\ \toprule
+		\textbf{Number of states}          & 9           \\
+		\textbf{Number of inputs}          & 5            \\
+		\textbf{Number of outputs}         & 1            \\ \toprule
+		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
+		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
+		\textbf{Nominal stability}               & \text{$\lambda_i \leq 0, i\in )$} \\
+		\textbf{A matrix condition number} & 10           \\ \toprule
+	\end{tabular}
+\end{table}
 
 
 \subsubsection{Controllability and observability}
@@ -207,6 +239,24 @@ Kalman's test for observability is comparable to the test for controlability. Th
 \end{equation}
 
 If $Q_o$ does not have full rank, the system is not observable and action must be taken. This can be in form of adding the needed sensors or performing a Kalman decomposition, as discussed in the next section.\\
+
+
+\subsubsection{Condition number}
+Consider the linear problem $Ax=b$, with $A \in \mathbb{R} ^{n x n}$ and $ x, b \in \mathbb{R} ^{n x 1}$, where x is the unknown solution. The matrix $A$ can be factorized as $A = USV^T$, where: 
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$U \in \mathbb{R} ^{n x n}$		& is the matrix of eigenvectors of $AA^H$  &  \\
+		$S \in \mathbb{R} ^{n x n}$ 	& is a diagonal matrix of the singular values $\sigma_i$ of $A$ &  \\
+		$V \in \mathbb{R} ^{n x n}$		& is the matrix of eigenvectors of $A^HA$  &  \\
+	\end{tabular}
+\end{center}
+
+The singular values $\sigma$ are each associated with the eigenvectors in $U$ and $V$. $U$ and $V$ form orthonormal bases for the output space (row) and input space (column) of $A$ respectively. The first rowvector contained in $U$ can as such be interpreted as a unit length input vector in a specific direction. Specifically the direction which creates the largest possible output signal. The input is this direction is scaled by the magnitude of the first singular value. The output direction is defined by the first columnvector of $V$. Each subsequent set of vectors and singular value, indicates the gain in other direction. The singular values (gains) are sorted from largest to smallest.
+
+The condition number of a matrix is defined as the ratio between its maximum and minimum singular values. It is a measurement of how sensitive the output $x$ is to a change in the input $b$. In multivariable control theory the condition number is a useful measure in evaluating how tolerant the system is to disturbances and other errors. A large condition number is an indication that small input pertubations might cause large errors in the output signal.\\
+
+It is important to note the intentionally vague term "large condition number". The condition number effectively maps an input error to the corresponding output error. Thus the meaning of a large or small condition number relies on the size of the expected input error and the tolerable output error. In most control applications a condition number of the state transition matrix larger than 10 is considered large, but this is only presented to give intuition of the expected size of the condition number.
+
 
 
 \subsubsection{Kalman decomposition}
