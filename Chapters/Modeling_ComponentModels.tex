@@ -31,7 +31,10 @@ where
 \end{center}
 
 \subsubsection{Expansion valve}
+The expansion valve lowers the pressure of the liquid refrigerant coming from the flash tank (point 7 $\rightarrow$ 8 in \cref{fig:p-h_diagram}) such that the temperature of the refrigerant running into the evaporator is low enough to be able to absorb heat from the box air.
+
 Because of the very small internal volume of the expansion valve it can be considered an adiabatic process. Therefore it can be modeled purely algebraically as in \cref{eq:ExpansionValve}. The flow through the expansion valve is proportional to the square root of the pressure drop across it, where the proportional constants relies on physical properties of the valve and refrigerant.
+
 \begin{equation} \label{eq:ExpansionValve}
 	\dot{m}= C A \sqrt{\rho\Delta p}
 \end{equation}
@@ -48,7 +51,8 @@ where
 	\end{tabular}
 \end{center}
 
-To model the way that the valve is intended to be controlled, an alternative representation is introduced for the mass flow through an expansion valve in \cref{eq:ExpansionValve_Alt}. If the valve characteristics C and A are not available they can be combined into a single constant (K) which is found from empirical tests.
+To model the way that the valve is intended to be controlled, an alternative representation is introduced for the mass flow through an expansion valve in \cref{eq:ExpansionValve_Alt}. If the valve characteristics C and A are not available they can be combined into a single constant (K). K is set to $1 \cdot 10^{-5}$ based on advice from Kresten. The function $f_p()$ of the opening degree is used to model the non linear behavior of the opening degree $( \Theta )$ $\rightarrow$ flow $( \dot{m} )$ relationship in the valve. The valve is an equal-percentage type valve, meaning that for an increase in opening degree a relative increase in flow is achieved as illustrated in \cref{fig:equal_percent_valve}. But for convenience with regards to the linearisation the valve is assumed to be linear even though it will introduce an error.
+\todo[inline]{skal vi nævne at vi antager linearitet her eller måske først senere i linearisering (model simplifications)?}
 
 
 \begin{equation} \label{eq:ExpansionValve_Alt}
@@ -72,15 +76,15 @@ where
 	\end{tabular}
 \end{center}
 
-Rewriting the equation to solve for $p_{out}$ it becomes the following. A real assumption is that the flow is always moving in one direction and therefore the flow is simply squared without regard for keeping flow sign.
+The input specific volume ($v_{in}$) is found from a table lookup from the input specific enthalpy ($h_{in}$) and the input pressure ($p_{in}$) as seen in \cref{eq:ExpansionValve_vin}.
 
-\begin{equation}
-	p_{out} = p_{in} - \dot{m}^2 \dfrac{v_{in}}{(f_p(\Theta) K)^2}
+
+\begin{equation} \label{eq:ExpansionValve_vin}
+	v_{in} = \mathcal{Z}(h_{in}, p_{in})
 \end{equation}
 
-The function $f_p()$ of the opening degree is used to model the non linear behavior of the opening degree ($ \Theta $) - flow ($ \dot{m} $) relationship in the valve. The valve is an equal-percentage type valve, meaning for an increase in opening degree a relative increase in flow is achieved. This is illustrated in \cref{fig:equal_percent_valve}.
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.55\textwidth]{Graphics/Equal-percentage.png}
 	\caption{Valve characteristics}
@@ -89,7 +93,7 @@ The function $f_p()$ of the opening degree is used to model the non linear behav
 
 
 \subsubsection{Pipe Joining Junction}
-Between compressor stage 1, compressor stage 2 and the flash tank (see \cref{fig:HVAC_Diagram}) is a Pipe Joining Junction that connects the three forementioned components.
+Between compressor stage 1, compressor stage 2 and the flash tank is a Pipe Joining Junction that connects the three aforementioned components (point 3 \cref{fig:p-h_diagram}).
 
 In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction.
 
@@ -109,7 +113,7 @@ where
 	\end{tabular}
 \end{center}
 
-In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. Additionally, it is expected that $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows.
+In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfers to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. It is modeled as an algebraic equation where $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows.
 
 \begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
 	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
@@ -124,22 +128,6 @@ where
 		$h_{in2}$       & Specific enthalpy into Pipe Joining Junction from Flash Tank         & [\si{J}/\si{kg}] \\
 		$\dot{m}_{in1}$ & Flow into Pipe Joining Junction from Compressor $ C_1 $              & [\si{kg}/\si{s}] \\
 		$\dot{m}_{in2}$ & Flow into Pipe Joining Junction from Flash Tank                      & [\si{kg}/\si{s}]
-	\end{tabular}
-\end{center}
-
-The second compressor stage is depending on temperature and thus it is calculated in the pipe joining junction. In \cref{eq:PJJ_Tout} the output temperature is found from the output enthalpy and the input pressure. It is assumed that the pressure is constant throughout the junction and thus $p_{out} = p_{in}$.
-\begin{equation} \label{eq:PJJ_Tout}
-	T_{out} = \Phi(h_{out}, p_{in})
-\end{equation}
-
-where
-
-\begin{center}
-	\begin{tabular}{l p{10cm} l}
-		$T_{out}$ & Temperature out of pipe joining junction                             & [\si{K}]         \\
-		$h_{out}$ & Specific enthalpy into Compressor $ C_2 $ from Pipe Joining Junction & [\si{J}/\si{kg}] \\
-		$p_{in}$  & Input pressure                                                       & [\si{Pa}] \\
-		$\Phi(h,p)$ & Table lookup of temperature from specific enthalpy and pressure & [.]
 	\end{tabular}
 \end{center}
 
@@ -178,10 +166,11 @@ where
 %The pressure and specific enthalpy on the output flows are equal to the input pressure and specific enthalpy. The sum of the mass flows out of the Pipe Splitting Junction is equal to the input mass flow. \\
 
 \subsubsection{Compressor}
-The compressor in the refrigeration cycle consists of two compressor stages that can be described by the same equations. The compressor type is a scroll compressor.
-The compressor dynamics are assumed to be fast enough compared with the refridgeration cycle that it can be considered constant. Therefore, the equations governing the compressors are algebraic equations.
-Adiabatic compression is assumed.
-The two equations describing the compression governs the mass flow in \cref{eq:comp_mass_flow} and the output specific enthalpy in \cref{eq:comp_enthalpy}. The output specific enthalpy is found via a lookup table $ \Upsilon $ also known as HTP.
+The compressor creates the the pressure necessary to generate a flow of refrigerant in the system. The generated pressure also raises the temperature of the refrigerant such that heat can flow to the outside ambient air in the condenser. The pressure is raised in two stages (point 1 $\rightarrow$ 2 and point 3 $\rightarrow$ 4 in \cref{fig:p-h_diagram}).
+
+The compressor is a scroll type compressor with the two compressor stages differing only in the internal volume between the two, where stage 2 has half the internal volume of stage 1. Therefore the two stages can be described by the same set of equations as defined below. The compressor model is based on the Reciprocating (piston) compressor in \cite{Sorensen2013} and it is as such an approximation of a scroll compressor. \todo[inline]{Vi bliver vel nødt til at have en eller anden form for citation på at det er godt nok? Ellers virker det som en meget løs antagelse?}
+
+The fast dynamics of the compressor rotation has little impact on the slower evaporator dynamics and they are thus decoupled. Therefore, the equations governing the compressors are algebraic equations where the flows in and out of the compressor are equal. In \cref{eq:comp_mass_flow} the flow through the compressor is modeled as the mass displaced by a single stroke multiplied with the half the rotational velocity. In \cref{eq:comp_enthalpy} the output enthalpy is found from a lookup table ($ \Upsilon $) based on the output temperature ($T_{out}$) and pressure ($p_{out}$).
 
 \begin{align}
 	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \label{eq:comp_mass_flow} \\
@@ -205,15 +194,15 @@ where
 	\end{tabular}
 \end{center}
 
-In \cref{eq:comp_mass_flow} $v_1$ is found from table lookup as in \cref{eq:comp_prestroke_spec_vol}.
+The specific volume before a stroke ($v_1$) in \cref{eq:comp_mass_flow} is found from table lookup in \cref{eq:comp_prestroke_spec_vol}. In \cref{eq:comp_v2} the specific volume after a stroke is calculated based on the assumption of adiabatic compression from the pressure before the piston ($p_1$) and the pressure after the piston ($p_2$).
 
 \begin{align}
-	v_1 &= \Gamma(T_{in},p_{1}) \label{eq:comp_prestroke_spec_vol} \\
-	v_2 &= \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \\
-	p_1 &= p_{in} - kl_1 \cdot \omega \\
-	p_2 &= p_{out} + kl_2 \cdot \omega \\
-	\gamma &= C_{cp}/C_{cv} \\
-	T_{out} &= T_{in}\cdot \left(\frac{p_{out}}{p_{in}}\right)^{\frac{\gamma-1}{\gamma}}
+	v_1     & = \Gamma(T_{in},p_{1}) \label{eq:comp_prestroke_spec_vol}                   \\
+	v_2     & = \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \label{eq:comp_v2}                         \\
+	p_1     & = p_{in} - kl_1 \cdot \omega \label{eq:comp_p1}                                               \\
+	p_2     & = p_{out} + kl_2 \cdot \omega \label{eq:comp_p2}                                              \\
+	\gamma  & = C_{cp}/C_{cv} \label{eq:comp_gamma}                                                            \\
+	T_{out} & = T_{in}\cdot \left(\frac{p_{out}}{p_{in}}\right)^{\frac{\gamma-1}{\gamma}} \label{eq:comp_Tout}
 \end{align}
 
 where
@@ -222,8 +211,8 @@ where
 	\begin{tabular}{l p{8cm} l}
 		$\Gamma(T,p)$   & VTP; Lookup table of the specific volume from temperature and pressure & [\si{Pa}]                         \\
 		$p_{in}$        & Compressor stage input pressure                                        & [\si{Pa}]                         \\
-		$p_1$           & 'Piston' input pressure                                                  & [\si{Pa}]                         \\
-		$p_2$           & 'Piston' output (discharge) pressure                                     & [\si{Pa}]                         \\
+		$p_1$           & 'Piston' input pressure                                                & [\si{Pa}]                         \\
+		$p_2$           & 'Piston' output (discharge) pressure                                   & [\si{Pa}]                         \\
 		$\gamma$        & Heat capacity ratio                                                    & [$ \cdot $]                       \\
 		$ kl_1$, $kl_2$ & Valve loss constants                                                   & [$ \cdot $]                       \\
 		$\omega$        & Compressor angular velocity                                            & [\si{rad}/\si{s}]                 \\
@@ -266,10 +255,9 @@ where
 
 
 \subsubsection{Condenser}
+The condenser takes in the hot discharge pressure vapor from the second compressor stage (point 4 in \cref{fig:p-h_diagram}). The high temperature enables heat transfer from the refrigerant inside the condenser to the outside ambient air. In the cooling process, the vapor refrigerant condensates, yielding high pressure liquid (point 5 in \cref{fig:p-h_diagram}).
 
-The condenser takes in the discharge pressure vapor from the second compressor stage, at point 4 in \cref{fig:HVAC_Diagram}. The high pressure yields a high temperature,
-which enables heat transfer through the condensor to ambient air. This is done mainly through condensation of the refrigerant vapor, yielding high pressure liquid at point 5 in \cref{fig:HVAC_Diagram}.
-The energy balance is modelled in \cref{eq:Condenser_Enthalpy}. The mass balance is modelled in \cref{eq:Condenser_ChangeOfMass}. Finally the temperature of the metal in the condenser is modelled in
+The energy balance is modeled in \cref{eq:Condenser_Enthalpy} as the input enthalpy ($h_{in}$) subtracted the heat flow from refrigerant to metal ($Q_{rm}$) divided by the input mass flow ($\dot{m}_{in}$). The mass balance is modeled in \cref{eq:Condenser_ChangeOfMass}. Finally the temperature of the metal in the condenser is modeled in
 \cref{eq:Condenser_ChangeOfTemperature}, as the dominant dynamics of the condenser is greatly linked to the temperature of the metal \cite{Sorensen2013}. \cref{eq:Condenser_ChangeOfTemperature} is also
 derived from the energy balance. In \cref{fig:condenser_CV} a diagram of the condenser CV can be found.
 
