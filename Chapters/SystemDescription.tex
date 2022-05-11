@@ -1,13 +1,28 @@
 The refrigeration trailer (hereafter referred to as reefer trailer) is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that require specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independent of the truck.
 
-While the trailer usually has its own cooling system made by Schmidt Cargobull, the trailer in this project utilizes a custom HVAC system designed by Bitzer. This system is built to facilitate testing of advanced control strategies.
+While the trailer usually has its own cooling system made by Schmidt Cargobull, the trailer in this project utilizes a custom HVAC system designed by Bitzer. This system is built to facilitate testing of advanced control strategies.\\
 
-%The inputs and outputs of the system are the identified by investigating the structure of the HVAC system. 
-The cooling system works as a closed loop environment where refridgerant flows through various components. As seen in \cref{fig:HVAC_Diagram}, these are: A two stage scroll compressor, a condenser, a condenser throttle valve, a flash tank, a subcooling throttle valve, an expansion valve and an evaporator. The subcooling throttle valve is only used for debugging purposes, and is considered a pipe in terms of the refrigeration cycle.
-While the refrigerant moves through these components the refridgerant changes temperature, pressure and enthalpy, and goes through phase shifts. These changes are nessesary to ensure that adequately cold liquid refridgerant enters the evaporator to extract heat from the cargo hod. Warm air from the cargo hold is blown over the evaporator pipes, cooling the air before it returns to the cargo hold, effectively cooling the cargo in the reefer trailer. 
+A textbook refridgeration system is comprised of 4 components, as depicted in \cref{fig:HVAC_Diagram_std}. While the refrigerant moves through these components the refridgerant changes temperature, pressure and enthalpy, and goes through phase shifts. These changes are nessesary to ensure that adequately cold liquid refridgerant enters the evaporator to extract heat from the cargo hold. Warm air from the cargo hold is blown over the evaporator pipes, cooling the air before it returns to the cargo hold, allowing for cooling of the cargo in the reefer trailer. 
 
-%The system componentsd will be described in detail in \cref{sec:mod}, the important components can be named as refrigerant moves around a loop through various components.  The trailer box is also of great importance. 
-%The evaporator fan blows cold air throughout the top of the trailer, where it travels down past the cargo to the bottom and is pulled back along the floor.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.85\textwidth]{Graphics/HVAC_Diagram_std.pdf}
+	\caption{Illustration of a standard refrigeration cycle}
+	\label{fig:HVAC_Diagram_std}
+\end{figure}
+
+The pressure and enthalpy of the refridgerant as the four connection points can be plotted in a p-h diagram. \cref{fig:p-h_diagram_std} shows the ideal p-h diagram for the standard refridgeration cycle. The evaporator and condenser are seen to ideally only change the enthalpy of the refridgerant. This is because the ideal behavior is for the refridgerant to go through a phase shift in these components. The expansion valve simply lowers the pressure without changing the enthalpy. This in turn lowers the temperature. The compressor increases the pressure of the refridgerant, while also slightly increasing the enthalpy. This is because ideal compression is an isentropic process, which means the entropy is held constant. Increasing the pressure while keeping entropy constant, requires an increased enthalpy. \\
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.55\textwidth]{Graphics/p-h_diagram_std}
+	\caption{p-h diagram of the standard refrigeration cycle}
+	\label{fig:p-h_diagram_std}
+\end{figure}
+
+
+The refridgeration system implemented in the trailer used in this project contains more components than the standard example. An seen in figure \cref{fig:HVAC_Diagram}, the compressor is comprised of two stages, rather than one. Similarly two valves are being used. They are seperated by a flash tank, that passes flash gas from the condenser throttle valve to the second stage of the compressor. Note, that the subcooling throttle valve is only used for debugging purposes, and is fully open at all times in this project.
 
 \begin{figure}[h!]
 	\centering
@@ -16,10 +31,11 @@ While the refrigerant moves through these components the refridgerant changes te
 	\label{fig:HVAC_Diagram}
 \end{figure}
 
+%It is not accurate but merely depicts the concept of how the enthalpy and pressure changes throughout the cycle.
+In \cref{fig:p-h_diagram} an illustrative p-h diagram of this refrigeration cycle can be seen.  The numbers in the figure are also shown in \cref{fig:HVAC_Diagram} for reference. Two cycles can be observed on the diagram. The first is the main cycle which runs along the cycle from point $1 \rightarrow 2\rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 7 \rightarrow 8 \rightarrow 1$ and the second is the cycle running along the cycle from $3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 9 \rightarrow 3$. \\
 
-In \cref{fig:p-h_diagram} an illustrative p-h diagram of the refrigeration cycle can be seen. It is not accurate but merely depicts the concept of how the enthalpy and pressure changes throughout the cycle. The numbers in the figure are also shown in \cref{fig:HVAC_Diagram} for reference. Two cycles can be observed on the diagram. The first is the main cycle which runs along the cycle from point $1 \rightarrow 2\rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 7 \rightarrow 8 \rightarrow 1$ and the second is the cycle running along the cycle from $3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 9 \rightarrow 3$. 
 
-Typical depictions of a refridgeration cycle contain only one loop. This project however has two valves rather than one, which are seperated by a flash tank. The purpose of the flash tank is to remove flash gas from the first expansion of the gas in the condenser throttle valve. This reduces the enthalpy of refridgerant continuing to the expansion valve which increases the cooling efficiency of the refrigeration.\\
+The purpose of the flash tank is to remove flash gas from the first expansion of the gas in the condenser throttle valve. This reduces the enthalpy of refridgerant continuing to the expansion valve which increases the cooling efficiency of the refrigeration.\\
 
 \begin{figure}[h!]
 	\centering
@@ -43,7 +59,11 @@ There are several variables such as pressure and temperature throughout the refr
 
 The controlled outputs however, are those of interest from a control point of view. These are the outputs that the control strategy seeks to keep at a set point. In this project it will be the trailer box air temperature and the evaporator superheat. Controlling the air temperatur is nessesary to ensure proper storage conditions for the cargo. Regulating the superheat is a more complex objective, as having a large amount of superheat is wasteful and decreases the overall energy efficiency of the trailer. There should however be some amount of superheat, to ensure no liquid refridgerant enters the compressor, since that is destructive to the mechanical system.\\
 
-The aim of the project is to design a Multiple-Inputs-Multiple-Outputs (MIMO) state space controller to keep the temperature inside the container constant despite exogenous inputs (disturbances), specifically the ambient temperature. Furthermore it should do so with the sub-goal of minimizing the energy consumption, primarily by regulating the superheat.
+The aim of the project is to design a Multiple-Inputs-Multiple-Outputs (MIMO) state space controller to keep the temperature inside the container constant despite exogenous inputs (disturbances), specifically the ambient temperature. Furthermore it should do so with the sub-goal of minimizing the energy consumption, primarily by regulating the superheat.\\
+
+
+
+
 
 \subsection{High-Fidelity model}
 When working with a any large scale plant, testing iteratively on the physical system is often impractical. Slow dynamics and inconvienient test procedures make the proces tedious for the user, but there is also the risk of equipment damage. Therefore, it is common practice to develop a high-fidelity model of the system. Testing can be performed efficiently and with no risk on the model. \\
