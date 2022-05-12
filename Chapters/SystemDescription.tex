@@ -60,7 +60,9 @@ The refrigeration system essentially works as a single stage system, however the
 	\item From point 3 to 4, the medium pressure and enthalpy vapor refrigerant mix is compressed further, outputting high pressure and enthalpy vapor refrigerant.
 	\item From point 4 to 5, the high pressure and enthalpy vapor refrigerant is condensed through the condenser, which decreases the enthalpy. This is where the heat from the load is transferred to the ambient air (hot body).
 	\item From point 5 to 6, the pressure decreased of the high pressure low enthalpy liquid refrigerant. This results in a medium pressure low enthalpy refrigerant where some of the refrigerant has changed phase to vapor.
-	\item From point 6 to 7 and 9 \todo[inline]{Write about the last couple of stages}
+	\item From point 6 to 7 and 9 the medium pressure low enthalpy liquid vapor mix will split into two mass flows. One is vapor, which goes to point 9, and the other which is liquid,goes to point 7. As the mix is split into two, so is the enthalpy. In particular liquid refrigerant going to 7 has lower enthalpy than the mix. This enables higher cooling capacity and increases the efficiency.
+	\item From point 7 to 8, the liquid refrigerant is passed through an isenthalpic expansion which decreases the pressure and temperature.
+	\item From point 8 to 1, the low pressure low enthalpy liquid refrigerant extracts heat from the load by and thus encreases the enthalpy of the refrigerant.
 \end{itemize}
 
 The system components have variables that can be set to control their behavior. These are the controlled inputs:
