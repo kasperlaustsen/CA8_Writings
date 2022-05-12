@@ -270,7 +270,7 @@ The condenser takes in the hot discharge pressure vapor from the second compress
 
 In \cref{fig:condenser_CV} a diagram of the condenser control volume (CV) can be found.
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Graphics/Condenser.pdf}
 	\caption{Diagram of condenser control volume}
@@ -440,7 +440,7 @@ When the pressure, and consequently temperature, is lowered by the condenser thr
 
 The following flash tank model evaluates the steady state behavior of the flash tank due to the limited scope of the project. A diagram of the flash tank can be seen in \cref{fig:flash_tank_CV}.
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.65\textwidth]{Graphics/Flash_tank.pdf}
 	\caption{Diagram of Flash tank control volumes}
@@ -516,7 +516,7 @@ The difference in temperature between the dew point (the point where vapor-liqui
 \todo[inline]{Vil vi overhovedet drøfte superheaten? Skal vi nævne at vi ikke forsøger at kontrollere den?}
 The superheat of the evaporator is an important and difficult state to control. Its importance stems from the fact that the compressor can be damaged if the refrigerant at the suction inlet contains liquid (called liquid slugging). Additionally the superheat is important from an efficiency point of view... \todo[inline]{Write about the reason why a great superheat inefficient}
 
-\begin{figure}[h!]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Graphics/Evaporator_CV_diagram.pdf}
 	\caption{The two evaporator control volumes splitting the vapor-liquid refrigerant and metal and the vapor refrigerant and metal. The temperature of the air changes as it travels from before the fan to the end of the evaporator ($T_{ret} \rightarrow T_{sup}$)}
@@ -779,7 +779,19 @@ yielding \cref{eq:Evaporator_EnergyBalance8} as the state equation for the tempe
 
 
 \subsubsection{Box}
-The reefer box contains the transported cargo which is kept cool by the air which is circulated by the evaporator fan. The box contains by far the greatest thermal masses due to the large mass of the cargo and aluminum of the trailer box. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area. The temperatures of the three thermal masses are modeled by their state equations and are given in \cref{eq:box_dT_air}, \cref{eq:box_dT_box} and \cref{eq:box_dT_cargo}. $Q_{fan}$ is the heat loss from the evaporator fan and it is defined in \cref{eq:Q_fan_heatloss}. The rate of change of all temperatures are modeled as the sum of the heat flows divided by the mass multiplied with the respective heat capacity. The mass of air ($M_{air}$) is calculated as the total volume of the box multiplied with the density of air which yields 94.9 \si{kg} of air. The box mass was estimated by Kresten Sørensen to be 500 \si{kg}. The cargo mass was found in the Hi-Fi simulation to be 1000 \si{kg}. The specific heat capacity of the box ($Cp_{box}$) is that of aluminum: 890 \si{J}/(\si{kg}\si{K}) while for the cargo ($Cp_{cargo}$) it was found in the Hi-Fi simulation to be 447 \si{J}/(\si{kg}\si{K}).
+The reefer box contains the transported cargo which is kept cool by the air which is circulated by the evaporator fan. The box contains by far the greatest thermal masses due to the large mass of the cargo and aluminum of the trailer box. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area.
+
+In \cref{fig:box_diagram} a simplified diagram of the trailer box is seen.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Graphics/Box.pdf}
+	\caption{A simplified diagram of the trailer box with the respective heat flows, masses, temperatures, specific heat capacities.}
+	\label{fig:box_diagram}
+\end{figure}
+
+
+The temperatures of the three thermal masses are modeled by their state equations and are given in \cref{eq:box_dT_air}, \cref{eq:box_dT_box} and \cref{eq:box_dT_cargo}. $Q_{fan}$ is the heat loss from the evaporator fan and it is defined in \cref{eq:Q_fan_heatloss}. The rate of change of all temperatures are modeled as the sum of the heat flows divided by the mass multiplied with the respective heat capacity. The mass of air ($M_{air}$) is calculated as the total volume of the box multiplied with the density of air which yields 94.9 \si{kg} of air. The box mass was estimated by Kresten Sørensen to be 500 \si{kg}. The cargo mass was found in the Hi-Fi simulation to be 1000 \si{kg}. The specific heat capacity of the box ($Cp_{box}$) is that of aluminum: 890 \si{J}/(\si{kg}\si{K}) while for the cargo ($Cp_{cargo}$) it was found in the Hi-Fi simulation to be 447 \si{J}/(\si{kg}\si{K}).
 
 \begin{equation}
 	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_{air}}{dt} = \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}}} \label{eq:box_dT_air}
