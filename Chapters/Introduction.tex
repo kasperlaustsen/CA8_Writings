@@ -39,14 +39,13 @@ The refrigeration unit is situated at the front of the trailer where all compone
 %	\item The continuous convection heat transfer from the outside to the inside of the box.
 %	\item Cargo temperature
 %\end{itemize} 
-This project is executed in corporation with BITZER Electronics A/S as a 2nd (8th) semester project of the Masters Program in Control and Automation at Aalborg University.
+This project is executed in corporation with BITZER Electronics A/S as a 2nd (8th) semester project of the Masters Program in Control and Automation at Aalborg University. The purpose of the project is to formulate and implement a MIMO controller for the given reefer trailer. Most control paradigms implemented in reefer systems today are still based on classical control theory such as the PID controller. The control scheme currently in place from BITZER is also made from several coupled PID controllers. BITZER wants to explore the possibility of implementing modern control in the form of a MIMO controller, which could potentially reduce energy consumption while maintaining a proper temperature of the cargo.
 
+BITZER is a danish subsidiary company of the global company BITZER Group. They deliver intelligent electronics and software solutions for Heating, Ventilation, Air Conditioning and Refrigeration (HVAC\&R). Parts of their products consists of controllers that enables energy efficiency improvements compared to their competitors. \\
 
-BITZER is a company that \todo[inline]{Add text about BITZER}
+BITZER supplies a high fidelity (Hifi) simulation model of the reefer trailer along with other relevant documentation on the system. Furthermore Kresten Sørensen from BITZER has offered extensive counseling throughout the project.
 
+The construction of a controller will require a model of the refrigeration system and as such a controller model will be made to this end. In order to evaluate the controller performance it will be benchmarked against the control scheme currently implemented in the Hifi simulation model by BITZER. 
 
-BITZER supplies a high fidelity model of the reefer trailer along with other relevant documentation on the system. Furthermore Kresten Sørensen from BITZER has offered counseling throughout the project.
-
-The purpose of this project is to formulate and implement a MIMO controller for the given reefer trailer. Most control paradigms implemented in reefer systems today are still based on classical control theory such as the PID controller. The control scheme currently in place from BITZER is also made from several coupled PID controllers. BITZER wants to explore the possibility of implementing more modern control in the form of some MIMO controller, which could potentially reduce energy consumption while maintaining a proper temperature of the cargo.
-
-The construction of a controller will require a model of the refrigeration system and as such a controller model will be made to this end. In order to evaluate the controller performance it will be benchmarked against the control scheme currently in place at BITZER.
+\subsection{Problem definition}
+Can a MIMO controller be designed to improve energy efficiency of the reefer trailer Hifi simulation model?
