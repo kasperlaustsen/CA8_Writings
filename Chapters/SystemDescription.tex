@@ -1,6 +1,14 @@
-The refrigeration trailer (hereafter referred to as reefer trailer) is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that require specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independent of the truck.
+The refrigeration trailer (hereinafter referred to as reefer trailer) is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that require specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independently of the truck.
 
-While the trailer usually has its own cooling system made by Schmidt Cargobull, the trailer in this project utilizes a custom HVAC system designed by Bitzer. This system is built to facilitate testing of advanced control strategies.\\
+While a reefer trailer usually has its own cooling system installed, the reefer trailer in this project utilizes a custom HVAC system designed by BITZER. This system is built to facilitate testing of advanced control strategies.\\
+
+\subsection{A Textbook Refrigeration System}
+A textbook example of a refrigeration system is a single stage refrigeration system as depicted in \cref{fig:HVAC_Diagram_std}.
+
+Components - compressor, valve and heat exchangers
+
+Each step. Explained in relation to p-h diagram
+
 
 A textbook refridgeration system is comprised of 4 components, as depicted in \cref{fig:HVAC_Diagram_std}. While the refrigerant moves through these components the refridgerant changes temperature, pressure and enthalpy, and goes through phase shifts. These changes are nessesary to ensure that adequately cold liquid refridgerant enters the evaporator to extract heat from the cargo hold. Warm air from the cargo hold is blown over the evaporator pipes, cooling the air before it returns to the cargo hold, allowing for cooling of the cargo in the reefer trailer. 
 
@@ -9,6 +17,20 @@ A textbook refridgeration system is comprised of 4 components, as depicted in \c
 	\includegraphics[width=0.85\textwidth]{Graphics/HVAC_Diagram_std.pdf}
 	\caption{Illustration of a standard refrigeration cycle}
 	\label{fig:HVAC_Diagram_std}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{Graphics/HVAC_Diagram_std.pdf} % first figure itself
+		\caption{first figure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{Graphics/p-h_diagram_std} % second figure itself
+		\caption{second figure}
+	\end{minipage}
 \end{figure}
 
 The pressure and enthalpy of the refridgerant as the four connection points can be plotted in a p-h diagram. \cref{fig:p-h_diagram_std} shows the ideal p-h diagram for the standard refridgeration cycle. The evaporator and condenser are seen to ideally only change the enthalpy of the refridgerant. This is because the ideal behavior is for the refridgerant to go through a phase shift in these components. The expansion valve simply lowers the pressure without changing the enthalpy. This in turn lowers the temperature. The compressor increases the pressure of the refridgerant, while also slightly increasing the enthalpy. This is because ideal compression is an isentropic process, which means the entropy is held constant. Increasing the pressure while keeping entropy constant, requires an increased enthalpy. \\
