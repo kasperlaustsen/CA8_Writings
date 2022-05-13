@@ -27,7 +27,7 @@ where
 	\end{tabular}
 \end{center}
 
-The cross-term is typically ignored by defining $N=0$. The matrices Q and R are introduced to add weights to the various states and inputs. This allows the engineer to penalize critical states and inputs more than others. This is obviously generally useful, especially if deviations in certain states or inputs negatively impact the system energy consumption or could cause dangerous system behavior.\\
+The cross-term is typically ignored by setting $N=0$. The matrices Q and R are introduced to add weights to the various states and inputs. This allows the engineer to penalize critical states and inputs more than others. This is generally useful, especially if deviations in certain states or inputs negatively impact the system energy consumption or could cause dangerous system behavior.\\
 %The algorithm requires access to all system states, either through measurement or estimation. The latter is achieved by the linear model designed in \cref{sec:mod_lin}. \\
 
 The value of Q and R is a choice the control engineer must make. While it in practicality requires some amount of trial-and-error iteration, there are methods for choosing a reasonable starting value. An often used tuning method to obtain initial Q and R matrices is following Bryson's rule. It states that the state x$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(x_{\textit{i}}\right)^2}$. Similarly the control input u$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(u_{\textit{i}}\right)^2}$. This effectively scales the maximum value of all entries in the cost function J to 1. This is particularly useful, when the states and inputs are have numerically large differences.\\
@@ -73,15 +73,18 @@ In most control problems it is the objective to keep an output at a reference va
 where
 
 \begin{equation}
-	x_i(t) = \int_{0}^{t}(r-y)dt
+	x_i = \int_{0}^{t}(r-y)dt
 \end{equation}
 
 The method of introducing an integral state poses a conflicting objective for the LQR algorithm, as it will attempt to set \textit{all} states equal to zero. Let us recall that y is a linear combination of the states: $y = Cx$. Since $x$ is already being driven to zero, it is only sensible to drive $y=r$ if $r=0$.\\
 
 
+
 Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. This means if the system is internally stable, it will settle at $x=0 \rightarrow y=r$. At this point the control inputs are also zero, but since these are in fact $u-u_o$, it means the operating point control signal is fed to the plant. \\
 
 Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task.
+
+\subsubsection{LQR controller gain}
 
 Using Q and R as identitity matrices of appropriate dimensions the following optimal feedback gain is calculated:
 
