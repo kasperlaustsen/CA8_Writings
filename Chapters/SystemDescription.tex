@@ -32,7 +32,7 @@ The pressure and enthalpy of the refridgerant as it moves around in the refriger
 \end{itemize}
  Now that the principle of refrigeration is introduced, we can move on to investigate the refrigeration system of this project. 
  
-\subsubsection{The BITZER Refrigeration System}
+\subsection{The BITZER Refrigeration System}
 The refrigeration system implemented in the trailer used in this project contains more components than the standard example. An seen in \cref{fig:HVAC_Diagram}, the compressor is comprised of two stages, rather than one. Similarly two valves are being used. The valves are separated by a flash tank, that enables flash gas from the condenser throttle valve to the second stage of the compressor. The removed flash gas ensures that the liquid refrigerant that enters the evaporator has lower enthalpy and thereby higher cooling capacity. This enables higher efficiency of the system than a single stage system.\\
 The subcooling throttle valve is only used for debugging purposes, and is fully open at all times in this project. The reefer system has two fans that enables variable amounts of forced convection instead of natural convection. The heat transfer coefficients from the heat exchangers (evaporator and condenser) to the cold and hot body can such be varied with the fan speed. Additionally the airflow circulation flow inside the trailer is controlled by the evaporator fan.
 
@@ -64,38 +64,29 @@ The refrigeration system essentially works as a single stage system in the prima
 	\item From point 7 to 8, the liquid refrigerant is passed through an isenthalpic expansion which decreases the pressure and temperature.
 	\item From point 8 to 1, the low pressure low enthalpy liquid refrigerant extracts heat from the load by and thus encreases the enthalpy of the refrigerant.
 \end{itemize}
-Now that the principles of the BITZER refrigeration system is described, the load of the refrigeration system can be introduced. \\
+Now that the principles of the refrigeration circuit is described, the load of system can be introduced. \\
 
-\textbf{Refrigeration load}\\
-The load for the BITZER refrigeration system is an insulated trailer with a cargo of 500 kg of \todo[inline]{CARGO - BANANAS?}. The air inside the trailer is cooled via the evaporator of the refrigeration system. The air mass flow rate is driven by the evaporator fan. The heat flows from and to the trailer is illustrated in \cref{fig:trailer_airflow} 
+\subsubsection{Refrigeration load}
+The load for the BITZER refrigeration system is an insulated trailer with a cargo mass of 1000 kg of \todo[inline]{CARGO - BANANAS?}, the air inside the trailer is also part of the load, as is the walls of the trailer itself. The walls are modeled as 500 kg of aluminum. The air inside the trailer is cooled via the evaporator of the refrigeration system and the air mass flow rate is driven by the evaporator fan. The cooled air extract heat from the cargo and the walls, which is then transferred to the ambient air via the condenser. The heat flows and airflows from and to the trailer is illustrated in \cref{fig:trailer_airflow}.\\
+Now that refrigeration system is defined, the control specific inputs and outputs can be investigated.\\
 
-
-
-
-
-control inputs can be introduced.\\
-
-\textbf{Control inputs}\\
-The system components have variables that can be set to control their behavior. These are the control inputs:
+\subsubsection{Control inputs}
+The system components have 5 variables that can be set to manipulate the system behavior. These control inputs are:
 \begin{itemize}
-	\item The compressor speed $ \omega $
-	\item The condenser fan speed $ U_{fan1} $
-	\item The evaporator fan speed  $ U_{fan2} $
-	\item The condenser throttling valve opening degree $ \Theta_1 $
-	\item The expansion valve opening degree $ \Theta_2 $
+	\item The compressor speed $ \omega $ affects the flow of refrigerant in the system.
+	\item The condenser fan speed $ U_{fan1} $ affects the heat transfer coefficient from the condenser to the ambient air.
+	\item The evaporator fan speed  $ U_{fan2} $ affects the heat transfer coefficient from the circulated air to the evaporator. $ U_{fan2} $ additionally affects the circulating air flow, and adds heat to the air from its own power consumption.
+	\item The condenser throttling valve opening degree $ \Theta_1 $ affects the equivalent flow resistance of the valve.
+	\item The expansion valve opening degree $ \Theta_2 $ affects the equivalent flow resistance of the valve.
 \end{itemize}
+In addition to the described control inputs, the system also has an exogenous input. 
 
-There are several variables such as pressure and temperature throughout the refrigeration cycle, which are measured and hence are outputs of the system. The controlled outputs however, are those of interest from a control point of view. These are the outputs that the control strategy seeks to keep at a set point. In this project it will be the trailer box air temperature and the evaporator superheat. Controlling the air temperature is nessesary to ensure proper storage conditions for the cargo. Regulating the superheat is a more complex objective, as having a large amount of superheat is wasteful and decreases the overall energy efficiency of the trailer. There should however be some amount of superheat, to ensure no liquid refrigerant enters the compressor, since that can be destructive to mechanical parts of the compressor.\\
+\subsubsection{Exogenous inputs}
+Exogenous inputs are the inputs of a system that can't be controlled. They are commonly referred to as disturbances. The refrigeration system has one such disturbance, namely the ambient temperature. The ambient temperature affects the heat transfer from ambient air to the air inside the reefer trailer and it also affects the condenser heat transfer.\\
 
-\textbf{Exogenous inputs}\\
-Exogenous inputs are the inputs of a system that can't be controlled. They are commonly referred to as disturbances. The system refrigeration system has one such disturbance, namely the ambient temperature. The ambient temperature affects the heat transfer from ambient air to the air inside the reefer trailer. Additionally, it also affects the condenser heat transfer.\\
-
-
-
-
-
-
-
+As all the control relevant inputs are now described, the controlled outputs can be defined. 
+\subsubsection{Controlled outputs}
+There are several variables such as pressure and temperature throughout the refrigeration cycle, which are measured and hence are outputs of the system. The controlled outputs however, are those of interest from a control point of view. These are the outputs that the control strategy seeks to keep at a set point. In this project it will be the trailer box air temperature and the evaporator superheat. Controlling the air temperature is nessesary to ensure proper storage conditions for the cargo. Regulating the superheat is a more complex objective as it imposes two conflicting objectives. Having a large amount of superheat is wasteful and decreases the overall energy efficiency of the trailer. There should however be some amount of superheat, to ensure no liquid refrigerant enters the compressor, since that can be destructive to mechanical parts of the compressor.\\
 
 \subsection{High-Fidelity model}
 When working with any large scale system, iterative testing on the physical system is impractical. Slow dynamics and inconvienient test procedures make the proces too tedious for the user, and there is also a risk of equipment damage. Therefore, it is common practice to develop a High-Fidelity model of the system. Testing on a Hi-Fi model can be performed faster, efficiently and with no equipment risk. \\
