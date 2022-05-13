@@ -71,7 +71,7 @@ The load for the BITZER refrigeration system is an insulated trailer with a carg
 Now that refrigeration system is defined, the control specific inputs and outputs can be investigated.\\
 
 \subsubsection{Control inputs}
-The system components have 5 variables that can be set to manipulate the system behavior. These control inputs are:
+The system components have 5 control inputs that manipulates the system behavior. The control inputs are:
 \begin{itemize}
 	\item The compressor speed $ \omega $ affects the flow of refrigerant in the system.
 	\item The condenser fan speed $ U_{fan1} $ affects the heat transfer coefficient from the condenser to the ambient air.
@@ -103,6 +103,8 @@ Furthermore the controller should do so with the sub-goal of minimizing the ener
 The controller will require access to relevant system information. In the context of state space control, these are the values of the system states. The states will be discussed in details later in the report. The states are used for feedback when choosing the proper control signals. Since the states of complex systems are usually not directly measurable, a simpler model will be developed for state observation. The model is then to be used for controller design. \\
 
 The control model will be developed by means of first principle modeling. Doing so yields a non-linear model, due to the non-linear physical properties of thermodynamic systems. To apply linear control strategies, the model must be linearised. Optimal control strategies will be implemented on the linear model, as the control objectives can be well formulated as an optimization problem. The optimization problem being to keep the controlled outputs fixed, while minimizing the energy consumption of the system.\\
+
+The next step in this project will be the modeling of the individual components of the refrigeration system.
 
 
 
