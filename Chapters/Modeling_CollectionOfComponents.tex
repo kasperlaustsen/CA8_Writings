@@ -1,25 +1,22 @@
 %In the previous section each component of the system was modeled with differential and algebraic equations. The modeling format is such that every component takes some inputs, and from those calculates some states and some outputs which are used for the adjacent components. In order to make a complete non-linear model it is necessary to connect the inputs and outputs of the system. This section provides insight into how components are interfaced and collected into a complete non-linear state space form.
 
-In the previous section each component of the system was modeled with differential and algebraic equations. The equations for each component generally require inputs from adjacent components, to generate outputs used for adjacent components. The aim of this section is to create a state space model which encapsulates all these interconnections. The model is expected to be non-linear as a direct result of the generally non-linear physics that describe thermodynamical systems. \cref{sec:mod_lin} will cover how the model is linearised.\\
+In the previous section each component of the system was modeled with differential and algebraic equations. The equations for each component generally require inputs from adjacent components, to generate outputs used in adjacent components. The aim of this section is to create a state space model which encapsulates all these interconnections. The model is expected to be non-linear as a direct result of the generally non-linear physics that describe thermodynamic systems. \cref{sec:mod_lin} will cover how the model is linearised.\\
 
-The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the system interface variables and states. In the diagram the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) are used for these. The values are pulled from the the high-fidelity simulation in steady state. Blue variables are outputs of components which are currently not used by the following component. Each component block also contains the names of the states they contain.
+The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the system interface variables and states. In the diagram the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) are used for these. The values are pulled from the the high-fidelity simulation in steady state. Blue variables are outputs of components that are not used by the adjacent component. Each component block also contains the names of the states they contain.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/Block_Diagram_inout.pdf}
+	\includegraphics[width=1\textwidth]{Graphics/Block_Diagram_inout_flowValveVersion.pdf}
 	\caption{Block diagram of input/output relationship of interface variables}
 	\label{fig:Block_diagram_inout}
-\end{figure}
-
+\end{figure} 
 
 \newpage
 
 \subsubsection{State variables}
+As described in \cref{sec:mod}, there are large variances in dynamical speed across the system. Therefore, the fast components were defined algebraically, while the slow dynamics were modeled with a mix of differential equations and algebraic equations. The fast components are considered the compressors and the valves.
 
-As described in \cref{sec:mod}, there are large variances in dynamical speed across the system parameters. Therefore, the fast variables were defined algebraically, while the slow dynamics were modeled with differential equations. This modelling choice is valid since the fast variables rapidly settle to steady state values without oscillatory behavior. \\
-
-
-The variables, which in \cref{sec:mod} were defined with differential equations are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
+The variables are differentiated in the differential equations in \cref{sec:mod_comp_mod}, are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
 %\begin{equation} \label{eq:xu} \renewcommand{\arraystretch}{2.4}
 %	x = \begin{bmatrix}
 %		M_{pjj}			\\				%pjj
@@ -89,17 +86,17 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
-		\dot{m}_1 + \dot{m}_4 - \dot{m}_2 \\										%pjj
-		\dot{m}_{2} - \dot{m}_{3}	\\												%condenser
-		\dfrac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m} \\									%condenser
-		\dfrac{\bar{\dot{m}}_{air}  - \dot{m}_{air}} {10s}		\\					%evaporator
-		\dfrac{Q_{aml}-Q_{ml} + Q_{mvml}}{M_m \cdot Cp_m \cdot \sigma}        \\	%evaporator
-		\dfrac{Q_{amv} - Q_{mv} - Q_{mvml}}{M_m \cdot Cp_m \cdot (1- \sigma)}	\\	%evaporator
-		\dot{m}_{5} - \dot{m}_{dew}		\\											%evaporator
-		\dot{m}_{dew} - \dot{m}_{1}	\\												%evaporator
-		\dfrac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \\		%box
-		\dfrac{Q_{amb} - Q_{ba}}{M_{box} \cdot Cp_{box}} \\							%box
-		\dfrac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}}									%box
+		\dot{m}_1(M_{v}, \omega) + \dot{m}_4(T_m,\Theta_1,\Theta_2,\omega) - \dot{m}_2(\omega) \\										%pjj
+		\dot{m}_{2}(\omega) - \dot{m}_{3}(\Theta_2)	\\												%condenser
+		\dfrac{Q_{rm}(T_m) - Q_{ma}(T_{ambi}, T_m, U_{fan1})}{M_m \cdot Cp_m} \\									%condenser
+		\dfrac{\bar{\dot{m}}_{air}(U_{fan2})  - \dot{m}_{air}(\dot{m}_{air})} {10s}		\\					%evaporator
+		\dfrac{Q_{amlv}(T_{mv},T_{mlv},\dot{m}_{air})-Q_{mlv}(M_{lv},T_{mlv}) + Q_{mvmlv}(T_{mv},T_{mlv})}{M_m \cdot Cp_m \cdot \sigma(M_{lv})}        \\	%evaporator
+		\dfrac{Q_{amv}(T_{air},T_{mv},U_{fan2},\dot{m}_{air}) - Q_{mv}(M_{lv},T_{mv}) - Q_{mvmlv}(T_{mv},T_{mlv})}{M_m \cdot Cp_m \cdot (1- \sigma(M_{lv}))}	\\	%evaporator
+		\dot{m}_{5}(\Theta_1) - \dot{m}_{dew}(M_{lv},T_{mlv})		\\											%evaporator
+		\dot{m}_{dew}(M_{lv},T_{mlv}) - \dot{m}_1(M_{v}, \omega)	\\												%evaporator
+		\dfrac{Q_{ca}(T_{air},T_{cargo}) + Q_{ba}(T_{air},T_{box}) + Q_{fan}(U_{fan2}) - Q_{cool}(T_{air},T_{mv},T_{mlv},U_{fan2},\dot{m}_{air})}{M_{air} \cdot Cp_{air}} \\		%box
+		\dfrac{Q_{amb}(T_{ambi},T_{box}) -  Q_{ba}(T_{air},T_{box})}{M_{box} \cdot Cp_{box}} \\							%box
+		\dfrac{-Q_{ca}(T_{air},T_{cargo})}{M_{cargo} \cdot Cp_{cargo}}									%box
 	\end{bmatrix}
 \end{equation}
 
