@@ -106,7 +106,7 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 \subsection{Model verification}
 In order to validate the model found in \cref{eq:f_noSub}, a simulation of steady state was desired. The aim of the simulation was to confirm whether the model states acts stable, especially for the states that affects the system outputs, $T_v$ and $T_{air}$.
 
-When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order to simulate the system, some steady state variables had to be introduced in order to be able to perform the simulation model. These are all the red variables in \cref{fig:Block_diagram_inout}. Additionally, the inputs needed to be set to steady state values.The concrete numeric values for both the inputs and the steady state variables where found in the HiFi simulation after 5000 s. Finally, the states needed to be initialised in a sensible manner, and these were estimated with common sense, and based on the pressures, temperatures and volumes of the control volumes. All of the necessary values for the simulation is found in the tables below.\\
+When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order to simulate the system, some steady state variables had to be introduced in order to be able to perform the simulation model. These are all the red variables in \cref{fig:Block_diagram_inout}. Additionally, the inputs needed to be set to steady state values.The concrete numeric values for both the inputs and the steady state variables where found in the HiFi simulation after 5000 s. Finally, the states needed to be initialised in a sensible manner, and these were estimated with common sense, and based on the pressures, temperatures and volumes of the control volumes. All of the necessary values for the simulation is found in the tables below. \\
 
 
 \begin{tabular}{cc}
@@ -121,8 +121,7 @@ When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order t
 			$T_2$              & 295.3925                                                           & K             \\
 			$T_7$              & 267.6048                                                           & K             \\ \bottomrule
 		\end{tabular}
-	\end{minipage} &
-	
+	\end{minipage} &	
 	\begin{minipage}{.3\linewidth}
 		\centering
 		\begin{tabular}{@{}lcl@{}}
@@ -155,44 +154,51 @@ When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order t
 			$T_{ambi}$        & 293.15                                                             & K             \\ \bottomrule
 		\end{tabular}
 	\end{minipage} 
-\end{tabular}
+\end{tabular}\\
 
-In the inspection of the states of the simulation, the states are
 
-When simulating the model from \cref{eq:f_noSub}, a the response to inputs at XXX and initial conditions at XXX with can be seen in \cref{fig:non_lin_sim_Mass}, \cref{fig:non_lin_sim_faulty_Mass} \cref{fig:non_lin_sim_Temperature}
+In the inspection of the time evolvement of the states in the simulation, the states will be paired in groups that make them relatable. We first illustrate some results that indicate that our model is flawed. As can be seen in \cref{fig:non_lin_sim_faulty_Mass} the refrigerant masses $M_{pjj}$ and $M_{con}$ are integrating over time. 
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Mass_Mvfucked.png}
-	\caption{}
-	\label{fig:non_lin_sim_Mass}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Mass.png}
-	\caption{}
-	\label{fig:non_lin_sim_Mass}
-\end{figure}
-\clearpage
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_faulty_Mass.png}
-	\caption{}
+	\caption{Plot of faulty states}
 	\label{fig:non_lin_sim_faulty_Mass}
 \end{figure}
+This is due to some mismatches and simplifications in the modeling section. The issue is that the pressures inside the components are not defined as states, and such the masses does not affect the pressure and thereby the flows in the system. However, as a direct result of the missing link between the masses and the pressure, the masses in the Pipe Joining Junction and condenser are not affecting the rest of the system either. This can be verified by inspection in \cref{eq:f_noSub}, where it is seen that none of the states depend on $M_{pjj}$ and $M_{con}$. Therefore, it is decided to not give up on the model just yet. \\
 
+The next states to be investigated are the refrigerant masses in respectively the liquid-vapor and the vapor control volume of the evaporator, $ M_{lv} $ and $ M_v $. Additionally, the air mass flow was included in the plot. The plot can be seen in \cref{fig:non_lin_sim_Mass_Mvfucked}. It is noted that the plot has two distinct y-axes to allow for the inclusion of the air mass flow as well.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Mass_Mvfucked.png}
+	\caption{Plot of states and state derivatives. Note the two y-axes. $ M_v $ appear to be integrating in subplot 1, with subplot two confirming that the state derivative is non-zero. Other states $ M_{lv} $ and $ \dot{m}_{air} $ converge to constant values in subplot 1.}
+	\label{fig:non_lin_sim_Mass_Mvfucked}
+\end{figure}
+Observing the behavior of the state $ M_v $ reveals that  derivative of the state $M_v$ converges to a non-zero constant at around $ 3\cdot 10^{-3} $. This error makes the state integrate towards infinity. The error is considered as a numeric error as it does not make sense for the vapor mass to accumulate indefinitely. Therefore the phenomenon was investigated and measures were taken to handle the numerical error. 
+
+The non-zero offset of the derivative of $ M_v $ was discovered to be a function of the compressor speed. This function is simply subtracted from the derivative of the state $M_v$. This removed the integrating effect as can be seen in \cref{fig:non_lin_sim_Mass}, but may imply that some numerical errors were present in the non-linear model. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Mass.png}
+	\caption{Plot of states $ M_v $, $ M_{lv} $ and $ \dot{m}_{air} $. Derivative of $ M_v $ is subtracted with a function of compressor speed $ \omega $. All states converge to constant values. Note the two y-axes.}
+	\label{fig:non_lin_sim_Mass}
+\end{figure}
+Further investegations of the phenomenon were performed but did not reveal the origin of the error. No further actions were thus taken.\\
+After correcting the numerical error, all of the states in \cref{fig:non_lin_sim_Mass_Mvfucked} converges to a constant value and is thus considered to be stable.\\
+
+Lastly in \cref{fig:non_lin_sim_Temperature}, all of the temperature states are plotted. They all converge to a constant value, indicating stable behavior.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Temperature.png}
-	\caption{}
+	\caption{Plot of all the temperature states. The states are collected into 3 subplots, where the first coverge faster than the second, and the second faster than the third. All the temperature states converge to a constant value}
 	\label{fig:non_lin_sim_Temperature}
 \end{figure}
+\clearpage
+Now that all of the states has been investigated, a preliminary conclusion on whether the non-linear state space model in \cref{eq:f_noSub} can be verified to be stable remains to be drawn. Based on the states in \cref{fig:non_lin_sim_faulty_Mass} it could be concluded that the model is not stable and accurate enough. However, as mentioned earlier, the two involved states are not affecting the rest of the model. Furthermore, as the states $ M_{pjj} $ and $ M_{con} $ are not output and thereby wished to be controlled, it is decided to just omit these two states from our model. 
+This leaves the model with 2 fewer states, which can be considered favorable since the states does not provide extra information on the controlled outputs. The rest of the states converge to constant values, indicating stability for the model. This allows for the next step in the process, which is linearisation.
 
+Note: in \cref{app:tj_2}, an alternative modeling approach was investigated, to mitigate the errors in \cref{fig:non_lin_sim_faulty_Mass}.
 
-One issue encountered when observing the behavior of the non-linear model concerned the state $M_v$. When simulating the non-linear system model with inputs held constant at the operating point the derivative of the state $M_v$ converges to a non-zero constant, which makes the state integrate towards infinity. This error is considered as a numeric error. From a physical standpoint it does not make sense for vapor mass to accumulate indefinitely, and thus the phenomenon was investigated. \\
-
-The constant was discovered to be a function of the compressor speed. This function is simply subtracted from the derivative of the state $M_v$. This removed the integrating effect, but may imply that some numerical errors were present in the non-linear model. Further investegations of the phenomenon were performed but did not reveal the origin of the error. No further actions were thus taken.
 
 %The control inputs are:
 
