@@ -13,7 +13,7 @@ The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the sys
 
 \newpage
 
-\subsubsection{State variables}
+\subsubsection{State variables} \label{sec:non_lin_model}
 As described in \cref{sec:mod}, there are large variances in dynamical speed across the system. Therefore, the fast components were defined algebraically, while the slow dynamics were modeled with a mix of differential equations and algebraic equations. The fast components are considered the compressors and the valves.
 
 The variables are differentiated in the differential equations in \cref{sec:mod_comp_mod}, are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
@@ -102,29 +102,90 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 
 \cref{eq:f_noSub} is the set of equations that constitutes the non-linear state space representation of the refrigeration system. All the functions on the right most side of the equation, can be substituted with the algebraic equations from the modelling section. This is too extensive to fit into a single page, so it is omitted. In stead the functions are indicates which states in $ x $ and inputs in $ u $ that that affects them. Additionally it is indicated if the functions are affected by the disturbance $ T_{ambi} $. The model contains 11 states, 5 control inputs and 1 disturbance. The next step in the project is now to validate the found non linear state space model.
 
+\newpage
+\subsection{Model verification}
+In order to validate the model found in \cref{eq:f_noSub}, a simulation of steady state was desired. The aim of the simulation was to confirm whether the model states acts stable, especially for the states that affects the system outputs, $T_v$ and $T_{air}$.
 
-\subsubsection{Model verification}
-\todo[inline]{Insert values for inputs, initial conditions and operating point values for red variables in block diagram}
+When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order to simulate the system, some steady state variables had to be introduced in order to be able to perform the simulation model. These are all the red variables in \cref{fig:Block_diagram_inout}. Additionally, the inputs needed to be set to steady state values.The concrete numeric values for both the inputs and the steady state variables where found in the HiFi simulation after 5000 s. Finally, the states needed to be initialised in a sensible manner, and these were estimated with common sense, and based on the pressures, temperatures and volumes of the control volumes. All of the necessary values for the simulation is found in the tables below.\\
+
+
+\begin{tabular}{cc}
+	\begin{minipage}{.3\linewidth}
+		\centering
+		\begin{tabular}{@{}lll@{}}
+			\toprule
+			\textbf{Variables} & \textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}} & \textbf{Unit} \\ \midrule
+			$p_1$              & 0.44944                                                            & MPa           \\
+			$p_3$              & 0.77637                                                            & MPa           \\
+			$p_4$              & 0.19237                                                            & MPa           \\
+			$T_2$              & 295.3925                                                           & K             \\
+			$T_7$              & 267.6048                                                           & K             \\ \bottomrule
+		\end{tabular}
+	\end{minipage} &
+	
+	\begin{minipage}{.3\linewidth}
+		\centering
+		\begin{tabular}{@{}lcl@{}}
+			\toprule
+			\textbf{\begin{tabular}[c]{@{}l@{}}Initial \\ state values\end{tabular}} & \multicolumn{1}{l}{\textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}}} & \textbf{Unit} \\ \midrule
+			$M_{pjj}$                                                                & 0.001                                                                                  & kg   \\
+			$M_{con}$                                                                & 1                                                                                      & kg   \\
+			$T_m$                                                                    & 302                                                                                    & K    \\
+			$\dot{m}_{air}$                                                          & 0.25                                                                                   & kg/s \\
+			$T_{mlv}$                                                                & 262                                                                                    & K    \\
+			$T_{mv}$                                                                 & 273                                                                                    & K    \\
+			$M_{lv}$                                                                 & 0.5                                                                                    & kg   \\
+			$M_{v}$                                                                  & 0.0075                                                                                 & kg   \\
+			$T_{air}$                                                                & 268.9                                                                                  & K    \\
+			$T_{box}$                                                                & 278.15                                                                                 & K    \\
+			$T_{cargo}$                                                              & 263.15                                                                                 & K    \\
+			$T_{v}$                                                                  & 267.6048                                                                               & K    \\ \bottomrule
+		\end{tabular}
+	\end{minipage} 
+	\begin{minipage}{.3\linewidth}
+		\centering
+		\begin{tabular}{@{}lll@{}}
+			\toprule
+			\textbf{Inputs} & \textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}} & \textbf{Unit} \\ \midrule
+			$\omega$        & 28                                                                 & \%            \\
+			$\Theta_1$      & 19.4                                                               & \%            \\
+			$\Theta_2$      & 12.1                                                               & \%            \\
+			$U_{fan1}$      & 62.8                                                               & \%            \\
+			$U_{fan2}$      & 63.8                                                               & \%            \\
+			$T_{ambi}$        & 293.15                                                             & K             \\ \bottomrule
+		\end{tabular}
+	\end{minipage} 
+\end{tabular}
+
+In the inspection of the states of the simulation, the states are
+
 When simulating the model from \cref{eq:f_noSub}, a the response to inputs at XXX and initial conditions at XXX with can be seen in \cref{fig:non_lin_sim_Mass}, \cref{fig:non_lin_sim_faulty_Mass} \cref{fig:non_lin_sim_Temperature}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Graphics/nonlin_sim_Mass.png}
-	\caption{A simplified diagram of the trailer box with the respective heat flows, masses, temperatures and specific heat capacities.}
+	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Mass_Mvfucked.png}
+	\caption{}
+	\label{fig:non_lin_sim_Mass}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Mass.png}
+	\caption{}
 	\label{fig:non_lin_sim_Mass}
 \end{figure}
 \clearpage
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Graphics/nonlin_sim_faulty_Mass.png}
-	\caption{A simplified diagram of the trailer box with the respective heat flows, masses, temperatures and specific heat capacities.}
+	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_faulty_Mass.png}
+	\caption{}
 	\label{fig:non_lin_sim_faulty_Mass}
 \end{figure}
-\clearpage
+
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Graphics/nonlin_sim_Temperature.png}
-	\caption{A simplified diagram of the trailer box with the respective heat flows, masses, temperatures and specific heat capacities.}
+	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Temperature.png}
+	\caption{}
 	\label{fig:non_lin_sim_Temperature}
 \end{figure}
 
