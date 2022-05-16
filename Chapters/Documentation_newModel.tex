@@ -62,7 +62,7 @@ where
 Rewriting the equation to solve for $p_{out}$ it becomes the following. A real assumption is that the flow is always moving in one direction and therefore the flow is simply squared without regard for keeping flow sign.
 
 \begin{equation}
-	p_{out} = p_{in} - \dot{m}^2 \dfrac{v_{in}}{(f_p(\Theta) K)^2}
+	p_{out} = p_{in} - \dot{m}^2 \dfrac{v_{in}}{(f_p(\Theta) K)^2} \label{eq:valve_pres}
 \end{equation}
 
 This enables now that the valves has pressure as output. If inspecting \cref{fig:Block_diagram_inout_valvePres}, it becomes apparent that the pressure out of the valves is are now defined by the valves which affects the rest of the system. Specifically as an example, for compressor stage two, this enables that the flow that the compressor sets is now affected by the Condenser throttle valve output pressure $ p_1 $.

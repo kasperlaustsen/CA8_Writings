@@ -1,7 +1,7 @@
 \subsection{Test Journal: Component models} \label{app:tj_0}
 
 \textbf{Executed by: Kasper} \\
-\textbf{Date: 10/5/2022}
+\textbf{Date: 12/5/2022}
 
 \subsubsection*{Objective}
 This test aims to document the behavior of the component models defined in \cref{sec:reformulation-of-components}.
@@ -57,50 +57,85 @@ Run the script "ComponentModelTesting.m".
 
 \clearpage
 \subsubsection*{Results and Comments}
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{Graphics/comp_test_box.png}
-	\caption{Comparison of boxModel outputs with HiFi component model of box}
-	\label{fig:component_test_box}
-\end{figure}
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/comp_test_com.png}
 	\caption{Comparison of compressorModel outputs with HiFi component model of compressor}
 	\label{fig:component_test_com}
 \end{figure}
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{Graphics/comp_test_con.png}
-	\caption{Comparison of condenserModel outputs with HiFi component model of condenser}
-	\label{fig:component_test_con}
-\end{figure}
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{Graphics/comp_test_eva.png}
-	\caption{Comparison of evaporatorModel outputs with HiFi component model of evaporator}
-	\label{fig:component_test_eva}
-\end{figure}
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\textwidth]{Graphics/comp_test_ft.png}
-	\caption{Comparison of flashtankModel outputs with HiFi component model of flash tank}
-	\label{fig:component_test_ft}
-\end{figure}
+The compressorModel resembles the HiFi model (Krestens model) well. The difference is only mention-able in the transient from 500 s to 1750 s. The accuracy is considered satisfactory.
+\clearpage
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/comp_test_pjj.png}
 	\caption{Comparison of pjjModel outputs with HiFi component model of pipe joining junction}
 	\label{fig:component_test_pjj}
 \end{figure}
+The pjjModel resembles the enthalpy and temperature outputs of the HiFi simulation in subplot 1 and 2 well from the time after 200 seconds. The transient is not great for the temperature comparison, however. This is likely due to initialisation of pjjModel is different from the Hifi model pipe joining junction.
+In steady state the outputs are considered satisfactory.
+
+\clearpage
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/comp_test_val.png}
 	\caption{Comparison of valveModel outputs with HiFi component model of valve}
 	\label{fig:component_test_val}
 \end{figure}
+The valve model transient from 100 s to 2500 s is not great.
+A probable cause of the so differing behavior in the transient phase, where the derives seem to have roughly the same absolut values but opposing signs could be that the equation for valveModel is only valid when there is flow through the valve. When the 'real' valve is closed the pressure drop across the valve can be any reasonable number, but there will not be a flow through it, and such \cref{eq:valve_pres3} for valveModel will not hold.
+
+When debugging this transient, the equation that is base for the pressure out of the valveModel came in handy. It can be seen in \cref{eq:valve_pres3}.
+\begin{equation}
+	p_{out} = p_{in} - \dot{m}^2 \dfrac{v_{in}}{(\Theta \cdot K)^2} = p_{in} - \dot{m}^2 \cdot v_{in} \dfrac{1}{(\Theta \cdot K)^2} \label{eq:valve_pres3}
+\end{equation}
+The input pressure is plotted in \cref{fig:component_test_val}.
+In the debugging it was observed was that the term $ \dfrac{1}{(\Theta \cdot K)^2} $ took up values above 1e10. This indicates that the valve model perhabs is not good enough for the model to be sufficiently accurate.
+After fiddling with the constant K, the valve model ended up being accurate in steady state, as seen after 3000 s.
 
 \clearpage
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/comp_test_ft.png}
+	\caption{Comparison of flashtankModel outputs with HiFi component model of flash tank}
+	\label{fig:component_test_ft}
+\end{figure}
+The flashtankModel accuracy is satisfactory as the enthalpies are very accurate. The mass flows deviate a bit in the transient phases - likely due to the lacking dynamics in the mass balance, but it is considered satisfactory anyway.
+
+
+\clearpage
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/comp_test_con.png}
+	\caption{Comparison of condenserModel outputs with HiFi component model of condenser}
+	\label{fig:component_test_con}
+\end{figure}
+
+The condenser model accuracy is good for the mass flow and pressure as seen in \cref{fig:component_test_con} in subplot 2 and 3. The enthalpy accuracy is less accurate, both in the transient phase around 100-1750 s and in steady state. However it is considered suffient as the steady state value about 10\% off.
+The accuracy in the steady state enthalpy was not based on the heat transfer coefficients from \cref{sec:condenser}. With those there were significant offset errors. They were varied by trial and error to obtain more accurate steady state behavior - especially with regards to the enthalpy output.
+
+
+\clearpage
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/comp_test_box.png}
+	\caption{Comparison of boxModel outputs with HiFi component model of box}
+	\label{fig:component_test_box}
+\end{figure}
+
+The boxModel behavior is good in the sense that is seems like there is only more or less a constant offset between the boxModel outputs and the Hifi Model. A bit of fiddling with some of the constants in the boxModel might mitigate the offset error even more.
+
+\clearpage
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/comp_test_eva.png}
+	\caption{Comparison of evaporatorModel outputs with HiFi component model of evaporator}
+	\label{fig:component_test_eva}
+\end{figure}
+The evaporator model could not run in the early phases of the input sequences as some of the look-up tables got out of their range. Thus the model is only evaluated from time 2600 s.
+In the evaluated time the model shows satisfactory accuracy for both pressure, enthalpy and supply temperature
+
+
 %comp_test_box.png
 %comp_test_com.png
 %comp_test_con.png
