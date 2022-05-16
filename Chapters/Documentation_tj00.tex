@@ -7,7 +7,7 @@
 This test aims to document the behavior of the component models defined in \cref{sec:reformulation-of-components}.
 
 \subsubsection*{Background}
-In the plots in \cref{sec:model-verification} the states $ M_{pjj} $ and $ M_{con} $ integrated. This indicated that the component models were not connected in an appropriate way.
+In the plots in \cref{sec:model-verification} the states $ M_{pjj} $ and $ M_{con} $ seemed to be integrating. This indicated that the component models were not connected in an appropriate way.
 Additionally in the B matrix of the linearised system, found in \cref{eq:B}, the system also showed that the compressor speed and the condenser throttle valve opening degree did not affect the states of interest, which further indicates that the non linear model could be flawed.
 Before connecting all the components into one big new system, an intermediate step will be introduced. This is a verification of all of the individual component models.
 
@@ -23,7 +23,7 @@ The test subjects are the classes
 	\item pjjModel
 	\item valveModel
 \end{itemize}
-All the components are based on the models defined in \cref{sec:mod_comp_mod}. Some of them are modified with changed defined in \cref{sec:reformulation-of-components}.\\
+All the components are based on the models defined in \cref{sec:mod_comp_mod}. Some of them are modified with changes defined in \cref{sec:reformulation-of-components}.\\
 
 The following components are implemented according to \cref{sec:mod_comp_mod}.
 \begin{itemize}
@@ -47,27 +47,22 @@ The aim is to test the components before more states are introduced, in order to
 \subsubsection*{Equipment used}
 The outputs from a simulation of "eTRU\_prototype\_2\_old\_perhabs\_with\_measurements.slx" are used as inputs for the test. The imported data can be found in "HiFi\_model\_data\_for\_component\_tests\_03.mat".
 The script used for the tests are to be found in "componentModelTesting.m". with support from testinit.m.
-All the files can be found in the git repository under CA9Project/Modeling/ComponentSimulation with the commit hash feff043be9d98efef19ba4f0f4ad9552baca9bf1.
+All the files can be found in the git repository under CA8Project/Modeling/ComponentSimulation with the commit hash 25682de26edbdb141551d64b280ee66e48e26d2e.
 
 \subsubsection*{Test setup}
 The component models are compared to the HiFi simulation. This means that the measurements that are inputs to the components in the Hifi simulation model are used as inputs to the test subjects: the component models. The outputs of the test subjects are then compared with the outputs of the component models of the HiFi model.
 
 \subsubsection*{Test procedure}
-%In the evaporator model on line 158, the update of the output pressure is commented out as
-%
-%\begin{figure}[h!]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{Tests/Evapo_test1/pout_code.png}
-%	\caption{Code}
-%	\label{fig:evapotest1_code}
-%\end{figure}
-%
-%now comment in 158 and comment out 159
-%and run the script "ComponentModelTesting.m". Now save the Figure 94.
-%Afterwards make sure the code in the evaporator model is reverted back to status in the above code, and run the script again and save the plot in Figure 94
-
+Run the script "ComponentModelTesting.m".
 
 \subsubsection*{Results and Comments}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/comp_test_box.png}
+	\caption{Outputs with pressure out being a table lookup}
+	\label{fig:component_test_box}
+\end{figure}
+
 %comp_test_box.png
 %comp_test_com.png
 %comp_test_con.png
