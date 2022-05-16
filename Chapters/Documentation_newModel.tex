@@ -1,4 +1,4 @@
-\subsection{Investigation of new system model: Test of component models} \label{app:tj_2}
+\subsection{Investigation of new system model} \label{app:tj_2}
 The model in the report carries with it some misfits wrt. connecting the entire system. It is well illustrated in \cref{fig:Block_diagram_inout}, where the red variables has to be input as constant inputs in order to simulate the system. For convenience, \cref{fig:Block_diagram_inout} is included here as well, in \cref{fig:Block_diagram_inout2}.
 \begin{figure}[h!]
 	\centering
@@ -24,12 +24,637 @@ This results in a new block diagram that can be seen in \cref{fig:Block_diagram_
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/Block_Diagram_inout.pdf}
+	\includegraphics[width=1\textwidth]{Graphics/Block_Diagram_inout_no_reds.pdf}
 	\caption{Block diagram of input/output relationship of interface variables}
 	\label{fig:Block_diagram_inout_valvePres}
 \end{figure}
 
-\subsubsection*{\textbf{Reformulation of components}}
+\newpage
+\subsection*{Reformulation of components}\label{sec:reformulation-of-components}
 The following section will cover reformulation of the component models that corresponds to \cref{fig:Block_diagram_inout_valvePres}.
-\subsubsection*{Pressure setting valve model}
+\subsubsection*{\textbf{Valve}}
+Recall from \cref{sec:componentModel_Val} that the flow through the valve can be expressed as \cref{eq:ExpansionValve_Alt2}. \\
+
+\subsubsection*{\underline{Model from \cref{sec:componentModel_Val}}}
+
+\begin{equation} \label{eq:ExpansionValve_Alt2}
+	\begin{split}
+		\dot{m} & = f_p(\Theta) K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})} \\
+		K       & = C A
+	\end{split}
+\end{equation}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\dot{m}$     & Flow through valve                                                  & [\si{kg}/\si{s}]   \\
+		$f_p(\Theta)$ & Flow percentage as function of opening degree                       & [$\cdot$]          \\
+		$ \Theta $    & Opening degree of valve                                             & [$ \cdot $]        \\
+		$p_{in}$      & Absolute pressure on input side                                     & [\si{Pa}]          \\
+		$p_{out}$     & Absolute pressure on output side                                    & [\si{Pa}]          \\
+		$K$           & Constant, product of discharge coefficient and cross sectional area & [\si{m^2}]         \\
+		$v_{in}$      & Specific volume of liquid refrigerant into the valve                & [\si{m^3}/\si{kg}]
+	\end{tabular}
+\end{center}
+
+\subsubsection*{\underline{Addition to existing model}}
+Rewriting the equation to solve for $p_{out}$ it becomes the following. A real assumption is that the flow is always moving in one direction and therefore the flow is simply squared without regard for keeping flow sign.
+
+\begin{equation}
+	p_{out} = p_{in} - \dot{m}^2 \dfrac{v_{in}}{(f_p(\Theta) K)^2}
+\end{equation}
+
+This enables now that the valves has pressure as output. If inspecting \cref{fig:Block_diagram_inout_valvePres}, it becomes apparent that the pressure out of the valves is are now defined by the valves which affects the rest of the system. Specifically as an example, for compressor stage two, this enables that the flow that the compressor sets is now affected by the Condenser throttle valve output pressure $ p_1 $.
+
+\subsubsection*{\textbf{Flash tank}}
+The flash tank model is not changed, but the equations are expanded a bit to show how substitution is implemented now that valves are not deciding the flows.
+\subsubsection*{\underline{Model from \cref{sec:componentModel_flash-tank}}}
+Recall the flash tank model from \cref{sec:componentModel_flash-tank}. The flash tank is assumed to be isobaric, hence \cref{eq:Flash_tank_pressure2}. Additionally recall the steady state energy and mass balance as in \cref{eq:Flash_tank_energyflow2} \cref{eq:Flash_tank_massflow2}.
+
+\begin{align}
+	p_{lv} 	= p_{l}					&  = p_{v}
+	\label{eq:Flash_tank_pressure2}
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$p_{lv}$				&  Liquid-vapor mixture pressure		& [\si{Pa}]\\
+		$p_{l}$					&  Liquid pressure 						& [\si{Pa}] \\
+		$p_{v}$					&  Vapor pressure						& [\si{Pa}]\\
+
+	\end{tabular}
+\end{center}
+
+\begin{align}
+	\dot{m}_{lv} \cdot  h_{lv}  - \dot{m}_{l} \cdot  h_{l} - \dot{m}_{v} \cdot  h_{v} & = 0 \label{eq:Flash_tank_energyflow2} \\
+	\dot{m}_{lv} - \dot{m}_{l} - \dot{m}_{v} & = 0  \label{eq:Flash_tank_massflow2}
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\dot{m}_{lv}$			&  Liquid-vapor mixture mass flow			& [\si{kg}/\si{s}]\\
+		$\dot{m}_{l}$			&  Liquid mass flow 						& [\si{kg}/\si{s}] \\
+		$\dot{m}_{v}$			&  Vapor mass flow							& [\si{kg}/\si{s}]\\
+		$h_{lv}$				&  Liquid-vapor mixture specific enthalpy	& [\si{J}/\si{kg}]\\
+		$h_{l}$					&  Liquid specific enthalpy 				& [\si{J}/\si{kg}] \\
+		$h_{v}$					&  Vapor specific enthalpy					& [\si{J}/\si{kg}]\\
+
+	\end{tabular}
+\end{center}
+
+Lastly recall that, it is assumed that the separated liquid and vapor leaves at boiling point and flash point respectively. This last assumption allows us to find the enthalpy of the two substances purely from investigation of the p-h diagram or a look-up table since the pressure is known. We express this as:
+
+\begin{align}
+	h_{l}  & = \mathcal{M}(p)\\
+	h_{v}  & = \mathcal{N}(p)
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\mathcal{M}(p)$ & Lookup table of bubble point specific enthalpy from pressure & [\si{J}/\si{kg}] \\
+		$\mathcal{N}(p)$ & Lookup table of dew point specific enthalpy from pressure    & [\si{J}/\si{kg}]
+	\end{tabular}
+\end{center}
+
+\subsubsection*{\underline{Addition to existing model}}
+
+
+The knowledge of the specific enthalpy from the look up tables leaves \cref{eq:Flash_tank_energyflow} and \cref{eq:Flash_tank_massflow} with two unknowns that can be solved, namely $ m_l $ and $ m_v $. This is done in \cref{label}
+
+\begin{align}
+	0 & = \dot{m}_{lv} - \dot{m}_{l} - \dot{m}_{v}  \label{eq:Flash_tank_massflow3} \\
+	& \Updownarrow \nonumber \\
+	\dot{m}_{l} & = \dot{m}_{lv}  - \dot{m}_{v} \\
+	0 & = \dot{m}_{lv} \cdot  h_{lv}  - \dot{m}_{l} \cdot  h_{l} - \dot{m}_{v} \cdot  h_{v}  \label{eq:Flash_tank_energyflow2} \\
+	& \Updownarrow \nonumber \\
+	0 & = \dot{m}_{lv} \cdot  h_{lv}  - (\dot{m}_{lv}  - \dot{m}_{v}) \cdot  h_{l} - \dot{m}_{v} \cdot  h_{v}  \label{eq:Flash_tank_energyflow2} \\
+	& \Updownarrow \nonumber \\
+	\dot{m}_{v} & =  \dot{m}_{lv} \cdot \frac{(h_{lv}  -  h_{l})}{(h_{v}  -  h_{l})}  \\
+\end{align}
+
+
+
+
+\subsubsection*{\textbf{Pipe Joining Junction}}
+The pipe joining junction is desired to deliver a temperature in stead of an enthalpy, as the compressor takes the temperature as an input.
+
+\subsubsection*{\underline{Model from \cref{sec:pipe-joining-junction}}}
+Recall that the Pipe joining junction defined in \cref{sec:pipe-joining-junction}. For convenience the mass balance and steady state energy balance is in \cref{eq:PipeJoiningJunction_ChangeOfMass2} and  \cref{eq:PipeJoiningJunction_Enthalpy2}
+
+
+
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ \frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} - \dot{m}_{out} }       \label{eq:PipeJoiningJunction_ChangeOfMass2}
+\end{equation}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$\dfrac{dM}{dt}$ & Change in mass inside Pipe Joining Junction             & [\si{kg}/\si{s}] \\
+		$\dot{m}_{in1}$  & Flow into Pipe Joining Junction from Compressor $ C_1 $ & [\si{kg}/\si{s}] \\
+		$\dot{m}_{in2}$  & Flow into Pipe Joining Junction from Flash Tank         & [\si{kg}/\si{s}] \\
+		$\dot{m_{out}}$  & Flow into Compressor $ C_2 $ from Pipe Joining Junction & [\si{kg}/\si{s}]
+	\end{tabular}
+\end{center}
+
+In \cref{eq:PipeJoiningJunction_Enthalpy2} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfer to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. Additionally, it is expected that $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows.
+
+\begin{equation} \label{eq:PipeJoiningJunction_Enthalpy2}
+	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
+\end{equation}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$h_{out}$       & Specific enthalpy into Compressor $ C_2 $ from Pipe Joining Junction & [\si{J}/\si{kg}] \\
+		$h_{in1}$       & Specific enthalpy into Pipe Joining Junction from Compressor $ C_1 $ & [\si{J}/\si{kg}] \\
+		$h_{in2}$       & Specific enthalpy into Pipe Joining Junction from Flash Tank         & [\si{J}/\si{kg}] \\
+		$\dot{m}_{in1}$ & Flow into Pipe Joining Junction from Compressor $ C_1 $              & [\si{kg}/\si{s}] \\
+		$\dot{m}_{in2}$ & Flow into Pipe Joining Junction from Flash Tank                      & [\si{kg}/\si{s}]
+	\end{tabular}
+\end{center}
+
+\subsubsection*{\underline{Addition to existing model}}
+In \cref{eq:PJJ_Tout} the output temperature is found from the output enthalpy and the input pressure. It is assumed that the pressure is constant throughout the junction and thus $p_{out} = p_{in}$.
+\begin{equation} \label{eq:PJJ_Tout}
+	T_{out} = \Phi(h_{out}, p_{in})
+\end{equation}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$T_{out}$ & Temperature out of pipe joining junction                             & [\si{K}]         \\
+		$h_{out}$ & Specific enthalpy into Compressor $ C_2 $ from Pipe Joining Junction & [\si{J}/\si{kg}] \\
+		$p_{in}$  & Input pressure                                                       & [\si{Pa}] \\
+		$\Phi(h,p)$ & Table lookup of temperature from specific enthalpy and pressure & [.]
+	\end{tabular}
+\end{center}
+
+\subsubsection*{\textbf{Condenser}}
+Recall the model of the condenser defined in \cref{sec:condenser}.
+It lacks a description of the pressure coming out of the condenser. This is approached as a pressure state, and it will be derived below. However, it was not implemented as of the current state of affairs, due to another new state being introduced (in the evaporator), that proved to yield problems that was not solved.\\
+
+\subsubsection*{\underline{Model from \cref{sec:condenser}}}
+The condenser equations from \cref{sec:condenser} are listed below; from \cref{eq:Condenser_Enthalpy1} to \cref{eq:Condenser_HeatFlow_ma1}
+%The condenser takes in the discharge pressure vapor from the second compressor stage, at point 4 in \cref{fig:HVAC_Diagram}. The high pressure yields a high temperature,
+%which enables heat transfer through the condensor to ambient air. This is done mainly through condensation of the refrigerant vapor, yielding high pressure liquid at point 5 in \cref{fig:HVAC_Diagram}.
+%The energy balance is modelled in \cref{eq:Condenser_Enthalpy}. The mass balance is modelled in \cref{eq:Condenser_ChangeOfMass}. Finally the temperature of the metal in the condenser is modelled in
+%\cref{eq:Condenser_ChangeOfTemperature}, as the dominant dynamics of the condenser is greatly linked to the temperature of the metal \cite{Sorensen2013}. \cref{eq:Condenser_ChangeOfTemperature} is also
+%derived from the energy balance. In \cref{fig:condenser_CV} a diagram of the condenser CV can be found.
+%
+%\begin{figure}[h!]
+%	\centering
+%	\includegraphics[width=0.8\textwidth]{Graphics/Condenser.pdf}
+%	\caption{Diagram of condenser control volume}
+%	\label{fig:condenser_CV}
+%\end{figure}
+
+\begin{align}
+	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}}  	\label{eq:Condenser_Enthalpy1}
+\end{align}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dM_r}{dt} 	 = \dot{m}_{in}(t) - \dot{m}_{out}(t) }     	\label{eq:Condenser_ChangeOfMass1}
+\end{equation}
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dT_m}{dt} 	 = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m}	 }     \label{eq:Condenser_ChangeOfTemperature1}
+\end{equation}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$h_{out}$       & Condenser output specific enthalpy & [\si{J}/\si{kg} ] \\
+		$h_{in}$        & Condenser input specific enthalpy  & [\si{J}/\si{kg}]  \\
+		$Q_{rm}$        & Refrigerant to metal heat flow     & [\si{W}]          \\
+		$Q_{ma}$        & Metal to air heat flow             & [\si{W}]          \\
+		$\dot{m_{in}}$  & Condenser input mass flow          & [\si{kg}/\si{s}]  \\
+		$\dot{m_{out}}$ & Condenser output mass flow         & [\si{kg}/\si{s}]  \\
+		$M_r$           & Refrigerant mass                   & [\si{kg}]         \\
+		$M_m$           & Metal mass                         & [\si{kg}]         \\
+		$T_m$           & Metal temperature                  & [\si{K}]          \\
+		$Cp_m$          & Metal heat capacity                & [\si{J}/\si{K}]
+	\end{tabular}
+\end{center}
+
+The pressure drop across the condenser is assumed to be linear with respect to mass flow, yielding \cref{eq:Condenser_PressureDrop1}.
+The mass flow out of the condenser is modelled in \cref{eq:Condenser_MassFlow1}.
+
+
+\begin{align}
+	p_{in} 	& =  p_{out} - \lambda \cdot \dot{m}_{in}  				\label{eq:Condenser_PressureDrop1}\\
+	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{1s}		\label{eq:Condenser_MassFlow1} \\
+	v & = \mathcal{Z}(h_{in}, p_{in})
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$p_{in}$        & Condenser input pressure                                   & [\si{Pa}]          \\
+		$p_{out}$       & Condenser output pressure                                  & [\si{Pa}]          \\
+		$\lambda$       & Pressure drop constant                                     & [$\cdot$]          \\
+		$\dot{m_{in}}$  & Condenser input mass flow                                  & [\si{kg}/\si{s}]   \\
+		$\dot{m_{out}}$ & Condenser output mass flow                                 & [\si{kg}/\si{s}]   \\
+		$M_{r}$         & Condenser refridgerant mass                                & [\si{kg}]          \\
+		$V_{i}$         & Condenser internal volume                                  & [\si{m^3}]         \\
+		$v$             & Condenser refridgerant specific volume                     & [\si{m^3}/\si{kg}] \\
+		$\mathcal{Z}(h,p)$        & Table lookup of specific volume from enthalpy and pressure & []
+	\end{tabular}
+\end{center}
+
+
+And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlow_rm1}, \cref{eq:Condenser_HeatFlow_ma1}.
+
+\begin{align}
+	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm1}\\
+	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_{ambi})\cdot (0.05 + U_{fan} \cdot 2)				\label{eq:Condenser_HeatFlow_ma1}
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$Q_{rm}$				&	Heat flow from refridgerant to metal					& [\si{W}] \\
+		$Q_{ma}$				&	Heat flow from metal to air								& [\si{W}] \\
+		$U A_{rm}$				& 	Heat transfer coefficient from refridgerant to metal 	& [\si{J}/\si{K}] \\
+		$U A_{ma}$				& 	Heat transfer coefficient from metal to air				& [\si{J}/\si{K}] \\
+		$T_r$					& 	Temperature of refridgerant 							& [\si{K}] \\
+		$T_m$					&	Temperature of metal 									& [\si{K}] \\
+		$T_{ambi}$				&	Temperature of ambient air 								& [\si{K}] \\
+		$U_{fan}$				&	Fan speed												& [$\%$] \\
+	\end{tabular}
+\end{center}
+
+\subsubsection*{\underline{Addition to existing model}}
+All the equations until now has been heavily inspired by \cite{Sorensen2013}.
+Now, to accommodate the missing pressure $ p_{out} $ from \cref{eq:Condenser_PressureDrop1}, an new state is needed for the pressure in the condenser control volume. The control volume pressure will be assumed to be equal to the output pressure. The following shows the derivation of that state from the mass balance in \cref{eq:Condenser_ChangeOfMass1}. We use the fact that the mass in the control volume consists of two seperate masses, the liquid mass $ M_l $ and the vapor mass $ M_v $.
+
+
+\begin{align}
+		 		\frac{d \bigl(M_{l} + M_{v}\bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t) 		\label{eq:Condenser_pres1}\\
+		 		\frac{d \Bigl(\rho_{l}\bigl(p(t)\bigr)\cdot V_l(t) + \rho_{v}\bigl(p(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres2}\\
+		 		\frac{d \Bigl(\rho_{l}\bigl(p(t)\bigr)\cdot V_l(t)\Bigr)}{dt} + \frac{d \Bigl(\rho_{v}\bigl(p(t)\bigr)\cdot \bigl(V_{tot} - V_l(t)\bigr)\Bigr) }{dt} & = \dot{m}_{in}(t) - \dot{m}_{out}(t)		\label{eq:Condenser_pres3}
+\end{align}
+
+where $\rho_{l}, \rho_{v}$ are the densities of respectively are the densities of saturated liquid and saturated vapor. $ V_l$ is the volume of the liquid part of the control volume, $V_{tot} $ is the total volume of the control volume, which is the volume of the condenser and $p(t)$ is the pressure inside the control volume.
+
+Utilizing the product rule for differentiation for each of the derivative terms on the LHS of \cref{eq:Condenser_pres3} yields \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5}.
+\begin{align}
+	\frac{d \Bigl(\rho_{l}\bigl(p(t)\bigr)\cdot V_l(t)\Bigr)}{dt}  				& =   \frac{d \rho_{l}\bigl(p(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(p(t)\bigr)\cdot\frac{d V_l(t)}{dt} 	\label{eq:Condenser_pres4} \\
+	\frac{d \Bigl(\rho_{v}\bigl(p(t)\bigr)\cdot (V_{tot} - V_l(t))\Bigr) }{dt} 	& =  \frac{d \rho_{v}\bigl(p(t)\bigr)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +   \rho_{v}\bigl(p(t)\bigr)\cdot\frac{d \bigl(V_{tot} - V_l(t)\bigr)}{dt} 	\label{eq:Condenser_pres5}
+\end{align}
+The first term of the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} can then be expanded using the chain rule as seen in \cref{eq:Condenser_pres6}
+
+\begin{align}
+	\frac{d \rho_{l}\bigl(p(t)\bigr)}{dt} 				& =   \frac{d \rho_{l}\bigl(p(t)\bigr)}{dp(t)} \cdot \frac{dp(t)}{dt}	\label{eq:Condenser_pres6} \\
+		\frac{d \rho_{v}\bigl(p(t)\bigr)}{dt} 			& =   \frac{d \rho_{v}\bigl(p(t)\bigr)}{dp(t)} \cdot \frac{dp(t)}{dt}	\label{eq:Condenser_pres7}
+\end{align}
+
+Now the RHS of \cref{eq:Condenser_pres4} and \cref{eq:Condenser_pres5} are substituted into the LHS of \cref{eq:Condenser_pres3} yielding \cref{eq:Condenser_pres8}. \\
+
+%\begin{align}
+%			 		\frac{d \rho_{l}\bigl(p(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(p(t)\bigr)\cdot\frac{d V_l(t)}{dt} +
+%			 		\frac{d \rho_{v}\bigl(p(t)\bigr)}{dt} \cdot (V_{tot} - V_l(t))   +   \rho_{v}\bigl(p(t)\bigr)\cdot\frac{d (V_{tot} - V_l(t))}{dt}
+%			 			& = \dot{m}_{in}(t) - \dot{m}_{out}(t)  \label{eq:Condenser_pres8}
+%\end{align}
+
+\begin{equation}\label{eq:Condenser_pres8}
+	\begin{split}
+			& \frac{d \rho_{l}\bigl(p(t)\bigr)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(p(t)\bigr)\cdot\frac{d V_l(t)}{dt} +
+			\frac{d \rho_{v}\bigl(p(t)\bigr)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +   \rho_{v}\bigl(p(t)\bigr)\cdot\frac{d \bigl(V_{tot} - V_l(t)\bigr)}{dt} \\
+			& = \dot{m}_{in}(t) - \dot{m}_{out}(t)
+		\end{split}
+\end{equation}
+
+
+\cref{eq:Condenser_pres6} and \cref{eq:Condenser_pres7} are substituted into \cref{eq:Condenser_pres8} yielding \cref{eq:Condenser_pres9}.
+
+\begin{equation}\label{eq:Condenser_pres9}
+	\begin{split}
+			& \frac{d \rho_{l}\bigl(p(t)\bigr)}{dp(t)} \cdot \frac{dp(t)}{dt} \cdot V_l(t)   +   \rho_{l}\bigl(p(t)\bigr)\cdot\frac{d V_l(t)}{dt} +  \frac{d \rho_{v}\bigl(p(t)\bigr)}{dp(t)} \cdot \frac{dp(t)}{dt} \cdot \bigl(V_{tot} - V_l(t)\bigr)   +
+			\rho_{v}\bigl(p(t)\bigr)\cdot\frac{d \bigl(V_{tot} - V_l(t)\bigr)}{dt}  \\ &= \dot{m}_{in}(t) - \dot{m}_{out}(t)
+		\end{split}
+\end{equation}
+
+To simplify the equation we assume that the volumes of the liquid and vapor parts are constant, i.e. $ V_l(t) = V_l$, yielding \cref{eq:Condenser_pres10}, where the derivatives if the volumes are neglected.
+
+\begin{align}
+		\frac{d \rho_{l}\bigl(p(t)\bigr)}{dp(t)} \cdot \frac{dp(t)}{dt} \cdot V_l +  \frac{d \rho_{v}\bigl(p(t)\bigr)}{dp(t)} \cdot \frac{dp(t)}{dt} \cdot \bigl(V_{tot} - V_l\bigr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres10} \\
+		 \frac{dp(t)}{dt} \cdot \Biggl( \frac{d \rho_{l}\bigl(p(t)\bigr)}{dp(t)} \cdot V_l +  \frac{d \rho_{v}\bigl(p(t)\bigr)}{dp(t)} \cdot \bigl(V_{tot} - V_l\bigr) \Biggr) & = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_pres11}
+\end{align}
+Now the state equation for the pressure can be found by isolating $ \frac{p(t)}{dt} $ as in \cref{eq:Condenser_pres12}
+\begin{align}
+	\frac{dp(t)}{dt} & = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \dfrac{d \rho_{l}\bigl(p(t)\bigr)}{dp(t)} \cdot V_l +  \dfrac{d \rho_{v}\bigl(p(t)\bigr)}{dp(t)} \cdot \bigl(V_{tot} - V_l\bigr) } \label{eq:Condenser_pres12}
+\end{align}
+
+Table lookups can be used to evaluate the derivatives of the density with respect to the pressure. This will be signified by the notation in \cref{eq:Condenser_pres13} for respectively saturated vapor and saturated liquid.
+
+\begin{align}
+		\dfrac{d \rho_l\bigl(p(t)\bigr)}{dp(t)} = \left. \dfrac{d \rho_l\bigl(p\bigr)}{dp} \right |_{p = p(t)} & = \mathcal{F}(p(t)) \label{eq:Condenser_pres13} \\
+		\dfrac{d \rho_v\bigl(p(t)\bigr)}{dp(t)} = \left. \dfrac{d \rho_v\bigl(p\bigr)}{dp} \right |_{p = p(t)} & = \mathcal{G}(p(t)) \label{eq:Condenser_pres14}
+\end{align}
+
+Finally we arrive at the state equation \cref{eq:Condenser_pres15} for the pressure state in the condenser control volume.
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dp(t)}{dt} = \dfrac{\dot{m}_{in}(t) - \dot{m}_{out}(t)}{ \mathcal{F}(p(t)) \cdot V_l +  \mathcal{G}(p(t))) \cdot \bigl(V_{tot} - V_l\bigr) }}\label{eq:Condenser_pres15}
+\end{equation}
+
+\subsubsection*{\textbf{Evaporator}}
+The evaporator is lacking an output temperature. This will be derived below.
+\subsubsection*{\underline{Model from \cref{sec:evaporator}}}
+First, recall the evaporator model defined in \cref{sec:evaporator}.
+
+The superheat of the evaporator is an important and difficult state to control. It is important as the compressor can be damaged if the refrigerant contains liquid. Additionally the superheat is important from an efficiency point of view.
+The superheat is the difference between the vapor saturation temperature and the actual temperature at the compressor suction inlet. It is a measure of excess energy transferred to the refrigerant.
+
+% This clearpage might be removed. I just put it here because it was looking ugly at the time.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Graphics/Evaporator_CV_diagram.pdf}
+	\caption{Diagram of evaporator control volumes}
+	\label{fig:evap_CV}
+\end{figure}
+
+The evaporator is split into two control volumes, divided by a moving control volume boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor, see \cref{fig:evap_CV}.
+
+Because the heat transfer coefficient from liquid to metal and from vapor to metal is different, the metal is likewise split by the $\sigma$ boundary. The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality ($X_e = 0.1$) throughout the liquid-vapor mixture. The specific volume $v_1$ is then found from the output pressure ($p_{out}$) and said average quality constant.
+
+The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary}.
+
+\begin{align} \label{eq:Evaporator_boundary}
+	\sigma = \frac{M_{lv} \cdot v_1}{V_i} \\
+	v_1 = \Lambda(p_{out},X_e)
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$\sigma$   & Control Volume boundary                                           & [$\cdot$]            \\
+		$M_{lv}$   & Mass of liquid-vapor CV                                           & [\si{kg}]            \\
+		$v_1$      & Refrigerant specific volume of vapor-liquid CV                    & [$\si{m}^3/\si{kg}$] \\
+		$V_i$      & Evaporator volume                                                 & [$\si{m}^3$]         \\
+		$\Lambda(p,X)$ & Table lookup of specific volume from pressure and average quality & [$\si{m}^3$]
+	\end{tabular}
+\end{center}
+
+\medskip
+The temperatures of the air which is blown over the evaporator by the fan is modeled by the two equations below. The fan has some loss in the form of heat which is transferred to the air.
+
+\begin{align}
+	T_{retfan} 		& = T_{ret} + \frac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}} 		\label{eq:T_retfan} 		\\
+	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{\dot{m}_{air} \cdot Cp_{air}} 	\label{eq:T_retsh}
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$T_{retfan}$    & Temperature of return air after passing through fan & [\si{K}]                          \\
+		$T_{retsh}$     & Temperature of air over superheated vapor CV        & [\si{K}]                          \\
+		$T_{ret}$       & Return temperature of air coming from trailer       & [\si{K}]                          \\
+		$Q_{fan}$       & Heat added from fan to air (heatloss)               & [\si{W}]                          \\
+		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV    & [\si{W}]                          \\
+		$\dot{m}_{air}$ & Mass flow of air through fan                        & [\si{kg}/\si{s}]                  \\
+		$Cp_{air}$      & Specific heat capacity of air                       & [\si{J}/(\si{K}$ \cdot $\si{kg})]
+	\end{tabular}
+\end{center}
+
+\medskip
+The heat flow from air to metal of evaporator is modeled based on the assumption that the mass flow of air is cooled down to the metal temperature as seen in \cref{eq:Q_amv} and \cref{eq:Q_aml}.
+
+\cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow.
+
+\begin{align}
+	U_{*_P} & = \left( U_{fan}\cdot 100 - 55.56 \right) \cdot 0.0335                                         \\
+	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3	\label{eq:Q_fan_heatloss} \\
+	Q_{amv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv}                                \\
+	Q_{amlv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{mlv}) 	\label{eq:Q_aml}
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$U_{*_P}$       & Transformed fan speed                                & [1/\si{s}]                        \\
+		$U_{fan}$       & Fan speed                                            & [$\%$]                        \\
+		$Q_{fan}$       & Heat flow from fan to air (heatloss)                 & [\si{W}]                          \\
+		$Q_{amv}$       & Heat flow from air to metal surrounding vapor CV     & [\si{W}]                          \\
+		$Cp_{air}$      & Specific heat capacity of air                        & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
+		$\dot{m}_{air}$ & Mass flow of air through fan                         & [\si{kg}/\si{s}]                  \\
+		$T_{retfan}$    & Temperature of return air after passing through fan  & [\si{K}]                          \\
+		$T_{mv}$        & Temperature of metal surrounding the vapor CV        & [\si{K}]                          \\
+		$T_{mlv}$       & Temperature of metal surrounding the liquid-vapor CV & [\si{K}]
+	\end{tabular}
+\end{center}
+
+The fans used to move air over the condenser and evaporator are driven by VFD allowing for a continuous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modeled with a 2nd order polynomial, as shown in \cref{eq:evap_Vbardot_air}.
+
+The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, as the air is a fluid itself, it contains some inertia too. This behavior is modeled by \cref{eq:evap_U_star_mdot} $\rightarrow$ \cref{eq:Evaporator_FanAirRateOfChange}. \cref{eq:Evaporator_FanAirInstantMassFlow} calculates the estimated steady state air mass flow at a new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds.
+
+\begin{align}
+	U_{*_{\dot{m}}} & = (U_{fan}*3060 - 2270.4)\cdot 0.0017 \label{eq:evap_U_star_mdot}\\
+	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot 	U_{*_{\dot{m}}}^2	\label{eq:evap_Vbardot_air} \\
+	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}	\label{eq:Evaporator_FanAirInstantMassFlow}
+\end{align}
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{\Delta \dot{m}_{air}}{\Delta t} = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}}{10s}  }  \label{eq:Evaporator_FanAirRateOfChange}
+\end{equation}
+where
+
+\begin{center}
+	\begin{tabular}{l p{8cm} l}
+		$ 	U_{*_{\dot{m}}} $ 						& Transformed fan speed												& [1/\si{s}]\\
+		$\bar{\dot{V}}_{air}$						& Estimated steady state volume flow of air for a given fan speed 	& [\si{m^3}/\si{s}] \\
+		$\bar{\dot{m}}_{air}$						& Estimated steady state mass flow of air for a given fan speed 	& [\si{kg}/\si{s}] \\
+		$\dot{m}_{air}$								& Actual mass flow of air					  						& [\si{kg}/\si{s}] \\
+		$U_{fan}$									& Fan speed 														& [$\%$] \\
+		$\rho_{air}$								& Density of air													& [\si{kg}/\si{m^3}] \\[0.2cm]
+		$\dfrac{\Delta \dot{m}_{air}}{\Delta t} $ 	& The rate of change of	air flow 									& [\si{kg}/\si{s^2}]
+	\end{tabular}
+\end{center}
+
+The evaporator contains one of the greater thermal masses due to the large mass of metal in the heat exchanger.The temperature of the evaporator metal is divided into two parts corresponding to the liquid-vapor control volume \cref{eq:evap_dT_ml} and the vapor control volume \cref{eq:evap_dT_mv}. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{amlv}, Q_{mlv}, Q_{mvmlv} $ in \cref{eq:evap_dT_ml} and $ Q_{amv}, Q_{mv}, Q_{mvmlv} $ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$). The heat flows are illustrated in \cref{fig:evap_CV}
+
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dT_{mlv}}{dt}  = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m}  }    \label{eq:evap_dT_ml}
+\end{equation}
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{ \frac{dT_{mv}}{dt} = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } }     \label{eq:evap_dT_mv}
+\end{equation}
+
+
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$T_{mlv} $  & Metal temperature in liquid-vapor CV                                                        & [\si{K}/\si{s}]                   \\ %[0.3cm]
+		$T_{mv} $   & Metal temperature in vapor CV                                                               & [\si{K}/\si{s}]                   \\ %[0.3cm]
+		$Q_{amlv}$  & Heat flow from air to metal surrounding liquid-vapor CV                                     & [\si{W}]                          \\
+		$Q_{mlv}$   & Heat flow from evaporator metal to liquid-vapor CV                                          & [\si{W}]                          \\
+		$Q_{mvmlv}$ & Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{W}]                          \\
+		$Q_{amv}$   & Heat flow from air to metal surrounding vapor CV                                            & [\si{W}]                          \\
+		$Q_{mv}$    & Heat flow from evaporator metal to vapor CV                                                 & [\si{W}]                          \\
+		$M_{m} $    & Mass of metal                                                                               & [\si{kg}]                         \\
+		$Cp_{m}$    & Specific heat capacity of metal                                                             & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
+		$\sigma$    & Control Volume boundary                                                                     & [$\cdot$]
+	\end{tabular}
+\end{center}
+
+\medskip
+\cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system. The temperature of the vapor refrigerant leaving the evaporator is found from output pressure and enthalpy in \cref{eq:T_v}
+
+\begin{align}
+	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml}             &  \\
+	Q_{mlv}   & = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma	\label{eq:Q_ml}&  \\
+	Q_{mv}    & = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) \label{eq:Q_mv} &  \\
+	T_{lv}    & = \Phi(p_{in}, h_{in}) \label{eq:T_v}                          &
+\end{align}
+
+where
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$Q_{amlv}$  & Heat flow from air to metal surrounding liquid-vapor CV                           & [\si{W}]        \\
+		$Q_{mvmlv}$ & Heat flow from through from vapor CV metal to liquid-vapor CV metal               & [\si{W}]        \\
+		$Q_{mlv}$   & Heat flow from evaporator metal to liquid-vapor CV                                & [\si{W}]        \\
+		$Q_{mv}$    & Heat flow from evaporator metal to vapor CV                                       & [\si{W}]        \\
+		$T_{mlv}$   & Temperature of metal on the liquid-vapor CV                                       & [\si{K}]        \\
+		$T_{mv}$    & Temperature of metal on the vapor CV                                              & [\si{K}]        \\
+		$T_{lv}$    & Saturation temperature for evaporation of the refrigerant                         & [\si{K}]        \\
+		$T_{v}$     & Temperature of refrigerant (vapor) leaving the evaporator                         & [\si{K}]        \\
+		$UA_1$      & Heat transfer coefficient from metal to liquid                                    & [\si{J}/\si{K}] \\
+		$UA_2$      & Heat transfer coefficient from metal to vapor                                     & [\si{J}/\si{K}] \\
+		$UA_3$      & Heat transfer coefficient from vapor CV metal to liquid-vapor CV metal            & [\si{J}/\si{K}] \\
+		$\Phi(p,h)$ 		& TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
+	\end{tabular}
+\end{center}
+
+\medskip
+The output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_{lv}} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the specific enthalpy level in the evaporator where liquid vapor mixture has completely changed phase to vapor. The pressure in \cref{eq:evap_pout} is found from table lookup using the specific volume of the refrigerant in the vapor CV and the specific enthalpy.
+
+\begin{align}
+	%	p_{out}            & = \Pi \left( h_v, \frac{M_v}{V_i-V_{lv}} \right)		\label{eq:evap_pout}                       \\
+	p_{out}            & = p_{in}								\label{eq:evap_pout}                       \\
+	V_{lv}             & = \sigma \cdot V_i                                                                           \\
+	h_{lv}             & = h_{in} + \frac{Q_{mlv}}{\dot{m}_{in}}                                                      \\
+	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}               \label{eq:evap_hv}                                       \\
+	h_{out}            & = h_v                                                                                       \\
+	T_{out}            & = T_v                                                                                        \\
+	T_{sup}            & = T_{retfan} +  \frac{Q_{amlv} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \label{eq:evap_Tsup} \\
+	\dot{m}_{dew}      & = \frac{Q_{mlv}}{h_{dew} - h_{in}} \label{eq:evap_mdot_{lv}}
+\end{align}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dM_{lv}}{dt} = \dot{m}_{in} - \dot{m}_{dew}  }
+\end{equation}
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dM_v}{dt}   = \dot{m}_{dew} - \dot{m}_{out}  }  \label{eq:evap_dMvdt}
+\end{equation}
+
+where\\
+
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$ p_{out} $      & Pressure in evaporator                                                   & [\si{Pa}]                         \\
+		%		$\Pi(h,d) $   & Table lookup of pressure from specific enthalpy and density              & [\si{Pa}]                         \\
+		$h_{v} $         & Specific enthalpy of vapor CV                                            & [\si{J}/\si{kg}]                  \\
+		$h_{lv} $        & Specific enthalpy of liquid-vapor CV                                     & [\si{J}/\si{kg}]                  \\
+		$h_{in} $        & Specific enthalpy of input liquid refrigerant                            & [\si{J}/\si{kg}]                  \\
+		$h_{out}$        & Specific enthalpy out of evaporator                                      & [\si{J}/\si{kg}]                  \\
+		$h_{dew}$        & Specific enthalpy of dew point                                           & [\si{J}/\si{kg}]                  \\
+		$V_{i} $         & Total volume of evaporator                                               & [\si{m^3}]                        \\
+		$V_{lv} $        & Volume of refrigerant in liquid-vapor CV                                 & [\si{m^3}]                        \\
+		$M_{v}$          & Mass in	in vapor CV                                                      & [\si{kg}/\si{s}]                  \\
+		$M_{lv}$         & Mass in	in liquid-vapor CV                                               & [\si{kg}/\si{s}]                  \\
+		$Q_{mlv}$        & Heat flow from evaporator metal to liquid-vapor CV                       & [\si{W}]                          \\
+		$Q_{mv}$         & Heat flow from evaporator metal to vapor CV                              & [\si{W}]                          \\
+		$Q_{amlv}$       & Heat flow from air to metal surrounding liquid-vapor CV                  & [\si{W}]                          \\
+		$Q_{amv}$        & Heat flow from air to metal surrounding vapor CV                         & [\si{W}]                          \\
+		$M_{m}$          & Mass of metal                                                            & [\si{kg}]                         \\
+		$M_{v}$          & Mass of vapor                                                            & [\si{kg}]                         \\
+		$Cp_{air}$       & Specific heat capacity of air                                            & [\si{J}/(\si{K}$ \cdot $\si{kg})] \\
+		$\dot{m}_{in} $  & Mass flow of input refrigerant                                           & [\si{kg}/\si{s}]                  \\
+		$\dot{m}_{dew} $ & Mass flow of refrigerant from liquid-vapor CV to vapor CV                & [\si{kg}/\si{s}]                  \\
+		$\dot{m}_{out} $ & Mass flow of output refrigerant                                          & [\si{kg}/\si{s}]                  \\
+		$\dot{m}_{air}$  & Actual mass flow of air                                                  & [\si{kg}/\si{s}]                  \\
+		$T_{sup} $       & Temperature of air flowing into trailer box                              & [\si{K}]                          \\
+		$T_{retfan}$     & Temperature of return air after passing through fan                      & [\si{K}]
+	\end{tabular}
+\end{center}
+
+
+\subsubsection*{\underline{Addition to existing model}}
+
+
+All the equations for the evaporator until now has been heavily inspired by \cite{Sorensen2013}. To allow for control of the very important superheat, we need a a state equation for the temperature in the vapor $ T_v $ control volume. $ T_v $ is assumed to be the output temperature of the evaporator and such base for the superheat as a difference between the dew point temperature of the refrigerant and $ T_v $. The following shows the derivation of state equation for $ T_v $ from the energy balance in \cref{eq:Evaporator_EnergyBalance}.
+
+\begin{align}
+	\frac{ d\bigl(M_{v}(t) h_v(t) \bigr)}{dt} & = P_{ext}(t) + \dot{m}_{in}(t)h_{in}(t) - \dot{m}_{out}(t)h_{out}(t) 		\label{eq:Evaporator_EnergyBalance}
+\end{align}
+Now referring to \cref{fig:evap_CV} it can be argued that
+\begin{align}
+	P_{ext}(t) = Q_{mv}(t) \\
+	\dot{m}_{in}(t) = \dot{m}_{dew}(t)\\
+	h_{in}(t) = h_{dew}(t) \\
+\end{align}
+Furthermore assuming that $ h_{out}(t) = h_v(t) $ and inspecting the dependence of temperature $T_v$ on $ h_v $ in \cref{eq:evap_hv} and \cref{eq:Q_mv}
+the energy balance can be written as
+
+\begin{align}
+	\frac{ d\Bigl(M_{v}(t) h_v \bigl(T_v(t)\bigr) \Bigr)}{dt} & = Q_{mv}(t) + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_v(t)\bigr)		\label{eq:Evaporator_EnergyBalance2}
+\end{align}
+
+Utilizing the product rule for differentiation the derivative term on the LHS of \cref{eq:Evaporator_EnergyBalance2} yields \cref{eq:Evaporator_EnergyBalance3}.
+
+
+\begin{align}
+	\frac{ dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr) + M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_{v}(t)\bigr)		\label{eq:Evaporator_EnergyBalance3}
+\end{align}
+
+The last term of the LHS of \cref{eq:Evaporator_EnergyBalance3} and can then be expanded using the chain rule as seen in \cref{eq:Evaporator_EnergyBalance4}
+\begin{align}
+	\frac{ dh_v \bigl(T_v(t)\bigr)}{dt}  & = \frac{ dh_v \bigl(T_{v}(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}	\label{eq:Evaporator_EnergyBalance4}
+\end{align}
+And now substituting the RHS of \cref{eq:Evaporator_EnergyBalance4} into \cref{eq:Evaporator_EnergyBalance3} yields \cref{eq:Evaporator_EnergyBalance51}, after which the term $ \dfrac{dT_v(t)}{dt} $ can be isolated, resulting in \cref{eq:Evaporator_EnergyBalance6}.
+
+\begin{align}
+	\frac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr) + M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_{v}(t)\bigr) \label{eq:Evaporator_EnergyBalance51}	\\
+	& \Updownarrow \nonumber
+\end{align}
+\begin{align}
+	M_{v}(t) \frac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} \frac{dT_v(t)}{dt}  & = Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_{v}(t)\bigr) - \frac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)  \label{eq:Evaporator_EnergyBalance5} \\
+	\frac{dT_v(t)}{dt}  & = \dfrac{Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_{v}(t)\bigr) - \dfrac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)}{M_{v}(t) \dfrac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} }  \label{eq:Evaporator_EnergyBalance6}
+\end{align}
+Table lookups can be used to evaluate the derivatives of the density wrt. the temperature at the dew point . This will be signified by the notation in \cref{eq:Evaporator_EnergyBalance7}
+\begin{equation}
+	\dfrac{ dh_v \bigl(T_v(t)\bigr)}{dT_v(t))} = \left. \dfrac{ dh_v \bigl(T_v\bigr)}{dT_v} \right |_{T_v = T_{v}(t)}= \mathcal{J}(T_v(t)) \label{eq:Evaporator_EnergyBalance7}
+\end{equation}
+
+yielding \cref{eq:Evaporator_EnergyBalance8} as the state equation for the temperature in the vapor control volume of the evaporator:
+
+\begin{equation}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_v(t)}{dt}  = \dfrac{Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_{v}(t)\bigr) - \dfrac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)}{M_{v}(t) \mathcal{J}(T_v(t)) } } \label{eq:Evaporator_EnergyBalance8}
+\end{equation}
+
+
+
 

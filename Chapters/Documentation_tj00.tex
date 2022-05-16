@@ -4,24 +4,53 @@
 \textbf{Date: 10/5/2022}
 
 \subsubsection*{Objective}
-This test aims to document the behavior of the component models of the second revision.
+This test aims to document the behavior of the component models defined in \cref{sec:reformulation-of-components}.
 
 \subsubsection*{Background}
+In the plots in \cref{sec:model-verification} the states $ M_{pjj} $ and $ M_{con} $ integrated. This indicated that the component models were not connected in an appropriate way.
+Additionally in the B matrix of the linearised system, found in \cref{eq:B}, the system also showed that the compressor speed and the condenser throttle valve opening degree did not affect the states of interest, which further indicates that the non linear model could be flawed.
+Before connecting all the components into one big new system, an intermediate step will be introduced. This is a verification of all of the individual component models.
 
-%The evaporator component "evaporatorModel" has proven to give us problems regarding its performance and outputs when compared with the HiFi simulation model provided by BITZER.
-It would be advantageous to have indications that all of the component models are working before proceeding to the collection of the components, and the evaporator has proven to be the hardest component to get acceptable results from.
 
 \subsubsection*{Test subject}
-%The test subject is the class "evaporatorModel". It consists of the equations \cref{eq:Evaporator_boundary} to\cref{eq:evap_dMvdt}.
-%Because of a suspicion of the positive feedback between the specific volume and the output pressure and that the output pressure in the Hifi simulation proved to be almost equal to the input pressure, we wanted to try to set these equal to each other and test this.
+The test subjects are the classes
+\begin{itemize}
+	\item boxModel
+	\item compressorModel
+	\item condenserModel
+	\item evaporatorModel
+	\item flashtankModel
+	\item pjjModel
+	\item valveModel
+\end{itemize}
+All the components are based on the models defined in \cref{sec:mod_comp_mod}. Some of them are modified with changed defined in \cref{sec:reformulation-of-components}.\\
+
+The following components are implemented according to \cref{sec:mod_comp_mod}.
+\begin{itemize}
+	\item boxModel
+	\item compressorModel
+	\item condenserModel
+	\item evaporatorModel
+\end{itemize}
+
+The following components are modified completely according to \cref{sec:reformulation-of-components}:
+
+\begin{itemize}
+	\item flashtankModel
+	\item pjjModel
+	\item valveModel
+\end{itemize}
+
+The aim is to test the components before more states are introduced, in order to not introduce extra complexities before a the simplest models are confirmed. This also means that the extra states in the condenser and evaporator is not tested in this test.
+
 
 \subsubsection*{Equipment used}
-%The outputs from a simulation of "eTRU\_prototype\_2\_old\_perhabs\_with\_measurements.slx" are used as inputs for the test. The imported data can be found in "HiFi\_model\_data\_for\_component\_tests\_03.mat".
-%The script used for the tests are to be found in "componentModelTesting.m". with support from testinit.m.
-%All the files can be found in the git repository under CA9Project/Modeling/ComponentSimulation with the commit hash feff043be9d98efef19ba4f0f4ad9552baca9bf1.
+The outputs from a simulation of "eTRU\_prototype\_2\_old\_perhabs\_with\_measurements.slx" are used as inputs for the test. The imported data can be found in "HiFi\_model\_data\_for\_component\_tests\_03.mat".
+The script used for the tests are to be found in "componentModelTesting.m". with support from testinit.m.
+All the files can be found in the git repository under CA9Project/Modeling/ComponentSimulation with the commit hash feff043be9d98efef19ba4f0f4ad9552baca9bf1.
 
 \subsubsection*{Test setup}
-
+The component models are compared to the HiFi simulation. This means that the measurements that are inputs to the components in the Hifi simulation model are used as inputs to the test subjects: the component models. The outputs of the test subjects are then compared with the outputs of the component models of the HiFi model.
 
 \subsubsection*{Test procedure}
 %In the evaporator model on line 158, the update of the output pressure is commented out as
