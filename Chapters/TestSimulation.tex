@@ -21,14 +21,14 @@ For this test, the ambient temperature is set to 20$^{\circ}$C, which is its ope
 
 For the test all states are initialized with the value 1. This is an arbitrary value, and merely chosen to verify that all states are driven to zero, and the observed state vector $\hat{x}$ converges to $x$. We briefly recall that in this coordinate system $x=0$ physically means $x-x_o = 0 \rightarrow x=x_o$. The control signal u is defined as $u=K\hat{x}$.\\
 
-In \cref{fig:sim_stateInput30h} a plot containing the states and inputs is seen. The simulation has run for 30 hours. In \cref{fig:sim_stateInput1h} the same plot is seen but zoomed in at 1 hour such that the behavior of the states is more easily observed. In \cref{fig:sim_stateObsState1h} the states are compared to the observed states, during the first hour of the simulation. In \cref{fig:sim_stateObsState002h} further zoom is made on the time axis to observe the fast transients in the first seconds of the simulation where the observer converges from the big starting error.
+In \cref{fig:sim_stateInput10h} a plot containing the states and inputs is seen. The simulation has run for 10 hours. In \cref{fig:sim_stateInput1h} the same plot is seen but zoomed in at 1 hour such that the behavior of the states is more easily observed. In \cref{fig:sim_stateObsState1h} the states are compared to the observed states, during the first hour of the simulation. In \cref{fig:sim_stateObsState002h} further zoom is made on the time axis to observe the fast transients in the first seconds of the simulation where the observer converges from the big starting error.
 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Graphics/fig_stateInput30h.png}
-	\caption{States and inputs plotted for 30 hours. All states settle within an hour except the box temperature which settles in about 7-8 hours}
-	\label{fig:sim_stateInput30h}
+	\includegraphics[width=0.7\textwidth]{Graphics/fig_stateInput10h.png}
+	\caption{States and inputs plotted for 10 hours. All states settle within an hour except the box temperature which settles in about 7-8 hours}
+	\label{fig:sim_stateInput10h}
 \end{figure}
 
 \begin{figure}[h!]
