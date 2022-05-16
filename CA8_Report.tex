@@ -83,6 +83,7 @@
 \usepackage{multirow}
 
 % tocless command
+\newcommand{\nocontentsline}[3]{}
 \newcommand{\tocless}[2]{\bgroup\let\addcontentsline=\nocontentsline#1{#2}\egroup} % Kommando til at ekskludere sektion fra TOC, del 2
 
 
