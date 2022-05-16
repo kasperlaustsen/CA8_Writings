@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-05-13T12:22:37.556Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="2yuft16O5uGj8akW9791" version="18.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-05-16T11:22:43.338Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="rlaiTNYnolhtAXaUFpCk" version="18.0.5" type="github">
   <diagram id="maX6PPkqGkgQO3d0mOUZ" name="New">
-    <mxGraphModel dx="1732" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
+    <mxGraphModel dx="948" dy="570" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
       <root>
         <mxCell id="a6acP2pozzWjvfzwrBKU-0" />
         <mxCell id="a6acP2pozzWjvfzwrBKU-1" parent="a6acP2pozzWjvfzwrBKU-0" />
@@ -129,7 +129,7 @@
         <mxCell id="EQVUS-7tTAIxQR2iRs7y-34" value="Pipe Joining &lt;br style=&quot;font-size: 14px&quot;&gt;Junction&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="597.5000000000005" y="70" width="150.00000000000003" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="M3D5h5YDdG_GwLnv0Bj_-5" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;\dot{m}_5&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#0000CC;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
+        <mxCell id="M3D5h5YDdG_GwLnv0Bj_-5" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;\dot{m}_5&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#000000;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
           <mxGeometry x="520.1275000000005" y="652.0000000000002" as="geometry" />
         </mxCell>
         <mxCell id="f2Dl9Xk0tZvhv3cU8BBC-0" value="Box&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;&lt;br style=&quot;font-size: 14px&quot;&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
@@ -222,7 +222,7 @@
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-19" value="" style="endArrow=classic;html=1;rounded=0;jumpStyle=arc;jumpSize=10;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="744" y="549" as="sourcePoint" />
-            <mxPoint x="560" y="589" as="targetPoint" />
+            <mxPoint x="540" y="589" as="targetPoint" />
             <Array as="points">
               <mxPoint x="574" y="549" />
               <mxPoint x="574" y="589" />
@@ -236,12 +236,14 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-26" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;p_1&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#FF0000;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
-          <mxGeometry x="539.4400000000003" y="586" as="geometry" />
+          <mxGeometry x="542.4400000000003" y="587" as="geometry">
+            <mxPoint x="-21" y="-1" as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-27" value="" style="endArrow=classic;html=1;rounded=0;jumpStyle=arc;jumpSize=10;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="524" y="590" as="sourcePoint" />
-            <mxPoint x="454" y="590" as="targetPoint" />
+            <mxPoint x="500" y="590" as="sourcePoint" />
+            <mxPoint x="450" y="590" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-28" value="" style="endArrow=classic;html=1;rounded=0;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" edge="1">
@@ -287,8 +289,8 @@
         </mxCell>
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-52" value="" style="endArrow=classic;html=1;rounded=0;jumpStyle=arc;jumpSize=10;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="593.19" y="652" as="sourcePoint" />
-            <mxPoint x="541.69" y="652" as="targetPoint" />
+            <mxPoint x="541" y="653" as="sourcePoint" />
+            <mxPoint x="591" y="653" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-54" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;h_6&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
@@ -302,7 +304,7 @@
         </mxCell>
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-56" value="" style="endArrow=classic;html=1;rounded=0;jumpStyle=arc;jumpSize=10;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="510" y="619.67" as="sourcePoint" />
+            <mxPoint x="500" y="620" as="sourcePoint" />
             <mxPoint x="430" y="500" as="targetPoint" />
             <Array as="points">
               <mxPoint x="474" y="620" />
@@ -590,6 +592,12 @@
         </mxCell>
         <mxCell id="AFrEanatvilBTN2z4nuT-19" value="&lt;span style=&quot;caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: helvetica; font-size: 14.000000953674316px; font-style: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; text-align: center; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(248, 249, 250); text-decoration: none; float: none; display: inline !important;&quot;&gt;\begin{bmatrix} T_v \end{bmatrix}&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontColor=#0000CC;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1">
           <mxGeometry x="357.5" y="369.5" width="32.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jscamIBMrqGf7EmyPo6q-0" value="" style="endArrow=classic;html=1;rounded=0;jumpStyle=arc;jumpSize=10;fontSize=14;" edge="1" parent="a6acP2pozzWjvfzwrBKU-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="653" as="sourcePoint" />
+            <mxPoint x="500" y="653" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
