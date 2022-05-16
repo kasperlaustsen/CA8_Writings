@@ -70,7 +70,8 @@
 \usepackage{xcolor}
 \hypersetup{
 	colorlinks,
-	linkcolor={red!50!black},
+	%linkcolor={red!50!black},
+	linkcolor={black},
 	citecolor={blue!50!black},
 	urlcolor={blue!80!black}
 }
@@ -382,14 +383,13 @@
 \crefdefaultlabelformat{#2\bfseries\upshape#1#3}		% These two work the same as the two above
 \creflabelformat{equation}{#2\bfseries\upshape(#1)#3}	% These two work the same as the two above
 
-
 % Make section reference bold
 \crefname{section}{\textbf{Section}}{\textbf{Sections}}
 %\Crefname{section}{\textbf{Section}}{\textbf{Sections}}
 % make figure reference bold and write out "Figure" in stead of "Fig."
 \crefname{figure}{\textbf{Figure}}{\textbf{Figures}}
 %\Crefname{figure}{\textbf{Figure}}{\textbf{Figures}}
-% Make equations references bold
+% Make equations references bold (except number)
 \crefname{equation}{\textbf{Eq.}}{\textbf{Eq.}}
 %\Crefname{equation}{\textbf{Equation}}{\textbf{Equations}}
 
@@ -537,9 +537,22 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 
 % CONCLUSION
 % ---------------------------
+\clearpage
 \newpage
 \section{Conclusion} \label{sec:concl}
+\input{Chapters/Conclusion}
 
+% CONCLUSION
+% ---------------------------
+\clearpage
+\newpage
+\section{Future Work} \label{sec:future}
+\input{Chapters/FutureWork}
+\begin{itemize}
+	\item Modeling (non-linear): More states
+	\item Modeling (non-linear): Make model work with pressure as output
+	\item Modeling (non-linear): 
+\end{itemize}
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
@@ -635,7 +648,8 @@ Email: \href{mailto:@student.aau.dk}{@student.aau.dk}}
 % footnotes above bottom floats. This can be corrected via the
 % \fnbelowfloat command of the stfloats package.
 
-
+\clearpage
+\newpage
 \bibliographystyle{ieeetran}
 %\bibliography{../../RefLib/CA7Projekt.bib}
 %\bibliography{../../RefLib/CA8_References.bib}

@@ -98,84 +98,84 @@ Using Q and R as identitity matrices of appropriate dimensions the following opt
 	\end{array}\right)
 \end{equation}
 
-\subsection{Model Predictive Control}
-Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints. This is particularly useful in this problem, since the actuators are limitied to control signals between 0 and 100.\\
-
-At every time sample the MPC controller
-\begin{enumerate}
-	\item optimizes over \textit{prediction horizon} $(H_p)$
-	\item calculates a predictive optimal control trajectory
-	\item applies the first sample in the predicted control trajectory to the process
-\end{enumerate}
-
-\medskip
-
-Consider the discrete-time system in \cref{eq:mpc_discrete_sys}. While $y(k)$ represents the measured outputs, $z(k)$ represents the controlled non-measured outputs. It is possible that $y(k) = z(k)$ in this case all controlled outputs are measured.
-
-\begin{equation} \label{eq:mpc_discrete_sys}
-	\begin{split}
-		x(k+1) 	& = Ax(k) + Bu(k) \\
-		y(k) 	& = C_yx(k) \\
-		z(k) 	& = C_zx(k)
-	\end{split}
-\end{equation}
-
-For such a system the MPC controller optimizes with respect to the quadratic cost function in \cref{eq:mpc_cost_fcn}. The first part of the cost function seeks to minimize the deviation of the controlled states $(\hat{z})$ from the reference trajectory $(r)$ over the prediction horizon where $Q(i)$ are the weights applied at each predicted sample. The second part insures integral action by minimizing change in control input $(\Delta \hat{u})$ (control moves) over the \textit{control horizon} $(H_u)$ where $R(i)$ are the weights applied to each control move into the future.
-
-\begin{equation} \label{eq:mpc_cost_fcn}
-	V(k) = \sum_{i=H_w}^{H_p}||\hat{z}(k+i|k) - r(k+i|k)||^2_{Q(i)} + \sum_{i=0}^{H_u-1}||\Delta \hat{u}(k+i|k)||^2_{R(i)}
-\end{equation}
-
-where
-
-\begin{center}
-	\begin{tabular}{l r l }
-		                   & $||x||_M$               & $= \sqrt{\left(w^TMw\right)}$         \\
-		prediction horizon & $H_p$                   & $\ge$ $H_u$ control horizon           \\
-		window horizon     & $H_p$                   & $\ge 1$                               \\
-		weights            & $Q(i), R(i)$            & $\ge 0$ (positive semi-definite)      \\
-		control move       & $\Delta \hat{u}(k+i|k)$ & $= \hat{u}(k+i|k) - \hat{u}(k+i-1|k)$
-	\end{tabular}
-\end{center}
-
-$Q(i), Q(i), H_p, H_u, H_w$ are considered the MPC tuning parameters.\\
-
-An important characteristic of MPC is the ability to include constraints. Constraints can be applied to \textit{actuator slew rate}, \textit{actuator range} and \textit{controlled variables}. These constraints need to be formulated in the correct manner as seen below:
-
-\begin{itemize}
-	\item Actuator slew rate:
-
-	\begin{equation} \label{eq:mpc_const_sr}
-		E \begin{bmatrix} \Delta U(k) \\ 1 \end{bmatrix} \le 0
-	\end{equation}
-	\begin{center} where \end{center}
-	\begin{equation*}
-		\Delta U(k) = [\Delta \hat{u}(k|k)^T \cdots \Delta \hat{u}(k+H_u-1|k)^T]^T
-	\end{equation*}
-
-
-	\item Actuator range:
-
-	\begin{equation} \label{eq:mpc_const_ar}
-		F \begin{bmatrix} U(k) \\ 1 \end{bmatrix} \le 0
-	\end{equation}
-	\begin{center} where \end{center}
-	\begin{equation*}
-		U(k) = [\hat{u}(k|k)^T \cdots \hat{u}(k+H_u-1|k)^T]^T
-	\end{equation*}
-
-	\item Controlled variable
-
-	\begin{equation} \label{eq:mpc_const_cv}
-		G \begin{bmatrix} Z(k) \\ 1 \end{bmatrix} \le 0
-	\end{equation}
-	\begin{center} where \end{center}
-	\begin{equation*}
-		Z(k) = [\hat{z}(k+H_w|k)^T \cdots \hat{z}(k+H_p|k)^T]^T
-	\end{equation*}
-\end{itemize}
-
-\noindent with E, F and G having appropriate dimensions.
+%\subsection{Model Predictive Control}
+%Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints. This is particularly useful in this problem, since the actuators are limitied to control signals between 0 and 100.\\
+%
+%At every time sample the MPC controller
+%\begin{enumerate}
+%	\item optimizes over \textit{prediction horizon} $(H_p)$
+%	\item calculates a predictive optimal control trajectory
+%	\item applies the first sample in the predicted control trajectory to the process
+%\end{enumerate}
+%
+%\medskip
+%
+%Consider the discrete-time system in \cref{eq:mpc_discrete_sys}. While $y(k)$ represents the measured outputs, $z(k)$ represents the controlled non-measured outputs. It is possible that $y(k) = z(k)$ in this case all controlled outputs are measured.
+%
+%\begin{equation} \label{eq:mpc_discrete_sys}
+%	\begin{split}
+%		x(k+1) 	& = Ax(k) + Bu(k) \\
+%		y(k) 	& = C_yx(k) \\
+%		z(k) 	& = C_zx(k)
+%	\end{split}
+%\end{equation}
+%
+%For such a system the MPC controller optimizes with respect to the quadratic cost function in \cref{eq:mpc_cost_fcn}. The first part of the cost function seeks to minimize the deviation of the controlled states $(\hat{z})$ from the reference trajectory $(r)$ over the prediction horizon where $Q(i)$ are the weights applied at each predicted sample. The second part insures integral action by minimizing change in control input $(\Delta \hat{u})$ (control moves) over the \textit{control horizon} $(H_u)$ where $R(i)$ are the weights applied to each control move into the future.
+%
+%\begin{equation} \label{eq:mpc_cost_fcn}
+%	V(k) = \sum_{i=H_w}^{H_p}||\hat{z}(k+i|k) - r(k+i|k)||^2_{Q(i)} + \sum_{i=0}^{H_u-1}||\Delta \hat{u}(k+i|k)||^2_{R(i)}
+%\end{equation}
+%
+%where
+%
+%\begin{center}
+%	\begin{tabular}{l r l }
+%		                   & $||x||_M$               & $= \sqrt{\left(w^TMw\right)}$         \\
+%		prediction horizon & $H_p$                   & $\ge$ $H_u$ control horizon           \\
+%		window horizon     & $H_p$                   & $\ge 1$                               \\
+%		weights            & $Q(i), R(i)$            & $\ge 0$ (positive semi-definite)      \\
+%		control move       & $\Delta \hat{u}(k+i|k)$ & $= \hat{u}(k+i|k) - \hat{u}(k+i-1|k)$
+%	\end{tabular}
+%\end{center}
+%
+%$Q(i), Q(i), H_p, H_u, H_w$ are considered the MPC tuning parameters.\\
+%
+%An important characteristic of MPC is the ability to include constraints. Constraints can be applied to \textit{actuator slew rate}, \textit{actuator range} and \textit{controlled variables}. These constraints need to be formulated in the correct manner as seen below:
+%
+%\begin{itemize}
+%	\item Actuator slew rate:
+%
+%	\begin{equation} \label{eq:mpc_const_sr}
+%		E \begin{bmatrix} \Delta U(k) \\ 1 \end{bmatrix} \le 0
+%	\end{equation}
+%	\begin{center} where \end{center}
+%	\begin{equation*}
+%		\Delta U(k) = [\Delta \hat{u}(k|k)^T \cdots \Delta \hat{u}(k+H_u-1|k)^T]^T
+%	\end{equation*}
+%
+%
+%	\item Actuator range:
+%
+%	\begin{equation} \label{eq:mpc_const_ar}
+%		F \begin{bmatrix} U(k) \\ 1 \end{bmatrix} \le 0
+%	\end{equation}
+%	\begin{center} where \end{center}
+%	\begin{equation*}
+%		U(k) = [\hat{u}(k|k)^T \cdots \hat{u}(k+H_u-1|k)^T]^T
+%	\end{equation*}
+%
+%	\item Controlled variable
+%
+%	\begin{equation} \label{eq:mpc_const_cv}
+%		G \begin{bmatrix} Z(k) \\ 1 \end{bmatrix} \le 0
+%	\end{equation}
+%	\begin{center} where \end{center}
+%	\begin{equation*}
+%		Z(k) = [\hat{z}(k+H_w|k)^T \cdots \hat{z}(k+H_p|k)^T]^T
+%	\end{equation*}
+%\end{itemize}
+%
+%\noindent with E, F and G having appropriate dimensions.
 
 
 
