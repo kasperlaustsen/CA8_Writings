@@ -1,10 +1,10 @@
 \subsection{Robustness Analysis}\label{sec:robustness-analysis}
 
-Model imperfections are expected when modeling complex systems and at the same time it is always of interest to make sure that the controlled systems is stable despite these model deviations. Such deviations can stem from several places: Changes in system parameters over time, changes in system environment and modeling errors are but a few ways in which the model of a physical system can deviate from reality. The concept of robustness analysis is to ensure system stability and perhaps performance of the model even including model errors. In this section nominal and robust stability of the controlled system is analyzed given perturbations in some single parameters.
+Model imperfections are to be expected when modeling complex systems and at the same time it is always of interest to make sure that the controlled systems is stable despite these model deviations. Such deviations can stem from several places. Changes in system parameters over time, changes in system environment and modeling errors are but a few ways in which the model of a physical system can deviate from reality. The concept of robustness analysis is to ensure system stability and perhaps performance of the model even including model errors. In this section nominal and robust stability of the controlled system is analyzed given perturbations in some single parameters.
 
 Previous work \cite{Borlum2016} it has been argued that it is reasonable to expect deviations in the characteristics of the transported cargo. Such characteristics could manifest itself in a change in the heat transfer coefficient between cargo and air ($U A_{ca}$) which is included in \cref{eq:box_Qca} in \cref{sec:mod_box}.\\
 
-It is thus investigated if the designed LQR controller is robustly stable given parameter perturbations in $U A_{ca}$ of $\pm 20 \%$.
+\noindent It is thus investigated if the designed LQR controller is robustly stable given parameter perturbations in $U A_{ca}$ of $\pm 20 \%$.
 
 This yields three different test scenarios:
 
@@ -16,38 +16,60 @@ This yields three different test scenarios:
 
 \smallskip
 
-In \cref{sec:ctrl} an LQR controller was formulated and, due to the \textit{separation principle}, subsequently a Luenberger observer. Stability is tested by ensuring that all eigenvalues of the full system matrix are negative or equivalently by testing for Lyapunov stability.
+\noindent In \cref{sec:ctrl} an LQR controller was formulated and, due to the \textit{separation principle}, subsequently a Luenberger observer. Stability is tested by ensuring that all eigenvalues of the full system matrix are negative or equivalently by testing for Lyapunov stability.
 
 For some system $\dot{x} = \bar{A}x$ there is stability if there exists a $P$ for some lyapunov function $V(x) = x^TPx$ such that
 
-\begin{align} \label{eq:lyapunov_stability}
+\begin{equation} \label{eq:lyapunov_stability}
+	\begin{split}
 	\bar{A}^TP+P\bar{A} &< 0 \\
 	P &> 0
-\end{align}
+	\end{split}
+\end{equation}
 
-
-where $\bar{A}$ in this case is the full system matrix as defined in \cref{eq:Abar}.
+\noindent where $\bar{A}$ in this case is the full system matrix as defined in \cref{eq:rob_Abar}. Nominal stability and robust stability is achieved if \cref{eq:lyapunov_stability} holds for the nominal system and the two perturbed systems respectively.
 
 \begin{equation} \label{eq:rob_Abar}
-	\bar{A} = 	\begin{bmatrix}
-				A & BF \\ -LC & A-BF-LC
+	\bar{A} = \begin{bmatrix}
+				A & -BK \\ LC & A-BK-LC
 				\end{bmatrix}
 \end{equation}
 
-In \cref{sec:observer-gain} the observer equations were investigated. The derivatives of the states could be written as in \cref{eq:rob_xhat} with $e = \hat
+\noindent To derive the above system matrix, the observer equations investigated in \cref{sec:observer-gain} are consulted. The derivatives of the states could be written as in \cref{eq:rob_xhatdot1} with $e = x - \hat{x}$
 
-\begin{equation} \label{eq:rob_xhat}
-	\dot{\hat{x}} &= A\hat{x} + Bu + LCe)
+\begin{equation} \label{eq:rob_xhatdot1}
+	\dot{\hat{x}} = A\hat{x} + Bu + LCe
 \end{equation}
 
+\noindent With $u = -K\hat{x}$, \cref{eq:rob_xhatdot1} can be expanded as such:
 
-This is derived by defining the time derivatives of the states and observed states given the input defined from the
+\begin{equation} \label{eq:rob_xhatdot2}
+	\dot{\hat{x}} = A\hat{x} - BK\hat{x} + LC(x - \hat{x}) =  LCx + (A - BK - LC)\hat{x}
+\end{equation}
 
-\begin{align}
-	\dot{x} &= A\hat{x} + Bu\\
-	\dot{\hat{x}} &= A\hat{x} + Bu + L(y-C\hat{x})) \\
-	u & = Kx
-\end{align}
+\noindent Likewise the time derivative of the states can be expressed:
+
+\begin{equation} \label{eq:rob_xdot}
+	\dot{x} = Ax - BK\hat{x}
+\end{equation}
+
+\noindent Stacking the state and observed state time derivatives yields:
+
+\begin{equation}
+	\begin{bmatrix}
+		\dot{x} \\ \dot{\hat{x}}
+	\end{bmatrix} = \bar{A}\
+	\begin{bmatrix}
+	x \\ \hat{x}
+	\end{bmatrix} = \
+	\begin{bmatrix}
+		A & -BK \\ LC & A-BK-LC
+	\end{bmatrix} \
+	\begin{bmatrix}
+		x \\ \hat{x}
+	\end{bmatrix}
+\end{equation}
+
 
 %If the block diagram of the full system with observer and controller is analyzed a full system description can easily be
 
