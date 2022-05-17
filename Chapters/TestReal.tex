@@ -1,18 +1,18 @@
 \subsection{Test framework}
-When the HiFi simulation model is initialized, the system takes approximately 1.4 hours (5000 seconds) until it converges to steady state. Since the optimal controller is not expected to work well when operating far away from the linearisation point, we allow the existing PID control structure to handle the initial transient behavior. 
-A switch is inserted in the simulation that takes two inputs: the vector of the PID chosen control inputs and the vector of the LQR controller input. The PID inputs are fed to the system until the time reaches 1.1 hours (4000 seconds). At this point, the switch selects the LQR control inputs to be fed to the system. Until the switching time, the control model states are forced to stay at 0. \\
+When the HiFi simulation model is initialized, the system takes approximately 1.4 hours (5000 seconds) until it converges to steady state. Since the optimal controller is not expected to work well when operating far away from the linearisation point, we allow the existing PID control structure to handle the initial transient behavior.
+A switch is inserted in the simulation which changes the inputs to the Hi-Fi simulation from the PID control structure to our LQR controller at some specified time. It takes two inputs: the vector of the PID chosen control inputs and the vector of the LQR controller input. The PID inputs are fed to the system until the time reaches 1.1 hours (4000 seconds). At this point, the switch selects the LQR control inputs to be fed to the system. Until the switching time, the control model states are forced to stay at 0. \\
 
-\subsection{Initial LQR control}
+\subsection{Initial LQR controller}
+\textbf{Note: This section is supposed to hold simulation results of an initial untuned LQR controller (perhaps R = eye() and Q = eye()). It has yet to be made though.}
 
 
-
-\subsection{Well-tuned LQR control}
-The LQR controller is set to start regulating the system at time $t=1.1 hours$, at which point it will drive the states to 0. The disturbance (ambient temperature) is held constant at 20$^{\circ}$C. This is the operating point for the disturbance, and will thus not affect the system. The controlled outputs are seen in \cref{fig:LQR_wellTuned_noDist}.\\
+\subsection{Tuned LQR controller: Constant disturbance}
+The LQR controller is set to start regulating the system at time $t=1.1$ hours, at which point it will attempt drive the states to 0. The disturbance (ambient temperature) is held constant at 20$^{\circ}$C. This is the operating point for the disturbance, and will thus not affect the system. The controlled outputs are seen in \cref{fig:LQR_wellTuned_noDist}.\\
 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_noDist.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQR_wellTuned_noDist.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_noDist}
 \end{figure}
@@ -31,12 +31,9 @@ The error is so numerically small that most real temperature sensors would be un
 
 
 
-
-
-
 \newpage
-\subsection{Sine disturbance performance}
-We will now investigate the controller performance when a sinusoidal disturbance is applied to the system. As before, the LQR controller is set to start regulating the system at time $t=1.1 hours$. \\
+\subsection{Tuned LQR controller: Sine disturbance}
+We will now investigate the controller performance when a sinusoidal disturbance is applied to the system. As before, the LQR controller is set to start regulating the system at time $t=1.1$ hours. \\
 
 
 The disturbance (ambient temperature) is a sine wave with an amplitude of 5$^{\circ}$C and a period of 10 minuttes, combined with a constant value of 20$^{\circ}$C. The controlled outputs are seen in \cref{fig:LQR_wellTuned_sineDist}.\\
@@ -44,7 +41,7 @@ The disturbance (ambient temperature) is a sine wave with an amplitude of 5$^{\c
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_sineDist.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQR_wellTuned_sineDist.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_sineDist}
 \end{figure}
@@ -54,7 +51,7 @@ The disturbance (ambient temperature) is a sine wave with an amplitude of 5$^{\c
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_sineDist_zoom.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQR_wellTuned_sineDist_zoom.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refrigerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_sineDist_zoom}
 \end{figure}
@@ -65,7 +62,7 @@ The oscillations on the cargo hold temperature are not visibly different before 
 
 
 \newpage
-\subsection{Step disturbance performance}
+\subsection{Tuned LQR controller: Step disturbance}
 Lastly the control systems performance in the presence of a constant disturbance is investigated. Initially the ambient temperature is set to 20$^{\circ}$. At time $t=0.3 hours$ a 5$^{\circ}$ step in the disturbance is introduced. The optimal controller takes action at time $t=1.1 hours$. The controlled outputs are seen in \cref{fig:LQR_wellTuned_5stepDist}.\\
 
 \begin{figure}[h!]
