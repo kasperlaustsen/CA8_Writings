@@ -1,9 +1,93 @@
+\subsection{Test framework}
+When the HiFi simulation model is initialized, the system takes approximately 1.4 hours (5000 seconds) until it converges to steady state. Since the optimal controller is not expected to work well when operating far away from the linearisation point, we allow the existing PID control structure to handle the initial transient behavior. 
+A switch is inserted in the simulation that takes two inputs: the vector of the PID chosen control inputs and the vector of the LQR controller input. The PID inputs are fed to the system until the time reaches 1.1 hours (4000 seconds). At this point, the switch selects the LQR control inputs to be fed to the system. Until the switching time, the control model states are forced to stay at 0. \\
+
 \subsection{Initial LQR control}
 
+
+
 \subsection{Well-tuned LQR control}
+The LQR controller is set to start regulating the system at time $t=1.1 hours$, at which point it will drive the states to 0. The disturbance (ambient temperature) is held constant at 20$^{\circ}$C. This is the operating point for the disturbance, and will thus not affect the system. The controlled outputs are seen in \cref{fig:LQR_wellTuned_noDist}.\\
 
-\subsection{Step disturbance performance}
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_noDist.png}
+	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
+	\label{fig:LQR_wellTuned_noDist}
+\end{figure}
+
+\cref{fig:LQR_wellTuned_noDist_zoom} shows a zoomed in version of \cref{fig:LQR_wellTuned_noDist}, where the steady state error of the two outputs is seen.\\
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_noDist_zoom.png}
+	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
+	\label{fig:LQR_wellTuned_noDist_zoom}
+\end{figure}
+
+The error is so numerically small that most real temperature sensors would be unable to detect it. The controller is thus shown to be able to drive the system to zero, when no disturbance is present.
+
+
+
+
+
+
+\newpage
 \subsection{Sine disturbance performance}
+We will now investigate the controller performance when a sinusoidal disturbance is applied to the system. As before, the LQR controller is set to start regulating the system at time $t=1.1 hours$. \\
 
-\subsection{Energy consumption}
+
+The disturbance (ambient temperature) is a sine wave with an amplitude of 5$^{\circ}$C and a period of 10 minuttes, combined with a constant value of 20$^{\circ}$C. The controlled outputs are seen in \cref{fig:LQR_wellTuned_sineDist}.\\
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_sineDist.png}
+	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
+	\label{fig:LQR_wellTuned_sineDist}
+\end{figure}
+
+\cref{fig:LQR_wellTuned_sineDist_zoom} shows a zoomed in version of \cref{fig:LQR_wellTuned_sineDist}, where the steady state behavior of the two outputs is seen.\\
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_sineDist_zoom.png}
+	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refrigerant temperature. $T_0$ = -5.55$^{\circ}$C}
+	\label{fig:LQR_wellTuned_sineDist_zoom}
+\end{figure}
+
+A few interesting things are revealed in these plots. Firstly, before the switch happens, the amplitude of the oscillations of $T_v$ are considerable lower than after the switch. This implies that the optimal control strategy is less keen to correct for errors on that particular state. It is likely that the main cause of this phenomenon, is the control model it self. During linearisation and Kalman decomposition, information about the unused inputs' ($\omega$, $U_{fan_1}$ and $\theta_2$) effect on the states was lost. It is likely that a controller, that is able to regulate these inputs would perform better, ie. minimize the oscillations.\\
+
+The oscillations on the cargo hold temperature are not visibly different before and after the switch. The amplitude of the oscillation is 0.18$^{\circ}$C. Thus the control strategy is performing well at minimizing an oscillating ambient temperatures effect on the air temperature inside the trailer. This is hardly surprising as the natural flow of heat in and out of the trailer through the walls takes a large amount of time. \\
+
+
+\newpage
+\subsection{Step disturbance performance}
+Lastly the control systems performance in the presence of a constant disturbance is investigated. Initially the ambient temperature is set to 20$^{\circ}$. At time $t=0.3 hours$ a 5$^{\circ}$ step in the disturbance is introduced. The optimal controller takes action at time $t=1.1 hours$. The controlled outputs are seen in \cref{fig:LQR_wellTuned_5stepDist}.\\
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_5stepDist.png}
+	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
+	\label{fig:LQR_wellTuned_5stepDist}
+\end{figure}
+
+\cref{fig:LQR_wellTuned_5stepDist_zoom} shows a zoomed in version of \cref{fig:LQR_wellTuned_5stepDist}, where the steady state error of the two outputs is seen.\\
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_5stepDist_zoom.png}
+	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refrigerant temperature. $T_0$ = -5.55$^{\circ}$C}
+	\label{fig:LQR_wellTuned_5stepDist_zoom}
+\end{figure}
+
+It is seen that air temperature converges to 1.25$^{\circ}$C above the operating point, which means $T_air = -3^{\circ}C$. The superheat drops to 2.4$^{\circ}$C below the operating point, which means there is 3.6$^{\circ}$C superheat.\\
+
+The increase in air temperature is large enough to be considered a problem for transportation of temperature critical goods, which is of course the intended purpose of the reefer trailer. The cause is likely, as was the case for the sine disturbance, that the controller is unable to change the compressor speed. The compressor speed is critical for increasing the refrigerant flow through the cycle, and is thus highly correlated with the cooling capacity of the system. \\
+
+The drop in superheat is not as critical a problem as the air temperature. Ideally the controller would be able to keep it at the operating point, and in that context it is not desirable behavior. Technically, a drop in superheat increases the evaporation efficiency, and as long as there is a positive superheat no liquid will flow into the compressor. In summary, while the drop in superheat might increase efficiency without damaging the compressor, it would be a far more comfortable if the controller was able to maintain the superheat at a fixed value.
+
+%\subsection{Energy consumption}
