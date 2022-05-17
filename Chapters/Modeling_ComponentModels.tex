@@ -776,6 +776,40 @@ where\\
 %	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_v(t)}{dt}  = \dfrac{Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_{v}(t)\bigr) - \dfrac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)}{M_{v}(t) \mathcal{J}(T_v(t)) } } \label{eq:Evaporator_EnergyBalance8}
 %\end{equation}
 
+Finally the temperature of the refridgerant vapor leaving the evaporator $T_v$ must be defined. This is crucial as the difference between this temperature and the bubblepoint temperature defines the superheat. In previous work \cite{Sorensen2013} it is defined algebraically as a table lookup of the output enthalpy $h_{out}$ and the output pressure $p_{out}$. However for this project it will be modelled dynamically, to allow control of the state:\\
+
+\begin{equation}\label{eq:tv_initial}
+	\frac{dT_{v}}{dt} = (\bar{T_v} - T_v) * Ts
+\end{equation}
+
+where\\
+
+\begin{center}
+	\begin{tabular}{l p{10cm} l}
+		$T_v $       	 & Previous vapor refridgerant temperature                                  & [\si{K}] 						\\
+		$\bar{T_v} $     & Current vapor refridgerant temperature                                   & [\si{K}]                  \\
+		$T_s$            & Sample time                                    						    & [\si{s}]                  \\
+	\end{tabular}
+\end{center}
+
+The current vapor refridgerant temperature is defined by a enthalpy-pressure lookup table:
+
+\begin{equation}
+	\bar{T_v} = THP(p_{out}, h_{out})
+\end{equation}
+
+This lookup table is linearised around the $h_{out}$ and $p_{out}$ operating points from the Hi-Fi model. It is linearised with respect to the output enthalpy, which was found to vary the most in \cref{app:tj_1}. When linearised, the value $\bar{T_v}$ is defined as:
+
+\begin{equation}
+	\bar{T_v} = A_{T_v} H_{out} + B_{T_v}
+\end{equation}
+
+Inserting this into \cref{eq:tv_initial} yields
+
+\begin{equation} \label{eq:evap_dTv}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_v}{dt}   = (A_{T_v} H_{out} + B_{T_v} - T_v) * Ts  }
+\end{equation}
+
 The evaporator model is now defined, and the next component model can such be investigated.
 
 
