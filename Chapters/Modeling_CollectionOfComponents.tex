@@ -183,8 +183,10 @@ The non-zero offset of the derivative of $ M_v $ was discovered to be a function
 	\caption{Plot of states $ M_v $, $ M_{lv} $ and $ \dot{m}_{air} $. Derivative of $ M_v $ is subtracted with a function of compressor speed $ \omega $. All states converge to constant values. Note the two y-axes.}
 	\label{fig:non_lin_sim_Mass}
 \end{figure}
+\newpage
 Further investegations of the phenomenon were performed but did not reveal the origin of the error. No further actions were thus taken.\\
 After correcting the numerical error, all of the states in \cref{fig:non_lin_sim_Mass_Mvfucked} converges to a constant value and is thus considered to be stable.\\
+
 
 Lastly in \cref{fig:non_lin_sim_Temperature}, all of the temperature states are plotted. They all converge to a constant value, indicating stable behavior.
 \begin{figure}[h]
@@ -193,7 +195,7 @@ Lastly in \cref{fig:non_lin_sim_Temperature}, all of the temperature states are 
 	\caption{Plot of all the temperature states. The states are collected into 3 subplots, where the first coverge faster than the second, and the second faster than the third. All the temperature states converge to a constant value}
 	\label{fig:non_lin_sim_Temperature}
 \end{figure}
-\clearpage
+\newpage
 Now that all of the states has been investigated, a preliminary conclusion on whether the non-linear state space model in \cref{eq:f_noSub} can be verified to be stable remains to be drawn. Based on the states in \cref{fig:non_lin_sim_faulty_Mass} it could be concluded that the model is not stable and accurate enough. However, as mentioned earlier, the two involved states are not affecting the rest of the model. Furthermore, as the states $ M_{pjj} $ and $ M_{con} $ are not output and thereby wished to be controlled, it is decided to just omit these two states from our model.
 This leaves the model with 2 fewer states, which can be considered favorable since the states does not provide extra information on the controlled outputs. The rest of the states converge to constant values, indicating stability for the model. This allows for the next step in the process, which is linearisation.
 

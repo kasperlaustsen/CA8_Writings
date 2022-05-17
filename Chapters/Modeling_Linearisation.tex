@@ -6,8 +6,9 @@
 
 
 
-The model derived in \cref{sec:mod_collec} is non-linear and thus not directly applicable for the control strategies intended for this project. Therefore a linearisation must be performed, where a linear approximation of the model is found at a given operating point. This will remove all non-linear dynamics of the model, facilitating the intended control strategies. It does however decrease model accuracy, especially when the system states are not near their respective operating points. All these issues will be touched upon in this section, as the linearisation is discussed.\\
+The model derived in \cref{sec:mod_collec} is non-linear and thus not directly applicable for the control strategy intended for this project. Therefore a linearisation must be performed, where a linear approximation of the model is found at a given operating point. The linear model will approximate the non linear model near the operaing point and thus facilitating the intended linear control strategy. The accuracy of the model is highly dependent on the deviation from the operating points. All these issues will be touched upon in this section, as the linearisation is discussed.
 
+\subsubsection{A Linear State-Space Representation}
 A continuous linear state space system is typically defined as seen in \cref{eq:state_space}. The state derivatives are defined as a linear combination of states and inputs, while the outputs are a linear combination of the states. Having a model on such a state space form is a necessary for conventional state-space controller design.\\
 
 \begin{equation} \label{eq:state_space}
@@ -32,9 +33,10 @@ where
 	\end{tabular}
 \end{center}
 
-To transform the non-linear model in \cref{eq:f_noSub} to this form, a first order Taylor expansion is used. Performing this method of linearisation will directly output the \textit{A}, \textit{B}, \textit{$B_d$} and \textit{C} matrices of the linear state space representation.\\
+To transform the non-linear model in \cref{eq:f_noSub} to this form, a first order Taylor expansion is used. Performing this method of linearisation will directly output the \textit{A}, \textit{B}, \textit{$B_d$} and \textit{C} matrices of the linear state space representation.
 
-Consider some system $\dot{x} = f(x,u,d)$ with x a vector of system states, u a vector of controlled inputs, and d a vector of disturbances. Such a system can be approximated with a first order Taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
+\subsubsection{Linearisation}
+Consider some non-linear system $\dot{x} = f(x,u,d)$ with $ x $ a vector of system states,$  u $ a vector of controlled inputs, and $ d $ a vector of disturbances. Such a system can be approximated with a first order Taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
 
 \begin{equation} \label{eq:taylor}
 	\dot{x}   \approx   f(x_o, u_o, d_o)   +
@@ -43,7 +45,18 @@ Consider some system $\dot{x} = f(x,u,d)$ with x a vector of system states, u a 
 	\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} \cdot (d-d_0)
 \end{equation}
 
-The linearisation is done at an equilibrium point such that $f(x_o, u_o, d_o) = 0$ in \cref{eq:taylor}. The partial derivatives can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd being the number of states, inputs and disturbances respectively.
+The linearisation is done at an equilibrium point such that $f(x_o, u_o, d_o) = 0$ in \cref{eq:taylor}. The equilibrium point will now be investigated in greater detail following the Hartman-Grobmann theorem.\\
+
+\textbf{The Hartman-Grobman theorem}\\
+Before a Taylor expansion can be performed on the non-linear model \cref{eq:f_noSub}, a linearisation point must be chosen. The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
+A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies that opposite: the state will not converge to a fixed point as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
+
+While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a simple and appealing takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearisation should be performed at another equilibrium.
+
+
+As discussed, linearising at an equilibrium is nessesary, as it removes the offset term from the Taylor expansion. Ideally this point should be a hyperbolic equilibrium. Furthermore, it is natural to linearise at a point where the system is expected to be operating during normal use. \\
+
+The investigation of the operating point now enables us advance further with the linearisation. The partial derivatives of \cref{eq:taylor} can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd being the number of states, inputs and disturbances respectively.
 
 \begin{equation} \label{eq:jacobians}
 	\dfrac{\partial f}{\partial x} =
@@ -66,7 +79,7 @@ The linearisation is done at an equilibrium point such that $f(x_o, u_o, d_o) = 
 		\end{bmatrix}
 \end{equation}
 
-When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ A $, $ B $ and $ B_d  $ of the linear system:
+When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ A $, $ B $ and $ B_d  $ of the linearised system:
 
 \begin{equation}
 	\left. \dfrac{\partial f}{\partial x} \right |_{x_o, u_o, d_o} = A, \;\;\;\;\;\;\;\;\;\;
@@ -85,22 +98,12 @@ The linear model can then be expressed as such:
 
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in \cref{sec:ctrl}.
 
+\subsubsection{Linearised Model}
+Finding an operating point for a system can be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled.\\
 
-%\subsubsection{The Hartman-Grobman theorem} \label{sec:hartman}
+Linearising the non-linear system without the faulty states $ M_{pjj} $ $ M_{con} $ as described in \cref{sec:model-verification} yields the following system matrices with 10 states:
 
-Before a Taylor expansion can be performed on the non-linear model \cref{eq:f_noSub}, a linearisation point must be chosen. The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
-A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies that opposite: the state will not converge to a fixed point as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
-
-While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a simple and appealing takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearization should be performed at another equilibrium.
-
-
-As discussed, linearising at an equilibrium is nessesary, as it removes the offset term from the Taylor expansion. Ideally this point should be a hyperbolic equilibrium. Furthermore, it is natural to linearise at a point where the system is expected to be operating during normal use. \\
-
-The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method ensures that the linearisation point is an equilibrium as all variables of the simulation have settled.\\
-
-
-Following the linearisation the following system, input and output matrices are obtained:
-
+\todo[inline]{insert new A, B and C}
 \begin{equation}  \label{eq:A_full}
 	A =
 	\left(\begin{array}{ccccccccccc}
@@ -144,14 +147,14 @@ Following the linearisation the following system, input and output matrices are 
 	\end{array}\right)
 \end{equation}
 
-These matrices constitute the linear state space model of the system. The following section will discuss how the model complexity is reduced, allowing for easier controller synthesis. To more easily keep track of the model changes a table is provided for each model iteration. The first of such a table is seen in \cref{tab:model_full}. [A$|$B] Denotes controllability matrix and [A$|$C] denotes observability matrix.
+These matrices constitute the linear state space model of the system. To more easily keep track of the model changes a table is provided for each model iteration. The first of such a table is seen in \cref{tab:model_full}. [A$|$B] Denotes controllability matrix and [A$|$C] denotes observability matrix.
 
 %	Rank of \text{[A$|$C]}
 
 
 %\centering{\textbf{Model status}}\\
 
-
+\todo{Edit this table: do we need it anymore?}
 \begin{table}[h]
 	\centering
 	\caption{Model status: Full model}
@@ -169,64 +172,65 @@ These matrices constitute the linear state space model of the system. The follow
 	\end{tabular}
 \end{table}
 
-\subsubsection{Model Simplifications}
-From observing the linearised system matrix \cref{eq:A_full} it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states. They are therefore omitted leaving us with smaller dimensions. In practice this means removing the first two rows and columns of A, rows of B and columns of C, yielding \cref{eq:A} \cref{eq:B} \cref{eq:C}
+%\subsubsection{Model Simplifications}
+%From observing the linearised system matrix \cref{eq:A_full} it is apparent that the first two states ($M_{PJJ}$ and $M_{Con}$) do not affect any states. They are therefore omitted leaving us with smaller dimensions. In practice this means removing the first two rows and columns of A, rows of B and columns of C, yielding \cref{eq:A} \cref{eq:B} \cref{eq:C}
+%
+%\begin{equation}  \label{eq:A}
+%	A = \left(\begin{array}{ccccccccc}
+%		-0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+%		0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+%		0 & 0.6451 & -0.4720 & 0.1702 & -1.1899 & 0 & 0 & 0 & 0\\
+%		0 & -0.3474 & 0.0068 & -0.2680 & -0.3600 & 0 & 0.0953 & 0 & 0\\
+%		0 & 0 & -0.0060 & 0 & -0.0250 & 0 & 0 & 0 & 0\\
+%		0 & 0 & 0.0060 & 0 & 0.0250 & 0 & 0 & 0 & 0\\
+%		0 & -0.2624 & 0.6293 & 0 & 0 & 0 & -2.4729 & 0.0228 & 1.8200\\
+%		0 & 0 & 0 & 0 & 0 & 0 & \text{5.6000e-05} & -\text{1.1200e-04} & 0\\
+%		0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045
+%	\end{array}\right)
+%\end{equation}
+%
+%\bigskip
+%
+%\begin{equation}  \label{eq:B}
+%	B = \left(\begin{array}{ccccc}
+%		0 & 0 & 0 & -0.0101 & 0\\
+%		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
+%		0 & 0 & 0 & 0 & 0\\
+%		0 & 0 & 0 & 0 & \text{8.3101e-04}\\
+%		0 & \text{5.0703e-04} & 0 & 0 & 0\\
+%		\text{5.0000e-07} & 0 & 0 & 0 & 0\\
+%		0 & 0 & 0 & 0 & 0.0055\\
+%		0 & 0 & 0 & 0 & 0\\
+%		0 & 0 & 0 & 0 & 0
+%	\end{array}\right)
+%\end{equation}
+%
+%\medskip
+%
+%\begin{equation}  \label{eq:C}
+%	C =\left(\begin{array}{ccccccccc}
+%		0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
+%	\end{array}\right)
+%\end{equation}
+%
+%
+%\begin{table}[h]
+%	\centering
+%	\caption{Model status: Two first states removed}
+%	\begin{tabular}{ll}
+%		\toprule
+%		\textbf{Linearity status}          & Non-linear   \\ \toprule
+%		\textbf{Number of states}          & 9           \\
+%		\textbf{Number of inputs}          & 5            \\
+%		\textbf{Number of outputs}         & 1            \\ \toprule
+%		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
+%		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
+%		\textbf{Nominal stability}               & \text{$\lambda_i \leq 0, i\in )$} \\
+%		\textbf{A matrix condition number} & 10           \\ \toprule
+%	\end{tabular}
+%\end{table}
 
-\begin{equation}  \label{eq:A}
-	A = \left(\begin{array}{ccccccccc}
-		-0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
-		0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
-		0 & 0.6451 & -0.4720 & 0.1702 & -1.1899 & 0 & 0 & 0 & 0\\
-		0 & -0.3474 & 0.0068 & -0.2680 & -0.3600 & 0 & 0.0953 & 0 & 0\\
-		0 & 0 & -0.0060 & 0 & -0.0250 & 0 & 0 & 0 & 0\\
-		0 & 0 & 0.0060 & 0 & 0.0250 & 0 & 0 & 0 & 0\\
-		0 & -0.2624 & 0.6293 & 0 & 0 & 0 & -2.4729 & 0.0228 & 1.8200\\
-		0 & 0 & 0 & 0 & 0 & 0 & \text{5.6000e-05} & -\text{1.1200e-04} & 0\\
-		0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045
-	\end{array}\right)
-\end{equation}
-
-\bigskip
-
-\begin{equation}  \label{eq:B}
-	B = \left(\begin{array}{ccccc}
-		0 & 0 & 0 & -0.0101 & 0\\
-		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
-		0 & 0 & 0 & 0 & 0\\
-		0 & 0 & 0 & 0 & \text{8.3101e-04}\\
-		0 & \text{5.0703e-04} & 0 & 0 & 0\\
-		\text{5.0000e-07} & 0 & 0 & 0 & 0\\
-		0 & 0 & 0 & 0 & 0.0055\\
-		0 & 0 & 0 & 0 & 0\\
-		0 & 0 & 0 & 0 & 0
-	\end{array}\right)
-\end{equation}
-
-\medskip
-
-\begin{equation}  \label{eq:C}
-	C =\left(\begin{array}{ccccccccc}
-		0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
-	\end{array}\right)
-\end{equation}
-
-
-\begin{table}[h]
-	\centering
-	\caption{Model status: Two first states removed}
-	\begin{tabular}{ll}
-		\toprule
-		\textbf{Linearity status}          & Non-linear   \\ \toprule
-		\textbf{Number of states}          & 9           \\
-		\textbf{Number of inputs}          & 5            \\
-		\textbf{Number of outputs}         & 1            \\ \toprule
-		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
-		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
-		\textbf{Nominal stability}               & \text{$\lambda_i \leq 0, i\in )$} \\
-		\textbf{A matrix condition number} & 10           \\ \toprule
-	\end{tabular}
-\end{table}
-
+The obtained linear model can now be used to investigate more details about the system, namely the controllability and observability of the system.
 
 \subsubsection{Controllability and observability}
 When evaluating a state space system, it is highly relevant to investigate whether the system is controllable and observable. \\
