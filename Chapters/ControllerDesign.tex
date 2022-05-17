@@ -2,6 +2,47 @@ This chapter contains the controller design for the refrigeration system model d
 
 Two optimal control strategies are pursued for this MIMO problem. Firstly, the Linear Quadratic Regulator will be implemented, followed by the more complex and customizable Model Predictive Control algorithm. Both controllers will be tested and benchmarked against each other, while also comparing them to the coupled PID control setup currently implemented at BITZER.
 
+Before the controller can be designed, we will discuss the observer structure for the control model.
+
+\subsection{Observer Gain}\label{sec:observer-gain}
+As stated previously, the control model is to be used as an observer for the actual system. By measuring the inputs and outputs the control model will produce an estimate of the states. These observed states will be used for feedback control. \\
+
+The observer structure used in this project is seen in \cref{fig:luenberger}. The difference in the plant and model outputs are multiplied by a observer gain L, and added to the observed state derivatives. This is known as the Luenberger observer. The error $e$ is defined as
+\begin{equation} \label{eq:error}
+	e = x-\hat{x}
+\end{equation}
+
+subject to the dynamics
+\begin{equation}
+	\dot{e} = \dot{x}-\dot{\hat{x}}
+\end{equation}
+
+$\dot{x}$ and $\dot{\hat{x}}$ can be written as
+
+\begin{equation}
+	\dot{x} = Ax + Bu
+\end{equation}
+
+\begin{equation}
+	\dot{\hat{x}} = A\hat{x} + LCe + Bu
+\end{equation}
+
+Substituting these into \cref{eq:error} yields
+
+\begin{equation}
+	\dot{e} = Ax + Bu - ( A\hat{x} + LCe  + Bu)
+\end{equation}
+
+\begin{equation}
+	\dot{e} = Ae - LCe
+\end{equation}
+
+\begin{equation} \label{eq:obs_error_dot}
+	\dot{e} = (A-LC)e
+\end{equation}
+
+This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ 5-10 times larger than the eigenvalues of $A-BK$. This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.
+
 \subsection{Linear Quadratic Regulator}
 The first control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referered to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the system in \cref{eq:lqr_sys} with $x$ representing the system states, $u$ the control inputs and $y$ the measured outputs.\\
 
@@ -60,29 +101,32 @@ While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it 
 
 LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a guaranteed 6dB gain- and $60^\circ$ phase margin \cite{Doyle}.
 
-\subsubsection{Integral action}
-In most control problems it is the objective to keep an output at a reference value. While there are many methods of achiving this, the most commonly used are reference scaling and integral action. Reference scaling involves inserting a gain in the forward path of the reference signal. The value of the gain is the reciprocal of the system DC gain, resulting in the output settling at the value of the reference. This method requires accurate knowledge of the system to calculate the DC gain, and is thus very sensitive to variations. Integral action is far more robust. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
+\subsection{Observer Design}
+\todo{Write about Observer from kalman decomposition}
 
-\begin{equation}
-	\tilde{x} = \begin{bmatrix}
-		x \\
-		x_i
-	\end{bmatrix}
-\end{equation}
-
-where
-
-\begin{equation}
-	x_i = \int_{0}^{t}(r-y)dt
-\end{equation}
-
-The method of introducing an integral state poses a conflicting objective for the LQR algorithm, as it will attempt to set \textit{all} states equal to zero. Let us recall that y is a linear combination of the states: $y = Cx$. Since $x$ is already being driven to zero, it is only sensible to drive $y=r$ if $r=0$.\\
-
-
-
-Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. This means if the system is internally stable, it will settle at $x=0 \rightarrow y=r$. At this point the control inputs are also zero, but since these are in fact $u-u_o$, it means the operating point control signal is fed to the plant. \\
-
-Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task.
+%\subsubsection{Integral action}
+%In most control problems it is the objective to keep an output at a reference value. While there are many methods of achiving this, the most commonly used are reference scaling and integral action. Reference scaling involves inserting a gain in the forward path of the reference signal. The value of the gain is the reciprocal of the system DC gain, resulting in the output settling at the value of the reference. This method requires accurate knowledge of the system to calculate the DC gain, and is thus very sensitive to variations. Integral action is far more robust. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
+%
+%\begin{equation}
+%	\tilde{x} = \begin{bmatrix}
+%		x \\
+%		x_i
+%	\end{bmatrix}
+%\end{equation}
+%
+%where
+%
+%\begin{equation}
+%	x_i = \int_{0}^{t}(r-y)dt
+%\end{equation}
+%
+%The method of introducing an integral state poses a conflicting objective for the LQR algorithm, as it will attempt to set \textit{all} states equal to zero. Let us recall that y is a linear combination of the states: $y = Cx$. Since $x$ is already being driven to zero, it is only sensible to drive $y=r$ if $r=0$.\\
+%
+%
+%
+%Instead one must perform a state transformation to a coordinate system, where $x=0$ satisfies $y=r$. Here, we again reap the benefits of the linearisation performed when obtaining the system model. In this linearisation the origin of the state space was moved from 0 to an operating point. This means if the system is internally stable, it will settle at $x=0 \rightarrow y=r$. At this point the control inputs are also zero, but since these are in fact $u-u_o$, it means the operating point control signal is fed to the plant. \\
+%
+%Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task.
 
 \subsubsection{LQR controller gain}
 
@@ -97,6 +141,8 @@ Using Q and R as identitity matrices of appropriate dimensions the following opt
 		0.0197 & 0.0036 & 0.0028 & -0.1416 & 0.0014 & 0.0192 & 0.0836
 	\end{array}\right)
 \end{equation}
+
+
 
 %\subsection{Model Predictive Control}
 %Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints. This is particularly useful in this problem, since the actuators are limitied to control signals between 0 and 100.\\
