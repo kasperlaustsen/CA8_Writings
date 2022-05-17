@@ -779,7 +779,7 @@ where\\
 Finally the temperature of the refridgerant vapor leaving the evaporator $T_v$ must be defined. This is crucial as the difference between this temperature and the bubblepoint temperature defines the superheat. In previous work \cite{Sorensen2013} it is defined algebraically as a table lookup of the output enthalpy $h_{out}$ and the output pressure $p_{out}$. However for this project it will be modelled dynamically, to allow control of the state:\\
 
 \begin{equation}\label{eq:tv_initial}
-	\frac{dT_{v}}{dt} = (\bar{T_v} - T_v) * Ts
+	\frac{dT_{v}}{dt} = (\bar{T_v} - T_v) \cdot Ts
 \end{equation}
 
 where\\
