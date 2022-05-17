@@ -56,14 +56,14 @@ The disturbance (ambient temperature) is a sine wave with an amplitude of 5$^{\c
 	\label{fig:LQR_wellTuned_sineDist_zoom}
 \end{figure}
 
-A few interesting things are revealed in these plots. Firstly, before the switch happens, the amplitude of the oscillations of $T_v$ are considerable lower than after the switch. This implies that the optimal control strategy is less keen to correct for errors on that particular state. It is likely that the main cause of this phenomenon, is the control model it self. During linearisation and Kalman decomposition, information about the unused inputs' ($\omega$, $U_{fan_1}$ and $\theta_2$) effect on the states was lost. It is likely that a controller, that is able to regulate these inputs would perform better, ie. minimize the oscillations.\\
+A few interesting things are revealed in these plots. Firstly, before the switch happens, the amplitude of the oscillations of $T_v$ are considerably lower than after the switch. This implies that the optimal control strategy is less keen to correct for errors on that particular state. It is likely that the main cause of this phenomenon, is the control model itself. During linearisation and Kalman decomposition, information about the unused inputs' ($\omega$, $U_{fan_1}$ and $\theta_2$) effect on the states was lost. It is likely that a controller, that is able to regulate these inputs would perform better, i.e. minimize the oscillations.\\
 
 The oscillations on the cargo hold temperature are not visibly different before and after the switch. The amplitude of the oscillation is 0.18$^{\circ}$C. Thus the control strategy is performing well at minimizing an oscillating ambient temperatures effect on the air temperature inside the trailer. This is hardly surprising as the natural flow of heat in and out of the trailer through the walls takes a large amount of time. \\
 
 
 \newpage
 \subsection{Tuned LQR controller: Step disturbance}
-Lastly the control systems performance in the presence of a constant disturbance is investigated. Initially the ambient temperature is set to 20$^{\circ}$. At time $t=0.3 hours$ a 5$^{\circ}$ step in the disturbance is introduced. The optimal controller takes action at time $t=1.1 hours$. The controlled outputs are seen in \cref{fig:LQR_wellTuned_5stepDist}.\\
+Lastly the control systems performance in the presence of a constant disturbance is investigated. Initially the ambient temperature is set to 20$^{\circ}$. At time $t=0.3$ hours a 5$^{\circ}$ step in the disturbance is introduced. The optimal controller takes action at time $t=1.1$ hours. The controlled outputs are seen in \cref{fig:LQR_wellTuned_5stepDist}.\\
 
 \begin{figure}[h!]
 	\centering
@@ -85,6 +85,6 @@ It is seen that air temperature converges to 1.25$^{\circ}$C above the operating
 
 The increase in air temperature is large enough to be considered a problem for transportation of temperature critical goods, which is of course the intended purpose of the reefer trailer. The cause is likely, as was the case for the sine disturbance, that the controller is unable to change the compressor speed. The compressor speed is critical for increasing the refrigerant flow through the cycle, and is thus highly correlated with the cooling capacity of the system. \\
 
-The drop in superheat is not as critical a problem as the air temperature. Ideally the controller would be able to keep it at the operating point, and in that context it is not desirable behavior. Technically, a drop in superheat increases the evaporation efficiency, and as long as there is a positive superheat no liquid will flow into the compressor. In summary, while the drop in superheat might increase efficiency without damaging the compressor, it would be a far more comfortable if the controller was able to maintain the superheat at a fixed value.
+The drop in superheat is not as critical a problem as the air temperature. Ideally the controller would be able to keep it at the operating point, and in that context it is not desirable behavior. Technically, a drop in superheat increases the evaporation efficiency, and as long as there is a positive superheat no liquid will flow into the compressor. In summary, while the drop in superheat might increase efficiency without damaging the compressor, it would be a far more appealing if the controller was able to maintain the superheat at a fixed value.
 
 %\subsection{Energy consumption}
