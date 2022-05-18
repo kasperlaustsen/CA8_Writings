@@ -22,28 +22,6 @@ The mathematical description
 As described in \cref{sec:mod}, there are large variances in dynamical speed across the system. Therefore, the fast components were defined algebraically, while the slow dynamics were modeled with a mix of differential equations and algebraic equations. The fast components are considered the compressors and the valves.
 
 The variables are differentiated in the differential equations in \cref{sec:mod_comp_mod}, are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
-%\begin{equation} \label{eq:xu} \renewcommand{\arraystretch}{2.4}
-%	x = \begin{bmatrix}
-%		M_{pjj}			\\				%pjj
-%		M_{con} 		\\				%condenser
-%		T_m 			\\				%condenser
-%		\dot{m}_{air}	\\				%evaporator
-%		T_{mlv}			\\				%evaporator
-%		T_{mv}			\\				%evaporator
-%		M_{lv}			\\				%evaporator
-%		M_v				\\				%evaporator
-%		T_{air}			\\				%box
-%		T_{box}			\\				%box
-%		T_{cargo}		\\				%box
-%	\end{bmatrix} \;\;\;\;\;\;\;\;\;
-%	u = \begin{bmatrix}
-%		\Theta_1			\\				%pjj
-%		\Theta_2 		\\				%condenser
-%		U_{fan_1}			\\				%condenser
-%		U_{fan_2}	\\				%evaporator
-%		\omega			\\				%evaporator
-%\end{bmatrix}
-%\end{equation}
 \begin{equation}  \label{eq:xu}
 	\begin{split}
 		x &= \begin{bmatrix}
@@ -57,14 +35,15 @@ The variables are differentiated in the differential equations in \cref{sec:mod_
 			M_v					&		%evaporator
 			T_{air}				&		%box
 			T_{box}				&		%box
-			T_{cargo}					%box
+			T_{cargo}			&		%box
+			T_v
 		\end{bmatrix}^T \\
 		u &= \begin{bmatrix}
+			\omega				&
 			\Theta_1			&			%pjj
 			\Theta_2 			&			%condenser
 			U_{fan_1}			&			%condenser
-			U_{fan_2}			&			%evaporator
-			\omega							%evaporator
+			U_{fan_2}						%evaporator
 		\end{bmatrix}^T
 	\end{split}
 \end{equation}
@@ -87,8 +66,7 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 		T_{air}			\\				%box
 		T_{box}			\\				%box
 		T_{cargo}		\\				%box
-		T_v				\\				%evaporator
-
+		T_v								%evaporator
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
@@ -116,7 +94,7 @@ In order to validate the model found in \cref{eq:f_noSub}, a simulation of stead
 When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order to simulate the system, some steady state variables had to be introduced in order to be able to perform the simulation model. These are all the red variables in \cref{fig:Block_diagram_inout}. Additionally, the inputs needed to be set to steady state values.The concrete numeric values for both the inputs and the steady state variables where found in the HiFi simulation after 5000 s. Finally, the states needed to be initialised in a sensible manner, and these were estimated with common sense, and based on the pressures, temperatures and volumes of the control volumes. All of the necessary values for the simulation is found in the tables below. \\
 
 
-\begin{tabular}{cc}
+\begin{tabular}{ccc}
 	\begin{minipage}{.3\linewidth}
 		\centering
 		\begin{tabular}{@{}lll@{}}
