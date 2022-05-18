@@ -2,7 +2,7 @@
 
 In the previous section each component of the system was modeled with differential and algebraic equations. The equations for each component generally require inputs from adjacent components, to generate outputs used in adjacent components. The aim of this section is to create a state space model which encapsulates all these interconnections. The model is expected to be non-linear as a direct result of the generally non-linear physics that describe thermodynamic systems. \cref{sec:mod_lin} will cover how the model is linearised.\\
 
-The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the system interface variables and states. In the diagram the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) are used for these. The values are taken from the the high-fidelity simulation in steady state. Blue variables are outputs of components that are not used by the adjacent component. Each component block also contains the names of the states they contain.
+The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the system interface variables and states. In the diagram the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) are used for these and will be referred to as red variables. The values of the red variables are taken from the the high-fidelity simulation in steady state. Blue variables are outputs of components that are not used by the adjacent component. Each component block also contains the names of the states they contain.
 
 \begin{figure}[h!]
 	\centering
@@ -11,10 +11,13 @@ The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the sys
 	\label{fig:Block_diagram_inout}
 \end{figure}
 
-\todo{write about what problems lie ahead. Conclude on the connections in the diagram and the steady state values and operating points. Can not be generalised to other operating points..}
+In addition to the lacking red variables of \cref{fig:Block_diagram_inout}, all of the table look-ups (for overview see \cref{tab:app_lookup}) that are incorporated in the component models of \cref{sec:mod_comp_mod} are kept constant with steady state values from the operating point. This is done to decrease complexity of the system and ease linearisation of the system model, but it comes with the drawback that a lot of the dependencies between the states themselves and states and inputs are disregarded. 
+In addition to the disregarded dependencies as a result of fixed values for the look-up tables, the introduction of steady state variables for the red variables has the same effect. 
 
-\newpage
+As an example, consider the Condenser throttle valve in \cref{fig:Block_diagram_inout}. The flow through the valve model is decided by the pressure difference across it, in this case $ \color{red} p_3$ $ - $ $ \color{red} p_1 $. As mentioned, these are then provided to the model as steady state constants, thus the flow through the condenser throttle valve is independent on the condenser outputs, and hence the compressor stage 2. The only thing that is passed from the condenser to the condenser throttle valve is the output enthalpy, $ h_4 $. \\
 
+The system model contains a lot of simplifications compared to the physical system (and the HiFi model), and thus the model is likely inaccurate especially outside the operating point. Despite the simplifications it may still be applicable for the design of a controller near the operating point. The applicability of the model for control design will be investigated in the rest of the report. For future reference, in \cref{app:tj_2}, an attempt to reformulate the system components in order to better connect the system components is performed.\\
+The mathematical description 
 \subsubsection{Mathematical formulation of non-linear state space model} \label{sec:non_lin_model}
 As described in \cref{sec:mod}, there are large variances in dynamical speed across the system. Therefore, the fast components were defined algebraically, while the slow dynamics were modeled with a mix of differential equations and algebraic equations. The fast components are considered the compressors and the valves.
 
