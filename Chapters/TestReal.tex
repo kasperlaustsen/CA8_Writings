@@ -2,17 +2,13 @@
 When the HiFi simulation model is initialized, the system takes approximately 1.4 hours (5000 seconds) until it converges to steady state. Since the optimal controller is not expected to work well when operating far away from the linearisation point, we allow the existing PID control structure to handle the initial transient behavior.
 A switch is inserted in the simulation which changes the inputs to the Hi-Fi simulation from the PID control structure to our LQR controller at some specified time. It takes two inputs: the vector of the PID chosen control inputs and the vector of the LQR controller input. The PID inputs are fed to the system until the time reaches 1.1 hours (4000 seconds). At this point, the switch selects the LQR control inputs to be fed to the system. Until the switching time, the control model states are forced to stay at 0. \\
 
-\subsection{Initial LQR controller}
-\textbf{Note: This section is supposed to hold simulation results of an initial untuned LQR controller (perhaps R = eye() and Q = eye()). It has yet to be made though.}
-
-
 \subsection{Tuned LQR controller: Constant disturbance}
 The LQR controller is set to start regulating the system at time $t=1.1$ hours, at which point it will attempt drive the states to 0. The disturbance (ambient temperature) is held constant at 20$^{\circ}$C. This is the operating point for the disturbance, and will thus not affect the system. The controlled outputs are seen in \cref{fig:LQR_wellTuned_noDist}.\\
 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQR_wellTuned_noDist.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQRvsKresten_noDist.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_noDist}
 \end{figure}
@@ -22,7 +18,7 @@ The LQR controller is set to start regulating the system at time $t=1.1$ hours, 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_noDist_zoom.png}
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQRvsKresten_noDist_zoom.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_noDist_zoom}
 \end{figure}
@@ -41,7 +37,7 @@ The disturbance (ambient temperature) is a sine wave with an amplitude of 5$^{\c
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQR_wellTuned_sineDist.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQRvsKresten_sineDist.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_sineDist}
 \end{figure}
@@ -51,7 +47,7 @@ The disturbance (ambient temperature) is a sine wave with an amplitude of 5$^{\c
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQR_wellTuned_sineDist_zoom.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQRvsKresten_sineDist_zoom.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refrigerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_sineDist_zoom}
 \end{figure}
@@ -67,7 +63,7 @@ Lastly the control systems performance in the presence of a constant disturbance
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_5stepDist.png}
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQRvsKresten_stepDist.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_5stepDist}
 \end{figure}
@@ -76,7 +72,7 @@ Lastly the control systems performance in the presence of a constant disturbance
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQR_wellTuned_5stepDist_zoom.png}
+	\includegraphics[width=1\textwidth]{Graphics/fig_LQRvsKresten_stepDist_zoom.png}
 	\caption{Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refrigerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_5stepDist_zoom}
 \end{figure}
