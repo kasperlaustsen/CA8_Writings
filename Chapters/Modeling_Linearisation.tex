@@ -27,7 +27,7 @@ where
 
 To transform the non-linear model in \cref{eq:f_noSub} to this form, a first order Taylor expansion is used. Performing this method of linearisation will directly output the \textit{A}, \textit{B}, \textit{$B_d$} and \textit{C} matrices of the linear state space representation.
 
-\subsubsection{Linearisation}
+\subsubsection{Linearisation} \label{sec:mod_linearisation}
 Consider some non-linear system $\dot{x} = f(x,u,d)$ with $ x $ a vector of system states,$  u $ a vector of controlled inputs, and $ d $ a vector of disturbances. Such a system can be approximated with a first order Taylor expansion at an operating point ($x_o, u_o, d_o$) as such:
 
 \begin{equation} \label{eq:taylor}
@@ -90,7 +90,7 @@ The linear model can then be expressed as such:
 
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in \cref{sec:ctrl}.
 
-\subsubsection{Linearised Model}
+\subsubsection{Linearised Model} \label{sec:linearised-model}
 Finding an operating point for a system can be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled. Furthermore steady-state values were used for all table look-ups as another simplification.\\
 
 Linearising the non-linear system without the faulty states $ M_{pjj} $ $ M_{con} $ as described in \cref{sec:model-verification} yields the following system matrices with 10 states.
@@ -213,18 +213,18 @@ As seen in \cref{eq:B_full} the columns 1 and 3 (corresponding to $ \omega $ and
 	\end{array}\right)
 \end{equation}
 
-These matrices constitute the linear state space model of the system. The system is stable as the eigenvalues of $A$, which are the poles of the system, are all negative.
-The fact that changes in the compressor speed and condenser throttle valve opening degree do not affect the system is not expected when considering the physical system. The flow of refrigerant is driven by the compressor and the equivalent flow resistance in the refrigeration system. The condenser throttle valve is indeed a significant part of this overall resistance for the refrigeration system.
-The flow of refrigerant in the system decides cooling capacity. Therefore it is not expected that the two mentioned inputs does not affect the states. However, referring to \cref{fig:Block_diagram_inout} and recalling that two of the states in the system are integrating as was seen in \cref{fig:non_lin_sim_faulty_Mass}, some explanation might be found. As of now, the flows entering and leaving the condenser is not coupled with each other, as the output pressure of the condenser is taken as a steady state value, signified by the red color of $ p_3 $ in \cref{fig:Block_diagram_inout}. This means that as the mass inside the condenser is integrating up, the pressure should increase as a result, but it does not. If the pressure would increase, the condenser throttle valve would yield a higher flow that would ensure that the flows in and out of the condenser would be coupled.
+These matrices constitute the linear state space model of the system. The system is stable as the eigenvalues of $A$, which are the poles of the system, are all negative. Alarmingly the real part of one pole is 1.3e-9 which is so numerically small that it can be considered zero. The implications of this are investigated in \cref{sec:mod_linearisation}.  \\
 
-Since the flows in and out of the condenser is not coupled, the compressor flow does not affect flows into the evaporator. This can explain why the compressor does not affect the states of the system.
-In terms of $ \Theta_2 $, again referring to \cref{fig:Block_diagram_inout} when looking at the diagram, it is seen that the flow leaving the expansion valve is not affected by the flash tank, as the flash tank receives a flow from the expansion valve. This means that the flow into the flash tank from the condenser throttle valve is not affecting the flow in the expansion valve and hence the flow into the evaporator.
+The fact that changes in the compressor speed and condenser throttle valve opening degree do not affect the system is not expected when considering the physical system. The flow of refrigerant is driven by the compressor and the equivalent flow resistance in the refrigeration system. The condenser throttle valve is indeed a significant part of this overall resistance. The flow of refrigerant decides cooling capacity. Therefore it is surprising that the two mentioned inputs do not affect the states. However as also touched upon in \cref{sec:mod_collec}, several components do not connect. As a result two of the states in the system are integrating as was seen in \cref{fig:non_lin_sim_faulty_Mass} which might lend some explanation to why some inputs do not map to the states as expected. The flows entering and leaving the condenser are not coupled, as the output pressure of the condenser is defined as a steady state value, signified by the red color of $ p_3 $ in \cref{fig:Block_diagram_inout}. This means that as the mass inside the condenser is integrating up, the pressure should increase as a result, but it does not. If the pressure would increase, the condenser throttle valve would yield a higher flow that would ensure coupling between the flows in and out of the condenser.
 
-As mentioned earlier all values which were supposed to be found from lookup tables were substituted with steady state value from the Hi-Fi simulation in order to place focus in other parts of the project. This could potentially also be factor with regards to inaccuracies in the interface between components.
+As a conseqence of the flows in and out of the condenser not being coupled, the compressor flow does not affect flows into the evaporator. This can explain why the compressor does not affect the states of the system.
+In terms of $ \Theta_2 $, again referring to \cref{fig:Block_diagram_inout}, it is seen that the flow leaving the expansion valve is not affected by the flash tank, as the flash tank receives a flow from the expansion valve. This means that the flow into the flash tank from the condenser throttle valve is not affecting the flow in the expansion valve and hence the flow into the evaporator.
 
 The reason for the great focus on the evaporator in this regard is that 6 of the states reside in the evaporator. Additionally the only interface between the box and the refrigeration system is through the evaporator.
 
-The obtained linear model can now be used to investigate more details about the system, namely the controllability and observability of the system.
+Furthermore as mentioned earlier all values which were supposed to be found from lookup tables were substituted with steady state values from the Hi-Fi simulation. This could potentially also be factor with regards to the reduced mapping between components.\\
+
+Obtained linear model is now used to investigate details about the system, such as the controllability and observability of the system.
 
 %To more easily keep track of the model changes a table is provided for each model iteration. The first of such a table is seen in \cref{tab:model_full}. [A$|$B] Denotes controllability matrix and [A$|$C] denotes observability matrix.
 
@@ -397,7 +397,7 @@ where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, wher
 
 The matrices $A_{11}$ and $C_{1}$ constitute an observable subsystem, for which an observer based controller can be designed. This controller will not have information about the state of the unobservable subsystem $A_{22}$. This necessitates that $A_{22}$ has to be internally stable, meaning its eigenvalues has to have negative real parts, resulting in stable behavior when unperturbed.
 
-Performing the Kalman Decomposition yields the observable subsystem given below, where the states unobservable states are $ T_m $ and $ M_v $.
+Performing the Kalman Decomposition yields the observable subsystem given below, where the states unobservable states $ T_m $ and $ M_v $ are removed.
 
 \begin{equation}  \label{eq:A11}
 	A_{11} = \left(\begin{array}{cccccccc}
@@ -426,7 +426,8 @@ Performing the Kalman Decomposition yields the observable subsystem given below,
 	%		0 & 0 & 0 & 0 & 0
 	%	\end{array}\right)
 %\end{equation}
-As was the case with the B matrix of the linear system in \cref{eq:B_full}, the unobservable system also has zero rows as can be seen in \cref{eq:B1}. This time only $ \Theta_1 $ and $ U_{fan2} $ maps the inputs to the states and such we get a $ B_1 $ matrix as in \cref{eq:B1_redu}.
+
+As was the case with the B matrix of the linear system in \cref{eq:B_full}, the kalman decomposition reduced system also has zero columns as seen in \cref{eq:B1}. $ \Theta_1 $ and $ U_{fan2} $ are now the only inputs being mapped to the states and such the resulting $ B_1 $ matrix only includes two rows as observed in \cref{eq:B1_redu}.
 \begin{align}
 	B_1 & = \kbordermatrix{
 		& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
@@ -508,7 +509,7 @@ As was the case with the B matrix of the linear system in \cref{eq:B_full}, the 
 	\end{array}\right)
 \end{equation}
 
-These matrices define an observable and controllable system model. It is noted that the removal of the unobservable states left an extra zero row in $B_1$ compared to $ B $ \cref{eq:B_full}. The input that 'disappears' during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the metal temperature state in the condenser $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states.
+These matrices define an observable and controllable system model. It is noted that the removal of the unobservable states left an extra zero column in $B_1$ compared to $ B $ \cref{eq:B_full}. The input that 'disappears' during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the metal temperature state in the condenser $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states.
 In the end means that the 3 corresponding control inputs does not affect the observable subsystem. Initutively this is not true for the physical system, but it is none the less the case for this simplified model, which is accurate around the equilibrium point.
 
 \subsubsection{Condition number} \label{sec:condNumber}
@@ -530,3 +531,88 @@ The condition number of a matrix is defined as the ratio between its largest and
 It is important to note the intentionally vague term "large condition number". The condition number effectively maps an input error to the corresponding output error. Thus the meaning of a large or small condition number relies on the size of the expected input error and the tolerable output error. In some control applications a condition number of $A$ larger than 10 is considered large. This would be the case for a system where all states are largely inside same numerical range. This is not the case for this refrigeration model where states vary greatly in size from $M_v$ at around 0.001 \si{kg} to almost any temperature state around 250-300 \si{K}. Furthermore the numerical size differences between variables with different SI units also has an impact. A common pressure such as the atmospherical pressure lies at 100000 [Pa].
 
 The condition number for $A$ is 3.165e+09. Evaluating whether this condition number is alarming in this case becomes a difficult task. It is surely worth considering keeping the seemingly high condition number in mind when evaluating system behavior, and when further developing and testing the model.
+
+The condition number for $A$ is 3.165e+09. Evaluating whether this condition number is alarming in this case becomes a difficult task. It is surely worth considering keeping the seemingly high condition number in mind when evaluating system behavior, and when further developing and testing the model.
+
+
+\subsubsection{Model info, wrap up}
+\begin{tabular}{ccc}
+	\begin{minipage}{.5\linewidth}
+		%		\begin{table}[h]
+			\centering
+			%			\caption{Linearised model from \cref{sec:linearised-model}}
+			\label{tab:model_full}
+			\begin{tabular}{ll}
+				\toprule
+				\textbf{Linearised system from \cref{sec:linearised-model}}   \\ \toprule
+				\textbf{Number of states}          & 10           \\
+				\textbf{Number of inputs}          & 3            \\
+				\textbf{Number of outputs}         & 2            \\ \toprule
+				\textbf{Rank of \text{[A$|$B]}}    & 10           \\
+				\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+				\textbf{Eigenvalues}               & XXX 		\\
+				\textbf{Condition number of A} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+			\end{tabular}
+			%		\end{table}
+	\end{minipage}
+	\begin{minipage}{.5\linewidth}
+		%		\begin{table}[h]
+			\centering
+			%			\caption{Kalman decomposed model}
+			\begin{tabular}{ll}
+				\toprule
+				\textbf{Kalman decomposed model from \cref{sec:kalman}}         		   \\ \toprule
+				\textbf{Number of states}          & 8           \\
+				\textbf{Number of inputs}          & 2            \\
+				\textbf{Number of outputs}         & 2            \\ \toprule
+				\textbf{Rank of \text{[A$|$B]}}    & 8           \\
+				\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+				\textbf{Eigenvalues}               & XXX 		\\
+				\textbf{Condition number of A} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+			\end{tabular}
+			%		\end{table}
+	\end{minipage}
+
+\end{tabular}
+
+%
+%\begin{table}[h]
+%	\centering
+%	\caption{Model status: Linearised model from \cref{sec:linearised-model}}
+%	\label{tab:model_full}
+%	\begin{tabular}{ll}
+	%			\toprule
+	%			\textbf{Linearity status}          & Linear   \\ \toprule
+	%			\textbf{Number of states}          & 10           \\
+	%			\textbf{Number of inputs}          & 3            \\
+	%			\textbf{Number of outputs}         & 2            \\ \toprule
+	%			\textbf{Rank of \text{[A$|$B]}}    & 10           \\
+	%			\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+	%			\textbf{Eigenvalues}               & XXX 		\\
+	%			\textbf{Condition number of A} 		& XXX           \\
+	%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+	%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+	%		\end{tabular}
+%\end{table}
+%
+%\begin{table}[h]
+%	\centering
+%	\caption{Model status: Two first states removed}
+%	\begin{tabular}{ll}
+	%			\toprule
+	%			\textbf{Linearity status}          & Linear   \\ \toprule
+	%			\textbf{Number of states}          & 8           \\
+	%			\textbf{Number of inputs}          & 2            \\
+	%			\textbf{Number of outputs}         & 2            \\ \toprule
+	%			\textbf{Rank of \text{[A$|$B]}}    & 8           \\
+	%			\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+	%			\textbf{Eigenvalues}               & XXX 		\\
+	%			\textbf{Condition number of A} 		& XXX           \\
+	%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+	%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+	%		\end{tabular}
+%\end{table}
