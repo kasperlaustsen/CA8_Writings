@@ -1,10 +1,8 @@
 This chapter contains the controller design for the refrigeration system model developed in \cref{sec:mod}. The objectives of the controllers are to maintain a fixed cargo hold air temperature, while minimizing energy consumption and protecting the compressor by regulating the superheat. These objectives are not easily formulated in terms of pole placements in a simple state feedback controller. Optimal controllers are better suited in describing these objectives, as they are made to minimize a cost function, chosen by the designer. \\
 
-Two optimal control strategies are pursued for this MIMO problem. Firstly, the Linear Quadratic Regulator will be implemented, followed by the more complex and customizable Model Predictive Control algorithm. Both controllers will be tested and benchmarked against each other, while also comparing them to the coupled PID control setup currently implemented at BITZER.
+An optimal control strategy is pursued for this MIMO problem. The Linear Quadratic Regulator will be implemented, which will be tested and benchmarked against the coupled PID control setup currently implemented in the Hi-Fi simulation.
 
 After the controller is discussed, the observer structure for the control model is discussed.
-\todo[inline]{Rewrite to exclude MPC}
-
 
 
 \subsection{Linear Quadratic Regulator} \label{sec:linear-quadratic-regulator}
@@ -59,12 +57,9 @@ where P is the unique solution to the algebraic Ricatti equation
 	A^TP + PA - PBR^{-1}B^TP+Q = 0
 \end{equation}
 
-While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it is noted that it is found by following Pontryagin's minimum principle. Briefly described the process is to first define the Hamiltonian associated with the optimization problem. Differentiating the Hamiltonian with respect to the control signal u, yields the control gradient. By then setting the gradient equal to 0 and solving for u, the optimal control input is found.
-\\
-
+While proving \cref{eq:lqr_K} explicitly is beyond the scope of this report, it is noted that it is found by following Pontryagin's minimum principle. Briefly described the process is to first define the Hamiltonian associated with the optimization problem. Differentiating the Hamiltonian with respect to the control signal u, yields the control gradient. By then setting the gradient equal to 0 and solving for u, the optimal control input is found.\\
 
 LQR is chosen as the initial control strategy due to its intuitive way of use, as well the many proven properties. These include a guaranteed 6dB gain- and $60^\circ$ phase margin \cite{Doyle}.
-
 
 %\subsubsection{Integral action}
 %In most control problems it is the objective to keep an output at a reference value. While there are many methods of achiving this, the most commonly used are reference scaling and integral action. Reference scaling involves inserting a gain in the forward path of the reference signal. The value of the gain is the reciprocal of the system DC gain, resulting in the output settling at the value of the reference. This method requires accurate knowledge of the system to calculate the DC gain, and is thus very sensitive to variations. Integral action is far more robust. The common way to include integral action in state space controllers is to extend the state vector, with one or more artificial integral states.
@@ -91,10 +86,10 @@ LQR is chosen as the initial control strategy due to its intuitive way of use, a
 %Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task.
 
 \subsubsection{LQR controller gain}
-As described in \cref{sec:linear-quadratic-regulator}, in order to find the optimal controller gain, the weight matrices Q and R needs to be determined. They are chosen as: 
+As described in \cref{sec:linear-quadratic-regulator}, in order to find the optimal controller gain, the weight matrices Q and R needs to be determined. They are chosen as:
 
 \begin{equation}
-	Q = 
+	Q =
 	\left(\begin{array}{cccccccc}
 		1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
 		0 & 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
@@ -103,19 +98,16 @@ As described in \cref{sec:linear-quadratic-regulator}, in order to find the opti
 		0 & 0 & 0 & 0 & 2 & 0 & 0 & 0  \\
 		0 & 0 & 0 & 0 & 0 & 1 & 0 & 0  \\
 		0 & 0 & 0 & 0 & 0 & 0 & 2 & 0  \\
-		0 & 0 & 0 & 0 & 0 & 0 & 0 & 1	  
-	\end{array}\right) 
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+	\end{array}\right)
 	\text{  and  }
-	R = 
+	R =
 		\left(\begin{array}{cc}
 		1 & 0  \\
-		0 & 0.025  
-	\end{array}\right) 
+		0 & 0.025
+	\end{array}\right)
 \end{equation}
 
-
-
- 
 Using Q and R as identitity matrices of appropriate dimensions the following optimal feedback gain is calculated:
 
 \begin{equation}
@@ -123,12 +115,12 @@ Using Q and R as identitity matrices of appropriate dimensions the following opt
 	\left(\begin{array}{cccccccccc}
 		-0.0784 &  -0.0140 &  -0.0203 &   1.1457 &  -0.1743 &  -0.1021 &  -0.6274 &   0.0049 \\
 		0.5679 &   0.0786 &   0.1447 &  -4.0389 &   0.7489 &   0.4246 &   2.5119 &   0.0041
-	\end{array}\right) 
+	\end{array}\right)
 \end{equation}
 
-\subsection{Observer Gain}\label{sec:observer-gain}
+\subsection{Observer Gain} \label{sec:observer-gain}
 As stated previously, the control model is to be used as an observer for the actual system. By measuring the inputs and outputs the control model will produce an estimate of the states. These observed states will be used for feedback control. \\
-
+\todo[inline]{There is a reference to some "fig:luenberger" figure. Where is this figure???}
 The observer structure used in this project is seen in \cref{fig:luenberger}. The difference in the plant and model outputs are multiplied by a observer gain L, and added to the observed state derivatives. This is known as the Luenberger observer. The error $e$ is defined as
 \begin{equation} \label{eq:error}
 	e = x-\hat{x}
@@ -165,90 +157,3 @@ Substituting these into \cref{eq:error} yields
 \end{equation}
 
 This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ 5-10 times larger than the eigenvalues of $A-BK$. This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.
-
-
-
-%\subsection{Model Predictive Control}
-%Model Predictive Control (MPC) is, like the Linear Quadratic Regulator, an optimal control algorithm with respect to some cost function. It is optimal with regards to the current sample but in contrast to LQR it also takes future samples into account. It relies on a dynamic model of the controlled process and is able to consider various types of constraints. This is particularly useful in this problem, since the actuators are limitied to control signals between 0 and 100.\\
-%
-%At every time sample the MPC controller
-%\begin{enumerate}
-%	\item optimizes over \textit{prediction horizon} $(H_p)$
-%	\item calculates a predictive optimal control trajectory
-%	\item applies the first sample in the predicted control trajectory to the process
-%\end{enumerate}
-%
-%\medskip
-%
-%Consider the discrete-time system in \cref{eq:mpc_discrete_sys}. While $y(k)$ represents the measured outputs, $z(k)$ represents the controlled non-measured outputs. It is possible that $y(k) = z(k)$ in this case all controlled outputs are measured.
-%
-%\begin{equation} \label{eq:mpc_discrete_sys}
-%	\begin{split}
-%		x(k+1) 	& = Ax(k) + Bu(k) \\
-%		y(k) 	& = C_yx(k) \\
-%		z(k) 	& = C_zx(k)
-%	\end{split}
-%\end{equation}
-%
-%For such a system the MPC controller optimizes with respect to the quadratic cost function in \cref{eq:mpc_cost_fcn}. The first part of the cost function seeks to minimize the deviation of the controlled states $(\hat{z})$ from the reference trajectory $(r)$ over the prediction horizon where $Q(i)$ are the weights applied at each predicted sample. The second part insures integral action by minimizing change in control input $(\Delta \hat{u})$ (control moves) over the \textit{control horizon} $(H_u)$ where $R(i)$ are the weights applied to each control move into the future.
-%
-%\begin{equation} \label{eq:mpc_cost_fcn}
-%	V(k) = \sum_{i=H_w}^{H_p}||\hat{z}(k+i|k) - r(k+i|k)||^2_{Q(i)} + \sum_{i=0}^{H_u-1}||\Delta \hat{u}(k+i|k)||^2_{R(i)}
-%\end{equation}
-%
-%where
-%
-%\begin{center}
-%	\begin{tabular}{l r l }
-%		                   & $||x||_M$               & $= \sqrt{\left(w^TMw\right)}$         \\
-%		prediction horizon & $H_p$                   & $\ge$ $H_u$ control horizon           \\
-%		window horizon     & $H_p$                   & $\ge 1$                               \\
-%		weights            & $Q(i), R(i)$            & $\ge 0$ (positive semi-definite)      \\
-%		control move       & $\Delta \hat{u}(k+i|k)$ & $= \hat{u}(k+i|k) - \hat{u}(k+i-1|k)$
-%	\end{tabular}
-%\end{center}
-%
-%$Q(i), Q(i), H_p, H_u, H_w$ are considered the MPC tuning parameters.\\
-%
-%An important characteristic of MPC is the ability to include constraints. Constraints can be applied to \textit{actuator slew rate}, \textit{actuator range} and \textit{controlled variables}. These constraints need to be formulated in the correct manner as seen below:
-%
-%\begin{itemize}
-%	\item Actuator slew rate:
-%
-%	\begin{equation} \label{eq:mpc_const_sr}
-%		E \begin{bmatrix} \Delta U(k) \\ 1 \end{bmatrix} \le 0
-%	\end{equation}
-%	\begin{center} where \end{center}
-%	\begin{equation*}
-%		\Delta U(k) = [\Delta \hat{u}(k|k)^T \cdots \Delta \hat{u}(k+H_u-1|k)^T]^T
-%	\end{equation*}
-%
-%
-%	\item Actuator range:
-%
-%	\begin{equation} \label{eq:mpc_const_ar}
-%		F \begin{bmatrix} U(k) \\ 1 \end{bmatrix} \le 0
-%	\end{equation}
-%	\begin{center} where \end{center}
-%	\begin{equation*}
-%		U(k) = [\hat{u}(k|k)^T \cdots \hat{u}(k+H_u-1|k)^T]^T
-%	\end{equation*}
-%
-%	\item Controlled variable
-%
-%	\begin{equation} \label{eq:mpc_const_cv}
-%		G \begin{bmatrix} Z(k) \\ 1 \end{bmatrix} \le 0
-%	\end{equation}
-%	\begin{center} where \end{center}
-%	\begin{equation*}
-%		Z(k) = [\hat{z}(k+H_w|k)^T \cdots \hat{z}(k+H_p|k)^T]^T
-%	\end{equation*}
-%\end{itemize}
-%
-%\noindent with E, F and G having appropriate dimensions.
-
-
-
-
-
-
