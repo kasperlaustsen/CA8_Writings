@@ -1,15 +1,15 @@
-<mxfile host="app.diagrams.net" modified="2022-05-18T10:38:43.364Z" agent="5.0 (Windows)" etag="X8LYIXmG1dmASIFTck--" version="18.0.6" type="github">
+<mxfile host="app.diagrams.net" modified="2022-05-18T11:27:43.285Z" agent="5.0 (Windows)" etag="QiZ5BJYnj5TKIA7K86Qr" version="18.0.6" type="github">
   <diagram id="maX6PPkqGkgQO3d0mOUZ" name="New">
-    <mxGraphModel dx="1763" dy="928" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
+    <mxGraphModel dx="2074" dy="1092" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="1" shadow="0">
       <root>
         <mxCell id="a6acP2pozzWjvfzwrBKU-0" />
         <mxCell id="a6acP2pozzWjvfzwrBKU-1" parent="a6acP2pozzWjvfzwrBKU-0" />
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-12" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;T_1&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#0000CC;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
           <mxGeometry x="496.00142857142913" y="220" as="geometry" />
         </mxCell>
-        <mxCell id="7Xz_9-x67nZ5A4HUlt5y-95" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;\textbf{T}_\textbf{7}&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#FF0000;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
+        <mxCell id="7Xz_9-x67nZ5A4HUlt5y-95" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;T_7&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#FF0000;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
           <mxGeometry x="394.9975000000004" y="339.00000000000006" as="geometry">
-            <mxPoint x="-6" y="-4" as="offset" />
+            <mxPoint x="-1" y="2" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="7Xz_9-x67nZ5A4HUlt5y-81" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;\dot{m}_5&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
@@ -273,7 +273,7 @@
             <mxPoint x="1014.4" y="350" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="7Xz_9-x67nZ5A4HUlt5y-45" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;\textbf{T}_\textbf{2}&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#FF0000;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
+        <mxCell id="7Xz_9-x67nZ5A4HUlt5y-45" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;T_2&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#FF0000;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
           <mxGeometry x="859.9975000000004" y="172.00000000000006" as="geometry">
             <mxPoint x="-6" y="-4" as="offset" />
           </mxGeometry>
@@ -433,7 +433,7 @@
         <mxCell id="2IGsuQoMTE90SmOeLrJ3-10" value="" style="group;fontSize=14;" parent="a6acP2pozzWjvfzwrBKU-1" vertex="1" connectable="0">
           <mxGeometry x="1023.9975000000004" y="570" width="0.16249999999979536" height="23" as="geometry" />
         </mxCell>
-        <mxCell id="7Xz_9-x67nZ5A4HUlt5y-42" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;\textbf{p}_\textbf{3}&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#FF0000;" parent="2IGsuQoMTE90SmOeLrJ3-10" vertex="1" connectable="0">
+        <mxCell id="7Xz_9-x67nZ5A4HUlt5y-42" value="\begin{bmatrix}&lt;br style=&quot;font-size: 14px;&quot;&gt;p_3&lt;br style=&quot;font-size: 14px;&quot;&gt;\end{bmatrix}" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];spacing=2;fontSize=14;horizontal=1;fontColor=#FF0000;" parent="2IGsuQoMTE90SmOeLrJ3-10" vertex="1" connectable="0">
           <mxGeometry x="6" y="13.000000000000057" as="geometry">
             <mxPoint x="-6" y="-4" as="offset" />
           </mxGeometry>
