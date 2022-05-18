@@ -602,7 +602,7 @@ where\\
 \end{center}
 
 
-\subsubsection*{\underline{Addition to existing model}}
+\subsubsection*{\underline{Addition to existing model}} \label{sec:app:evap_addition}
 
 
 All the equations for the evaporator until now has been heavily inspired by \cite{Sorensen2013}. To allow for control of the very important superheat, we need a a state equation for the temperature in the vapor $ T_v $ control volume. $ T_v $ is assumed to be the output temperature of the evaporator and such base for the superheat as a difference between the dew point temperature of the refrigerant and $ T_v $. The following shows the derivation of state equation for $ T_v $ from the energy balance in \cref{eq:Evaporator_EnergyBalance}.
@@ -651,7 +651,7 @@ Table lookups can be used to evaluate the derivatives of the density wrt. the te
 
 yielding \cref{eq:Evaporator_EnergyBalance8} as the state equation for the temperature in the vapor control volume of the evaporator:
 
-\begin{equation}
+\begin{equation} \label{eq:app:dTvstate}
 	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_v(t)}{dt}  = \dfrac{Q_{mv} + \dot{m}_{dew}(t)h_{dew}(t) - \dot{m}_{out}(t)h_v\bigl(T_{v}(t)\bigr) - \dfrac{dM_{v}(t)}{dt} h_v\bigl(T_v(t)\bigr)}{M_{v}(t) \mathcal{J}(T_v(t)) } } \label{eq:Evaporator_EnergyBalance8}
 \end{equation}
 

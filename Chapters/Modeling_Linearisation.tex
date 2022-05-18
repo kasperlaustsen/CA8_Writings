@@ -1,15 +1,7 @@
-
-
-
-
-
-
-
-
 The model derived in \cref{sec:mod_collec} is non-linear and thus not directly applicable for the control strategy intended for this project. Therefore a linearisation must be performed, where a linear approximation of the model is found at a given operating point. The linear model will approximate the non linear model near the operaing point and thus facilitating the intended linear control strategy. The accuracy of the model is highly dependent on the deviation from the operating points. All these issues will be touched upon in this section, as the linearisation is discussed.
 
 \subsubsection{A Linear State-Space Representation}
-A continuous linear state space system is typically defined as seen in \cref{eq:state_space}. The state derivatives are defined as a linear combination of states and inputs, while the outputs are a linear combination of the states. Having a model on such a state space form is a necessary for conventional state-space controller design.\\
+A continuous linear state space system is typically defined as seen in \cref{eq:state_space}. The state derivatives are defined as a linear combination of states and inputs, while the outputs are a linear combination of the states. Having a model on such a state space form is a necessary for conventional state-space controller design.
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
@@ -56,27 +48,27 @@ While the formal definition of the Hartman-Grobman theorem may seem too theoreti
 
 As discussed, linearising at an equilibrium is nessesary, as it removes the offset term from the Taylor expansion. Ideally this point should be a hyperbolic equilibrium. Furthermore, it is natural to linearise at a point where the system is expected to be operating during normal use. \\
 
-The investigation of the operating point now enables us advance further with the linearisation. The partial derivatives of \cref{eq:taylor} can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd being the number of states, inputs and disturbances respectively.
+The investigation of the operating point now enables advancing further with the linearisation. The partial derivatives of \cref{eq:taylor} can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd being the number of states, inputs and disturbances respectively.
 
 \begin{equation} \label{eq:jacobians}
 	\dfrac{\partial f}{\partial x} =
-		\begin{bmatrix}
-			\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_{nx}} & \\
-			\vdots & \ddots & \vdots & \\
-			\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_{nx}} &
-		\end{bmatrix}, \
+	\begin{bmatrix}
+		\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_{nx}} & \\
+		\vdots & \ddots & \vdots & \\
+		\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_{nx}} &
+	\end{bmatrix}, \
 	\dfrac{\partial f}{\partial u} =
-		\begin{bmatrix}
-			\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_{nu}} & \\
-			\vdots & \ddots & \vdots & \\
-			\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_{nu}} &
-		\end{bmatrix}, \
+	\begin{bmatrix}
+		\dfrac{\partial f_1}{\partial u_1} & \cdots & \dfrac{\partial f_1}{\partial u_{nu}} & \\
+		\vdots & \ddots & \vdots & \\
+		\dfrac{\partial f_e}{\partial u_1} & \cdots & \dfrac{\partial f_e}{\partial u_{nu}} &
+	\end{bmatrix}, \
 	\dfrac{\partial f}{\partial d} =
-		\begin{bmatrix}
-			\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_{nd}} & \\
-			\vdots & \ddots & \vdots & \\
-			\dfrac{\partial f_e}{\partial d_1} & \cdots & \dfrac{\partial f_e}{\partial d_{nd}} &
-		\end{bmatrix}
+	\begin{bmatrix}
+		\dfrac{\partial f_1}{\partial d_1} & \cdots & \dfrac{\partial f_1}{\partial d_{nd}} & \\
+		\vdots & \ddots & \vdots & \\
+		\dfrac{\partial f_e}{\partial d_1} & \cdots & \dfrac{\partial f_e}{\partial d_{nd}} &
+	\end{bmatrix}
 \end{equation}
 
 When the Jacobian matrices are evaluated at the operating point, they in fact become the matrices $ A $, $ B $ and $ B_d  $ of the linearised system:
@@ -99,7 +91,7 @@ The linear model can then be expressed as such:
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in \cref{sec:ctrl}.
 
 \subsubsection{Linearised Model}
-Finding an operating point for a system can be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled.\\
+Finding an operating point for a system can be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled. Furthermore steady-state values were used for all table look-ups as another simplification.\\
 
 Linearising the non-linear system without the faulty states $ M_{pjj} $ $ M_{con} $ as described in \cref{sec:model-verification} yields the following system matrices with 10 states.
 
@@ -122,18 +114,18 @@ Linearising the non-linear system without the faulty states $ M_{pjj} $ $ M_{con
 %\begin{equation}  \label{eq:A_full}
 %	A =
 %	\kbordermatrix{
-%		&  T_m	& \dot{m}_{air}	& T_{mlv}	&T_{mv}	&M_{lv}	&M_v	&T_{air} &T_{box}	&T_{cargo}	&T_v \\				
-%		T_m				& -0.2642 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
-%		\dot{m}_{air}	& 0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
-%		T_{mlv}			& 0 & 0.8417 & -0.6085 & 0.3062 & -2.7922 & 0 & 0 & 0 & 0 & 0\\
-%		T_{mv}			& 0 & -0.2370 & 0.0057 & -0.2643 & -0.2190 & 0 & 0.0924 & 0 & 0 & 0\\
-%		M_{lv}			& 0 & 0 & -0.0041 & 0 & -0.0381 & 0 & 0 & 0 & 0 & 0\\
-%		M_v 			& 0 & 0 & 0.0041 & 0 & 0.0381 & 0 & 0 & 0 & 0 & 0\\
-%		T_{air} 		& 0 & -0.0030 & 0.0085 & 0 & 0 & 0 & -0.0298 & \text{2.6253e-04} & 0.0210 & 0\\
-%		T_{box}			& 0 & 0 & 0 & 0 & 0 & 0 & \text{5.6180e-05} & -\text{1.1236e-04} & 0 & 0\\
-%		T_{cargo }		& 0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045 & 0\\
-%		T_v 			& 0 & 0 & \text{6.6083e-04} & 0.0015 & 0.0081 & 0 & 0 & 0 & 0 & -0.0100
-%				}
+	%		&  T_m	& \dot{m}_{air}	& T_{mlv}	&T_{mv}	&M_{lv}	&M_v	&T_{air} &T_{box}	&T_{cargo}	&T_v \\
+	%		T_m				& -0.2642 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+	%		\dot{m}_{air}	& 0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+	%		T_{mlv}			& 0 & 0.8417 & -0.6085 & 0.3062 & -2.7922 & 0 & 0 & 0 & 0 & 0\\
+	%		T_{mv}			& 0 & -0.2370 & 0.0057 & -0.2643 & -0.2190 & 0 & 0.0924 & 0 & 0 & 0\\
+	%		M_{lv}			& 0 & 0 & -0.0041 & 0 & -0.0381 & 0 & 0 & 0 & 0 & 0\\
+	%		M_v 			& 0 & 0 & 0.0041 & 0 & 0.0381 & 0 & 0 & 0 & 0 & 0\\
+	%		T_{air} 		& 0 & -0.0030 & 0.0085 & 0 & 0 & 0 & -0.0298 & \text{2.6253e-04} & 0.0210 & 0\\
+	%		T_{box}			& 0 & 0 & 0 & 0 & 0 & 0 & \text{5.6180e-05} & -\text{1.1236e-04} & 0 & 0\\
+	%		T_{cargo }		& 0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045 & 0\\
+	%		T_v 			& 0 & 0 & \text{6.6083e-04} & 0.0015 & 0.0081 & 0 & 0 & 0 & 0 & -0.0100
+	%				}
 %\end{equation}
 
 \medskip
@@ -171,30 +163,30 @@ As seen in \cref{eq:B_full} the columns 1 and 3 (corresponding to $ \omega $ and
 
 %\begin{equation}  \label{eq:B_full}
 %	B = \left(\begin{array}{ccccc}
-%		0 & 0 & 0 & -0.0093 & 0\\
-%		0 & 0 & 0 & 0 & \text{7.9630e-04}\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0.0011\\
-%		0 & \text{5.0703e-04} & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & \text{1.0069e-04}\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0
-%	\end{array}\right) 
+	%		0 & 0 & 0 & -0.0093 & 0\\
+	%		0 & 0 & 0 & 0 & \text{7.9630e-04}\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0.0011\\
+	%		0 & \text{5.0703e-04} & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & \text{1.0069e-04}\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0
+	%	\end{array}\right)
 %	=
 %	\left(\begin{array}{cccc}
-%		0 					& -0.0093 	& 0\\
-%		0 					& 0 		& \text{7.9630e-04}\\
-%		0 					& 0 		& 0\\
-%		0 					& 0 		& 0.0011\\
-%		\text{5.0703e-04} 	& 0 		& 0\\
-%		0 					& 0 		& 0\\
-%		0 					& 0 		& \text{1.0069e-04}\\
-%		0 					& 0 		& 0\\
-%		0 					& 0 		& 0\\
-%		0 					& 0 		& 0
-%	\end{array}\right) 
+	%		0 					& -0.0093 	& 0\\
+	%		0 					& 0 		& \text{7.9630e-04}\\
+	%		0 					& 0 		& 0\\
+	%		0 					& 0 		& 0.0011\\
+	%		\text{5.0703e-04} 	& 0 		& 0\\
+	%		0 					& 0 		& 0\\
+	%		0 					& 0 		& \text{1.0069e-04}\\
+	%		0 					& 0 		& 0\\
+	%		0 					& 0 		& 0\\
+	%		0 					& 0 		& 0
+	%	\end{array}\right)
 %\end{equation}
 
 \medskip
@@ -221,13 +213,18 @@ As seen in \cref{eq:B_full} the columns 1 and 3 (corresponding to $ \omega $ and
 	\end{array}\right)
 \end{equation}
 
-These matrices constitute the linear state space model of the system. 
-The fact that the compressor speed and condenser throttle valve opening degree does not affect the system is not expected when considering the physical system. The refrigerant flows throughout the system are driven by the compressor and the equivalent flow resistance in the refrigeration system. The condenser throttle valve is indeed a significant part of this overall resistance for the refrigeration system. 
-The flow of refrigerant in the system decides the amount of heat that can be extracted from the load and to the ambient air. Therefore it is not expected that the two mentioned inputs does not affect the states. However, referring to \cref{fig:Block_diagram_inout} and recalling that two of the states in the system are integrating as was seen in \cref{fig:non_lin_sim_faulty_Mass}, we might get an explanation. As of now, the flows entering and leaving the condenser is not coupled with each other, as the output pressure of the condenser is taken as a steady state value, signified by the red color of $ p_3 $ in \cref{fig:Block_diagram_inout}. This means that as the mass inside the condenser is integrating up, the pressure should increase as a result, but it does not. If the pressure would increase, the condenser throttle valve would yield a higher flow that would ensure that the flows in and out of the condenser would be coupled. 
-Since the flows in and out of the condenser is not coupled, the compressor flow does not affect flows into the evaporator. This can explain why the compressor does not affect the states of the system. 
-In terms of $ \Theta_2 $, again referring to \cref{fig:Block_diagram_inout} when looking at the diagram, it is seen that the flow leaving the expansion valve is not affected by the flash tank, as the flash tank recieves a flow from the expansion valve. This means that the flow into the flash tank from the condenser throttle valve is not affecting the flow in the expansion valve and hence the flow into the evaporator. 
-The reason we keep mentioning the evaporator is that 6 of the states are from the evaporator. Additionally the only interface the load (cargo) has with the refrigeration system is through the evaporator states. 
+These matrices constitute the linear state space model of the system. The system is stable as the eigenvalues of $A$, which are the poles of the system, are all negative.
+The fact that changes in the compressor speed and condenser throttle valve opening degree do not affect the system is not expected when considering the physical system. The flow of refrigerant is driven by the compressor and the equivalent flow resistance in the refrigeration system. The condenser throttle valve is indeed a significant part of this overall resistance for the refrigeration system.
+The flow of refrigerant in the system decides cooling capacity. Therefore it is not expected that the two mentioned inputs does not affect the states. However, referring to \cref{fig:Block_diagram_inout} and recalling that two of the states in the system are integrating as was seen in \cref{fig:non_lin_sim_faulty_Mass}, some explanation might be found. As of now, the flows entering and leaving the condenser is not coupled with each other, as the output pressure of the condenser is taken as a steady state value, signified by the red color of $ p_3 $ in \cref{fig:Block_diagram_inout}. This means that as the mass inside the condenser is integrating up, the pressure should increase as a result, but it does not. If the pressure would increase, the condenser throttle valve would yield a higher flow that would ensure that the flows in and out of the condenser would be coupled.
 
+Since the flows in and out of the condenser is not coupled, the compressor flow does not affect flows into the evaporator. This can explain why the compressor does not affect the states of the system.
+In terms of $ \Theta_2 $, again referring to \cref{fig:Block_diagram_inout} when looking at the diagram, it is seen that the flow leaving the expansion valve is not affected by the flash tank, as the flash tank receives a flow from the expansion valve. This means that the flow into the flash tank from the condenser throttle valve is not affecting the flow in the expansion valve and hence the flow into the evaporator.
+
+As mentioned earlier all values which were supposed to be found from lookup tables were substituted with steady state value from the Hi-Fi simulation in order to place focus in other parts of the project. This could potentially also be factor with regards to inaccuracies in the interface between components.
+
+The reason for the great focus on the evaporator in this regard is that 6 of the states reside in the evaporator. Additionally the only interface between the box and the refrigeration system is through the evaporator.
+
+The obtained linear model can now be used to investigate more details about the system, namely the controllability and observability of the system.
 
 %To more easily keep track of the model changes a table is provided for each model iteration. The first of such a table is seen in \cref{tab:model_full}. [A$|$B] Denotes controllability matrix and [A$|$C] denotes observability matrix.
 
@@ -242,16 +239,16 @@ The reason we keep mentioning the evaporator is that 6 of the states are from th
 %	\caption{Model status: Full model}
 %	\label{tab:model_full}
 %	\begin{tabular}{ll}
-%
-%		\textbf{Linearity status}          & Non-linear   \\ \toprule
-%		\textbf{Number of states}          & 10           \\
-%		\textbf{Number of inputs}          & 3            \\
-%		\textbf{Number of outputs}         & 2            \\ \toprule
-%		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
-%		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
-%		\textbf{Eigenvalues}               & -1 , -2 , -3 \\
-%		\textbf{A matrix condition number} & 10           \\
-%	\end{tabular}
+	%
+	%		\textbf{Linearity status}          & Non-linear   \\ \toprule
+	%		\textbf{Number of states}          & 10           \\
+	%		\textbf{Number of inputs}          & 3            \\
+	%		\textbf{Number of outputs}         & 2            \\ \toprule
+	%		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
+	%		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
+	%		\textbf{Eigenvalues}               & -1 , -2 , -3 \\
+	%		\textbf{A matrix condition number} & 10           \\
+	%	\end{tabular}
 %\end{table}
 
 %\subsubsection{Model Simplifications}
@@ -259,40 +256,40 @@ The reason we keep mentioning the evaporator is that 6 of the states are from th
 %
 %\begin{equation}  \label{eq:A}
 %	A = \left(\begin{array}{ccccccccc}
-%		-0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
-%		0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
-%		0 & 0.6451 & -0.4720 & 0.1702 & -1.1899 & 0 & 0 & 0 & 0\\
-%		0 & -0.3474 & 0.0068 & -0.2680 & -0.3600 & 0 & 0.0953 & 0 & 0\\
-%		0 & 0 & -0.0060 & 0 & -0.0250 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0.0060 & 0 & 0.0250 & 0 & 0 & 0 & 0\\
-%		0 & -0.2624 & 0.6293 & 0 & 0 & 0 & -2.4729 & 0.0228 & 1.8200\\
-%		0 & 0 & 0 & 0 & 0 & 0 & \text{5.6000e-05} & -\text{1.1200e-04} & 0\\
-%		0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045
-%	\end{array}\right)
+	%		-0.2440 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+	%		0 & -0.1000 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+	%		0 & 0.6451 & -0.4720 & 0.1702 & -1.1899 & 0 & 0 & 0 & 0\\
+	%		0 & -0.3474 & 0.0068 & -0.2680 & -0.3600 & 0 & 0.0953 & 0 & 0\\
+	%		0 & 0 & -0.0060 & 0 & -0.0250 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0.0060 & 0 & 0.0250 & 0 & 0 & 0 & 0\\
+	%		0 & -0.2624 & 0.6293 & 0 & 0 & 0 & -2.4729 & 0.0228 & 1.8200\\
+	%		0 & 0 & 0 & 0 & 0 & 0 & \text{5.6000e-05} & -\text{1.1200e-04} & 0\\
+	%		0 & 0 & 0 & 0 & 0 & 0 & 0.0045 & 0 & -0.0045
+	%	\end{array}\right)
 %\end{equation}
 %
 %\bigskip
 %
 %\begin{equation}  \label{eq:B}
 %	B = \left(\begin{array}{ccccc}
-%		0 & 0 & 0 & -0.0101 & 0\\
-%		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & \text{8.3101e-04}\\
-%		0 & \text{5.0703e-04} & 0 & 0 & 0\\
-%		\text{5.0000e-07} & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0.0055\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0
-%	\end{array}\right)
+	%		0 & 0 & 0 & -0.0101 & 0\\
+	%		0 & 0 & 0 & 0 & \text{8.3941e-04}\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & \text{8.3101e-04}\\
+	%		0 & \text{5.0703e-04} & 0 & 0 & 0\\
+	%		\text{5.0000e-07} & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0.0055\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0
+	%	\end{array}\right)
 %\end{equation}
 %
 %\medskip
 %
 %\begin{equation}  \label{eq:C}
 %	C =\left(\begin{array}{ccccccccc}
-%		0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
-%	\end{array}\right)
+	%		0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0
+	%	\end{array}\right)
 %\end{equation}
 %
 %
@@ -300,21 +297,17 @@ The reason we keep mentioning the evaporator is that 6 of the states are from th
 %	\centering
 %	\caption{Model status: Two first states removed}
 %	\begin{tabular}{ll}
-%		\toprule
-%		\textbf{Linearity status}          & Non-linear   \\ \toprule
-%		\textbf{Number of states}          & 9           \\
-%		\textbf{Number of inputs}          & 5            \\
-%		\textbf{Number of outputs}         & 1            \\ \toprule
-%		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
-%		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
-%		\textbf{Nominal stability}               & \text{$\lambda_i \leq 0, i\in )$} \\
-%		\textbf{A matrix condition number} & 10           \\ \toprule
-%	\end{tabular}
+	%		\toprule
+	%		\textbf{Linearity status}          & Non-linear   \\ \toprule
+	%		\textbf{Number of states}          & 9           \\
+	%		\textbf{Number of inputs}          & 5            \\
+	%		\textbf{Number of outputs}         & 1            \\ \toprule
+	%		\textbf{Rank of \text{[A$|$B]}}                & 11           \\
+	%		\textbf{Rank of \text{[A$|$C]}}                & 9            \\
+	%		\textbf{Nominal stability}               & \text{$\lambda_i \leq 0, i\in )$} \\
+	%		\textbf{A matrix condition number} & 10           \\ \toprule
+	%	\end{tabular}
 %\end{table}
-
-The obtained linear model can now be used to investigate more details about the system, namely the controllability and observability of the system.
-
-\todo[inline]{Comment on eigenvalues: hartmat grobman}
 
 \subsubsection{Controllability and observability}
 When evaluating a state space system, it is highly relevant to investigate whether the system is controllable and observable. \\
@@ -327,7 +320,7 @@ Kalman's test for controllability checks whether the system is controllable. The
 
 If $Q_c$ does not have full rank, the system is not controllable and action must be taken. This can be in the form of adding the needed actuators or performing a Kalman Decomposition. For the system at hand $ rank(Q_c) = 10 $. This indicates that the system is controllable.\\
 
-Similarly to controllability, the system can be checked for observability. Observability determines whether all states in a system can be estimated with an observer based on the available outputs. 
+Similarly to controllability, the system can be checked for observability. Observability determines whether all states in a system can be estimated with an observer based on the available outputs.
 
 \noindent A system is observable iff $y(t) \equiv 0 \Rightarrow x(t) \equiv 0$. This means that none of the system states can have a non-zero value, if the measured outputs are zero. This guarantees that no dynamical action is happening that cannot be observed by measuring the outputs.\\
 
@@ -340,7 +333,9 @@ Kalman's test for observability is comparable to the test for controllability. T
 \end{equation}
 
 If $Q_o$ does not have full rank, the system is not observable and action must be taken. This can be in the form of adding the needed sensors or performing a Kalman decomposition, as discussed later in section \cref{sec:kalman}
-For the system at hand $ rank(Q_o) = 8 $. This means that the system states can not be observed based on the outputs. To mitigate this, the Kalman decomposition is introduced.
+For the system at hand $ rank(Q_o) = 8 $. This means that some system states can not be observed from the available outputs. When consulting \cref{eq:f_noSub} it can be observed that the states $T_m$ and $M_v$ do not affect the output states $T_{air}$ and $T_v$. Intuitively the evaporator refrigerant vapor mass affects the vapor temperature. In the appendix in \cref{sec:app:evap_addition} an attempt is made at deriving a full expression for the evaporator vapor temperature. In the resulting full state expression in \cref{eq:app:dTvstate} it can also be observed that the $M_v$ state has an impact which further confirms the intuition. The project group did not succeed in implementing the state and thus the "rigged" state defined in \cref{sec:evaporator}.
+
+As a result of $T_m$ and $M_v$ not being observable action must be taken to remove them and thus the Kalman decomposition is introduced.
 
 \subsubsection{Kalman decomposition for unobservable system} \label{sec:kalman}
 If a system with n states is not fully observable, that is $Rank[A|C] = l < n$, it is necessary to perform a decomposition of the system. This is known as a Kalman decomposition, and it separates the system into its observable and unobservable parts. Note, that this is the Kalman decomposition for an unobservable system. There exists a Kalman decomposition for uncontrollable systems as well, but it is not presented here. The Kalman decomposition is in essence a change of basis $z=Px$, which transforms the $A$, $B$, $B_d$ and $C$ matrices of the linear system:
@@ -402,18 +397,18 @@ where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, wher
 
 The matrices $A_{11}$ and $C_{1}$ constitute an observable subsystem, for which an observer based controller can be designed. This controller will not have information about the state of the unobservable subsystem $A_{22}$. This necessitates that $A_{22}$ has to be internally stable, meaning its eigenvalues has to have negative real parts, resulting in stable behavior when unperturbed.
 
-Performing the Kalman Decomposition yields the observable subsystem given below, where the states unobservable states are $ T_m $ and $ M_v $. 
+Performing the Kalman Decomposition yields the observable subsystem given below, where the states unobservable states are $ T_m $ and $ M_v $.
 
 \begin{equation}  \label{eq:A11}
 	A_{11} = \left(\begin{array}{cccccccc}
-			-0.1000 &        0 &        0 &        0 &        0 &        0 &        0 &        0  \\
-			0.8417 &  -0.6085 &   0.3062 &  -2.7922 &        0 &        0 &        0 &        0  \\
-			-0.2370 &   0.0057 &  -0.2643 &  -0.2190 &   0.0924 &        0 &        0 &        0  \\
-			0 &  -0.0041 &        0 &  -0.0381 &        0 &        0 &        0 &        0  \\
-			-0.0030 &   0.0085 &        0 &        0 &  -0.0298 &   0.0003 &   0.0210 &        0  \\
-			0 &        0 &        0 &        0 &   0.0001 &  -0.0001 &        0 &        0  \\
-			0 &        0 &        0 &        0 &   0.0045 &        0 &  -0.0045 &        0  \\
-			0 &   0.0007 &   0.0015 &   0.0081 &        0 &        0 &        0 &  -0.0100  
+		-0.1000 &        0 &        0 &        0 &        0 &        0 &        0 &        0  \\
+		0.8417 &  -0.6085 &   0.3062 &  -2.7922 &        0 &        0 &        0 &        0  \\
+		-0.2370 &   0.0057 &  -0.2643 &  -0.2190 &   0.0924 &        0 &        0 &        0  \\
+		0 &  -0.0041 &        0 &  -0.0381 &        0 &        0 &        0 &        0  \\
+		-0.0030 &   0.0085 &        0 &        0 &  -0.0298 &   0.0003 &   0.0210 &        0  \\
+		0 &        0 &        0 &        0 &   0.0001 &  -0.0001 &        0 &        0  \\
+		0 &        0 &        0 &        0 &   0.0045 &        0 &  -0.0045 &        0  \\
+		0 &   0.0007 &   0.0015 &   0.0081 &        0 &        0 &        0 &  -0.0100
 	\end{array}\right)
 \end{equation}
 
@@ -421,17 +416,17 @@ Performing the Kalman Decomposition yields the observable subsystem given below,
 
 %\begin{equation}  \label{eq:B1}
 %	B_1 = \left(\begin{array}{ccccc}
-%		0 & 0 & 0 & 0 & 0.00083\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0.0011\\
-%		0 & 0.0005 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0.0001\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0\\
-%		0 & 0 & 0 & 0 & 0
-%	\end{array}\right)
+	%		0 & 0 & 0 & 0 & 0.00083\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0.0011\\
+	%		0 & 0.0005 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0.0001\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0\\
+	%		0 & 0 & 0 & 0 & 0
+	%	\end{array}\right)
 %\end{equation}
-As was the case with the B matrix of the linear system in \cref{eq:B_full}, the unobservable system also has zero rows as can be seen in \cref{eq:B1}. This time only $ \Theta_1 $ and $ U_{fan2} $ maps the inputs to the states and such we get a $ B_1 $ matrix as in \cref{eq:B1_redu}. 
+As was the case with the B matrix of the linear system in \cref{eq:B_full}, the unobservable system also has zero rows as can be seen in \cref{eq:B1}. This time only $ \Theta_1 $ and $ U_{fan2} $ maps the inputs to the states and such we get a $ B_1 $ matrix as in \cref{eq:B1_redu}.
 \begin{align}
 	B_1 & = \kbordermatrix{
 		& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
@@ -444,7 +439,7 @@ As was the case with the B matrix of the linear system in \cref{eq:B_full}, the 
 		T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
 		T_v 			& 0 & 0 & 0 & 0 & 0
 	} \label{eq:B1} \\
-		& \Downarrow \nonumber\\
+	& \Downarrow \nonumber\\
 	B_1	& = \kbordermatrix{
 		& \Theta_1 &  U_{fan2} \\
 		\dot{m}_{air}	& 0 		& 0.00083\\
@@ -474,34 +469,34 @@ As was the case with the B matrix of the linear system in \cref{eq:B_full}, the 
 
 %\begin{equation}  \label{eq:B1}
 %	B_1 = \kbordermatrix{
-%		& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
-%		\dot{m}_{air}	& 0 & 0 & 0 & 0 & 0.00083\\
-%		T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
-%		T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
-%		M_{lv}			& 0 & 0.0005 & 0 & 0 & 0\\
-%		T_{air}  		& 0 & 0 & 0 & 0 & 0.0001\\
-%		T_{box}	 		& 0 & 0 & 0 & 0 & 0\\
-%		T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
-%		T_v 			& 0 & 0 & 0 & 0 & 0
-%	}
+	%		& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
+	%		\dot{m}_{air}	& 0 & 0 & 0 & 0 & 0.00083\\
+	%		T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
+	%		T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
+	%		M_{lv}			& 0 & 0.0005 & 0 & 0 & 0\\
+	%		T_{air}  		& 0 & 0 & 0 & 0 & 0.0001\\
+	%		T_{box}	 		& 0 & 0 & 0 & 0 & 0\\
+	%		T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
+	%		T_v 			& 0 & 0 & 0 & 0 & 0
+	%	}
 %\end{equation}
 %\begin{equation*}
 %	\Downarrow
 %\end{equation*}
 %
 %\begin{equation} \label{eq:B1_redu}
-%	B_1	= 
+%	B_1	=
 %	\kbordermatrix{
-%		& \Theta_1 &  U_{fan2} \\
-%		\dot{m}_{air}	& 0 		& 0.00083\\
-%		T_{mlv}			& 0 		& 0\\
-%		T_{mv}			& 0 		& 0.0011\\
-%		M_{lv}			& 0.0005	& 0\\
-%		T_{air}  		& 0 		& 0.0001\\
-%		T_{box}	 		& 0 		& 0\\
-%		T_{cargo} 		& 0 		& 0\\
-%		T_v 			& 0 		& 0
-%	}
+	%		& \Theta_1 &  U_{fan2} \\
+	%		\dot{m}_{air}	& 0 		& 0.00083\\
+	%		T_{mlv}			& 0 		& 0\\
+	%		T_{mv}			& 0 		& 0.0011\\
+	%		M_{lv}			& 0.0005	& 0\\
+	%		T_{air}  		& 0 		& 0.0001\\
+	%		T_{box}	 		& 0 		& 0\\
+	%		T_{cargo} 		& 0 		& 0\\
+	%		T_v 			& 0 		& 0
+	%	}
 %\end{equation}
 
 \medskip
@@ -513,12 +508,12 @@ As was the case with the B matrix of the linear system in \cref{eq:B_full}, the 
 	\end{array}\right)
 \end{equation}
 
-These matrices define an observable and controllable system model. It is noted that the removal of the unobservable states left an extra zero row in $B_1$ compared to $ B $ \cref{eq:B_full}. The input that 'disappears' during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the metal temperature state in the condenser $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states. 
+These matrices define an observable and controllable system model. It is noted that the removal of the unobservable states left an extra zero row in $B_1$ compared to $ B $ \cref{eq:B_full}. The input that 'disappears' during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the metal temperature state in the condenser $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states.
 In the end means that the 3 corresponding control inputs does not affect the observable subsystem. Initutively this is not true for the physical system, but it is none the less the case for this simplified model, which is accurate around the equilibrium point.
 
 \subsubsection{Condition number} \label{sec:condNumber}
-As a supplement to whether the controllable and observable, which is a binary decision, the means of a condition number can be introduced. This can bring in nuances as to a degree of how controllable or observable a system is. However, in order to introduce the condition number, it is necessary to first introduce the terms singular value, by introducing the Singular Value Decomposition (SVD).\\
- 
+As a supplement to whether the system is controllable and observable, which is a binary decision, the means of a condition number is introduced. The condition number can bring in nuances as to the degree of how controllable or observable a system is. However, in order to introduce the condition number, it is necessary to first touch on the term "singular value", by introducing the Singular Value Decomposition (SVD).\\
+
 Consider the linear problem $Ax=b$, with $A \in \mathbb{R} ^{n x n}$ and $ x, b \in \mathbb{R} ^{n x 1}$, where x is the unknown solution. The matrix $A$ can be factorized by SVD as $A = USV^T$, where:
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
@@ -528,13 +523,10 @@ Consider the linear problem $Ax=b$, with $A \in \mathbb{R} ^{n x n}$ and $ x, b 
 	\end{tabular}
 \end{center}
 
-The singular values $\sigma$ are each associated with the eigenvectors in $U$ and $V$. $U$ and $V$ form orthonormal bases for the output space (row) and input space (column) of $A$ respectively. The first row vector contained in $U$ can as such be interpreted as a unit length input vector in a specific direction. Specifically the direction which creates the largest possible output signal. The input is this direction is scaled by the magnitude of the first singular value. The output direction is defined by the first columnvector of $V$. Each subsequent set of vectors and singular value, indicates the gain in other direction. The singular values (gains) are sorted from largest to smallest.
+The singular values $\sigma$ are each associated with the eigenvectors in $U$ and $V$. $U$ and $V$ form orthonormal bases for the output space (row) and input space (column) of $A$ respectively. The first row vector contained in $U$ can as such be interpreted as a unit length input vector in a specific direction. Specifically the direction which creates the largest possible output signal. The input is this direction is scaled by the magnitude of the first singular value. The output direction is defined by the first columnvector of $V$. Each subsequent set of vectors and singular value, indicates the gain in a direction. The singular values (gains) are sorted from largest to smallest.
 
-The condition number of a matrix is defined as the ratio between its maximum and minimum singular values. It is a measurement of how sensitive the output $x$ is to a change in the input $b$. In multivariable control theory the condition number is a useful measure in evaluating how tolerant the system is to disturbances and other errors. A large condition number is an indication that small input pertubations might cause large errors in the output signal.\\
+The condition number of a matrix is defined as the ratio between its largest and smallest singular values. It is a measurement of how sensitive the output $x$ is to a change in the input $b$. In multivariable control theory the condition number is a useful measure in evaluating how tolerant the system is to disturbances and other errors. A large condition number is an indication that small input pertubations might cause large errors in the output signal.\\
 
-It is important to note the intentionally vague term "large condition number". The condition number effectively maps an input error to the corresponding output error. Thus the meaning of a large or small condition number relies on the size of the expected input error and the tolerable output error. In most control applications a condition number of the state transition matrix larger than 10 is considered large, but this is only presented to give intuition of the expected size of the condition number.
+It is important to note the intentionally vague term "large condition number". The condition number effectively maps an input error to the corresponding output error. Thus the meaning of a large or small condition number relies on the size of the expected input error and the tolerable output error. In some control applications a condition number of $A$ larger than 10 is considered large. This would be the case for a system where all states are largely inside same numerical range. This is not the case for this refrigeration model where states vary greatly in size from $M_v$ at around 0.001 \si{kg} to almost any temperature state around 250-300 \si{K}. Furthermore the numerical size differences between variables with different SI units also has an impact. A common pressure such as the atmospherical pressure lies at 100000 [Pa].
 
-The differences in range of states and outputs also is important when evaluating the size of a condition number.
-
-
-\todo[inline]{Include condition number of system}
+The condition number for $A$ is 3.165e+09. Evaluating whether this condition number is alarming in this case becomes a difficult task. It is surely worth considering keeping the seemingly high condition number in mind when evaluating system behavior, and when further developing and testing the model.
