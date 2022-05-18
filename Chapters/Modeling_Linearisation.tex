@@ -314,6 +314,8 @@ The reason we keep mentioning the evaporator is that 6 of the states are from th
 
 The obtained linear model can now be used to investigate more details about the system, namely the controllability and observability of the system.
 
+\todo[inline]{Comment on eigenvalues: hartmat grobman}
+
 \subsubsection{Controllability and observability}
 When evaluating a state space system, it is highly relevant to investigate whether the system is controllable and observable. \\
 A system is said to be controllable iff there exists a control signal u(t), that can achieve $x(T) = \zeta$, for any $\zeta \in \mathbb{R} ^{n}$, under the constraints $T>0$ and $x(0)=0$. In practice, this means that the actuators are sufficient and able to alter all the states of the system. As a counter example, an uncontrollable system would have at least one state for which there are some values that cannot be reached by the controller.\\

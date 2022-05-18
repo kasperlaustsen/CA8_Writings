@@ -3,46 +3,9 @@ This chapter contains the controller design for the refrigeration system model d
 Two optimal control strategies are pursued for this MIMO problem. Firstly, the Linear Quadratic Regulator will be implemented, followed by the more complex and customizable Model Predictive Control algorithm. Both controllers will be tested and benchmarked against each other, while also comparing them to the coupled PID control setup currently implemented at BITZER.
 
 Before the controller can be designed, we will discuss the observer structure for the control model.
-
-\subsection{Observer Gain}\label{sec:observer-gain}
-As stated previously, the control model is to be used as an observer for the actual system. By measuring the inputs and outputs the control model will produce an estimate of the states. These observed states will be used for feedback control. \\
-
-The observer structure used in this project is seen in \cref{fig:luenberger}. The difference in the plant and model outputs are multiplied by a observer gain L, and added to the observed state derivatives. This is known as the Luenberger observer. The error $e$ is defined as
-\begin{equation} \label{eq:error}
-	e = x-\hat{x}
-\end{equation}
-
-subject to the dynamics
-\begin{equation}
-	\dot{e} = \dot{x}-\dot{\hat{x}}
-\end{equation}
-
-$\dot{x}$ and $\dot{\hat{x}}$ can be written as
-
-\begin{equation}
-	\dot{x} = A + Bu
-\end{equation}
+\todo[inline]{Rewrite to exclude MPC}
 
 
-\begin{equation}
-	\dot{\hat{x}} = A\hat{x} + LCe + Bu
-\end{equation}
-
-Substituting these into \cref{eq:error} yields
-
-\begin{equation}
-	\dot{e} = Ax + Bu - ( A\hat{x} + LCe  + Bu)
-\end{equation}
-
-\begin{equation}
-	\dot{e} = Ae - LCe
-\end{equation}
-
-\begin{equation} \label{eq:obs_error_dot}
-	\dot{e} = (A - LC)e
-\end{equation}
-
-This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ 5-10 times larger than the eigenvalues of $A-BK$. This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.
 
 \subsection{Linear Quadratic Regulator} \label{sec:linear-quadratic-regulator}
 The control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referred to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the system in \cref{eq:lqr_sys} with $x$ representing the system states, $u$ the control inputs and $y$ the measured outputs.\\
@@ -162,6 +125,46 @@ Using Q and R as identitity matrices of appropriate dimensions the following opt
 		0.5679 &   0.0786 &   0.1447 &  -4.0389 &   0.7489 &   0.4246 &   2.5119 &   0.0041
 	\end{array}\right) 
 \end{equation}
+
+\subsection{Observer Gain}\label{sec:observer-gain}
+As stated previously, the control model is to be used as an observer for the actual system. By measuring the inputs and outputs the control model will produce an estimate of the states. These observed states will be used for feedback control. \\
+
+The observer structure used in this project is seen in \cref{fig:luenberger}. The difference in the plant and model outputs are multiplied by a observer gain L, and added to the observed state derivatives. This is known as the Luenberger observer. The error $e$ is defined as
+\begin{equation} \label{eq:error}
+	e = x-\hat{x}
+\end{equation}
+
+subject to the dynamics
+\begin{equation}
+	\dot{e} = \dot{x}-\dot{\hat{x}}
+\end{equation}
+
+$\dot{x}$ and $\dot{\hat{x}}$ can be written as
+
+\begin{equation}
+	\dot{x} = A + Bu
+\end{equation}
+
+
+\begin{equation}
+	\dot{\hat{x}} = A\hat{x} + LCe + Bu
+\end{equation}
+
+Substituting these into \cref{eq:error} yields
+
+\begin{equation}
+	\dot{e} = Ax + Bu - ( A\hat{x} + LCe  + Bu)
+\end{equation}
+
+\begin{equation}
+	\dot{e} = Ae - LCe
+\end{equation}
+
+\begin{equation} \label{eq:obs_error_dot}
+	\dot{e} = (A - LC)e
+\end{equation}
+
+This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ 5-10 times larger than the eigenvalues of $A-BK$. This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.
 
 
 
