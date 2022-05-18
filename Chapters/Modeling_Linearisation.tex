@@ -90,7 +90,7 @@ The linear model can then be expressed as such:
 
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in \cref{sec:ctrl}.
 
-\subsubsection{Linearised Model}
+\subsubsection{Linearised Model}\label{sec:linearised-model}
 Finding an operating point for a system can be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled. Furthermore steady-state values were used for all table look-ups as another simplification.\\
 
 Linearising the non-linear system without the faulty states $ M_{pjj} $ $ M_{con} $ as described in \cref{sec:model-verification} yields the following system matrices with 10 states.
@@ -530,3 +530,86 @@ The condition number of a matrix is defined as the ratio between its largest and
 It is important to note the intentionally vague term "large condition number". The condition number effectively maps an input error to the corresponding output error. Thus the meaning of a large or small condition number relies on the size of the expected input error and the tolerable output error. In some control applications a condition number of $A$ larger than 10 is considered large. This would be the case for a system where all states are largely inside same numerical range. This is not the case for this refrigeration model where states vary greatly in size from $M_v$ at around 0.001 \si{kg} to almost any temperature state around 250-300 \si{K}. Furthermore the numerical size differences between variables with different SI units also has an impact. A common pressure such as the atmospherical pressure lies at 100000 [Pa].
 
 The condition number for $A$ is 3.165e+09. Evaluating whether this condition number is alarming in this case becomes a difficult task. It is surely worth considering keeping the seemingly high condition number in mind when evaluating system behavior, and when further developing and testing the model.
+
+
+\subsubsection{Model info, wrap up}
+\begin{tabular}{ccc}
+	\begin{minipage}{.5\linewidth}
+%		\begin{table}[h]
+			\centering
+%			\caption{Linearised model from \cref{sec:linearised-model}}
+			\label{tab:model_full}
+			\begin{tabular}{ll}
+				\toprule
+				\textbf{Linearised system from \cref{sec:linearised-model}}   \\ \toprule
+				\textbf{Number of states}          & 10           \\
+				\textbf{Number of inputs}          & 3            \\
+				\textbf{Number of outputs}         & 2            \\ \toprule
+				\textbf{Rank of \text{[A$|$B]}}    & 10           \\
+				\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+				\textbf{Eigenvalues}               & XXX 		\\
+				\textbf{Condition number of A} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+			\end{tabular}
+%		\end{table}
+	\end{minipage}
+	\begin{minipage}{.5\linewidth}
+%		\begin{table}[h]
+			\centering
+%			\caption{Kalman decomposed model}
+			\begin{tabular}{ll}
+				\toprule
+				\textbf{Kalman decomposed model from \cref{sec:kalman}}         		   \\ \toprule
+				\textbf{Number of states}          & 8           \\
+				\textbf{Number of inputs}          & 2            \\
+				\textbf{Number of outputs}         & 2            \\ \toprule
+				\textbf{Rank of \text{[A$|$B]}}    & 8           \\
+				\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+				\textbf{Eigenvalues}               & XXX 		\\
+				\textbf{Condition number of A} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+				\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+			\end{tabular}
+%		\end{table}
+	\end{minipage}
+
+\end{tabular}	
+	
+%
+%\begin{table}[h]
+%	\centering
+%	\caption{Model status: Linearised model from \cref{sec:linearised-model}}
+%	\label{tab:model_full}
+%	\begin{tabular}{ll}
+%			\toprule
+%			\textbf{Linearity status}          & Linear   \\ \toprule
+%			\textbf{Number of states}          & 10           \\
+%			\textbf{Number of inputs}          & 3            \\
+%			\textbf{Number of outputs}         & 2            \\ \toprule
+%			\textbf{Rank of \text{[A$|$B]}}    & 10           \\
+%			\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+%			\textbf{Eigenvalues}               & XXX 		\\
+%			\textbf{Condition number of A} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+%		\end{tabular}
+%\end{table}
+%
+%\begin{table}[h]
+%	\centering
+%	\caption{Model status: Two first states removed}
+%	\begin{tabular}{ll}
+%			\toprule
+%			\textbf{Linearity status}          & Linear   \\ \toprule
+%			\textbf{Number of states}          & 8           \\
+%			\textbf{Number of inputs}          & 2            \\
+%			\textbf{Number of outputs}         & 2            \\ \toprule
+%			\textbf{Rank of \text{[A$|$B]}}    & 8           \\
+%			\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+%			\textbf{Eigenvalues}               & XXX 		\\
+%			\textbf{Condition number of A} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+%		\end{tabular}
+%\end{table}
