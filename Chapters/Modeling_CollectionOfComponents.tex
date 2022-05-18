@@ -11,6 +11,8 @@ The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the sys
 	\label{fig:Block_diagram_inout}
 \end{figure}
 
+\todo{write about what problems lie ahead. Conclude on the connections in the diagram and the steady state values and operating points. Can not be generalised to other operating points..}
+
 \newpage
 
 \subsubsection{Mathematical formulation of non-linear state space model} \label{sec:non_lin_model}
@@ -98,11 +100,11 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 		\dfrac{Q_{ca}(T_{air},T_{cargo}) + Q_{ba}(T_{air},T_{box}) + Q_{fan}(U_{fan2}) - Q_{cool}(T_{air},T_{mv},T_{mlv},U_{fan2},\dot{m}_{air})}{M_{air} \cdot Cp_{air}} \\					%box
 		\dfrac{Q_{amb}(T_{ambi},T_{box}) -  Q_{ba}(T_{air},T_{box})}{M_{box} \cdot Cp_{box}} \\							%box
 		\dfrac{-Q_{ca}(T_{air},T_{cargo})}{M_{cargo} \cdot Cp_{cargo}}									\\	%box
-		INSERT HERE! 
+		\bar{T_v}(M_{lv},T_{mv},T_{mlv},T_v) - T_v 
 	\end{bmatrix}
-\end{equation} \todo[inline]{Insert fake Tv state}
+\end{equation}
 
-\cref{eq:f_noSub} is the set of equations that constitutes the non-linear state space representation of the refrigeration system. All the functions on the right most side of the equation, can be substituted with the algebraic equations from the modelling section. This is too extensive to fit into a single page, so it is omitted. In stead the functions are indicates which states in $ x $ and inputs in $ u $ that that affects them. Additionally it is indicated if the functions are affected by the disturbance $ T_{ambi} $. The model contains 11 states, 5 control inputs and 1 disturbance. The next step in the project is now to validate the found non linear state space model.
+\cref{eq:f_noSub} is the set of equations that constitutes the non-linear state space representation of the refrigeration system. All the functions on the right most side of the equation, can be substituted with the algebraic equations from the modelling section. This is too extensive to fit into a single page, so it is omitted. In stead the functions on the right most side indicates which states in $ x $ and inputs in $ u $ that affects them. Additionally it is indicated if the functions are affected by the disturbance $ T_{ambi} $. The model contains 12 states, 5 control inputs and 1 disturbance. The next step in the project is now to validate the found non linear state space model.
 
 \newpage
 \subsection{Model verification}\label{sec:model-verification}
