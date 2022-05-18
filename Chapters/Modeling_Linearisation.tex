@@ -90,7 +90,11 @@ The linear model can then be expressed as such:
 
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in \cref{sec:ctrl}.
 
+<<<<<<< HEAD
 \subsubsection{Linearised Model} \label{sec:linearised-model}
+=======
+\subsubsection{Linearised Model}\label{sec:linearised-model}
+>>>>>>> 536cc9b856c05d7f953ed392749fbbd48eb239e0
 Finding an operating point for a system can be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled. Furthermore steady-state values were used for all table look-ups as another simplification.\\
 
 Linearising the non-linear system without the faulty states $ M_{pjj} $ $ M_{con} $ as described in \cref{sec:model-verification} yields the following system matrices with 10 states.
@@ -532,15 +536,24 @@ It is important to note the intentionally vague term "large condition number". T
 
 The condition number for $A$ is 3.165e+09. Evaluating whether this condition number is alarming in this case becomes a difficult task. It is surely worth considering keeping the seemingly high condition number in mind when evaluating system behavior, and when further developing and testing the model.
 
+<<<<<<< HEAD
 The condition number for $A$ is 3.165e+09. Evaluating whether this condition number is alarming in this case becomes a difficult task. It is surely worth considering keeping the seemingly high condition number in mind when evaluating system behavior, and when further developing and testing the model.
 
+=======
+>>>>>>> 536cc9b856c05d7f953ed392749fbbd48eb239e0
 
 \subsubsection{Model info, wrap up}
 \begin{tabular}{ccc}
 	\begin{minipage}{.5\linewidth}
+<<<<<<< HEAD
 		%		\begin{table}[h]
 			\centering
 			%			\caption{Linearised model from \cref{sec:linearised-model}}
+=======
+%		\begin{table}[h]
+			\centering
+%			\caption{Linearised model from \cref{sec:linearised-model}}
+>>>>>>> 536cc9b856c05d7f953ed392749fbbd48eb239e0
 			\label{tab:model_full}
 			\begin{tabular}{ll}
 				\toprule
@@ -555,12 +568,21 @@ The condition number for $A$ is 3.165e+09. Evaluating whether this condition num
 				\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
 				\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
 			\end{tabular}
+<<<<<<< HEAD
 			%		\end{table}
 	\end{minipage}
 	\begin{minipage}{.5\linewidth}
 		%		\begin{table}[h]
 			\centering
 			%			\caption{Kalman decomposed model}
+=======
+%		\end{table}
+	\end{minipage}
+	\begin{minipage}{.5\linewidth}
+%		\begin{table}[h]
+			\centering
+%			\caption{Kalman decomposed model}
+>>>>>>> 536cc9b856c05d7f953ed392749fbbd48eb239e0
 			\begin{tabular}{ll}
 				\toprule
 				\textbf{Kalman decomposed model from \cref{sec:kalman}}         		   \\ \toprule
@@ -574,17 +596,26 @@ The condition number for $A$ is 3.165e+09. Evaluating whether this condition num
 				\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
 				\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
 			\end{tabular}
+<<<<<<< HEAD
 			%		\end{table}
 	\end{minipage}
 
 \end{tabular}
 
+=======
+%		\end{table}
+	\end{minipage}
+
+\end{tabular}	
+	
+>>>>>>> 536cc9b856c05d7f953ed392749fbbd48eb239e0
 %
 %\begin{table}[h]
 %	\centering
 %	\caption{Model status: Linearised model from \cref{sec:linearised-model}}
 %	\label{tab:model_full}
 %	\begin{tabular}{ll}
+<<<<<<< HEAD
 	%			\toprule
 	%			\textbf{Linearity status}          & Linear   \\ \toprule
 	%			\textbf{Number of states}          & 10           \\
@@ -597,12 +628,27 @@ The condition number for $A$ is 3.165e+09. Evaluating whether this condition num
 	%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
 	%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
 	%		\end{tabular}
+=======
+%			\toprule
+%			\textbf{Linearity status}          & Linear   \\ \toprule
+%			\textbf{Number of states}          & 10           \\
+%			\textbf{Number of inputs}          & 3            \\
+%			\textbf{Number of outputs}         & 2            \\ \toprule
+%			\textbf{Rank of \text{[A$|$B]}}    & 10           \\
+%			\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+%			\textbf{Eigenvalues}               & XXX 		\\
+%			\textbf{Condition number of A} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+%		\end{tabular}
+>>>>>>> 536cc9b856c05d7f953ed392749fbbd48eb239e0
 %\end{table}
 %
 %\begin{table}[h]
 %	\centering
 %	\caption{Model status: Two first states removed}
 %	\begin{tabular}{ll}
+<<<<<<< HEAD
 	%			\toprule
 	%			\textbf{Linearity status}          & Linear   \\ \toprule
 	%			\textbf{Number of states}          & 8           \\
@@ -615,4 +661,18 @@ The condition number for $A$ is 3.165e+09. Evaluating whether this condition num
 	%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
 	%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
 	%		\end{tabular}
+=======
+%			\toprule
+%			\textbf{Linearity status}          & Linear   \\ \toprule
+%			\textbf{Number of states}          & 8           \\
+%			\textbf{Number of inputs}          & 2            \\
+%			\textbf{Number of outputs}         & 2            \\ \toprule
+%			\textbf{Rank of \text{[A$|$B]}}    & 8           \\
+%			\textbf{Rank of \text{[A$|$C]}}    & 8            \\
+%			\textbf{Eigenvalues}               & XXX 		\\
+%			\textbf{Condition number of A} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$B]}} 		& XXX           \\
+%			\textbf{Condition number of \text{[A$|$C]}} 		& XXX           \\
+%		\end{tabular}
+>>>>>>> 536cc9b856c05d7f953ed392749fbbd48eb239e0
 %\end{table}
