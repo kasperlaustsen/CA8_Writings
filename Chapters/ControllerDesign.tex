@@ -75,7 +75,7 @@ The cross-term is typically ignored by setting $N=0$. The matrices Q and R are i
 The value of Q and R is a choice the control engineer must make. While it in practicality requires some amount of trial-and-error iteration, there are methods for choosing a reasonable starting value. An often used tuning method to obtain initial Q and R matrices is following Bryson's rule. It states that the state x$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(x_{\textit{i}}\right)^2}$. Similarly the control input u$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(u_{\textit{i}}\right)^2}$. This effectively scales the maximum value of all entries in the cost function J to 1. This is particularly useful, when the states and inputs are have numerically large differences.\\
 
 
-The fact that the LQR problem aims to set the states equal to zero, may sound like a undesirable goal. If a state is representative of a temperature measured in Kelvin, driving it to 0 is likely neither a realistic nor useful goal. However, lets recall the linearization of the system performed in \cref{sec:mod_lin}. The first order Taylor expansion did not only linearize the system, it also changed the psyical interpretation of the system states. Rather than being an absolute value, it is now the difference between the actual value and the equilibrium point used for linearization. This means that the LQR problem will seek to set this difference to 0, thus driving the system to the equilibrium point.\\
+The fact that the LQR problem aims to set the states equal to zero, may sound like a undesirable goal. If a state is representative of a temperature measured in Kelvin, driving it to 0 is likely neither a realistic nor useful goal. However, lets recall the linearization of the system performed in \cref{sec:mod_lin}. The first order Taylor expansion did not only linearize the system, it also changed the physical interpretation of the system states. Rather than being an absolute value, it is now the difference between the actual value and the equilibrium point used for linearization. This means that the LQR problem will seek to set this difference to 0, thus driving the system to the equilibrium point.\\
 
 Thus the cost function with no cross-term cost becomes:
 
@@ -128,17 +128,39 @@ LQR is chosen as the initial control strategy due to its intuitive way of use, a
 %Since the system will naturally settle at $y=r$, we have eliminitated the need for an integral state by making a proper linearisation. The downside to this strategy is that the reference is locked in by the choice of operating point. Selecting a new reference value will require a new linearisation at the a operating point associated with that reference value - not a trivial task.
 
 \subsubsection{LQR controller gain}
+As described in \cref{sec:linear-quadratic-regulator}, in order to find the optimal controller gain, the weight matrices Q and R needs to be determined. They are chosen as: 
 
-Using Q and R as identitity matrices of appropriate dimensions the following optimal feedback gain is calculated:
-\todo[inline]{Delete zero rows}
 \begin{equation}
-	K = \left(\begin{array}{ccccccc}
-		0 & 0 & 0 & 0 & 0 & 0 & 0\\
-		-0.0633 & -0.0169 & -0.0127 & 0.9872 & -0.0015 & -0.1164 & -0.5374\\
-		0 & 0 & 0 & 0 & 0 & 0 & 0\\
-		0 & 0 & 0 & 0 & 0 & 0 & 0\\
-		0.0197 & 0.0036 & 0.0028 & -0.1416 & 0.0014 & 0.0192 & 0.0836
-	\end{array}\right)
+	Q = 
+	\left(\begin{array}{cccccccc}
+		1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+		0 & 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+		0 & 0 & 1 & 0 & 0 & 0 & 0 & 0  \\
+		0 & 0 & 0 & 1 & 0 & 0 & 0 & 0  \\
+		0 & 0 & 0 & 0 & 2 & 0 & 0 & 0  \\
+		0 & 0 & 0 & 0 & 0 & 1 & 0 & 0  \\
+		0 & 0 & 0 & 0 & 0 & 0 & 2 & 0  \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 1	  
+	\end{array}\right) 
+	\text{  and  }
+	R = 
+		\left(\begin{array}{cc}
+		1 & 0  \\
+		0 & 0.025  
+	\end{array}\right) 
+\end{equation}
+
+
+
+ 
+Using Q and R as identitity matrices of appropriate dimensions the following optimal feedback gain is calculated:
+
+\begin{equation}
+	K =
+	\left(\begin{array}{cccccccccc}
+		-0.0784 &  -0.0140 &  -0.0203 &   1.1457 &  -0.1743 &  -0.1021 &  -0.6274 &   0.0049 \\
+		0.5679 &   0.0786 &   0.1447 &  -4.0389 &   0.7489 &   0.4246 &   2.5119 &   0.0041
+	\end{array}\right) 
 \end{equation}
 
 

@@ -63,7 +63,7 @@ The oscillations on the cargo hold temperature are not visibly different before 
 
 \newpage
 \subsection{Tuned LQR controller: Step disturbance}
-Lastly the control systems performance in the presence of a constant disturbance is investigated. Initially the ambient temperature is set to 20$^{\circ}$. At time $t=0.3$ hours a 5$^{\circ}$ step in the disturbance is introduced. The optimal controller takes action at time $t=1.1$ hours. The controlled outputs are seen in \cref{fig:LQR_wellTuned_5stepDist}.\\
+Lastly the control systems performance in the presence of a constant disturbance is investigated. Initially the ambient temperature is set to 20$^{\circ}$C. At time $t=0.3$ hours a 5$^{\circ}$C step in the disturbance is introduced. The optimal controller takes action at time $t=1.1$ hours. The controlled outputs are seen in \cref{fig:LQR_wellTuned_5stepDist}.\\
 
 \begin{figure}[h!]
 	\centering
@@ -81,7 +81,7 @@ Lastly the control systems performance in the presence of a constant disturbance
 	\label{fig:LQR_wellTuned_5stepDist_zoom}
 \end{figure}
 
-It is seen that air temperature converges to 1.25$^{\circ}$C above the operating point, which means $T_air = -3^{\circ}C$. The superheat drops to 2.4$^{\circ}$C below the operating point, which means there is 3.6$^{\circ}$C superheat.\\
+It is seen that air temperature converges to 1.25$^{\circ}$C above the operating point, which means $T_{air} = -3^{\circ}C$. The superheat drops to 2.4$^{\circ}$C below the operating point, which means there is 3.6$^{\circ}$C superheat.\\
 
 The increase in air temperature is large enough to be considered a problem for transportation of temperature critical goods, which is of course the intended purpose of the reefer trailer. The cause is likely, as was the case for the sine disturbance, that the controller is unable to change the compressor speed. The compressor speed is critical for increasing the refrigerant flow through the cycle, and is thus highly correlated with the cooling capacity of the system. \\
 

@@ -82,6 +82,7 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 		T_{air}			\\				%box
 		T_{box}			\\				%box
 		T_{cargo}		\\				%box
+		T_v				\\				%evaporator
 
 	\end{bmatrix}
 	=
@@ -94,9 +95,10 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 		\dfrac{Q_{amv}(T_{air},T_{mv},U_{fan2},\dot{m}_{air}) - Q_{mv}(M_{lv},T_{mv}) - Q_{mvmlv}(T_{mv},T_{mlv})}{M_m \cdot Cp_m \cdot (1- \sigma(M_{lv}))}	\\	%evaporator
 		\dot{m}_{5}(\Theta_1) - \dot{m}_{dew}(M_{lv},T_{mlv})		\\											%evaporator
 		\dot{m}_{dew}(M_{lv},T_{mlv}) - \dot{m}_1(M_{v}, \omega)	\\												%evaporator
-		\dfrac{Q_{ca}(T_{air},T_{cargo}) + Q_{ba}(T_{air},T_{box}) + Q_{fan}(U_{fan2}) - Q_{cool}(T_{air},T_{mv},T_{mlv},U_{fan2},\dot{m}_{air})}{M_{air} \cdot Cp_{air}} \\		%box
+		\dfrac{Q_{ca}(T_{air},T_{cargo}) + Q_{ba}(T_{air},T_{box}) + Q_{fan}(U_{fan2}) - Q_{cool}(T_{air},T_{mv},T_{mlv},U_{fan2},\dot{m}_{air})}{M_{air} \cdot Cp_{air}} \\					%box
 		\dfrac{Q_{amb}(T_{ambi},T_{box}) -  Q_{ba}(T_{air},T_{box})}{M_{box} \cdot Cp_{box}} \\							%box
-		\dfrac{-Q_{ca}(T_{air},T_{cargo})}{M_{cargo} \cdot Cp_{cargo}}									%box
+		\dfrac{-Q_{ca}(T_{air},T_{cargo})}{M_{cargo} \cdot Cp_{cargo}}									\\	%box
+		INSERT HERE! 
 	\end{bmatrix}
 \end{equation} \todo[inline]{Insert fake Tv state}
 
