@@ -1,13 +1,11 @@
-This chapter contains the controller design for the refrigeration system model developed in \cref{sec:mod}. The objectives of the controllers are to maintain a fixed cargo hold air temperature, while minimizing energy consumption and protecting the compressor by regulating the superheat. These objectives are not easily formulated in terms of pole placements in a simple state feedback controller. Optimal controllers are better suited in describing these objectives, as they are made to minimize a cost function, chosen by the designer. \\
+This chapter contains the controller design for the refrigeration system model developed in \cref{sec:mod}. The objective of the controller is to maintain a fixed cargo hold air temperature, while minimizing energy consumption and protecting the compressor by regulating the superheat. These objectives are not easily formulated in terms of pole placements in a simple state feedback controller. Optimal controllers are better suited in describing these objectives, as they are made to minimize a cost function, chosen by the designer. \\
 
 An optimal control strategy is pursued for this MIMO problem. The Linear Quadratic Regulator will be implemented, which will be tested and benchmarked against the coupled PID control setup currently implemented in the Hi-Fi simulation.
 
 After the controller is discussed, the observer structure for the control model is discussed.
 
-
 \subsection{Linear Quadratic Regulator} \label{sec:linear-quadratic-regulator}
 The control strategy to be implemented is the infinite-horizon Linear Quadratic Regulator, referred to as the LQR controller. The LQR problem is an optimal control problem, that finds the optimal feedback gain, that will drive the states of a dynamical system to 0. This is done by selecting a control input u, that minimizes a relevant cost function. As an example consider the system in \cref{eq:lqr_sys} with $x$ representing the system states, $u$ the control inputs and $y$ the measured outputs.\\
-
 \begin{equation} \label{eq:lqr_sys}
 	\begin{split}
 		\dot{x} 	& = Ax + Bu \\
@@ -22,6 +20,7 @@ A relevant cost function for this LQR problem would be on this form:
 \end{equation}
 
 where
+\smallskip
 
 \begin{center}
 	\begin{tabular}{l r l }
@@ -29,14 +28,12 @@ where
 		weight & $Q$ and $N$ & $\ge 0$ (positive semi-definite) and symmetric
 	\end{tabular}
 \end{center}
-
+\medskip
 The cross-term is typically ignored by setting $N=0$. The matrices Q and R are introduced to add weights to the various states and inputs. This allows the engineer to penalize critical states and inputs more than others. This is generally useful, especially if deviations in certain states or inputs negatively impact the system energy consumption or could cause dangerous system behavior.\\
-%The algorithm requires access to all system states, either through measurement or estimation. The latter is achieved by the linear model designed in \cref{sec:mod_lin}. \\
 
-The value of Q and R is a choice the control engineer must make. While it in practicality requires some amount of trial-and-error iteration, there are methods for choosing a reasonable starting value. An often used tuning method to obtain initial Q and R matrices is following Bryson's rule. It states that the state x$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(x_{\textit{i}}\right)^2}$. Similarly the control input u$_{\textit{i}}$ should be penalized by a factor $\dfrac{1}{\text{Max} \left(u_{\textit{i}}\right)^2}$. This effectively scales the maximum value of all entries in the cost function J to 1. This is particularly useful, when the states and inputs are have numerically large differences.\\
+The value of Q and R is a choice the control engineer must make. While it in practicality requires some amount of trial-and-error iteration, there are methods for choosing a reasonable starting value. An often used tuning method to obtain initial Q and R matrices is following Bryson's rule. It states that the state x$_{\textit{i}}$ should be penalized by a factor $1/\text{Max} \left(x_{\textit{i}}\right)^2$. Similarly the control input u$_{\textit{i}}$ should be penalized by a factor $\frac{1}{\text{Max} \left(u_{\textit{i}}\right)^2}$. This effectively scales the maximum value of all entries in the cost function J to 1. This is particularly useful, when the states and inputs are have numerically large differences.\\
 
-
-The fact that the LQR problem aims to set the states equal to zero, may sound like a undesirable goal. If a state is representative of a temperature measured in Kelvin, driving it to 0 is likely neither a realistic nor useful goal. However, lets recall the linearization of the system performed in \cref{sec:mod_lin}. The first order Taylor expansion did not only linearize the system, it also changed the physical interpretation of the system states. Rather than being an absolute value, it is now the difference between the actual value and the equilibrium point used for linearization. This means that the LQR problem will seek to set this difference to 0, thus driving the system to the equilibrium point.\\
+The fact that the LQR problem aims to set the states equal to zero, may sound like a undesirable goal. If a state is representative of a temperature measured in Kelvin, driving it to 0 is likely neither a realistic nor useful goal. However, lets recall the linearization of the system performed in \cref{sec:mod_lin}. The first order Taylor expansion did not only linearize the system, it also changed the physical interpretation of the system states. Rather than being an absolute value, it is now the difference between the actual value and the equilibrium point used for linearization. This means that the LQR problem will seek to set this difference to 0, thus driving the system to the equilibrium point.
 
 Thus the cost function with no cross-term cost becomes:
 
@@ -108,6 +105,8 @@ As described in \cref{sec:linear-quadratic-regulator}, in order to find the opti
 	\end{array}\right)
 \end{equation}
 
+\medskip
+
 Using Q and R as identitity matrices of appropriate dimensions the following optimal feedback gain is calculated:
 
 \begin{equation}
@@ -165,3 +164,4 @@ Substituting these into \cref{eq:error} yields
 
 
 This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ 5-10 times larger than the eigenvalues of $A-BK$. This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.
+\todo[inline]{FIX KOMMENTARER FRA JAN OG JOHN IFT DET HER SHIT

@@ -1,7 +1,7 @@
-The model derived in \cref{sec:mod_collec} is non-linear and thus not directly applicable for the control strategy intended for this project. Therefore a linearisation must be performed, where a linear approximation of the model is found at a given operating point. The linear model will approximate the non linear model near the operaing point and thus facilitating the intended linear control strategy. The accuracy of the model is highly dependent on the deviation from the operating points. All these issues will be touched upon in this section, as the linearisation is discussed.
+The model derived in \cref{sec:mod_collec} is non-linear and thus not directly applicable for the control strategy intended for this project. Therefore a linearisation must be performed, at a given operating point. The linear model will approximate the non linear model near the operating point, facilitating the intended linear control strategy. The accuracy of the model is highly dependent on the deviation from the operating points. All these issues will be touched upon in this section, as the linearisation is discussed.
 
 \subsubsection{A Linear State-Space Representation}
-A continuous linear state space system is typically defined as seen in \cref{eq:state_space}. The state derivatives are defined as a linear combination of states and inputs, while the outputs are a linear combination of the states. Having a model on such a state space form is a necessary for conventional state-space controller design.
+A continuous linear state space system is typically defined as in \cref{eq:state_space}. The state derivatives are defined as a linear combination of states and inputs, while the outputs are a linear combination of the states. Having a model on such a state space form is a necessary for conventional state-space controller design.
 
 \begin{equation} \label{eq:state_space}
 	\begin{split}
@@ -37,18 +37,18 @@ Consider some non-linear system $\dot{x} = f(x,u,d)$ with $ x $ a vector of syst
 	\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} \cdot (d-d_0)
 \end{equation}
 
-The linearisation is done at an equilibrium point such that $f(x_o, u_o, d_o) = 0$ in \cref{eq:taylor}. The equilibrium point will now be investigated in greater detail following the Hartman-Grobmann theorem.\\
+The linearisation is done at an equilibrium point such that $f(x_o, u_o, d_o) = 0$. The importance of linearising in an equilibrium point is explored in greater detail following the Hartman-Grobmann theorem.\\
 
 \textbf{The Hartman-Grobman theorem}\\
-Before a Taylor expansion can be performed on the non-linear model \cref{eq:f_noSub}, a linearisation point must be chosen. The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics. \\
+Before a Taylor expansion can be performed on the non-linear model in \cref{eq:f_noSub}, a linearisation point must be chosen. The Hartman-Grobman theorem states that if the linearisation is performed at a hyperbolic equilibrium, the linear model will effectively describe the dynamical behavior of the system in a near viccinity around the equilibrium point. If this condition is met, the eigenvalues of the linear model will have no real parts equal to zero. This in turn ensures that all manifolds are captured by the linearised dynamics.
+
 A manifold in the context of a control system, is the trajectory that a state will follow, when left undisturbed. A stable manifold implies that the state will go to a specific value as time to goes to infinity, and stay there. An unstable manifold implies that opposite: the state will not converge to a fixed point as time goes to infinity. If a manifold is not captured by the linearisation, it means the model does not accurately match the natural behavior of the corresponding state.\\
 
-While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a simple and appealing takeaway: When linearising a nonlinear system at an equilibrium, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearisation should be performed at another equilibrium.
-
+While the formal definition of the Hartman-Grobman theorem may seem too theoretical to be immediately applicable, it has a simple and appealing takeaway: When linearising a nonlinear system at an operating point, check the eigenvalues of the linear model. None of them should have real parts equal or close to zero. If they do, the linear model does not fully describe the system, and if possible linearisation should be attempted at another operating point.\\
 
 As discussed, linearising at an equilibrium is nessesary, as it removes the offset term from the Taylor expansion. Ideally this point should be a hyperbolic equilibrium. Furthermore, it is natural to linearise at a point where the system is expected to be operating during normal use. \\
 
-The investigation of the operating point now enables advancing further with the linearisation. The partial derivatives of \cref{eq:taylor} can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} where e is the number of state equations in the non linear system and nx, nu and nd being the number of states, inputs and disturbances respectively.
+The investigation of the operating point now enables advancing further with the linearisation. The partial derivatives of \cref{eq:taylor} can be organized in Jacobian matrices on the form seen in \cref{eq:jacobians} with e being the number of state equations in the non linear system and nx, nu and nd being the number of states, inputs and disturbances respectively.
 
 \begin{equation} \label{eq:jacobians}
 	\dfrac{\partial f}{\partial x} =
@@ -79,7 +79,7 @@ When the Jacobian matrices are evaluated at the operating point, they in fact be
 	\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} = B_d
 \end{equation}
 
-The linear model can then be expressed as such:
+\noindent The linear model can then be expressed as such:
 
 \begin{equation} \label{eq:state_space_linear}
 	\begin{split}
@@ -91,9 +91,9 @@ The linear model can then be expressed as such:
 with $\bar{x} = x-x_o$, $\bar{u} = u-u_o$, $\bar{d} = d-d_o$ and $\bar{y} = y-y_o$ where $x_o$, $u_o$, $d_o$ and $y_o$ are the linearisation equilibrium operating points of the states and inputs. The implications of this transformation of states will be investigated in \cref{sec:ctrl}.
 
 \subsubsection{Linearised Model} \label{sec:linearised-model}
-Finding an operating point for a system can be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. Not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled. The values can be seen in the tables in the bottom of  \cref{sec:non_lin_model}. Furthermore steady-state values were used for all table look-ups as another simplification.\\
+An appropriate operating point be obtained by letting the system settle to a steady state value. The chosen operating point is found using the provided Hi-Fi simulation model. In this simulation of the cooling system, the cargo temperature is controlled to -5$^{\circ}$C. Once the simulation has settled, steady state values for control inputs, disturbances and some states can be directly measured. However not all of the states defined in \cref{eq:xu} are readily available from the simulation, in which case they have been estimated based on other relavant simulation outputs. This method tries to ensure that the linearisation point is an equilibrium as all variables of the simulation have settled. The values can be seen in the tables in the bottom of  \cref{sec:non_lin_model}. Furthermore steady-state values were used for all table look-ups as another simplification.\\
 
-Linearising the non-linear system without the faulty states $ M_{pjj} $ $ M_{con} $ as described in \cref{sec:model-verification} yields the following system matrices with 10 states.
+Linearising the non-linear system without the faulty states $ M_{pjj} $ and $ M_{con} $ as described in \cref{sec:model-verification} yields the following system matrices with 10 states.
 
 \begin{equation}  \label{eq:A_full}
 	A =
@@ -192,7 +192,7 @@ As a consequence of the flows in and out of the condenser not being coupled, the
 
 The reason for the great focus on the evaporator in this regard is that 6 of the states reside in the evaporator. Additionally the only interface between the box and the refrigeration system is through the evaporator.
 
-Furthermore as mentioned earlier all values which were supposed to be found from lookup tables were substituted with steady state values from the Hi-Fi simulation. This could potentially also be factor with regards to the reduced mapping between components.\\
+Furthermore as mentioned earlier all values which were supposed to be found from lookup tables were substituted with steady state values from the Hi-Fi simulation. As also mentioned this could also be factor with regards to the reduced mapping between components.\\
 
 The obtained linear model is now used to investigate details about the system, such as the controllability and observability of the system.
 
@@ -208,9 +208,9 @@ Kalman's test for controllability checks whether the system is controllable. The
 
 If $Q_c$ does not have full rank, the system is not controllable and action must be taken. This can be in the form of adding the needed actuators or performing a Kalman Decomposition. For the system at hand $ rank(Q_c) = 10 $. This indicates that the system is controllable.\\
 
-Similarly to controllability, the system can be checked for observability. Observability determines whether all states in a system can be estimated with an observer based on the available outputs.
+Similarly to controllability, the system can be checked for observability. Observability determines whether all states in a system can be observed based on the available outputs.
 
-\noindent A system is observable iff $y(t) \equiv 0 \Rightarrow x(t) \equiv 0$. This means that none of the system states can have a non-zero value, if the measured outputs are zero. This guarantees that no dynamical action is happening that cannot be observed by measuring the outputs.\\
+\noindent More specifically a system is observable iff $y(t) \equiv 0 \Rightarrow x(t) \equiv 0$. This means that none of the system states can have a non-zero value, if the measured outputs are zero. This guarantees that no dynamical action is happening that cannot be observed by measuring the outputs.\\
 
 Kalman's test for observability is comparable to the test for controllability. The observability matrix is defined.
 
@@ -220,8 +220,7 @@ Kalman's test for observability is comparable to the test for controllability. T
 	\end{bmatrix}
 \end{equation}
 
-If $Q_o$ does not have full rank, the system is not observable and action must be taken. This can be in the form of adding the needed sensors or performing a Kalman decomposition, as discussed later in section \cref{sec:kalman}
-For the system at hand $ rank(Q_o) = 8 $. This means that some system states can not be observed from the available outputs. When consulting \cref{eq:f_noSub} it can be observed that the states $T_m$ and $M_v$ do not affect the output states $T_{air}$ and $T_v$. Intuitively the evaporator refrigerant vapor mass affects the vapor temperature. In the appendix in \cref{sec:app:evap_addition} an attempt is made at deriving a full expression for the evaporator vapor temperature. In the resulting full state expression in \cref{eq:app:dTvstate} it can also be observed that the $M_v$ state has an impact which further confirms the intuition. The project group did not succeed in implementing the state and thus the "rigged" state defined in \cref{sec:evaporator}.
+If $Q_o$ does not have full rank, the system is not observable and action must be taken. This can be in the form of adding the needed sensors or performing a Kalman decomposition, as discussed later in section \cref{sec:kalman}. For the system at hand $ rank(Q_o) = 8 $. This means that some system states can not be observed from the available outputs. When consulting \cref{eq:f_noSub} it can be observed that the states $T_m$ and $M_v$ do not affect the output states $T_{air}$ and $T_v$. Intuitively the evaporator refrigerant vapor mass affects the vapor temperature. In the appendix in \cref{sec:app:evap_addition} an attempt is made at deriving a full expression for the evaporator vapor temperature. In the resulting full state expression in \cref{eq:Evaporator_EnergyBalance8} it can also be observed that the $M_v$ state has an impact which further confirms the intuition. The project group did not succeed in implementing the state and thus the bootleg state defined in \cref{sec:evaporator} is used in stead.
 
 As a result of $T_m$ and $M_v$ not being observable action must be taken to remove them and thus the Kalman decomposition is introduced.
 
@@ -283,9 +282,9 @@ where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, wher
 \end{equation}
 
 
-The matrices $A_{11}$ and $C_{1}$ constitute an observable subsystem, for which an observer based controller can be designed. This controller will not have information about the state of the unobservable subsystem $A_{22}$. This necessitates that $A_{22}$ has to be internally stable, meaning its eigenvalues has to have negative real parts, resulting in stable behavior when unperturbed.
+The matrices $A_{11}$ and $C_{1}$ constitute an observable subsystem, for which an observer based controller can be designed. This controller will not have information about the state of the unobservable subsystem $A_{22}$. This necessitates that $A_{22}$ has to be internally stable, meaning its eigenvalues has to have negative real parts.
 
-Performing the Kalman Decomposition yields the observable subsystem given below, where the states unobservable states $ T_m $ and $ M_v $ are removed.
+Performing the Kalman Decomposition yields the observable subsystem given below, where the unobservable states $ T_m $ and $ M_v $ are removed.
 
 \begin{equation}  \label{eq:A11}
 	A_{11} = \left(\begin{array}{cccccccc}
@@ -355,39 +354,6 @@ As was the case with the B matrix of the linear system in \cref{eq:B_full}, the 
 	\end{array}\right)
 \end{equation}
 
-
-%\begin{equation}  \label{eq:B1}
-%	B_1 = \kbordermatrix{
-	%		& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
-	%		\dot{m}_{air}	& 0 & 0 & 0 & 0 & 0.00083\\
-	%		T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
-	%		T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
-	%		M_{lv}			& 0 & 0.0005 & 0 & 0 & 0\\
-	%		T_{air}  		& 0 & 0 & 0 & 0 & 0.0001\\
-	%		T_{box}	 		& 0 & 0 & 0 & 0 & 0\\
-	%		T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
-	%		T_v 			& 0 & 0 & 0 & 0 & 0
-	%	}
-%\end{equation}
-%\begin{equation*}
-%	\Downarrow
-%\end{equation*}
-%
-%\begin{equation} \label{eq:B1_redu}
-%	B_1	=
-%	\kbordermatrix{
-	%		& \Theta_1 &  U_{fan2} \\
-	%		\dot{m}_{air}	& 0 		& 0.00083\\
-	%		T_{mlv}			& 0 		& 0\\
-	%		T_{mv}			& 0 		& 0.0011\\
-	%		M_{lv}			& 0.0005	& 0\\
-	%		T_{air}  		& 0 		& 0.0001\\
-	%		T_{box}	 		& 0 		& 0\\
-	%		T_{cargo} 		& 0 		& 0\\
-	%		T_v 			& 0 		& 0
-	%	}
-%\end{equation}
-
 \medskip
 
 \begin{equation}  \label{eq:C1}
@@ -397,16 +363,15 @@ As was the case with the B matrix of the linear system in \cref{eq:B_full}, the 
 	\end{array}\right)
 \end{equation}
 
-These matrices define an observable and controllable system model. It is noted that the removal of the unobservable states left an extra zero column in $B_1$ compared to $ B $ \cref{eq:B_full}. The input that 'disappears' during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the metal temperature state in the condenser $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states.
-In the end means that the 3 corresponding control inputs does not affect the observable subsystem. Intuitively this is not true for the physical system, but it is none the less the case for this simplified model, which is accurate around the equilibrium point.\\
+These matrices define an observable and controllable system model. The input that disappears during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the condenser metal temperature state $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states. In the end means that the 3 corresponding control inputs does not affect the observable subsystem. Intuitively this is not true for the physical system, but it is none the less the case for this simplified model close to the operating point.\\
 
-As expected the kalman decomposition reduced system is stable as all eigenvalues of the $A_{11}$ matrix are negative. As mentioned in \cref{sec:linearised-model}, $A$ of the linearised model contained an eigenvalue numerically close to zero that it is considered zero. This eigenvalue has disappeared in the Kalman decomposition, leaving the biggest pole location at -1.09e-04.
-
+As expected the kalman decomposition reduced system is stable as all eigenvalues of the $A_{11}$ matrix are negative. As mentioned in \cref{sec:linearised-model}, $A$ of the linearised model contained an eigenvalue so numerically close to zero that it is considered zero. This eigenvalue has disappeared in the Kalman decomposition, leaving the biggest pole location at -1.09e-04.
 
 \subsubsection{Condition number} \label{sec:condNumber}
 As a supplement to whether the system is controllable and observable, which is a binary decision, the condition number is introduced. The condition number can bring in nuances as to the degree of how controllable or observable a system is. Before discussing the condition number it is necessary to first touch on the term "singular value", by introducing the Singular Value Decomposition (SVD).\\
 
 Consider the linear problem $Ax=b$, with $A \in \mathbb{R} ^{n x n}$ and $ x, b \in \mathbb{R} ^{n x 1}$, where x is the unknown solution. The matrix $A$ can be factorized by SVD as $A = USV^T$, where:
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$U \in \mathbb{R} ^{n x n}$		& is the matrix of eigenvectors of $AA^H$  &  \\
@@ -414,22 +379,18 @@ Consider the linear problem $Ax=b$, with $A \in \mathbb{R} ^{n x n}$ and $ x, b 
 		$V \in \mathbb{R} ^{n x n}$		& is the matrix of eigenvectors of $A^HA$  &  \\
 	\end{tabular}
 \end{center}
-
+\smallskip
 The singular values $\sigma$ are each associated with the eigenvectors in $U$ and $V$. $U$ and $V$ form orthonormal bases for the output space (row) and input space (column) of $A$ respectively. The first row vector contained in $U$ can as such be interpreted as a unit length input vector in a specific direction. Specifically the direction which creates the largest possible output signal. The input is this direction is scaled by the magnitude of the first singular value. The output direction is defined by the first columnvector of $V$. Each subsequent set of vectors and singular value, indicates the gain in a direction. The singular values (gains) are sorted from largest to smallest.
 
 The condition number of a matrix is defined as the ratio between its largest and smallest singular values. It is a measurement of how sensitive the output $x$ is to a change in the input $b$. In multivariable control theory the condition number is a useful measure in evaluating how tolerant the system is to disturbances and other errors. A large condition number is an indication that small input pertubations might cause large errors in the output signal.\\
 
 It is important to note the intentionally vague term "large condition number". The condition number effectively maps an input error to the corresponding output error. Thus the meaning of a large or small condition number relies on the size of the expected input error and the tolerable output error. In some control applications a condition number of $A$ larger than 10 is considered large. This would be the case for a system where all states are largely inside same numerical range. This is not the case for this refrigeration model where states vary greatly in size from $M_v$ at around 0.001 \si{kg} to almost any temperature state around 250-300 \si{K}. Furthermore the numerical size differences between variables with different SI units also has an impact. A common pressure such as the atmospherical pressure lies at 100000 [Pa].
 
-The condition number for the controllability matrix is 1.195e+09 for the linearised model without the $M_{Con}$ and $M_{PJJ}$ states and 2.934e+08 for the Kalman decomposition reduced model. Evaluating whether these condition numbers are alarming in this case becomes a difficult task. It is surely worth keeping the seemingly high condition numbers in mind when evaluating system behavior, and when further developing and testing the model.
+The condition number for the controllability matrix is 1.195e+09 for the linearised model without the $M_{Con}$ and $M_{PJJ}$ states and 2.934e+08 for the Kalman decomposition reduced model. Evaluating whether these condition numbers are alarming in this case becomes a difficult task. It is surely worth keeping the seemingly high condition numbers in mind when evaluating system behavior, and when further developing and testing the model. In \cref{tab:model_full} a wrap-up of the linearised model is observed.
 
-
-\subsubsection{Model info, wrap up}
 \begin{tabular}{ccc}
 	\begin{minipage}{.5\linewidth}
-		%		\begin{table}[h]
 			\centering
-			%			\caption{Linearised model from \cref{sec:linearised-model}}
 			\label{tab:model_full}
 			\begin{tabular}{ll}
 				\toprule
@@ -439,17 +400,12 @@ The condition number for the controllability matrix is 1.195e+09 for the lineari
 				\textbf{Number of outputs}                                  & 2         \\ \toprule
 				\textbf{Rank of \text{[A$|$B]}}                             & 10        \\
 				\textbf{Rank of \text{[A$|$C]}}                             & 8         \\
-				\textbf{Eigenvalues}                                        & $ _i < 0 $ \\
-				\textbf{Condition number of A}                              & 3.165e+09 \\
 				\textbf{Condition number of \text{[A$|$B]}}                 & 1.195e+09 \\
 				\textbf{Condition number of \text{[A$|$C]}}                 & $\infty$
 			\end{tabular}
-			%		\end{table}
 	\end{minipage}
 	\begin{minipage}{.5\linewidth}
-		%		\begin{table}[h]
 			\centering
-			%			\caption{Kalman decomposed model}
 			\begin{tabular}{ll}
 				\toprule
 				\textbf{Kalman decomposed model from \cref{sec:kalman}} &  \\ \toprule
@@ -458,12 +414,8 @@ The condition number for the controllability matrix is 1.195e+09 for the lineari
 				\textbf{Number of outputs}                              & 2         \\ \toprule
 				\textbf{Rank of \text{[A$|$B]}}                         & 8         \\
 				\textbf{Rank of \text{[A$|$C]}}                         & 8         \\
-				\textbf{Eigenvalues}                                    &  $ _i < 0 $ \\
-				\textbf{Condition number of A}                          & 2.747e+04 \\
 				\textbf{Condition number of \text{[A$|$B]}}             & 2.934e+08 \\
 				\textbf{Condition number of \text{[A$|$C]}}             & 4.411e+06
 			\end{tabular}
-			%		\end{table}
 	\end{minipage}
-
 \end{tabular}
