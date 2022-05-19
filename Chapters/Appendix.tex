@@ -47,3 +47,43 @@ Secondly the internal energy also consists of the latent energy. The latent ener
 		$\mathcal{J}$   & $\dfrac{ dh_v \bigl(T_v\bigr)}{dT_v}$ & $T_v$           & \multicolumn{1}{c}{Saturated vapor (Dew point)}     & Evaporator         \\ \bottomrule
 	\end{tabular}
 \end{table}
+
+
+\subsection{Linearity of cargo heat transfer coefficient}
+In order to represent the uncertainty of the cargo coefficient and thus enabling the check for robustness, it is required to show that the linearised system model is linear in $ UA_{cargo} $
+
+Considering the equation that depends on $ UA_{cargo} $, namely \cref{eq:box_Qca} and substituting it into the state equations that depends on it, namely \cref{eq:box_dT_air} and \cref{eq:box_dT_cargo} yields \cref{box_dT_air3} and \cref{eq:box_dT_cargo3}:
+
+\begin{align}
+	\frac{dT_{air}}{dt} & = \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \label{eq:box_dT_air2} \\
+	& \Downarrow \nonumber \\ 
+	\frac{dT_{air}}{dt} & = \frac{(T_{cargo} - T_{air}) \cdot U A_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \label{eq:box_dT_air3} 
+\end{align}
+Additionally, some of the other terms needs to be substituted as they depend on $ T_{air} $ and $ T_{cargo} $, and we want to linearise with respect to $ T_{air} $ and $ T_{cargo} $. This is done in with the sym toolbox in MATLAB.
+
+\begin{align} 
+	\frac{dT_{cargo}}{dt} & = \frac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}} \label{eq:box_dT_cargo2} \\
+	& \Downarrow \nonumber \\ 
+	\frac{dT_{cargo}}{dt} & = \frac{-(T_{cargo} - T_{air}) \cdot U A_{ca} }{M_{cargo} \cdot Cp_{cargo}} \label{eq:box_dT_cargo3} 
+\end{align}
+
+Performing the linearisation with the sym toolbox in MATLAB, the following expression is obtained in \cref{eq:UA_cargo_dependencies}
+
+When these equations are linearised with respect to $ T_{air} $ and $ T_{cargo} $, the corresponding contributions end up being
+\begin{equation} \label{eq:UA_cargo_dependencies}
+	\dfrac{\partial f}{\partial x} =
+	\begin{bmatrix}
+		\dfrac{\partial \dot{T}_{cargo}}{\partial T_{cargo}}  & \dfrac{\partial \dot{T}_{cargo}}{\partial T_{air}}\\
+		\\
+		\dfrac{\partial \dot{T}_{air}}{\partial T_{cargo}}  & \dfrac{\partial  \dot{T}_{air}}{\partial T_{air}}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		-\dfrac{UA_{cargo} +Cp_{air} \,\dot{m}_{air} +25}{Cp_{air} \,M_{air}}  & \dfrac{UA_{cargo} }{Cp_{air} \,M_{air} }\\
+		\\
+		\dfrac{UA_{cargo} }{Cp_{cargo} \,M_{cargo} }  & -\dfrac{UA_{cargo} }{Cp_{cargo} \,M_{cargo} }
+	\end{bmatrix} 
+\end{equation}
+Which shows that the contributions to the linear model in $ UA_{cargo} $ is linear.
+Thus, the robustness analysis can be continued.
+
