@@ -1,0 +1,29 @@
+\textbf{THE GOOD}
+
+\begin{itemize}
+	\item \sout{Stable linear model was successfully made from separate component models and used to control Hi-Fi model close to operating point.}
+	\item \sout{Unobservable states succesfully removed yielding fully controllable and observable model.}
+\end{itemize}
+
+\noindent \textbf{THE BAD}
+
+\begin{itemize}
+	\item \sout{Mpjj Mcon are faulty states.}
+	\item \sout{Initial linerisation yielded a zero pole - not a good linearisation point.}
+	\item Condition number of controllability matrix might hint at poor controllability
+	\item \sout{Removal of Mpjj and Mcon yields linearised model with only three usable inputs}.
+	\item \sout{Kalman decomposition yields linearised model with only two usable inputs.}
+	\item Poor disturbance rejection due to observer structure in Hi-Fi simulation test.
+	\item Goal not reached
+\end{itemize}
+
+\noindent \textbf{THE GOOD \#2}
+
+\begin{itemize}
+	\item Kalman decomposition reduced model successfully estimates both full linear model states and Hi-Fi model states Tair and Tv.
+\end{itemize}
+
+\textbf{Conclusion text:} \\
+A trailer refrigeration system is complex, containing many components each requiring extensive modeling to accurately represent reality. In the context of control the modeling task becomes to figure out what variables, states and equations are \textit{sufficient} for controller development and state observation. In this report a model based largely on algebraic equations was developed, only defining states to capture dynamics where large thermal capacitance resided. A stable, linear model was found at an equilibrium point and two unobservable states were subsequently removed with the Kalman decomposition. This left a fully controllable and observable model which was successfully used to control the supplied reefer trailer Hi-Fi simulation model, close to the equilibrium point.
+
+The model is undoubtedly not without its faults. A simulation of the non-linear model showed severe inaccuracies with regards to the behavior of the refrigerant masses inside the condenser ($M_{Con}$) and the pipe joining junction ($M_{Pjj}$). Closer analysis revealed poor connection between the components... \textbf{SKRIV MERE/FÆRDIGGØRE}.. Although the chosen operating point yielded a stable linear model a pole was located at the origin, potentially revealing a linear model which captures the dynamics of the non-linear model poorly at the operating point. The removal of the two faulty states resulted in a linear model only containing three inputs which mapped to the remaining states. The Kalman decomposition further removed an input, leaving only two usable inputs, namely the valve opening degree $Theta_1$ and the evaporator fan speed $U_{fan2}$. Evidently not controlling
