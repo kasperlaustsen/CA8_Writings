@@ -93,53 +93,56 @@ In order to validate the model found in \cref{eq:f_noSub}, a simulation of stead
 
 When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order to simulate the system, some steady state variables had to be introduced in order to be able to perform the simulation model. These are all the red variables in \cref{fig:Block_diagram_inout}. Additionally, the inputs needed to be set to steady state values.The concrete numeric values for both the inputs and the steady state variables where found in the HiFi simulation after 5000 s. Finally, the states needed to be initialised in a sensible manner, and these were estimated with common sense, and based on the pressures, temperatures and volumes of the control volumes. All of the necessary values for the simulation is found in the tables below. \\
 
+\begin{table}[h]
+	\begin{tabular}{ccc}\label{tab:linearising_point}
+		\begin{minipage}{.3\linewidth}
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				\textbf{Variables} & \textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}} & \textbf{Unit} \\ \midrule
+				$p_1$              & 0.44944                                                            & MPa           \\
+				$p_3$              & 0.77637                                                            & MPa           \\
+				$p_4$              & 0.19237                                                            & MPa           \\
+				$T_2$              & 295.3925                                                           & K             \\
+				$T_7$              & 267.6048                                                           & K             \\ \bottomrule
+			\end{tabular}
+		\end{minipage} &
+		\begin{minipage}{.3\linewidth}
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				\textbf{\begin{tabular}[c]{@{}l@{}}Initial \\ state values\end{tabular}} & \multicolumn{1}{l}{\textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}}} & \textbf{Unit} \\ \midrule
+				$M_{pjj}$                                                                & 0.001                                                                                  & kg   \\
+				$M_{con}$                                                                & 1                                                                                      & kg   \\
+				$T_m$                                                                    & 302                                                                                    & K    \\
+				$\dot{m}_{air}$                                                          & 0.25                                                                                   & kg/s \\
+				$T_{mlv}$                                                                & 262                                                                                    & K    \\
+				$T_{mv}$                                                                 & 273                                                                                    & K    \\
+				$M_{lv}$                                                                 & 0.5                                                                                    & kg   \\
+				$M_{v}$                                                                  & 0.0075                                                                                 & kg   \\
+				$T_{air}$                                                                & 268.9                                                                                  & K    \\
+				$T_{box}$                                                                & 278.15                                                                                 & K    \\
+				$T_{cargo}$                                                              & 263.15                                                                                 & K    \\
+				$T_{v}$                                                                  & 267.6048                                                                               & K    \\ \bottomrule
+			\end{tabular}
+		\end{minipage}
+		\begin{minipage}{.3\linewidth}
+			\centering
+			\begin{tabular}{@{}lll@{}}
+				\toprule
+				\textbf{Inputs} & \textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}} & \textbf{Unit} \\ \midrule
+				$\omega$        & 28                                                                 & \%            \\
+				$\Theta_1$      & 19.4                                                               & \%            \\
+				$\Theta_2$      & 12.1                                                               & \%            \\
+				$U_{fan1}$      & 62.8                                                               & \%            \\
+				$U_{fan2}$      & 63.8                                                               & \%            \\
+				$T_{ambi}$        & 293.15                                                             & K             \\ \bottomrule
+			\end{tabular}
+		\end{minipage}
+	\end{tabular}\\\\
+\end{table}
 
-\begin{tabular}{ccc}
-	\begin{minipage}{.3\linewidth}
-		\centering
-		\begin{tabular}{@{}lll@{}}
-			\toprule
-			\textbf{Variables} & \textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}} & \textbf{Unit} \\ \midrule
-			$p_1$              & 0.44944                                                            & MPa           \\
-			$p_3$              & 0.77637                                                            & MPa           \\
-			$p_4$              & 0.19237                                                            & MPa           \\
-			$T_2$              & 295.3925                                                           & K             \\
-			$T_7$              & 267.6048                                                           & K             \\ \bottomrule
-		\end{tabular}
-	\end{minipage} &
-	\begin{minipage}{.3\linewidth}
-		\centering
-		\begin{tabular}{@{}lcl@{}}
-			\toprule
-			\textbf{\begin{tabular}[c]{@{}l@{}}Initial \\ state values\end{tabular}} & \multicolumn{1}{l}{\textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}}} & \textbf{Unit} \\ \midrule
-			$M_{pjj}$                                                                & 0.001                                                                                  & kg   \\
-			$M_{con}$                                                                & 1                                                                                      & kg   \\
-			$T_m$                                                                    & 302                                                                                    & K    \\
-			$\dot{m}_{air}$                                                          & 0.25                                                                                   & kg/s \\
-			$T_{mlv}$                                                                & 262                                                                                    & K    \\
-			$T_{mv}$                                                                 & 273                                                                                    & K    \\
-			$M_{lv}$                                                                 & 0.5                                                                                    & kg   \\
-			$M_{v}$                                                                  & 0.0075                                                                                 & kg   \\
-			$T_{air}$                                                                & 268.9                                                                                  & K    \\
-			$T_{box}$                                                                & 278.15                                                                                 & K    \\
-			$T_{cargo}$                                                              & 263.15                                                                                 & K    \\
-			$T_{v}$                                                                  & 267.6048                                                                               & K    \\ \bottomrule
-		\end{tabular}
-	\end{minipage}
-	\begin{minipage}{.3\linewidth}
-		\centering
-		\begin{tabular}{@{}lll@{}}
-			\toprule
-			\textbf{Inputs} & \textbf{\begin{tabular}[c]{@{}l@{}}Numeric \\ values\end{tabular}} & \textbf{Unit} \\ \midrule
-			$\omega$        & 28                                                                 & \%            \\
-			$\Theta_1$      & 19.4                                                               & \%            \\
-			$\Theta_2$      & 12.1                                                               & \%            \\
-			$U_{fan1}$      & 62.8                                                               & \%            \\
-			$U_{fan2}$      & 63.8                                                               & \%            \\
-			$T_{ambi}$        & 293.15                                                             & K             \\ \bottomrule
-		\end{tabular}
-	\end{minipage}
-\end{tabular}\\
+
 
 
 In the inspection of the time evolvement of the states in the simulation, the states will be paired in groups that make them relatable. We first illustrate some results that indicate that our model is flawed. As can be seen in \cref{fig:non_lin_sim_faulty_Mass} the refrigerant masses $M_{pjj}$ and $M_{con}$ are integrating over time.

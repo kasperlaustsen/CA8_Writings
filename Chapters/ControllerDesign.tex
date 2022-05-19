@@ -119,9 +119,9 @@ Using Q and R as identitity matrices of appropriate dimensions the following opt
 \end{equation}
 
 \subsection{Observer Gain} \label{sec:observer-gain}
-As stated previously, the control model is to be used as an observer for the actual system. By measuring the inputs and outputs the control model will produce an estimate of the states. These observed states will be used for feedback control. \\
-\todo[inline]{There is a reference to some "fig:luenberger" figure. Where is this figure???}
-The observer structure used in this project is seen in \cref{fig:luenberger}. The difference in the plant and model outputs are multiplied by a observer gain L, and added to the observed state derivatives. This is known as the Luenberger observer. The error $e$ is defined as
+As stated previously, the control model is to be used as an observer for the actual system. By measuring the inputs and outputs the control model will produce an estimate of the states. These observed states will be used for feedback control. The observer structure used in this project is seen in \cref{fig:luenberger}.
+
+The difference in the plant and model outputs are multiplied by a observer gain L, and added to the observed state derivatives. This is known as the Luenberger observer. The error $e$ is defined as
 \begin{equation} \label{eq:error}
 	e = x-\hat{x}
 \end{equation}
@@ -155,5 +155,13 @@ Substituting these into \cref{eq:error} yields
 \begin{equation} \label{eq:obs_error_dot}
 	\dot{e} = (A - LC)e
 \end{equation}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Graphics/Observer_Diagram.pdf}
+	\caption{Block diagram of observer structure}
+	\label{fig:luenberger}
+\end{figure}
+
 
 This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ 5-10 times larger than the eigenvalues of $A-BK$. This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.
