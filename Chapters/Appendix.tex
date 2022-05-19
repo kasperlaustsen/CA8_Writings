@@ -1,15 +1,15 @@
 \subsection{Explanation of relevant terms for thermodynamics}
 \subsubsection{Enthalpy}
-Enthalpy is an energy term that is defined as the sum of the flow work \cite{Koelet1992}. 
+Enthalpy is an energy term that is defined as the sum of the flow work \cite{Koelet1992}.
 \begin{equation}
 	h = u + pv
 \end{equation}
 
-where 
+where
 	\begin{center}
 		\begin{tabular}{l p{3cm} l}
-			
-			$h$ & specific enthalpy & [\si{Joule}/\si{kg}]\\ 
+
+			$h$ & specific enthalpy & [\si{Joule}/\si{kg}]\\
 			$u$ & internal energy & [\si{Joule}/\si{kg}]\\
 			$p$ & absolute pressure & [\si{Pa}]\\
 			$v$ & specific volume & [\si{m^3}/\si{kg}]
@@ -20,7 +20,7 @@ Assuming the reader is familiar with the definition of absolute pressure and spe
 
 \subsubsection{Internal energy}
 The internal energy of a mass can be viewed as primarily the 'sensible heat' kinetic energy that dictates the movement of molecules. From a higher 'movement' of molecules, e.g. more energy, the temperature of a mass (that consists of the molecules) increases. The amount of energy required to increase a unit of mass by one degree is known as the specific heat capacity of the given material.
-Secondly the internal energy also consists of the latent energy. The latent energy is the energy that is embedded in phase changes of a systems state, e.g. from or to solid, liquid and vapor from either one. Analogously to the specific heat capacity for the sensible heat, for latent energy has a similar definition. The amound of energy required to change phase from one state to another is called the latent heat capacity of the material. It differs to material to material and also from whether its from solid to liquid or from liquid to vapor/gas. 
+Secondly the internal energy also consists of the latent energy. The latent energy is the energy that is embedded in phase changes of a systems state, e.g. from or to solid, liquid and vapor from either one. Analogously to the specific heat capacity for the sensible heat, for latent energy has a similar definition. The amound of energy required to change phase from one state to another is called the latent heat capacity of the material. It differs to material to material and also from whether its from solid to liquid or from liquid to vapor/gas.
 
 \subsection{List of table lookup symbols}
 
@@ -31,7 +31,7 @@ Secondly the internal energy also consists of the latent energy. The latent ener
 \begin{table}[h]
 	\centering
 	\label{tab:app_lookup}
-	\begin{tabular}{@{}ccclc@{}} 
+	\begin{tabular}{@{}ccclc@{}}
 		\toprule
 		\textbf{Symbol} & \textbf{Outputs}                      & \textbf{Inputs} & \textbf{Comments}                                   & \textbf{Component} \\ \midrule
 		$\Upsilon$      & $h$                                   & $T, p$          &                                                     & Compressor         \\
@@ -49,22 +49,22 @@ Secondly the internal energy also consists of the latent energy. The latent ener
 \end{table}
 
 
-\subsection{Linearity of cargo heat transfer coefficient}
+\subsection{Linearity of cargo heat transfer coefficient} \label{sec:app:cargoHeat}
 In order to represent the uncertainty of the cargo coefficient and thus enabling the check for robustness, it is required to show that the linearised system model is linear in $ UA_{cargo} $
 
 Considering the equation that depends on $ UA_{cargo} $, namely \cref{eq:box_Qca} and substituting it into the state equations that depends on it, namely \cref{eq:box_dT_air} and \cref{eq:box_dT_cargo} yields \cref{box_dT_air3} and \cref{eq:box_dT_cargo3}:
 
 \begin{align}
 	\frac{dT_{air}}{dt} & = \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \label{eq:box_dT_air2} \\
-	& \Downarrow \nonumber \\ 
-	\frac{dT_{air}}{dt} & = \frac{(T_{cargo} - T_{air}) \cdot U A_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \label{eq:box_dT_air3} 
+	& \Downarrow \nonumber \\
+	\frac{dT_{air}}{dt} & = \frac{(T_{cargo} - T_{air}) \cdot U A_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \label{eq:box_dT_air3}
 \end{align}
 Additionally, some of the other terms needs to be substituted as they depend on $ T_{air} $ and $ T_{cargo} $, and we want to linearise with respect to $ T_{air} $ and $ T_{cargo} $. This is done in with the sym toolbox in MATLAB.
 
-\begin{align} 
+\begin{align}
 	\frac{dT_{cargo}}{dt} & = \frac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}} \label{eq:box_dT_cargo2} \\
-	& \Downarrow \nonumber \\ 
-	\frac{dT_{cargo}}{dt} & = \frac{-(T_{cargo} - T_{air}) \cdot U A_{ca} }{M_{cargo} \cdot Cp_{cargo}} \label{eq:box_dT_cargo3} 
+	& \Downarrow \nonumber \\
+	\frac{dT_{cargo}}{dt} & = \frac{-(T_{cargo} - T_{air}) \cdot U A_{ca} }{M_{cargo} \cdot Cp_{cargo}} \label{eq:box_dT_cargo3}
 \end{align}
 
 Performing the linearisation with the sym toolbox in MATLAB, the following expression is obtained in \cref{eq:UA_cargo_dependencies}
@@ -82,7 +82,7 @@ When these equations are linearised with respect to $ T_{air} $ and $ T_{cargo} 
 		-\dfrac{UA_{cargo} +Cp_{air} \,\dot{m}_{air} +25}{Cp_{air} \,M_{air}}  & \dfrac{UA_{cargo} }{Cp_{air} \,M_{air} }\\
 		\\
 		\dfrac{UA_{cargo} }{Cp_{cargo} \,M_{cargo} }  & -\dfrac{UA_{cargo} }{Cp_{cargo} \,M_{cargo} }
-	\end{bmatrix} 
+	\end{bmatrix}
 \end{equation}
 Which shows that the contributions to the linear model in $ UA_{cargo} $ is linear.
 Thus, the robustness analysis can be continued.
