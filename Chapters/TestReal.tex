@@ -115,7 +115,7 @@ The average power consumption in the time interval from 9-10 hours is 1.68 \si{k
 To test the models ability to continuously perform outside the operating point, a step disturbance is applied to the ambient temperature.  At time $t=3$ hours, a 5$^{\circ}$C step in the disturbance is introduced. This implies that the ambient temperature initially is 20$^{\circ}$C and after the step is 25$^{\circ}$C. As before the PID structure handles the first hour of simulation, after which the OBLQR controller takes action. The controlled outputs are seen in \cref{fig:LQR_wellTuned_5stepDist}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQRvsKresten_stepDist.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQRvsKresten_stepDist.png}
 	\caption{Step disturbance case: Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_5stepDist}
 \end{figure}
@@ -124,7 +124,7 @@ From inspecting the steady state error of the two control strategies in \cref{fi
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_LQRvsKresten_stepDist_zoom.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_LQRvsKresten_stepDist_zoom.png}
 	\caption{Zoomed version of ,\cref{fig:LQR_wellTuned_5stepDist}. Step disturbance case: Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refrigerant temperature. $T_0$ = -5.55$^{\circ}$C}
 	\label{fig:LQR_wellTuned_5stepDist_zoom}
 \end{figure}
@@ -143,7 +143,7 @@ The control inputs during this test is seen in \cref{fig:inputs_stepDist}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\textwidth]{Graphics/fig_inputs_stepDist.png}
+	\includegraphics[width=0.9\textwidth]{Graphics/fig_inputs_stepDist.png}
 	\caption{Step disturbance case: Plot of the control signals applied to the Hi-Fi Simulation. Top: LQR control signals. Bottom: Hi-Fi simulation PID control signals.}
 	\label{fig:inputs_stepDist}
 \end{figure}

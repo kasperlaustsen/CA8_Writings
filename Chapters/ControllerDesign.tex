@@ -155,13 +155,11 @@ Substituting these into \cref{eq:error} yields
 	\dot{e} = (A - LC)e
 \end{equation}
 
+\newpage
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.9\textwidth]{Graphics/Observer_Diagram.pdf}
 	\caption{Block diagram of observer structure}
 	\label{fig:luenberger}
 \end{figure}
-
-
-This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ 5-10 times larger than the eigenvalues of $A-BK$. This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.
-\todo[inline]{FIX KOMMENTARER FRA JAN OG JOHN IFT DET HER SHIT}
+This observer structure guerantees that if $A-LC$ is stable, the error $e$ will tend to zero as time goes to infinity. This is under the assumption that the pair $A$ and $C$ are observable. This is a given, since a Kalman decomposition of the system has been performed. The eigenvalues of $A-LC$ must be negative to ensure stability. Further, the observer must be faster than the dynamics of the plant, so rapid changes in the states can be observed. A practical approach is to choose the eigenvalues of $A-LC$ to be scaled 5-10 times the eigenvalues of $A-BK$. This will This method is used for the observer gain is this project, and thus the value of L is calculated following the controller design subsection.

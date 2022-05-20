@@ -1,4 +1,4 @@
-\abstract{1}
+\abstract
 \begin{itemize}
 	\item minimize energy consumption
 	\item collaboration with BITZER
@@ -12,6 +12,5 @@
 	\item conclusion
 \end{itemize}
 
-This project documents the MIMO controller design of a reefer trailer refrigeration system. A non-linear model is constructed using first principle modelling for all components of the system. A linearisation is made at an equilibrium point to obtain a linear state space model. A Kalman decomposition was performed to acquire a fully observable and controllable subsystem, as the full model was unobservable. Testing verified that the reduced model accurately mimicked the observable part of the system, while the unobservable modes were internally stable. A Infinite Horizon Linear Quadratic Regulator was developed for control of the system. The control model is used as a observer for the physical system. The controller and observer structure proved to be robustly stable for reasonable perturbations in the cargo heat transfer coefficient.\\
-
-The project is made in collaboration with BITZER, which has supplied a High Fidelity simulation for testing purposes, and lent extensive counselling during the project. Modeling errors and simplifications resulted in a control strategy which was less effective, than the PID structure currently implemented by BITZER.
+This project documents the MIMO controller design of a reefer trailer refrigeration system. A non-linear model is constructed using first principle modelling for all components of the system. A linearisation is made at an equilibrium point to obtain a linear state space model. A Kalman decomposition was performed to acquire a fully observable and controllable subsystem, as the full model was unobservable. Testing verified that the reduced model accurately mimicked the observable part of the system, while the unobservable modes were internally stable. A Infinite Horizon Linear Quadratic Regulator was developed for control of the system. The control model is used as a observer for the physical system. The controller and observer structure deemed to be robustly stable for reasonable perturbations in the cargo heat transfer coefficient.\\
+The project is made in collaboration with BITZER, which has supplied a High Fidelity simulation for testing purposes, and lent extensive counselling during the project. Modeling errors and simplifications resulted in a controller with worse performance in terms of disturbance rejection transient response, than the PID structure currently implemented by BITZER.

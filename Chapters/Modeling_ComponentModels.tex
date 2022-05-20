@@ -401,9 +401,10 @@ where
 \medskip
 The heat flow from air to metal is modeled based on the assumption that the air is cooled down to the temperature of the metal as seen in \cref{eq:Q_amv} and \cref{eq:Q_aml}. Meaning that $T_{retsh} = T_{mv}$ and $T_{sup} = T_{mlv}$.
 
-\cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow. \todo[inline]{Et lille skriv om Ustarp og Qfan polynominerne er nok på sin plads. De virker nok lidt random stående for sig selv}
+Some of the flows in the system are defined by polynomials that has been supplied by BITZER, based on measurements. These are \cref{eq:Q_fan_heatloss}  and \cref{eq:evap_Vbardot_air}. They both have intermediate equations above for their dependent variables.
+\noindent \cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow. 
 \begin{align}
-	U_{*_P} & = \left( U_{fan}\cdot 100 - 55.56 \right) \cdot 0.0335                                         \\
+	U_{*_P} & = \left( U_{fan}\cdot 100 - 55.56 \right) \cdot 0.0335  \label{eq:evap_U_star_P}                                       \\
 	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3	\label{eq:Q_fan_heatloss} \\
 	Q_{amv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv}                                \\
 	Q_{amlv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{mlv}) 	\label{eq:Q_aml}

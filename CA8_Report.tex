@@ -71,7 +71,7 @@
 \hypersetup{
 	colorlinks,
 	%linkcolor={red!50!black},
-	linkcolor={black},
+	linkcolor={blue!50!black},
 	citecolor={blue!50!black},
 	urlcolor={blue!80!black}
 }
@@ -405,6 +405,7 @@
 %\Crefname{equation}{\textbf{Equation}}{\textbf{Equations}}
 \crefname{table}{\textbf{Table}}{\textbf{Tables}}
 
+
 % Reset equation numbering and include section number in equation number
 \usepackage{chngcntr}					% Used for Equation section/subsection number resetting
 \counterwithin*{equation}{section}		% Reset every section
@@ -437,9 +438,8 @@ Frederik Bajers Vej 7C \\
 9220 Aalborg East \\\vspace{0.5mm}
 Email: \href{mailto: es-22-ca-8-834@student.aau.dk}{es-22-ca-8-834@student.aau.dk}} \\\vspace{2mm}
 \textbf{Supervisors}\\
-Kresten Sørensen \\
-John-Leth Josef \\
-Jan Dimon
+John-Josef Leth \\
+Jan Dimon Bendtsen
 }
 
 % conference papers do not typically use \thanks and this command
@@ -512,6 +512,7 @@ Jan Dimon
 
 % MODELING
 % ---------------------------
+\newpage
 \section{Modeling} \label{sec:mod} % Incl. Subsection "Component Models"
 \input{Chapters/Modeling}
 
@@ -536,7 +537,7 @@ Jan Dimon
 % ---------------------------
 \clearpage
 \newpage
-\section{Robustness of Controller} \label{sec:rob-ctrl}
+\section{Robustness Analysis} \label{sec:rob-ctrl}
 \input{Chapters/Robustness}
 
 % TEST - SIMULATION
