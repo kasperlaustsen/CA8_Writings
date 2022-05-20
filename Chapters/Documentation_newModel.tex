@@ -386,16 +386,16 @@ The superheat is the difference between the vapor saturation temperature and the
 	\centering
 	\includegraphics[width=0.8\textwidth]{Graphics/Evaporator_CV_diagram.pdf}
 	\caption{Diagram of evaporator control volumes}
-	\label{fig:evap_CV}
+	\label{fig:evap_CV1}
 \end{figure}
 
-The evaporator is split into two control volumes, divided by a moving control volume boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor, see \cref{fig:evap_CV}.
+The evaporator is split into two control volumes, divided by a moving control volume boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor, see \cref{fig:evap_CV1}.
 
 Because the heat transfer coefficient from liquid to metal and from vapor to metal is different, the metal is likewise split by the $\sigma$ boundary. The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality ($X_e = 0.1$) throughout the liquid-vapor mixture. The specific volume $v_1$ is then found from the output pressure ($p_{out}$) and said average quality constant.
 
-The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary}.
+The calculation of the boundary location can be seen in \cref{eq:Evaporator_boundary1}.
 
-\begin{align} \label{eq:Evaporator_boundary}
+\begin{align} \label{eq:Evaporator_boundary1}
 	\sigma = \frac{M_{lv} \cdot v_1}{V_i} \\
 	v_1 = \Lambda(p_{out},X_e)
 \end{align}
@@ -435,15 +435,15 @@ where
 \end{center}
 
 \medskip
-The heat flow from air to metal of evaporator is modeled based on the assumption that the mass flow of air is cooled down to the metal temperature as seen in \cref{eq:Q_amv} and \cref{eq:Q_aml}.
+The heat flow from air to metal of evaporator is modeled based on the assumption that the mass flow of air is cooled down to the metal temperature as seen in \cref{eq:Q_amv1} and \cref{eq:Q_aml1}.
 
-\cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow.
+\cref{eq:Q_fan_heatloss1} is the heat loss from the fan that is being added to the air flow.
 
 \begin{align}
 	U_{*_P} & = \left( U_{fan}\cdot 100 - 55.56 \right) \cdot 0.0335                                         \\
-	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3	\label{eq:Q_fan_heatloss} \\
-	Q_{amv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv}                                \\
-	Q_{amlv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{mlv}) 	\label{eq:Q_aml}
+	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3	\label{eq:Q_fan_heatloss1} \\
+	Q_{amv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retfan} - T_{mv}) 	\label{eq:Q_amv1}                                \\
+	Q_{amlv} & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{retsh} - T_{mlv}) 	\label{eq:Q_aml1}
 \end{align}
 
 where
@@ -462,17 +462,17 @@ where
 	\end{tabular}
 \end{center}
 
-The fans used to move air over the condenser and evaporator are driven by VFD allowing for a continuous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modeled with a 2nd order polynomial, as shown in \cref{eq:evap_Vbardot_air}.
+The fans used to move air over the condenser and evaporator are driven by VFD allowing for a continuous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modeled with a 2nd order polynomial, as shown in \cref{eq:evap_Vbardot_air1}.
 
-The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, as the air is a fluid itself, it contains some inertia too. This behavior is modeled by \cref{eq:evap_U_star_mdot} $\rightarrow$ \cref{eq:Evaporator_FanAirRateOfChange}. \cref{eq:Evaporator_FanAirInstantMassFlow} calculates the estimated steady state air mass flow at a new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds.
+The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, as the air is a fluid itself, it contains some inertia too. This behavior is modeled by \cref{eq:evap_U_star_mdot1} $\rightarrow$ \cref{eq:Evaporator_FanAirRateOfChange1}. \cref{eq:Evaporator_FanAirInstantMassFlow1} calculates the estimated steady state air mass flow at a new speed. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with time constant of 10 seconds.
 
 \begin{align}
-	U_{*_{\dot{m}}} & = (U_{fan}*3060 - 2270.4)\cdot 0.0017 \label{eq:evap_U_star_mdot}\\
-	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot 	U_{*_{\dot{m}}}^2	\label{eq:evap_Vbardot_air} \\
-	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}	\label{eq:Evaporator_FanAirInstantMassFlow}
+	U_{*_{\dot{m}}} & = (U_{fan}*3060 - 2270.4)\cdot 0.0017 \label{eq:evap_U_star_mdot1}\\
+	\bar{\dot{V}}_{air} & = 0.7273 + 0.1202 \cdot 	U_{*_{\dot{m}}}  -0.0044 \cdot 	U_{*_{\dot{m}}}^2	\label{eq:evap_Vbardot_air1} \\
+	\bar{\dot{m}}_{air} & = \bar{\dot{V}}_{air} \cdot \rho_{air}	\label{eq:Evaporator_FanAirInstantMassFlow1}
 \end{align}
 \begin{equation}
-	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{\Delta \dot{m}_{air}}{\Delta t} = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}}{10s}  }  \label{eq:Evaporator_FanAirRateOfChange}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{\Delta \dot{m}_{air}}{\Delta t} = \frac{\bar{\dot{m}}_{air}  - \dot{m}_{air}}{10s}  }  \label{eq:Evaporator_FanAirRateOfChange1}
 \end{equation}
 where
 
@@ -488,14 +488,14 @@ where
 	\end{tabular}
 \end{center}
 
-The evaporator contains one of the greater thermal masses due to the large mass of metal in the heat exchanger.The temperature of the evaporator metal is divided into two parts corresponding to the liquid-vapor control volume \cref{eq:evap_dT_ml} and the vapor control volume \cref{eq:evap_dT_mv}. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{amlv}, Q_{mlv}, Q_{mvmlv} $ in \cref{eq:evap_dT_ml} and $ Q_{amv}, Q_{mv}, Q_{mvmlv} $ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$). The heat flows are illustrated in \cref{fig:evap_CV}
+The evaporator contains one of the greater thermal masses due to the large mass of metal in the heat exchanger.The temperature of the evaporator metal is divided into two parts corresponding to the liquid-vapor control volume \cref{eq:evap_dT_ml1} and the vapor control volume \cref{eq:evap_dT_mv1}. The metal temperature change is governed by the heat flows to and from the metal ($ Q_{amlv}, Q_{mlv}, Q_{mvmlv} $ in \cref{eq:evap_dT_ml1} and $ Q_{amv}, Q_{mv}, Q_{mvmlv} $ in \cref{eq:evap_dT_mv1}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml1} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv1}) multiplied with the specific heat capacity of the metal ($Cp_m$). The heat flows are illustrated in \cref{fig:evap_CV1}
 
 
 \begin{equation}
-	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dT_{mlv}}{dt}  = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m}  }    \label{eq:evap_dT_ml}
+	\tcbhighmath[boxrule = 0.5pt]{ 	\frac{dT_{mlv}}{dt}  = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m}  }    \label{eq:evap_dT_ml1}
 \end{equation}
 \begin{equation}
-	\tcbhighmath[boxrule = 0.5pt]{ \frac{dT_{mv}}{dt} = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } }     \label{eq:evap_dT_mv}
+	\tcbhighmath[boxrule = 0.5pt]{ \frac{dT_{mv}}{dt} = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } }     \label{eq:evap_dT_mv1}
 \end{equation}
 
 
@@ -518,13 +518,13 @@ where
 \end{center}
 
 \medskip
-\cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system. The temperature of the vapor refrigerant leaving the evaporator is found from output pressure and enthalpy in \cref{eq:T_v}
+\cref{eq:Q_mvml1} $\rightarrow$ \cref{eq:Q_mv1} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system. The temperature of the vapor refrigerant leaving the evaporator is found from output pressure and enthalpy in \cref{eq:T_v1}
 
 \begin{align}
-	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml}             &  \\
+	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml1}             &  \\
 	Q_{mlv}   & = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma	\label{eq:Q_ml}&  \\
-	Q_{mv}    & = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) \label{eq:Q_mv} &  \\
-	T_{lv}    & = \Phi(p_{in}, h_{in}) \label{eq:T_v}                          &
+	Q_{mv}    & = U A_2 \cdot (T_{mv} - T_v) \cdot (1- \sigma) \label{eq:Q_mv1} &  \\
+	T_{lv}    & = \Phi(p_{in}, h_{in}) \label{eq:T_v1}                          &
 \end{align}
 
 where
@@ -547,18 +547,18 @@ where
 \end{center}
 
 \medskip
-The output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout} $\rightarrow$ \cref{eq:evap_dMvdt}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_{lv}} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the specific enthalpy level in the evaporator where liquid vapor mixture has completely changed phase to vapor. The pressure in \cref{eq:evap_pout} is found from table lookup using the specific volume of the refrigerant in the vapor CV and the specific enthalpy.
+The output pressure, specific enthalpies and mass balances are given by equations \cref{eq:evap_pout1} $\rightarrow$ \cref{eq:evap_dMvdt1}. \cref{eq:evap_Tsup1} describes the temperature of the air leaving the evaporator and \cref{eq:evap_mdot_lv1} describes the flow from the liquid-vapor CV to the vapor CV. The dew point specific enthalpy is the specific enthalpy level in the evaporator where liquid vapor mixture has completely changed phase to vapor. The pressure in \cref{eq:evap_pout1} is found from table lookup using the specific volume of the refrigerant in the vapor CV and the specific enthalpy.
 
 \begin{align}
-	%	p_{out}            & = \Pi \left( h_v, \frac{M_v}{V_i-V_{lv}} \right)		\label{eq:evap_pout}                       \\
-	p_{out}            & = p_{in}								\label{eq:evap_pout}                       \\
+	%	p_{out}            & = \Pi \left( h_v, \frac{M_v}{V_i-V_{lv}} \right)		\label{eq:evap_pout1}                       \\
+	p_{out}            & = p_{in}								\label{eq:evap_pout1}                       \\
 	V_{lv}             & = \sigma \cdot V_i                                                                           \\
 	h_{lv}             & = h_{in} + \frac{Q_{mlv}}{\dot{m}_{in}}                                                      \\
-	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}               \label{eq:evap_hv}                                       \\
+	h_v                & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}}               \label{eq:evap_hv1}                                       \\
 	h_{out}            & = h_v                                                                                       \\
 	T_{out}            & = T_v                                                                                        \\
-	T_{sup}            & = T_{retfan} +  \frac{Q_{amlv} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \label{eq:evap_Tsup} \\
-	\dot{m}_{dew}      & = \frac{Q_{mlv}}{h_{dew} - h_{in}} \label{eq:evap_mdot_{lv}}
+	T_{sup}            & = T_{retfan} +  \frac{Q_{amlv} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \label{eq:evap_Tsup1} \\
+	\dot{m}_{dew}      & = \frac{Q_{mlv}}{h_{dew} - h_{in}} \label{eq:evap_mdot_lv1}
 \end{align}
 
 \begin{equation}
@@ -566,7 +566,7 @@ The output pressure, specific enthalpies and mass balances are given by equation
 \end{equation}
 
 \begin{equation}
-	\tcbhighmath[boxrule = 0.5pt]{\frac{dM_v}{dt}   = \dot{m}_{dew} - \dot{m}_{out}  }  \label{eq:evap_dMvdt}
+	\tcbhighmath[boxrule = 0.5pt]{\frac{dM_v}{dt}   = \dot{m}_{dew} - \dot{m}_{out}  }  \label{eq:evap_dMvdt1}
 \end{equation}
 
 where\\
@@ -605,18 +605,18 @@ where\\
 \subsubsection*{\underline{Addition to existing model}} \label{sec:app:evap_addition}
 
 
-All the equations for the evaporator until now has been heavily inspired by \cite{Sorensen2013}. To allow for control of the very important superheat, we need a a state equation for the temperature in the vapor $ T_v $ control volume. $ T_v $ is assumed to be the output temperature of the evaporator and such base for the superheat as a difference between the dew point temperature of the refrigerant and $ T_v $. The following shows the derivation of state equation for $ T_v $ from the energy balance in \cref{eq:Evaporator_EnergyBalance}.
+All the equations for the evaporator until now has been heavily inspired by \cite{Sorensen2013}. To allow for control of the very important superheat, we need a a state equation for the temperature in the vapor $ T_v $ control volume. $ T_v $ is assumed to be the output temperature of the evaporator and such base for the superheat as a difference between the dew point temperature of the refrigerant and $ T_v $. The following shows the derivation of state equation for $ T_v $ from the energy balance in \cref{eq:Evaporator_EnergyBalance1}.
 
 \begin{align}
-	\frac{ d\bigl(M_{v}(t) h_v(t) \bigr)}{dt} & = P_{ext}(t) + \dot{m}_{in}(t)h_{in}(t) - \dot{m}_{out}(t)h_{out}(t) 		\label{eq:Evaporator_EnergyBalance}
+	\frac{ d\bigl(M_{v}(t) h_v(t) \bigr)}{dt} & = P_{ext}(t) + \dot{m}_{in}(t)h_{in}(t) - \dot{m}_{out}(t)h_{out}(t) 		\label{eq:Evaporator_EnergyBalance1}
 \end{align}
-Now referring to \cref{fig:evap_CV} it can be argued that
+Now referring to \cref{fig:evap_CV1} it can be argued that
 \begin{align}
 	P_{ext}(t) = Q_{mv}(t) \\
 	\dot{m}_{in}(t) = \dot{m}_{dew}(t)\\
 	h_{in}(t) = h_{dew}(t) \\
 \end{align}
-Furthermore assuming that $ h_{out}(t) = h_v(t) $ and inspecting the dependence of temperature $T_v$ on $ h_v $ in \cref{eq:evap_hv} and \cref{eq:Q_mv}
+Furthermore assuming that $ h_{out}(t) = h_v(t) $ and inspecting the dependence of temperature $T_v$ on $ h_v $ in \cref{eq:evap_hv1} and \cref{eq:Q_mv1}
 the energy balance can be written as
 
 \begin{align}

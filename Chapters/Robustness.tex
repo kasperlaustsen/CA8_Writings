@@ -17,7 +17,6 @@ In previous work \cite{Borlum2016} it has been argued that it is reasonable to e
 \noindent If it is assumed that the min and max perturbations constitute the corners of the parameter space, the nominal system would be included herein. In \cref{sec:ctrl} an LQR controller was formulated and, due to the \textit{separation principle}, subsequently a Luenberger observer. Stability is tested by ensuring that all eigenvalues of the full system matrix are negative or equivalently by testing for Lyapunov stability.
 
 \noindent For some system $\dot{x} = \bar{A}x$ there is stability if there exists a $P$ for some Lyapunov function $V(x) = x^TPx$ such that
-
 \begin{equation} \label{eq:rob_lyapunov_stability}
 	\begin{split}
 	\bar{A}^TP+P\bar{A} &< 0 \\
@@ -70,9 +69,9 @@ Nominal stability and robust stability is achieved if a unique P can be found fo
 	\end{bmatrix}
 \end{equation}
 
-\noindent To find $P$ in \cref{eq:rob_lyapunov_stability} the YALMIP Matlab toolbox is used. YALMIP can be used to solve optimization problems based on constraints which in this case are defined in \cref{eq:rob_lyapunov_stability}. When the YALMIP optimizer function is run it will yield a $P$ based on the given constraints. The given $P$ can be checked with the check() which will tell whether the solution is 'feasible'. If a feasible $P$ is found then $\bar{A}$ is stable.\\
+\noindent To find $P$ in \cref{eq:rob_lyapunov_stability} the YALMIP Matlab toolbox is used. YALMIP can be used to solve optimization problems based on constraints. When the YALMIP optimizer function is run it will attempt to yield a $P$ based on the given constraints. The given $P$ can be checked with the check() which will tell whether the solution is 'feasible'. If a feasible $P$ is found then $\bar{A}$ is stable.\\
 
-Below the two LMIs of the two perturbed systems is seen. The perturbed parameter $U A_{ca}$ is included in $\bar{A}$ linearly as investigated in \cref{sec:app:cargoHeat}. Thus to test for stability the linearisation, controller design and observer design is redone for each parameter value. Therefore two full system models are defined and subsequently two Linear Matrix Inequalities (LMIs):
+Below the two LMIs of the two perturbed systems is seen. The perturbed parameter $U A_{ca}$ is included in $\bar{A}$ linearly as investigated in \cref{sec:app:cargoHeat}. Thus to test for stability the linearisation, controller design and observer design is redone for each parameter value. As such two full system models are defined and subsequently two Linear Matrix Inequalities (LMIs):
 
 \begin{flalign}
 	\hspace{1cm} \bar{A}_{\Delta max} \! ^T \: P + P \:\bar{A}_{\Delta max} &< 0 \text{, $\;$ (+20\% perturbation on $U A_{ca}$)} &\\
