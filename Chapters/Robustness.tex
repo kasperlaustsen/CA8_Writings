@@ -2,7 +2,7 @@
 
 Model imperfections are to be expected when modeling complex systems and at the same time it is always of interest to make sure that the controlled systems is stable despite these model deviations. Such deviations can stem from several places. Changes in system parameters over time, changes in system environment and modeling errors are but a few ways in which the model of a physical system can deviate from reality. The concept of robustness analysis is to ensure system stability and perhaps performance of the model even including model errors. In this section nominal and robust stability of the controlled system is analyzed given perturbations in some single parameters.
 
-Previous work \cite{Borlum2016} it has been argued that it is reasonable to expect deviations in the characteristics of the transported cargo. Such characteristics could manifest itself in a change in the heat transfer coefficient between cargo and air ($U A_{ca}$) which is included in \cref{eq:box_Qca} in \cref{sec:mod_box}.\\
+In previous work \cite{Borlum2016} it has been argued that it is reasonable to expect deviations in the characteristics of the transported cargo among other parameters. Such characteristics could manifest itself in a change in the heat transfer coefficient between cargo and air ($U A_{ca}$) which is included in \cref{eq:box_Qca} in \cref{sec:mod_box}.\\
 
 \noindent It is thus investigated if the designed LQR controller is robustly stable given parameter perturbations in $U A_{ca}$ of $\pm 20 \%$. This yields three different test scenarios:
 
@@ -14,10 +14,9 @@ Previous work \cite{Borlum2016} it has been argued that it is reasonable to expe
 
 \smallskip
 
-\noindent In \cref{sec:ctrl} an LQR controller was formulated and, due to the \textit{separation principle}, subsequently a Luenberger observer. Stability is tested by ensuring that all eigenvalues of the full system matrix are negative or equivalently by testing for Lyapunov stability.
+\noindent If it is assumed that the min and max perturbations constitute the corners of the parameter space, the nominal system would be included herein. In \cref{sec:ctrl} an LQR controller was formulated and, due to the \textit{separation principle}, subsequently a Luenberger observer. Stability is tested by ensuring that all eigenvalues of the full system matrix are negative or equivalently by testing for Lyapunov stability.
 
 \noindent For some system $\dot{x} = \bar{A}x$ there is stability if there exists a $P$ for some Lyapunov function $V(x) = x^TPx$ such that
-
 \begin{equation} \label{eq:rob_lyapunov_stability}
 	\begin{split}
 	\bar{A}^TP+P\bar{A} &< 0 \\
@@ -25,7 +24,9 @@ Previous work \cite{Borlum2016} it has been argued that it is reasonable to expe
 	\end{split}
 \end{equation}
 
-\noindent where $\bar{A}$ in this case is the full system matrix as defined in \cref{eq:rob_Abar}. Nominal stability and robust stability is achieved if \cref{eq:rob_lyapunov_stability} holds for the nominal system and the two perturbed systems respectively. It can be assumed that the system is robustly stable for all of the parameter space if robust stability holds for the min and max perturbations as these are the corners of the parameter space.
+\noindent where $\bar{A}$ in this case is the full system matrix as defined in \cref{eq:rob_Abar}. The inclusion of the perturbed parameter $U A_{ca}$ in $\bar{A}$ is described later.
+
+Nominal stability and robust stability is achieved if a unique P can be found for \cref{eq:rob_lyapunov_stability} for the two perturbed system simultaneously. It can be assumed that the system is robustly stable for all of the parameter space if robust stability holds for the min and max perturbations as these are the corners of the parameter space.
 
 \begin{equation} \label{eq:rob_Abar}
 	\bar{A} = \begin{bmatrix}
@@ -68,14 +69,14 @@ Previous work \cite{Borlum2016} it has been argued that it is reasonable to expe
 	\end{bmatrix}
 \end{equation}
 
-\noindent To find $P$ in \cref{eq:rob_lyapunov_stability} the YALMIP Matlab toolbox is used. YALMIP can be used to solve optimization problems based on constraints which in this case are defined in \cref{eq:rob_lyapunov_stability}. When the YALMIP optimizer function is run it will yield a $P$ based on the given constraints. The given $P$ can be checked with the check() which will tell whether the solution is 'feasible'. If a feasible $P$ is found then $\bar{A}$ is stable.
+\noindent To find $P$ in \cref{eq:rob_lyapunov_stability} the YALMIP Matlab toolbox is used. YALMIP can be used to solve optimization problems based on constraints. When the YALMIP optimizer function is run it will attempt to yield a $P$ based on the given constraints. The given $P$ can be checked with the check() which will tell whether the solution is 'feasible'. If a feasible $P$ is found then $\bar{A}$ is stable.\\
 
-To test for the stability of each of the three scenarios the linearisation, controller design and observer design is redone for each parameter value. Therefore three full system models are defined and subsequently three Linear Matrix Inequalities (LMIs):
+Below the two LMIs of the two perturbed systems is seen. The perturbed parameter $U A_{ca}$ is included in $\bar{A}$ linearly as investigated in \cref{sec:app:cargoHeat}. Thus to test for stability the linearisation, controller design and observer design is redone for each parameter value. As such two full system models are defined and subsequently two Linear Matrix Inequalities (LMIs):
+
 \begin{flalign}
-	\hspace{1cm} \bar{A}_{nom} \! ^T \: P + P \: \bar{A}_{nom} &< 0 \text{, $\;$ (Nominal system)} &\\
 	\hspace{1cm} \bar{A}_{\Delta max} \! ^T \: P + P \:\bar{A}_{\Delta max} &< 0 \text{, $\;$ (+20\% perturbation on $U A_{ca}$)} &\\
 	\hspace{1cm} \bar{A}_{\Delta min} \! ^T \: P + P \:\bar{A}_{\Delta min} &< 0 \text{, $\;$ (-20\% perturbation on $U A_{ca}$)}
 \end{flalign}
 
-\noindent YALMIP yielded a feasible $P$ for each of the above LMIs which concludes that nominal and robust stability is achieved for the given controller and observer structure.
+\noindent For the above LMIs (including $P > 0$) YALMIP yielded a feasible $P$ which concludes that nominal and robust stability is achieved for the given controller and observer structure.
 

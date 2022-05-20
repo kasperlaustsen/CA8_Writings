@@ -1,4 +1,4 @@
-The reefer trailer is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by Bitzer. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that require specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independently of the truck.
+The reefer trailer is an insulated trailer designed and built by Schmidt Cargobull with a cooling system developed by BITZER. It is attached to a truck and has a length of 13.4 meters. The trailer features room for 33 Euro-pallets of cargo and is used to transport various goods that require specific  conditions during transportation, e.g. temperature, humidity and CO2 level. The cooling system used to control the internal temperature in the trailer is powered by an internal battery. This allows the reefer trailer cooling to be powered independently of the truck.
 
 While a reefer trailer usually has its own cooling system installed, the reefer trailer in this project utilizes a custom HVAC system designed by BITZER. This system is built to facilitate testing of advanced control strategies.
 
@@ -28,12 +28,12 @@ The pressure and enthalpy of the refridgerant as it moves around in the refriger
 	\item From point 1 to 2 the compressor increases the pressure (and enthalpy) of the vapor refrigerant. The increase in enthalpy is not desired, but cannot be omitted as it is not an isenthalpic process. The compressor also drives the flow of refrigerant in the circuit.
 	\item From point 2 to 3 the high pressure and high temperature vapor refrigerant runs through the condenser and heat is transferred to the ambient air (hot body). This is an isobaric exothermic process. The refrigerant is intended to change phase from vapor to liquid, hence the name condenser.
 	\item From point 3 to 4, the high pressure but low enthalpy liquid refrigerant passes through an isenthalpic expansion, which lowers the pressure and thereby also the temperature. Some of the liquid may change phase to gas (called flash gas), s.t. the refrigerant is now a mix of vapor and liquid.
-	\item From point 1 to 4, the low pressure and low temperature liquid-vapor refrigerant runs through the evaporator and heat is transferred from the load to the refrigerant. The refrigerant completely changes phase to vapor. This is an isobaric endothermic process. 
+	\item From point 1 to 4, the low pressure and low temperature liquid-vapor refrigerant runs through the evaporator and heat is transferred from the load to the refrigerant. The refrigerant completely changes phase to vapor. This is an isobaric endothermic process.
 \end{itemize}
  Now that the principle of refrigeration is introduced, the investigation of the refrigeration system of this project can commence.
- 
+
 \subsection{The BITZER Refrigeration System}
-The refrigeration system used in this project contains more components than the textbook example. As seen in \cref{fig:HVAC_Diagram}, the compressor is comprised of two stages, rather than one. Similarly two valves are being used. The valves are separated by a flash tank, that enables transfer of flash gas from the condenser throttle valve to the second stage of the compressor. The removed flash gas ensures that the liquid refrigerant that enters the evaporator has lower enthalpy resulting in a higher cooling capacity. This enables higher efficiency of the system than a single stage system.\\
+The refrigeration system used in this project contains more components than the textbook example discussed above. As seen in \cref{fig:HVAC_Diagram}, the compressor is comprised of two stages, rather than one. Similarly two valves are being used. The valves are separated by a flash tank, that enables transfer of flash gas from the condenser throttle valve to the second stage of the compressor. The removed flash gas ensures that the liquid refrigerant that enters the evaporator has lower enthalpy resulting in a higher cooling capacity. This enables higher efficiency of the system than a single stage system.\\
 The subcooling throttle valve is only used for debugging purposes, and is fully open at all times in this project. The reefer system has two fans that enables variable amounts of forced convection instead of natural convection. The heat transfer coefficients from the heat exchangers (evaporator and condenser) to the cold and hot body can such be varied with the fan speed. Additionally the airflow circulation flow inside the trailer is controlled by the evaporator fan.
 
 \begin{figure}[h]
@@ -52,11 +52,11 @@ The subcooling throttle valve is only used for debugging purposes, and is fully 
 	\end{minipage}
 \end{figure}
 
-In \cref{fig:p-h_diagram} an illustrative p-h diagram of the refrigeration cicuit can be seen with the numbers referring to \cref{fig:HVAC_Diagram}. Two loops can be observed in \cref{fig:HVAC_Diagram}. The first is the outer loop ($1 \rightarrow 2\rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 7 \rightarrow 8 \rightarrow 1$). This is considered the primary loop. The second loop is the inner right loop ($3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 9 \rightarrow 3$). \\
+In \cref{fig:p-h_diagram} an illustrative p-h diagram of the refrigeration cicuit can be seen with the numbers referring to \cref{fig:HVAC_Diagram}. Two loops can be observed in \cref{fig:HVAC_Diagram}. The first is the outer loop ($1 \rightarrow 2\rightarrow 3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 7 \rightarrow 8 \rightarrow 1$). This is considered the primary loop. The second loop is the inner top loop ($3 \rightarrow 4 \rightarrow 5 \rightarrow 6 \rightarrow 9 \rightarrow 3$). \\
 The refrigeration system essentially works as a single stage system in the primary loop, where the compression and expansion is distributed along two stages, and as mentioned, the secondary loop  increases the efficiency of cooling. A description of the steps in the refrigeration cycle follows:
 \begin{itemize}
-	\item From point 1 to 2, the low pressure, high enthalpy vapor refrigerant from the evaporator is compressed. The output vapor refrigerant is at medium pressure and medium enthalpy. 
-	\item From point 2 and 9 to 3, the compressor stage 1 output refrigerant is mixed with the flash gas from the flash tank. 
+	\item From point 1 to 2, the low pressure, high enthalpy vapor refrigerant from the evaporator is compressed. The output vapor refrigerant is at medium pressure and medium enthalpy.
+	\item From point 2 and 9 to 3, the compressor stage 1 output refrigerant is mixed with the flash gas from the flash tank.
 	\item From point 3 to 4, the medium pressure and enthalpy vapor refrigerant mix is compressed further, outputting high pressure and enthalpy vapor refrigerant.
 	\item From point 4 to 5, the high pressure and enthalpy vapor refrigerant is condensed through the condenser, which decreases the enthalpy. This is where the heat from the load is transferred to the ambient air (hot body).
 	\item From point 5 to 6, the pressure is decreased of the high pressure, low enthalpy liquid refrigerant. This results in a medium pressure, low enthalpy refrigerant where some of the refrigerant has changed phase to gas.
@@ -64,11 +64,10 @@ The refrigeration system essentially works as a single stage system in the prima
 	\item From point 7 to 8, the liquid refrigerant is passed through an isenthalpic expansion which decreases the pressure and temperature.
 	\item From point 8 to 1, the low pressure, low enthalpy liquid refrigerant extracts heat from the load by evaporating the refrigerant and thus encreases the enthalpy of the refrigerant.
 \end{itemize}
-Now that the principles of the refrigeration circuit is described, the load of system can be introduced. \\
+Now that the principles of the refrigeration circuit is described, the load of system can be introduced.
 
 \subsubsection{Refrigeration load}
-The load for the BITZER refrigeration system is an insulated trailer containing cargo. The air inside the trailer is also part of the load, as is trailer box itself. The air inside the trailer is cooled via the evaporator of the refrigeration system and the air mass flow rate is driven by the evaporator fan. The cooled air extracts heat from the cargo and box, which is then transferred to the ambient air via the condenser. The heat flows and airflows from and to the trailer are illustrated in \cref{fig:trailer_airflow}.\\
-The refrigeration system is defined and the control specific inputs and outputs can now be investigated.\\
+The load for the BITZER refrigeration system is an insulated trailer containing cargo. The air inside the trailer is also part of the load, as is the trailer box itself. The air inside the trailer is cooled via the evaporator and the air mass flow rate is driven by the evaporator fan. The cooled air extracts heat from the cargo and box, which is then transferred to the ambient air via the condenser. The heat flows and air flows from and to the trailer are illustrated in \cref{fig:trailer_airflow}.
 
 \subsubsection{Control inputs}
 Of the components seen in \cref{fig:HVAC_Diagram}, the two fans, the two valves and the compressor can be controlled. This yields a system that has 5 control inputs which manipulates the system behavior. The control inputs are:
@@ -81,7 +80,7 @@ Of the components seen in \cref{fig:HVAC_Diagram}, the two fans, the two valves 
 \end{itemize}
 
 \subsubsection{Exogenous inputs}
-In addition to the described control inputs, the system also has an exogenous input. 
+In addition to the described control inputs, the system also has an exogenous input.
 Exogenous inputs are the inputs of a system that can't be controlled. They are commonly referred to as disturbances. The refrigeration system has one such disturbance, namely the ambient air temperature. The ambient temperature affects the heat transfer from ambient air to the air inside the reefer trailer and it also affects the condenser heat transfer.
 
 \subsubsection{Controlled outputs}
@@ -91,22 +90,20 @@ Controlling the air temperature is nessesary to ensure proper storage conditions
 \subsection{High-Fidelity model}
 When working with any large scale system, iterative testing on the physical system is impractical. Slow dynamics and inconvienient test procedures make the proces too tedious for the user, and there is also a risk of equipment damage. Therefore, it is common practice to develop a High-Fidelity model of the system. Testing on a Hi-Fi model can be performed faster, efficiently and with no equipment risk. \\
 
-BITZER has created such a Hi-Fi model for the cooling trailer in MATLAB/Simulink. The model has been shown to be highly accurate and can be trusted to mimic the real system behavior in most use-cases. The Hi-Fi model simulates the refrigeration system in \cref{fig:HVAC_Diagram}. The controlled inputs are regulated by a decoupled PID network. The cargo hold air temperature is regulated to -5$^{\circ}$C.\\
+BITZER has created such a Hi-Fi model for the cooling trailer in MATLAB/Simulink. The model has been shown to be highly accurate and can be trusted to mimic the real system behavior in most use-cases. The Hi-Fi model simulates the refrigeration system in \cref{fig:HVAC_Diagram}. The controlled inputs are regulated by a PID network. The cargo hold air temperature is regulated to -5$^{\circ}$C in the current configuration.\\
 
 The control strategy developed in this project, will first and foremost be tested on the Hi-Fi model. Furthermore coefficients from the Hi-Fi model is extracted to enable modeling of the system components.
 
 
 \subsection{Problem structure}
-The overall goal of this project is to design and test a MIMO controller for refrigeration system. The controller objective is to keep the temperature inside the trailer constant despite exogenous inputs (disturbances), specifically the ambient temperature. 
+The overall goal of this project is to design and test a MIMO controller for refrigeration system. The controller objective is to keep the temperature inside the trailer constant despite exogenous inputs (disturbances), specifically the ambient temperature.
 Furthermore the controller should do so with the sub-goal of minimizing the energy consumption.
 
 The controller will require access to relevant system information. In the context of state space control, these are the values of the system states. The states will be discussed in details later in the report. The states are used for feedback when choosing the proper control signals. Since the states of complex systems are usually not directly measurable, a simpler model will be developed for state observation. The model is then to be used for controller design. \\
-
+\todo[inline]{Der snakkes to gange om at reducere energiforbrug som et aktivt mål. Dette er dog ikke tilfældet. Jeg tror vi skal ændre noget her}
 The control model will be developed by means of first principle modeling. Doing so yields a non-linear model, due to the non-linear physical properties of thermodynamic systems. To apply linear control strategies, the model must be linearised. Optimal control strategies will be implemented on the linear model, as the control objectives can be well formulated as an optimization problem. The optimization problem being to keep the controlled outputs fixed, while minimizing the energy consumption of the system.\\
 
-The next step in this project will be the modeling of the individual components of the refrigeration system.
 
 
 
 
-		

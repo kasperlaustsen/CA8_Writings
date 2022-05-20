@@ -1,5 +1,5 @@
 \subsubsection{General type refrigerant control volume state equation}
-Many of the components in a refrigeration cycle will be based on equations of similar structure. They will generally express the change in mass inside the control volume and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation and the steady state energy balance equation of the control volume. The energy balance equations are modeled as steady state algebraic equations. This lowers accuracy but reduces complexity of the models.\\
+Many of the components in a refrigeration cycle will be based on equations of similar structure. They will generally express the change in mass inside the control volume (CV) and/or the specific enthalpy out of the control volume. These can be constructed from the mass conservation equation (\cref{eq:GeneralTypeControlVol_MassConservation}) and the steady state energy balance equation (\cref{eq:generalCV_enthalpy}) of the control volume. The energy balance equations are modeled as steady state algebraic equations. This lowers accuracy but reduces complexity of the models.\\
 
 \noindent \textbf{Mass conservation equation}
 
@@ -19,7 +19,7 @@ where
 
 \noindent \textbf{Energy balance equation}
 
-\begin{equation}
+\begin{equation} \label{eq:generalCV_enthalpy}
 	h_{out} = h_{in} + \frac{Q_{in}}{\dot{m}_{in}}
 \end{equation}
 
@@ -45,21 +45,20 @@ Because of the very small internal volume of the expansion valve it can be consi
 \end{equation}
 
 where
+
 \begin{center}
 	\begin{tabular}{l p{6cm} l}
-		$\dot{m}$ 	& Flow through valve & [\si{kg}/\si{s}]\\
-		$\Delta p$ 	& Pressure drop across valve & [\si{Pa}]\\
-		$C$ 		& Discharge coefficient of valve & [$\cdot$]\\
-		$A$	 		& Cross sectional area of valve & [\si{m^2}]\\
-		$\rho$ 		& Density of liquid & [\si{kg}/\si{m^3}]\\
-			$C$ 	& Discharge coefficient of valve & [$\cdot$]\\
+		$\dot{m}$  & Flow through valve             & [\si{kg}/\si{s}]   \\
+		$\Delta p$ & Pressure drop across valve     & [\si{Pa}]          \\
+		$C$        & Discharge coefficient of valve & [$\cdot$]          \\
+		$A$        & Cross sectional area of valve  & [\si{m^2}]         \\
+		$\rho$     & Density of liquid              & [\si{kg}/\si{m^3}] \\
+		$C$        & Discharge coefficient of valve & [$\cdot$]
 	\end{tabular}
 \end{center}
 
+\smallskip
 To model the way that the valve is intended to be controlled, an alternative representation is introduced for the mass flow through an expansion valve in \cref{eq:ExpansionValve_Alt}. If the valve characteristics C and A are not available they can be combined into a single constant (K). K is set to $1 \cdot 10^{-5}$ based on advice from Kresten Sørensen. The function $f_p()$ of the opening degree is used to model the non linear behavior of the opening degree $( \Theta )$ $\rightarrow$ flow $( \dot{m} )$ relationship in the valve. The valve is an equal-percentage type valve, meaning that for an increase in opening degree a relative increase in flow is achieved as illustrated in \cref{fig:equal_percent_valve}. But for convenience with regards to the linearisation the valve is assumed to be linear even though it will introduce an error.
-\todo[inline]{skal vi nævne at vi antager linearitet her eller måske først senere i linearisering (model simplifications)?}
-
-
 \begin{equation} \label{eq:ExpansionValve_Alt}
 	\begin{split}
 		\dot{m} & = f_p(\Theta) K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})} \\
@@ -68,7 +67,7 @@ To model the way that the valve is intended to be controlled, an alternative rep
 \end{equation}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$f_p(\Theta)$ & Flow percentage as function of opening degree                       & [$\cdot$]          \\
@@ -80,15 +79,15 @@ where
 	\end{tabular}
 \end{center}
 
+\medskip
 The input specific volume ($v_{in}$) is found from a table lookup from the input specific enthalpy ($h_{in}$) and the input pressure ($p_{in}$) as seen in \cref{eq:ExpansionValve_vin}.
-
 
 \begin{equation} \label{eq:ExpansionValve_vin}
 	v_{in} = \mathcal{Z}(h_{in}, p_{in})
 \end{equation}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$\mathcal{Z}(h, p)$ & VHP; Table lookup of specific volume from specific enthalpy and pressure & [$\cdot$] \\
@@ -99,16 +98,16 @@ where
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.55\textwidth]{Graphics/Equal-percentage.png}
-	\caption{Valve characteristics}
+	\caption{A sketch of the equal \% Valve characteristic}
 	\label{fig:equal_percent_valve}
 \end{figure}
 
 \newpage
 
 \subsubsection{Pipe Joining Junction}\label{sec:pipe-joining-junction}
-Between compressor stage 1, compressor stage 2 and the flash tank is a Pipe Joining Junction that connects the three aforementioned components (point 3 in \cref{fig:p-h_diagram}). $\dot{m}_{in1}$ and $\dot{m}_{in2}$ are the two joining flows into the pipe joining junction.
+Between compressor stage 1, compressor stage 2 and the flash tank is a Pipe Joining Junction that connects the three aforementioned components (point 3 in \cref{fig:p-h_diagram}). $\dot{m}_{in1}$ and $\dot{m}_{in2}$ are the two joining flows into the junction.
 
-In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the Pipe Joining Junction.
+In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pipe Joining Junction can be expressed as a function of the mass flows into and out of the junction.
 
 
 \begin{equation}
@@ -116,13 +115,14 @@ In \cref{eq:PipeJoiningJunction_ChangeOfMass}, the change of mass inside the Pip
 \end{equation}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\dfrac{dM}{dt}$ & Change in mass inside Pipe Joining Junction             & [\si{kg}/\si{s}] \\
 	\end{tabular}
 \end{center}
 
+\medskip
 In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out of the Pipe Joining Junction is expressed as a function of the input flows and enthalpies. This equation is based on the energy balance, assuming no heat transfers to surroundings, i.e. the Pipe Joining Junction is perfectly insulated. It is modeled as an algebraic equation where $\frac{dM}{dt}$ is zero, such that the output mass flow is equal to the sum of the input flows.
 
 \begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
@@ -135,12 +135,12 @@ In \cref{eq:PipeJoiningJunction_Enthalpy} the specific enthalpy of the flow out 
 \subsubsection{Compressor}
 The compressor creates the the pressure necessary to generate a flow of refrigerant in the system. The generated pressure also raises the temperature of the refrigerant such that heat can flow to the outside ambient air in the condenser. The pressure is raised in two stages (point 1 $\rightarrow$ 2 and point 3 $\rightarrow$ 4 in \cref{fig:p-h_diagram}).
 
-The compressor is a scroll type compressor with the two compressor stages differing only in the internal volume between the two, where stage 2 has half the internal volume of stage 1. Therefore the two stages can be described by the same set of equations as defined below. The compressor model is based on the Reciprocating (piston) compressor in \cite{Sorensen2013} and it is as such an approximation of a scroll compressor. \todo[inline]{Vi bliver vel nødt til at have en eller anden form for citation på at det er godt nok? Ellers virker det som en meget løs antagelse?}
+The compressor is a scroll type compressor with the two compressor stages differing only in the internal volume between the two, where stage 2 has half the internal volume of stage 1. Therefore the two stages can be described by the same set of equations as defined below. The compressor model is based on the Reciprocating (piston) compressor in \cite{Sorensen2013} and it is as such an approximation of a scroll compressor.
 
 The fast dynamics of the compressor rotation has little impact on the slower evaporator dynamics and they are thus decoupled. Therefore, the equations governing the compressors are algebraic equations where the flows in and out of the compressor are equal.
 
 In \cref{eq:comp_mass_flow} the flow through the compressor is modeled as the mass displaced by a single stroke multiplied with the half the rotational velocity.
-In \cref{eq:comp_enthalpy} the output enthalpy is found from a lookup table. The cylinder internal volume of stage 1 is $50cm^3$ (with stage 2 being half of that) and the cylinder clearance volume is $2.5cm^3$.
+In \cref{eq:comp_enthalpy} the output specific enthalpy is found from a lookup table. The cylinder internal volume of stage 1 is $50^3$ cm (with stage 2 being half of that) and the cylinder clearance volume is $2.5^3$ cm.
 
 \begin{align}
 	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \label{eq:comp_mass_flow} \\
@@ -157,12 +157,12 @@ where
 		$v_1$           & Refrigerant specific volume b.f. 'stroke'                       & [$\si{m}^3/\si{kg}$] \\
 		$v_2$           & Refrigerant specific volume after 'stroke'                      & [$\si{m}^3/\si{kg}$] \\
 		$\omega$        & Compressor angular velocity                                     & [\si{rad}/\si{s}]    \\
-		$\Upsilon(T,p)$ & HTP; Lookup table of the enthalpy from temperature and pressure & [$\cdot$]            \\
+		$\Upsilon(T,p)$ & HTP; Lookup table of the specific enthalpy from temperature and pressure & [$\cdot$]            \\
 	\end{tabular}
 \end{center}
 
+\medskip
 The specific volume before a stroke ($v_1$) in \cref{eq:comp_mass_flow} is found from table lookup in \cref{eq:comp_prestroke_spec_vol}. In \cref{eq:comp_v2} the specific volume after a stroke is calculated based on the assumption of adiabatic compression from the pressure before the piston ($p_1$) and the pressure after the piston ($p_2$). The Valve loss constants ($kl_1$ and $kl_2$) used for calculating the piston input and output pressures are from the Hi-Fi simulation found to both be $1/2200$.
-
 \begin{align}
 	v_1     & = \Gamma(T_{in},p_{1}) \label{eq:comp_prestroke_spec_vol}                   \\
 	v_2     & = \left(\frac{p_2}{p_1}\right)^{\frac{-1}{\gamma}} \label{eq:comp_v2}                         \\
@@ -173,30 +173,24 @@ The specific volume before a stroke ($v_1$) in \cref{eq:comp_mass_flow} is found
 \end{align}
 
 where
-
+\smallskip5
 \begin{center}
-	\begin{tabular}{l p{8cm} l}
+	\begin{tabular}{l p{10cm} l}
 		$\Gamma(T,p)$   & VTP; Lookup table of the specific volume from temperature and pressure & [$\cdot$]                         \\
-		$p_{in}$        & Compressor stage input pressure                                        & [\si{Pa}]                         \\
 		$p_1$           & 'Piston' input pressure                                                & [\si{Pa}]                         \\
 		$p_2$           & 'Piston' output (discharge) pressure                                   & [\si{Pa}]                         \\
 		$\gamma$        & Heat capacity ratio                                                    & [$ \cdot $]                       \\
 		$ kl_1$, $kl_2$ & Valve loss constants                                                   & [$ \cdot $]                       \\
-		$\omega$        & Compressor angular velocity                                            & [\si{rad}/\si{s}]                 \\
-		$T_{in}$        & Compressor stage input temperature                                     & [\si{K}]                          \\
 		$C_{cp}$        & Specific heat capacity - constant pressure                             & [\si{J}/(\si{kg}$ \cdot $\si{K})] \\
 		$C_{cv} $       & Specific heat capacity - constant volume                               & [\si{J}/(\si{kg}$ \cdot $\si{K})]
 	\end{tabular}
 \end{center}
 
 
-
-\newpage
-
 \subsubsection{Condenser}\label{sec:condenser}
 The condenser takes in the hot discharge pressure vapor from the second compressor stage (point 4 in \cref{fig:p-h_diagram}). The high temperature enables heat transfer from the refrigerant inside the condenser to the outside ambient air. In the cooling process, the vapor refrigerant condensates, yielding high pressure liquid (point 5 in \cref{fig:p-h_diagram}).
 
-In \cref{fig:condenser_CV} a diagram of the condenser control volume (CV) can be found.
+A diagram of the condenser CV is seen in \cref{fig:condenser_CV}.
 
 \begin{figure}[h!]
 	\centering
@@ -205,7 +199,7 @@ In \cref{fig:condenser_CV} a diagram of the condenser control volume (CV) can be
 	\label{fig:condenser_CV}
 \end{figure}
 
-The energy balance is modeled in \cref{eq:Condenser_Enthalpy}. The mass balance is modeled in \cref{eq:Condenser_ChangeOfMass}. In \cref{eq:Condenser_ChangeOfTemperature} the internal energy in the condenser metal, which is the condenser's dominant dynamic, is modeled by its temperature \cite{Sorensen2013}. The change in metal temperature ($\frac{dT_m}{dt}$) is proportional with the the sum of the heat flows into into the condenser metal. The metal is copper which has a heat capacity ($Cp_m$) of $387$ \si{J}/(\si{kg}\si{K}).
+The energy balance is modeled in \cref{eq:Condenser_Enthalpy}. The mass balance is modeled in \cref{eq:Condenser_ChangeOfMass}. In \cref{eq:Condenser_ChangeOfTemperature} the internal energy in the condenser metal, which is the condenser's dominant dynamic, is modeled by its temperature \cite{Sorensen2013}. The change in metal temperature ($\frac{dT_m}{dt}$) is proportional with the the sum of the heat flows into the condenser metal. The metal is copper which has a heat capacity ($Cp_m$) of $387$ \si{J}/(\si{kg}\si{K}).
 
 \begin{align}
 	h_{out} 			& = h_{in} - \frac{Q_{rm}}{\dot{m}_{in}}  	\label{eq:Condenser_Enthalpy}
@@ -220,7 +214,7 @@ The energy balance is modeled in \cref{eq:Condenser_Enthalpy}. The mass balance 
 \end{equation}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$Q_{rm}$        & Refrigerant to metal heat flow     & [\si{W}]          \\
@@ -232,45 +226,43 @@ where
 	\end{tabular}
 \end{center}
 
-The pressure drop across the condenser is assumed to be linear with respect to mass flow, yielding \cref{eq:Condenser_PressureDrop}.
-The mass flow out of the condenser is modeled in \cref{eq:Condenser_MassFlow}. It is equal to the flow into the condenser ($m_{in}$) plus the change in refrigerant mass inside the condenser ($M_r - V_i/v$) divided by one second.
+\medskip
 
+The pressure drop across the condenser is assumed to be linear with respect to mass flow, yielding \cref{eq:Condenser_PressureDrop}.
+The mass flow out of the condenser is modeled in \cref{eq:Condenser_MassFlow}. It is equal to the flow into the condenser ($\dot{m}_{in}$) plus the change in refrigerant mass inside the condenser ($M_r - V_i/v$) divided by one second.
 \begin{align}
 	p_{in} 	& =  p_{out} - \lambda \cdot \dot{m}_{in}  				\label{eq:Condenser_PressureDrop}\\
 	\dot{m}_{out}		& = \dot{m}_{in} + \frac{M_r - \frac{V_i}{v}}{1s}		\label{eq:Condenser_MassFlow} \\
 	v & = \mathcal{Z}(h_{in}, p_{in})
 \end{align}
 
-\newpage
-
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\lambda$          & Pressure drop constant                                     & [$\cdot$]          \\
 		$V_{i}$            & Condenser internal volume                                  & [\si{m^3}]         \\
-		$v$                & Condenser refridgerant specific volume                     & [\si{m^3}/\si{kg}] \\
-		$\mathcal{Z}(h,p)$ & Table lookup of specific volume from enthalpy and pressure & [.]
+		$v$                & Condenser refrigerant specific volume                     & [\si{m^3}/\si{kg}] \\
+		$\mathcal{Z}(h,p)$ & Table lookup of specific volume from specific enthalpy and pressure & [.]
 	\end{tabular}
 \end{center}
 
-
-And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlow_rm}, \cref{eq:Condenser_HeatFlow_ma}. The heat flow from metal to air is assumed to be approximately proportional to the air flow, which is why the speed of the fan is multiplied with the energy flow in \cref{eq:Condenser_HeatFlow_ma}. There is an offset of 0.05 times the energy flow to account for the fact that there will exist a heat flow when the fan is not operating.
-
+\medskip
+And finally the convective heat flows are modelled in \cref{eq:Condenser_HeatFlow_rm} and \cref{eq:Condenser_HeatFlow_ma}. The heat flow from metal to air is assumed to be approximately proportional to the air flow, which is why the speed of the fan is multiplied with the energy flow in \cref{eq:Condenser_HeatFlow_ma}. There is an offset of 0.05 times the energy flow to account for the fact that there will exist a heat flow when the fan is not operating.
 \begin{align}
 	Q_{rm}	 			& = U A_{rm} \cdot (T_r - T_m)							\label{eq:Condenser_HeatFlow_rm}\\
 	Q_{ma}	 			& = U A_{ma} \cdot (T_m - T_{ambi})\cdot (0.05 + U_{fan} \cdot 2)				\label{eq:Condenser_HeatFlow_ma}
 \end{align}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
-		$Q_{rm}$				&	Heat flow from refridgerant to metal					& [\si{W}] \\
+		$Q_{rm}$				&	Heat flow from refrigerant to metal					& [\si{W}] \\
 		$Q_{ma}$				&	Heat flow from metal to air								& [\si{W}] \\
-		$U A_{rm}$				& 	Heat transfer coefficient from refridgerant to metal 	& [\si{J}/\si{K}] \\
+		$U A_{rm}$				& 	Heat transfer coefficient from refrigerant to metal 	& [\si{J}/\si{K}] \\
 		$U A_{ma}$				& 	Heat transfer coefficient from metal to air				& [\si{J}/\si{K}] \\
-		$T_r$					& 	Temperature of refridgerant 							& [\si{K}] \\
+		$T_r$					& 	Temperature of refrigerant 							& [\si{K}] \\
 		$T_m$					&	Temperature of metal 									& [\si{K}] \\
 		$T_{ambi}$				&	Temperature of ambient air 								& [\si{K}] \\
 		$U_{fan}$				&	Fan speed												& [$\%$] \\
@@ -283,13 +275,6 @@ When the pressure and consequently the temperature is lowered by the condenser t
 
 The following flash tank model evaluates the steady state behavior of the flash tank due to the limited scope of the project. A diagram of the flash tank can be seen in \cref{fig:flash_tank_CV}.
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.65\textwidth]{Graphics/Flash_tank.pdf}
-	\caption{Diagram of Flash tank control volumes}
-	\label{fig:flash_tank_CV}
-\end{figure}
-
 In steady state it is firstly assumed that the pressure of the liquid-vapor mixture entering is the same as the separated liquid and vapor leaving the tank:
 \begin{align}
 	p_{lv} 	= p_{l}					&  = p_{v}
@@ -297,7 +282,7 @@ In steady state it is firstly assumed that the pressure of the liquid-vapor mixt
 \end{align}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$p_{lv}$				&  Liquid-vapor mixture pressure		& [\si{Pa}]\\
@@ -306,8 +291,14 @@ where
 	\end{tabular}
 \end{center}
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.65\textwidth]{Graphics/Flash_tank.pdf}
+	\caption{Diagram of Flash tank control volumes}
+	\label{fig:flash_tank_CV}
+\end{figure}
 
-Secondly, it is assumed that the energy of the mixture and mass of mixture does not change, meaning the energy flow and mass flow in equals the energy flow and mass flow out respectively:
+Secondly, it is assumed that the energy and mass of the mixture does not change, meaning the energy flow and mass flow in equals the energy flow and mass flow out respectively:
 
 \begin{align}
 	\dot{m}_{lv} \cdot  h_{lv}  - \dot{m}_{l} \cdot  h_{l} - \dot{m}_{v} \cdot  h_{v} & = 0 \label{eq:Flash_tank_energyflow} \\
@@ -315,7 +306,7 @@ Secondly, it is assumed that the energy of the mixture and mass of mixture does 
 \end{align}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\dot{m}_{lv}$			&  Liquid-vapor mixture mass flow			& [\si{kg}/\si{s}]\\
@@ -327,34 +318,34 @@ where
 	\end{tabular}
 \end{center}
 
+\medskip
 Lastly, it is assumed that the separated liquid and vapor leaves at boiling point and flash point respectively. This assumption allows us to find the enthalpy of the two substances purely from investigation of the p-h diagram or a look-up table since the pressure is known. We express this as:
-
 \begin{align}
 	h_{l}  & = \mathcal{M}(p)\\
 	h_{v}  & = \mathcal{N}(p)
 \end{align}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$\mathcal{M}(p)$ & Lookup table of bubble point specific enthalpy from pressure & [$\cdot$] \\
 		$\mathcal{N}(p)$ & Lookup table of dew point specific enthalpy from pressure    & [$\cdot$]
 	\end{tabular}
 \end{center}
-
+\medskip
 The knowledge of the specific enthalpy from the look up tables leaves \cref{eq:Flash_tank_energyflow} and \cref{eq:Flash_tank_massflow} with two unknowns that can be solved, namely $ m_l $ and $ m_v $. However, as the liquid flow $ m_l $ will be defined in the expansion valve, the model only has one unknown that can be solved with either of the two before mentioned equations.
 
 
 
 \subsubsection{Subcooling throttle}
-The subcooling throttle valve is used differently from the two other valves in the system. During normal operation it is fully open, acting as a pipe. It can be closed fully allowing for various speciel functionalities. Firstly, shutting it off allows for detecting the amount of refridgerant in the system. This is a convenient diagnostic feature which helps ensuring that the system has enough refridgerant to properly function, and enabling leakage detection. Secondly, closing the valve while fully opening the condenser throttle valve, allows the system to operate as a standard refridgeration system, with only one valve between the evaporator and condenser.
+The subcooling throttle valve is used differently from the two other valves in the system. During normal operation it is fully open, acting as a pipe. It can be closed fully allowing for various speciel functionalities. Firstly, shutting it off allows for detecting the amount of refrigerant in the system. This is a convenient diagnostic feature which helps ensuring that the system has enough refrigerant to properly function, and enabling leakage detection. Secondly, closing the valve while fully opening the condenser throttle valve, allows the system to operate as a standard refridgeration system, with only one valve between the evaporator and condenser.
 
 
 
 \newpage
 \subsubsection{Evaporator}\label{sec:evaporator}
-The purpose of the evaporator is to lower the temperature of the circulating box air through heat transfer between the air and the refrigerant inside the evaporator. From the two processes of lowering the pressure through the condenser throttle valve and the expansion valve the refrigerant temperature drops below the box air temperature. As a result, heat transfers from the box air to the refrigerant through the evaporator metal. The refrigerant has ideally turned into vapor (from point 8 $\rightarrow$ 1 in \cref{fig:p-h_diagram}) by the time it reaches the end of the evaporator. The vapor is then sucked through stage 1 compressor, back through the refrigerant cycle.
+The purpose of the evaporator is to lower the temperature of the circulating box air through heat transfer between the air and the refrigerant inside the evaporator. From the two processes of lowering the pressure through the condenser throttle valve and the expansion valve, the refrigerant temperature drops below the box air temperature. As a result, heat transfers from the box air to the refrigerant through the evaporator metal. The refrigerant has ideally turned into vapor (from point 8 $\rightarrow$ 1 in \cref{fig:p-h_diagram}) by the time it reaches the end of the evaporator. The vapor is then sucked through stage 1 compressor, back through the refrigerant cycle.
 
 The difference in temperature between the dew point (the point where vapor-liquid refrigerant mixture turns to vapor - point 1 in \cref{fig:p-h_diagram}) and the refrigerant at the compressor suction inlet, is called the superheat. The superheat of the evaporator is an important and difficult state to control. Its importance stems from the fact that the compressor can be damaged if the refrigerant at the suction inlet of the compressor contains liquid (called liquid slugging). Additionally the superheat is important from an efficiency point of view. \todo[inline]{Write about the reason why a great superheat inefficient}
 
@@ -365,7 +356,7 @@ The difference in temperature between the dew point (the point where vapor-liqui
 	\label{fig:evap_CV}
 \end{figure}
 
-The evaporator is split into two control volumes, divided by a moving control volume boundary $\sigma$ which divides liquid-vapor mixture and the superheated vapor as seen in \cref{fig:evap_CV}.
+The evaporator is split into two control volumes, divided by a moving control volume boundary $\sigma$ which divides the liquid-vapor mixture and the superheated vapor as seen in \cref{fig:evap_CV}.
 
 Because the heat transfer coefficient from liquid to metal and from vapor to metal is different, the metal is likewise split by the $\sigma$ boundary. The modeling of $\sigma$ is based on an assumption that the refrigerant has a constant average quality ($X_e = 0.1$) throughout the liquid-vapor mixture as seen in \cref{eq:Evaporator_boundary}. The specific volume $v_1$ is in \cref{eq:evap_v1} found from a table lookup from the output pressure ($p_{out}$) and said average quality constant.
 
@@ -375,20 +366,19 @@ Because the heat transfer coefficient from liquid to metal and from vapor to met
 \end{align}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$\sigma$       & Control Volume boundary                                           & [$\cdot$]            \\
 		$M_{lv}$       & Mass of liquid-vapor CV                                           & [\si{kg}]            \\
 		$v_1$          & Refrigerant specific volume of vapor-liquid CV                    & [$\si{m}^3/\si{kg}$] \\
 		$V_i$          & Evaporator volume                                                 & [$\si{m}^3$]         \\
-		$\Lambda(p,X)$ & Table lookup of specific volume from pressure and average quality & [\si{m}$^3/\si{kg}$] \\
+		$\Lambda(p,X)$ & Table lookup of specific volume from pressure and average quality & [$\cdot$] \\
 		$ X_e $        & Average vapor quality                                             & [$\cdot$]
 	\end{tabular}
 \end{center}
-
+\medskip
 The temperatures of the air blown over the evaporator by the fan is modeled by the two equations below. The fan has some loss in the form of heat which is transferred to the air. The specific heat capacity of air ($Cp_{air}$) is 718 \si{J}/(\si{kg}\si{K}).
-
 \begin{align}
 	T_{retfan} 		& = T_{ret} + \frac{Q_{fan}}{\dot{m}_{air} \cdot Cp_{air}} 		\label{eq:T_retfan} 		\\
 	T_{retsh} 		& = T_{retfan} - \frac{Q_{amv}}{ \cdot Cp_{air}} 	\label{eq:T_retsh}
@@ -412,7 +402,6 @@ where
 The heat flow from air to metal is modeled based on the assumption that the air is cooled down to the temperature of the metal as seen in \cref{eq:Q_amv} and \cref{eq:Q_aml}. Meaning that $T_{retsh} = T_{mv}$ and $T_{sup} = T_{mlv}$.
 
 \cref{eq:Q_fan_heatloss} is the heat loss from the fan that is being added to the air flow. \todo[inline]{Et lille skriv om Ustarp og Qfan polynominerne er nok på sin plads. De virker nok lidt random stående for sig selv}
-
 \begin{align}
 	U_{*_P} & = \left( U_{fan}\cdot 100 - 55.56 \right) \cdot 0.0335                                         \\
 	Q_{fan} & = 177.76 + 223.95 \cdot U_{*_P} + 105.85 \cdot U_{*_P}^2 + 16.74 \cdot U_{*_P}^3	\label{eq:Q_fan_heatloss} \\
@@ -421,7 +410,7 @@ The heat flow from air to metal is modeled based on the assumption that the air 
 \end{align}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$U_{*_P}$       & Transformed fan speed                                & [1/\si{s}]                        \\
@@ -431,6 +420,7 @@ where
 	\end{tabular}
 \end{center}
 
+\medskip
 The fans used to move air over the condenser and evaporator are driven by VFD allowing for a continuous range of speed settings from 0\% to 100\%. The mass flow as a function of fan speed can be modeled with a 2nd order polynomial, as shown in \cref{eq:evap_Vbardot_air}.
 
 The airflow over the evaporator and condenser are dynamic because they are driven by fans that have rotational inertia. Additionally, the air contains some inertia too. This behavior is modeled by \cref{eq:evap_U_star_mdot} $\rightarrow$ \cref{eq:Evaporator_FanAirRateOfChange}. \cref{eq:Evaporator_FanAirInstantMassFlow} calculates the estimated steady state air mass flow at a new speed. The density of air ($\rho_{air}$) is 1.225 \si{kg}/\si{m}$^3$. \cref{eq:Evaporator_FanAirRateOfChange} approximates the rate of change of the air mass flow as a first-order difference with a time constant of 10 seconds.
@@ -444,7 +434,7 @@ The airflow over the evaporator and condenser are dynamic because they are drive
 \end{equation}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$ U_{*_{\dot{m}}} $ 						& Transformed fan speed												& [1/\si{s}]\\
@@ -454,7 +444,7 @@ where
 		$\dfrac{\Delta \dot{m}_{air}}{\Delta t} $ 	& The rate of change of	air flow 									& [\si{kg}/\si{s^2}]
 	\end{tabular}
 \end{center}
-
+\medskip
 The evaporator contains one of the greater thermal masses due to the large mass of metal in the heat exchanger. The temperature of the evaporator metal is divided into the liquid-vapor control volume \cref{eq:evap_dT_ml} and the vapor control volume \cref{eq:evap_dT_mv}. The metal temperature change is governed by the heat flows to and from the metal ($Q_{amlv}$, $Q_{mlv}$, $Q_{mvmlv}$ in \cref{eq:evap_dT_ml} and $Q_{amv}$, $Q_{mv}$, $Q_{mvmlv}$ in \cref{eq:evap_dT_mv}) and the mass of the metal in that CV ($M_m \cdot \sigma$ in \cref{eq:evap_dT_ml} and $M_m \cdot (1 - \sigma)$ in \cref{eq:evap_dT_mv}) multiplied with the specific heat capacity of the metal ($Cp_m$). The evaporator metal is copper and thus the specific heat capacity is $387$ \si{J}/(\si{kg}\si{K}). The heat flows are illustrated in \cref{fig:evap_CV}.
 
 
@@ -465,14 +455,13 @@ The evaporator contains one of the greater thermal masses due to the large mass 
 	\tcbhighmath[boxrule = 0.5pt]{ \frac{dT_{mv}}{dt} = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m } }     \label{eq:evap_dT_mv}
 \end{equation}
 
-
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$Q_{amlv}$  & Heat flow from air to metal surrounding liquid-vapor CV                                     & [\si{W}]                          \\
 		$Q_{mlv}$   & Heat flow from evaporator metal to liquid-vapor CV                                          & [\si{W}]                          \\
-		$Q_{mvmlv}$ & Heat flow from through from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{W}]                          \\
+		$Q_{mvmlv}$ & Heat flow from metal surrounding vapor CV to metal surrounding liquid-vapor CV & [\si{W}]                          \\
 		$Q_{mv}$    & Heat flow from evaporator metal to vapor CV                                                 & [\si{W}]                          \\
 		$M_{m} $    & Mass of evaporator metal                                                                    & [\si{kg}]                         \\
 		$Cp_{m}$    & Specific heat capacity of the evaporator metal                                              & [\si{J}/(\si{K}$ \cdot $\si{kg})]
@@ -480,8 +469,7 @@ where
 \end{center}
 
 \medskip
-\cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system where $U A_1 = 3510$ \si{J}/\si{K}, $U A_2 = 1930$ \si{J}/\si{K} and $U A_3 = 50$ \si{J}/\si{K}. The temperature of the vapor refrigerant leaving the evaporator is found from output pressure and enthalpy in \cref{eq:T_v}
-
+\cref{eq:Q_mvml} $\rightarrow$ \cref{eq:Q_mv} model convection heat flows between the metal CVs and to the vapor-liquid and vapor CVs. They are modeled as the temperature difference between two CVs multiplied with the specific heat coefficient between the two. The specific heat coefficients ($U A_1 \rightarrow U A_3$) are found empirically from steady-state tests in \cite{Sorensen2013} for a similar refrigeration system where $U A_1 = 3510$ \si{J}/\si{K}, $U A_2 = 1930$ \si{J}/\si{K} and $U A_3 = 50$ \si{J}/\si{K}. The temperature of the vapor refrigerant leaving the evaporator is found from output pressure and specific enthalpy in \cref{eq:T_v}
 \begin{align}
 	Q_{mvmlv} & = U A_3 \cdot (T_{mv} - T_{mlv}) \label{eq:Q_mvml}             &  \\
 	Q_{mlv}   & = U A_1 \cdot (T_{mlv} - T_{lv}) \cdot \sigma	\label{eq:Q_ml}&  \\
@@ -490,28 +478,27 @@ where
 \end{align}
 
 where
-
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
-		$T_{lv}$    & Saturation temperature for evaporation of the refrigerant                         & [\si{K}]        \\
-		$T_{v}$     & Temperature of refrigerant (vapor) leaving the evaporator                         & [\si{K}]        \\
-		$UA_1$      & Heat transfer coefficient from metal to liquid                                    & [\si{J}/\si{K}] \\
-		$UA_2$      & Heat transfer coefficient from metal to vapor                                     & [\si{J}/\si{K}] \\
-		$UA_3$      & Heat transfer coefficient from vapor CV metal to liquid-vapor CV metal            & [\si{J}/\si{K}] \\
-		$\Phi(p,h)$ 		& TPH; Table lookup of the vapor refrigerant temperature from pressure and enthalpy & [\si{K}]
+		$T_{lv}$    & Temperature of refrigerant in the liquid-vapor CV                      & [\si{K}]        \\
+		$T_{v}$     & Temperature of refrigerant (vapor) leaving the evaporator              & [\si{K}]        \\
+		$UA_1$      & Heat transfer coefficient from metal to liquid                         & [\si{J}/\si{K}] \\
+		$UA_2$      & Heat transfer coefficient from metal to vapor                          & [\si{J}/\si{K}] \\
+		$UA_3$      & Heat transfer coefficient from vapor CV metal to liquid-vapor CV metal & [\si{J}/\si{K}] \\
+		$\Phi(p,h)$ & TPH; Table lookup temperature from pressure and specific enthalpy               & [\si{K}]
 	\end{tabular}
 \end{center}
 
 \medskip
-Due to the very small pressure differential across the evaporator the output pressure is assumed to be equal to the input pressure for simplicity as in \cref{eq:evap_pout}. The specific enthalpy of the liquid-vapor CV is given by \cref{eq:evap_hlv}. \cref{eq:evap_hv} calculates the vapor CV enthalpy from the dew point enthalpy ($h_{dew}$) and the heat flow from vapor CV metal to vapor refrigerant ($Q_{mv}$) divided by the refrigerant mass flow into the vapor CV ($\dot{m}_{dew}$). The dew point specific enthalpy is the specific enthalpy point where liquid vapor mixture has completely changed phase to vapor. The mass flow from the liquid-vapor CV to the vapor CV is given by \cref{eq:evap_mdot_{lv}}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator which enters the box.
+Due to the very small pressure differential across the evaporator the output pressure is assumed to be equal to the input pressure for simplicity as in \cref{eq:evap_pout}. The specific enthalpy of the liquid-vapor CV is given by \cref{eq:evap_hlv}. \cref{eq:evap_hv} calculates the vapor CV specific enthalpy from the dew point specific enthalpy ($h_{dew}$) and the heat flow from vapor CV metal to vapor refrigerant ($Q_{mv}$) divided by the refrigerant mass flow into the vapor CV ($\dot{m}_{dew}$). The dew point specific enthalpy is the specific enthalpy point where liquid vapor mixture has completely changed phase to vapor. The mass flow from the liquid-vapor CV to the vapor CV is given by \cref{eq:evap_mdot_lv}. \cref{eq:evap_Tsup} describes the temperature of the air leaving the evaporator which enters the box.
 
 The mass balances are given by equations \cref{eq:evap_dMlv} and \cref{eq:evap_dMv}.
-
 \begin{align}
 	p_{out}       & = p_{in} \label{eq:evap_pout}                                                                \\
 	h_{lv}        & = h_{in} + \frac{Q_{mlv}}{\dot{m}_{in}} \label{eq:evap_hlv}                                  \\
 	h_v           & = h_{dew} + \frac{Q_{mv}}{\dot{m}_{dew}} \label{eq:evap_hv}                                  \\
-	\dot{m}_{dew} & = \frac{Q_{mlv}}{h_{dew} - h_{in}} \label{eq:evap_mdot_{lv}}                                 \\
+	\dot{m}_{dew} & = \frac{Q_{mlv}}{h_{dew} - h_{in}} \label{eq:evap_mdot_lv}                                 \\
 	T_{sup}       & = T_{retfan} -  \frac{Q_{amlv} + Q_{amv}}{Cp_{air} \cdot \dot{m}_{air}} \label{eq:evap_Tsup}
 \end{align}
 
@@ -537,14 +524,13 @@ where
 	\end{tabular}
 \end{center}
 
-Finally the temperature of the refridgerant vapor leaving the evaporator $T_v$ must be defined. This is crucial as the difference between this temperature and the bubblepoint temperature defines the superheat. In previous work \cite{Sorensen2013} it is defined algebraically as a table lookup of the output enthalpy $h_{out}$ and the output pressure $p_{out}$. However for this project it will be modelled as an artificial state, to allow control of the state:\\
-
+Finally the temperature of the vapor refrigerant leaving the evaporator $T_v$ is defined. This is crucial as the difference between this temperature and the bubble point temperature defines the superheat. In previous work \cite{Sorensen2013} it is defined algebraically as a table lookup of the output specific enthalpy $h_{out}$ and the output pressure $p_{out}$. However for this project it will be modeled as an artificial state, to allow control of the state:
 \begin{equation}\label{eq:tv_initial}
 	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_{v}}{dt} = \bar{T_v} - T_v} %\cdot T_s
 \end{equation}
 
-where\\
-
+where
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{10cm} l}
 		$T_v $       	 & Previous vapor refrigerant temperature                                  & [\si{K}] 						\\
@@ -552,9 +538,8 @@ where\\
 %		$T_s$            & Sample time                                    						    & [\si{s}]                  \\
 	\end{tabular}
 \end{center}
-
-The current vapor refrigerant temperature is defined by a enthalpy-pressure lookup table:
-
+\medskip
+The current vapor refrigerant temperature is defined by a specific enthalpy-pressure lookup table:
 \begin{equation}
 	\bar{T_v} = \Phi(p_{out}, h_{out})
 \end{equation}
@@ -563,7 +548,7 @@ The current vapor refrigerant temperature is defined by a enthalpy-pressure look
 \newpage
 
 \subsubsection{Box} \label{sec:mod_box}
-The reefer box contains the transported cargo which is kept cool by the air which is circulated by the evaporator fan. The box contains by far the greatest thermal masses due to the large mass of the cargo and aluminum of the trailer box. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area.
+The reefer box contains the transported cargo which is kept cool by the air which is circulated by the evaporator fan. The box contains by far the greatest thermal masses due to the large mass of the cargo and mass of aluminum in the trailer box. The cargo temperature is strongly coupled to the surrounding air temperature due to its large surface area.
 
 In \cref{fig:box_diagram} a simplified diagram of the trailer box is seen.
 
@@ -584,12 +569,13 @@ The temperatures of the three thermal masses are modeled by their state equation
 	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_{box}}{dt} = \frac{Q_{amb} - Q_{ba}}{M_{box} \cdot Cp_{box}}} \label{eq:box_dT_box}
 \end{equation}
 
-\begin{equation} 
+\begin{equation}
 	\tcbhighmath[boxrule = 0.5pt]{\frac{dT_{cargo}}{dt} = \frac{-Q_{ca}}{M_{cargo} \cdot Cp_{cargo}}} \label{eq:box_dT_cargo}
 \end{equation}
 
 
 where
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$Q_{ca}$     & Cargo to air heat flow       & [\si{W}]                \\
@@ -599,14 +585,12 @@ where
 		$Q_{amb}$    & Ambient to box heat flow     & [\si{W}]                \\
 		$Cp_{air}$   & Air specific heat capacity   & [\si{J}/\si{kg} \si{K}] \\
 		$Cp_{cargo}$ & Cargo specific heat capacity & [\si{J}/\si{kg} \si{K}] \\
-		$Cp_{box}$   & Cargo specific heat capacity & [\si{J}/\si{kg} \si{K}]
+		$Cp_{box}$   & Box specific heat capacity & [\si{J}/\si{kg} \si{K}]
 	\end{tabular}
 \end{center}
 
-
-The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qca}. $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on the difference between the temperature of the air returning from the box ($T_{ret}$) and the temperature of the air supplied to the box $T_{sup}$ as seen in \cref{eq:box_Qcool}. The remaining heat flows in \cref{eq:box_Qab} $\rightarrow$ \cref{eq:box_Qca} are convective heat flows. $U A_{amb}$ and $U A_{ba}$ were approximated as half of the heat transfer coefficient from ambient air $\rightarrow$ air which was found in the Hi-Fi model to be approximately 50 \si{J}/\si{K}. The cargo to air heat transfer coefficient ($U A_{ca}$) was found in the simulation to be $20$ \si{W}/(\si{K}$\cdot$\si{m}$^3$) $\cdot 100$ \si{m}$^3$.
-
-
+\medskip
+The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq:box_Qca}. $Q_{cool}$ is the cooling provided by the evaporator. It is calculated based on the difference between the temperature of the air returning from the box ($T_{ret}$) and the temperature of the air supplied to the box ($T_{sup}$) as seen in \cref{eq:box_Qcool}. The remaining heat flows in \cref{eq:box_Qab} $\rightarrow$ \cref{eq:box_Qca} are convective heat flows. $U A_{amb}$ and $U A_{ba}$ were approximated as half of the heat transfer coefficient from ambient air $\rightarrow$ box air which was found in the Hi-Fi model to be approximately 50 \si{J}/\si{K}. The cargo to air heat transfer coefficient ($U A_{ca}$) was found in the simulation to be $20$ \si{W}/(\si{K}$\cdot$\si{m}$^3$) $\cdot 100$ \si{m}$^3 = 2000$ \si{W}/\si{K}.
 \begin{align}
 	Q_{cool}   & = Cp_{air} \cdot \dot{m}_{air} \cdot (T_{ret} - T_{sup})	\label{eq:box_Qcool} \\
 	Q_{amb}    & = (T_{ambi} - T_{box}) \cdot U A_{amb}						\label{eq:box_Qab}   \\
@@ -615,6 +599,7 @@ The heat flows are modeled as seen in \cref{eq:box_Qcool} $\rightarrow$ \cref{eq
 \end{align}
 
 where
+\smallskip
 \begin{center}
 	\begin{tabular}{l p{8cm} l}
 		$\dot{m}_{air}$ & Air mass flow inside box                     & [\si{kg}/{\si{s}}] \\
@@ -629,7 +614,7 @@ where
 
 
 The return air temperature which is located before the evaporator fan is assumed to be equal to the box air temperature:
-
+\medskip
 \begin{equation} \label{eq:box_Tref}
 	T_{ret} = T_{air}
 \end{equation}

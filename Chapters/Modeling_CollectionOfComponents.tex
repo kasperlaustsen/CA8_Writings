@@ -1,6 +1,6 @@
 %In the previous section each component of the system was modeled with differential and algebraic equations. The modeling format is such that every component takes some inputs, and from those calculates some states and some outputs which are used for the adjacent components. In order to make a complete non-linear model it is necessary to connect the inputs and outputs of the system. This section provides insight into how components are interfaced and collected into a complete non-linear state space form.
 
-In the previous section each component of the system was modeled with differential and algebraic equations. The equations for each component generally require inputs from adjacent components, to generate outputs used in adjacent components. The aim of this section is to create a state space model which encapsulates all these interconnections. The model is expected to be non-linear as a direct result of the generally non-linear physics that describe thermodynamic systems. \cref{sec:mod_lin} will cover how the model is linearised.\\
+In the previous section each component of the system was modeled with differential and algebraic equations. The equations for each component generally require inputs from adjacent components to generate outputs used in adjacent components. The aim of this section is to create a state space model which encapsulates all these interconnections. The model is expected to be non-linear as a direct result of the generally non-linear physics that describe thermodynamic systems. \cref{sec:mod_lin} will cover how the model is linearised.\\
 
 The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the system interface variables and states. In the diagram the component interface variables are split out to show which variables are used as inputs and outputs for each component. Some inputs to components are highlighted in red to signify that they are not found as outputs from a component. Steady State values (operating points) are used for these and will be referred to as red variables. The values of the red variables are taken from the the high-fidelity simulation in steady state. Blue variables are outputs of components that are not used by the adjacent component. Each component block also contains the names of the states they contain.
 
@@ -11,17 +11,20 @@ The block diagram in \cref{fig:Block_diagram_inout} gives an overview of the sys
 	\label{fig:Block_diagram_inout}
 \end{figure}
 
-In addition to the lacking red variables of \cref{fig:Block_diagram_inout}, all of the table look-ups (for overview see \cref{tab:app_lookup}) that are incorporated in the component models of \cref{sec:mod_comp_mod} are kept constant with steady state values from the operating point. This is done to decrease complexity of the system and ease linearisation of the system model, but it comes with the drawback that a lot of the dependencies between the states themselves and states and inputs are disregarded. 
-In addition to the disregarded dependencies as a result of fixed values for the look-up tables, the introduction of steady state variables for the red variables has the same effect. 
+In addition to the lacking red variables of \cref{fig:Block_diagram_inout}, all of the table look-ups (for overview see \cref{tab:app_lookup}) that are incorporated in the component models of \cref{sec:mod_comp_mod} are kept constant with steady state values from the operating point. This is done to decrease complexity of the system and ease linearisation of the system model. But it comes with the drawback that a some dependencies between states and inputs are lost.
+In addition, the use of state variables for the red variables in \cref{fig:Block_diagram_inout} has the same effect.
 
-As an example, consider the Condenser throttle valve in \cref{fig:Block_diagram_inout}. The flow through the valve model is decided by the pressure difference across it, in this case $ \color{red} p_3$ $ - $ $ \color{red} p_1 $. As mentioned, these are then provided to the model as steady state constants, thus the flow through the condenser throttle valve is independent on the condenser outputs, and hence the compressor stage 2. The only thing that is passed from the condenser to the condenser throttle valve is the output enthalpy, $ h_4 $. \\
+\smallskip
+As an example, consider the Condenser throttle valve in \cref{fig:Block_diagram_inout}. The flow through the valve model is decided by the pressure difference across it, in this case $ \color{red} p_3$ $ - $ $ \color{red} p_1 $. As mentioned, these are then provided to the model as steady state constants, thus the flow through the condenser throttle valve is independent on the condenser outputs, and hence the compressor stage 2. The only thing that is passed from the condenser to the condenser throttle valve is the output enthalpy, $ h_4 $.
 
-The system model contains a lot of simplifications compared to the physical system (and the HiFi model), and thus the model is likely inaccurate especially outside the operating point. Despite the simplifications it may still be applicable for the design of a controller near the operating point. The applicability of the model for control design will be investigated in the rest of the report. For future reference, in \cref{app:tj_2}, an attempt to reformulate the system components in order to better connect the system components is performed.\\
-The mathematical description 
+\smallskip
+The system model contains a lot of simplifications compared to the physical system (and the Hi-Fi model), and thus the model is likely inaccurate especially outside the operating point. Despite the simplifications it may still be applicable for the design of a controller near the operating point. The applicability of the model for control design will be investigated in the rest of the report. For future reference, in \cref{app:tj_2}, an attempt to reformulate the system components in order to better connect the system components is performed.
+
+
 \subsubsection{Mathematical formulation of non-linear state space model} \label{sec:non_lin_model}
 As described in \cref{sec:mod}, there are large variances in dynamical speed across the system. Therefore, the fast components were defined algebraically, while the slow dynamics were modeled with a mix of differential equations and algebraic equations. The fast components are considered the compressors and the valves.
 
-The variables are differentiated in the differential equations in \cref{sec:mod_comp_mod}, are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
+The variables differentiated with respect to time in \cref{sec:mod_comp_mod}, are the system states. These are combined as a state vector $x$. The controlled inputs are likewise combined in the input vector $u$. These vectors are seen in \cref{eq:xu}.
 \begin{equation}  \label{eq:xu}
 	\begin{split}
 		x &= \begin{bmatrix}
@@ -49,7 +52,7 @@ The variables are differentiated in the differential equations in \cref{sec:mod_
 \end{equation}
 
 
-We define a function $f(x,u)$ as a vector of the state derivatives:
+Af function $f(x,u)$ as a vector of the state derivatives is defined:
 % F: States
 % ------------------------------------
 
@@ -81,7 +84,7 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 		\dfrac{Q_{ca}(T_{air},T_{cargo}) + Q_{ba}(T_{air},T_{box}) + Q_{fan}(U_{fan2}) - Q_{cool}(T_{air},T_{mv},T_{mlv},U_{fan2},\dot{m}_{air})}{M_{air} \cdot Cp_{air}} \\					%box
 		\dfrac{Q_{amb}(T_{ambi},T_{box}) -  Q_{ba}(T_{air},T_{box})}{M_{box} \cdot Cp_{box}} \\							%box
 		\dfrac{-Q_{ca}(T_{air},T_{cargo})}{M_{cargo} \cdot Cp_{cargo}}									\\	%box
-		\bar{T_v}(M_{lv},T_{mv},T_{mlv},T_v) - T_v 
+		\bar{T_v}(M_{lv},T_{mv},T_{mlv},T_v) - T_v
 	\end{bmatrix}
 \end{equation}
 
@@ -89,9 +92,9 @@ We define a function $f(x,u)$ as a vector of the state derivatives:
 
 \newpage
 \subsection{Model verification}\label{sec:model-verification}
-In order to validate the model found in \cref{eq:f_noSub}, a simulation of steady state was desired. The aim of the simulation was to confirm whether the model states acts stable, especially for the states that affects the system outputs, $T_v$ and $T_{air}$.
+In order to validate the model found in \cref{eq:f_noSub}, a simulation of steady state was desired. The aim of the simulation was to confirm whether the model states act as expected and are stable, especially with regards to the states that map to the system outputs, $T_v$ and $T_{air}$.
 
-When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order to simulate the system, some steady state variables had to be introduced in order to be able to perform the simulation model. These are all the red variables in \cref{fig:Block_diagram_inout}. Additionally, the inputs needed to be set to steady state values.The concrete numeric values for both the inputs and the steady state variables where found in the HiFi simulation after 5000 s. Finally, the states needed to be initialised in a sensible manner, and these were estimated with common sense, and based on the pressures, temperatures and volumes of the control volumes. All of the necessary values for the simulation is found in the tables below. \\
+When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order to simulate the system, some steady state variables had to be introduced in order to be able to perform the simulation model. These are all the red variables in \cref{fig:Block_diagram_inout}. Additionally, the inputs needed to be set to steady state values. The specific numeric values for both the inputs and the steady state variables where found in the Hi-Fi simulation when the system was mostly settled at 5000 s. Finally, the states needed to be initialized in a sensible manner, and these were estimated with common sense, and based on the pressures, temperatures and volumes of the control volumes. All of the necessary values for the simulation is found in the tables below.
 
 \begin{table}[h]
 	\begin{tabular}{ccc}\label{tab:linearising_point}
@@ -145,15 +148,16 @@ When referring to \cref{fig:Block_diagram_inout}, it is apparent that in order t
 
 
 
-In the inspection of the time evolvement of the states in the simulation, the states will be paired in groups that make them relatable. We first illustrate some results that indicate that our model is flawed. As can be seen in \cref{fig:non_lin_sim_faulty_Mass} the refrigerant masses $M_{pjj}$ and $M_{con}$ are integrating over time.
+In the inspection of the time evolvement of the states in the simulation, the states will be paired in groups that make them relatable. Some results are illustrated that indicate that our model is flawed. As can be seen in \cref{fig:non_lin_sim_faulty_Mass} the refrigerant masses $M_{pjj}$ and $M_{con}$ are integrating over time.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_faulty_Mass.png}
-	\caption{Plot of faulty states}
+	\caption{Plot of states $M_{PJJ}$ and $M_{Con}$ which integrate indefinitely throughout the whole simulation time with a constant derivative.}
 	\label{fig:non_lin_sim_faulty_Mass}
 \end{figure}
-This is due to some mismatches and simplifications in the modeling section. The issue is that the pressures inside the components are not defined as states, and such the masses does not affect the pressure and thereby the flows in the system. However, as a direct result of the missing link between the masses and the pressure, the masses in the Pipe Joining Junction and condenser are not affecting the rest of the system either. This can be verified by inspection in \cref{eq:f_noSub}, where it is seen that none of the states depend on $M_{pjj}$ and $M_{con}$. Resultingly the faulty states can excluded from the model as they do no affect any of the other states. Therefore the model as whole is not disregarded at this time. Even if the model poorly represents the physical system it may still be a candidate for a control model when linearised. \\
+
+This behavior is the result of some mismatches and simplifications made in the modeling section. A part of the issue is that the pressures inside the components are not defined as states. Thus the masses do not affect the pressure and thereby the flows in the system. However, as a direct result of the missing link between the masses and the pressure, the masses in the Pipe Joining Junction and condenser are not affecting the rest of the system either. This can be verified by inspection in \cref{eq:f_noSub}, where it is seen that none of the states depend on $M_{PJJ}$ and $M_{Con}$. Therefore the faulty states can be excluded from the model as they do no affect any of the other states. Thus the model as whole is not disregarded. Even if the model poorly represents the physical system in some aspect it may still be a candidate for a control model when linearised. \\
 
 The next states to be investigated are the refrigerant masses in respectively the liquid-vapor and the vapor control volume of the evaporator, $ M_{lv} $ and $ M_v $. Additionally, the air mass flow was included in the plot. The plot can be seen in \cref{fig:non_lin_sim_Mass_Mvfucked}. It is noted that the plot has two distinct y-axes to allow for the inclusion of the air mass flow as well.
 \begin{figure}[h]
@@ -162,32 +166,32 @@ The next states to be investigated are the refrigerant masses in respectively th
 	\caption{Plot of states and state derivatives. Note the two y-axes. $ M_v $ appear to be integrating in subplot 1, with subplot two confirming that the state derivative is non-zero. Other states $ M_{lv} $ and $ \dot{m}_{air} $ converge to constant values in subplot 1.}
 	\label{fig:non_lin_sim_Mass_Mvfucked}
 \end{figure}
-Observing the behavior of the state $ M_v $ reveals that  derivative of the state $M_v$ converges to a non-zero constant at around $ 3\cdot 10^{-3} $. This error makes the state integrate towards infinity. The error is considered as a numeric error as it does not make sense for the vapor mass to accumulate indefinitely. Therefore the phenomenon was investigated and measures were taken to handle the numerical error.
+Observing the behavior of the state $ M_v $ reveals that  derivative of $M_v$ converges to a non-zero constant at around $ 3\cdot 10^{-3} $. This error makes the state integrate towards infinity. The error is considered as a numeric error as it does not make sense for the vapor mass to accumulate indefinitely. Therefore the phenomenon was investigated and measures were taken to handle the numerical error.
 
-The non-zero offset of the derivative of $ M_v $ was discovered to be a function of the compressor speed. This function is simply subtracted from the derivative of the state $M_v$. This removed the integrating effect as can be seen in \cref{fig:non_lin_sim_Mass}, but may imply that some numerical errors were present in the non-linear model.
+The non-zero offset of the derivative of $ M_v $ was discovered to be a function of the compressor speed. This function is simply subtracted from the derivative of $M_v$. This removed the integrating effect as seen in \cref{fig:non_lin_sim_Mass}.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Mass.png}
-	\caption{Plot of states $ M_v $, $ M_{lv} $ and $ \dot{m}_{air} $. Derivative of $ M_v $ is subtracted with a function of compressor speed $ \omega $. All states converge to constant values. Note the two y-axes.}
+	\caption{Plot of states $ M_v $, $ M_{lv} $ and $ \dot{m}_{air} $. The Derivative of $ M_v $ is subtracted a function of compressor speed $ \omega $. All states converge to constant values. Note the two y-axes.}
 	\label{fig:non_lin_sim_Mass}
 \end{figure}
-\newpage
-Further investegations of the phenomenon were performed but did not reveal the origin of the error. No further actions were thus taken.\\
-After correcting the numerical error, all of the states in \cref{fig:non_lin_sim_Mass_Mvfucked} converges to a constant value and is thus considered to be stable.\\
 
+\newpage
+Further investigations of the phenomenon were performed but did not reveal the origin of the error. In \cref{app:tj_2}, an alternative modeling approach was investigated, to attempt to mitigate the errors in \cref{fig:non_lin_sim_faulty_Mass}. After correcting the numerical error, all of the states in \cref{fig:non_lin_sim_Mass_Mvfucked} converges to a constant value.
 
 Lastly in \cref{fig:non_lin_sim_Temperature}, all of the temperature states are plotted. They all converge to a constant value, indicating stable behavior.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{Graphics/nonlin_sim_Temperature.png}
 	\caption{Plot of all the temperature states. The states are collected into 3 subplots, where the first coverge faster than the second, and the second faster than the third. All the temperature states converge to a constant value}
 	\label{fig:non_lin_sim_Temperature}
 \end{figure}
-\newpage
-Now that all of the states has been investigated, a preliminary conclusion on whether the non-linear state space model in \cref{eq:f_noSub} can be verified to be stable remains to be drawn. Based on the states in \cref{fig:non_lin_sim_faulty_Mass} it could be concluded that the model is not stable and accurate enough. However, as mentioned earlier, the two involved states are not affecting the rest of the model. Furthermore, as the states $ M_{pjj} $ and $ M_{con} $ are not output and thereby wished to be controlled, it is decided to just omit these two states from our model.
-This leaves the model with 2 fewer states, which can be considered favorable since the states does not provide extra information on the controlled outputs. The rest of the states converge to constant values, indicating stability for the model. This allows for the next step in the process, which is linearisation.
 
-Note: in \cref{app:tj_2}, an alternative modeling approach was investigated, to mitigate the errors in \cref{fig:non_lin_sim_faulty_Mass}.
+\newpage
+
+If a conclusion was to be drawn based on the states in \cref{fig:non_lin_sim_faulty_Mass} it could be decided that the model is not stable and accurate enough. However, as mentioned earlier, the two involved states are not affecting the rest of the model. Furthermore, as the states $ M_{pjj} $ and $ M_{con} $ are not output and thereby controlled, it is decided to just omit these two states from our model. This leaves the model with 2 fewer states, which can be considered favorable since the states do not provide extra information on the controlled outputs. The rest of the states converge to constant values, indicating stability for the model, allowing for the next step in the process to take place: The linearisation.
 
 
 %The control inputs are:
