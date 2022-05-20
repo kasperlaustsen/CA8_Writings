@@ -363,7 +363,8 @@ As was the case with the B matrix of the linear system in \cref{eq:B_full}, the 
 	\end{array}\right)
 \end{equation}
 
-These matrices define an observable and controllable system model. The input that disappears during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the condenser metal temperature state $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states. In the end means that the 3 corresponding control inputs does not affect the observable subsystem. Intuitively this is not true for the physical system, but it is none the less the case for this simplified model close to the operating point.\\
+\smallskip
+\noindent These matrices define an observable and controllable system model. The input that disappears during the Kalman Decomposition is $ U_{fan1} $ which affects the condenser. Since the condenser metal temperature state $ T_m $ is part of the unobservable subsystem, it makes sense that the fan speed to the condenser does not map to the observable states. In the end means that the 3 corresponding control inputs does not affect the observable subsystem. Intuitively this is not true for the physical system, but it is none the less the case for this simplified model close to the operating point.\\
 
 As expected the kalman decomposition reduced system is stable as all eigenvalues of the $A_{11}$ matrix are negative. As mentioned in \cref{sec:linearised-model}, $A$ of the linearised model contained an eigenvalue so numerically close to zero that it is considered zero. This eigenvalue has disappeared in the Kalman decomposition, leaving the biggest pole location at -1.09e-04.
 
