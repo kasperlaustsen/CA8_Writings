@@ -1,4 +1,4 @@
-The purpose of this test is to test the observer based LQR (OBLQR) controller on the Hi-Fi simulation. Focus will be on how the cargo hold air temperature and evaporator output refrigerant temperature reacts, when the model is near the operating point and when different disturbances are applied. Additionally, the power consumption for the actuators of the observer based controller will be compared to the power consumption for the actuators of the PID controller.
+The purpose of this test is to test the observer based LQR (OBLQR) controller on the Hi-Fi simulation. Focus will be on how the cargo hold air temperature and evaporator output refrigerant temperature reacts, when the model is near the operating point and when different disturbances are applied. Additionally, the energy consumption for the actuators of the observer based controller will be compared to the energy consumption for the actuators of the PID controller.
 
 \subsection{Test framework}
 When the HiFi simulation model is initialized, the system takes approximately 1.5 hours until it converges to steady state. Since the OBLQR controller is not expected to work well when operating far from the linearisation point, the existing PID control structure is used to handle the initial transient behavior. This is done as not all of the states in the Hi-Fi simulation model are available. Thus, they can not be initialised at the operating point, and in stead the PID controller is used to bring the system \textbf{near} the operating point before the OBLQR controller can be applied. 
@@ -26,15 +26,15 @@ Three scenarios are simulated:
 \noindent For each of the three scenarios the two outputs, namely the cargo hold air temperature and evaporator output refrigerant temperature are plotted along with the controller inputs. The two outputs are plotted from both the Hi-Fi simulation and the observer to see whether the observer successfully estimates those two states. Furthermore the output of the Hi-Fi model is plotted when its own PID controller structure inputs are fed to it to benchmark it against the LQR controller. Lastly the average power consumption by the two control strategies are mentioned to evaluate the efficiency of the OBLQR.
 
 \subsection{Tuned LQR controller: Constant disturbance}
-This test illustrates the performance of the OBLQR controller in the best case scenario, namely where the disturbance (ambient temperature) is held constant at 20$^{\circ}$C. This is the operating point for the disturbance. The controlled outputs are seen in \cref{fig:LQR_wellTuned_noDist}. The OBLQR controller is set to start regulating the system at time $t=1$ hours, at which point it will attempt to drive the states to 0. This is done to illustrate whether the OBLQR controller can drive the states to zero when from outside the operating point.
+This test illustrates the performance of the OBLQR controller in the best case scenario, namely where the disturbance (ambient temperature) is held constant at 20$^{\circ}$C. This is the operating point for the disturbance. The controlled outputs are seen in \cref{fig:LQR_wellTuned_noDist}. The OBLQR controller is set to start regulating the system at time $t=1$ hours, at which point it will attempt to drive the states to 0. This is done to illustrate whether the OBLQR controller can drive the states to zero, when initialised outside the operating point.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Graphics/fig_LQRvsKresten_noDist.png}
 	\caption{No disturbance case: Top: Cargo hold air temperature. $T_0$ = -4.25$^{\circ}$C. Bottom: Evaporator vapor refridgerant temperature. $T_0$ = -5.55$^{\circ}$C. The controlled outputs from both controllers are regulated near zero}
 	\label{fig:LQR_wellTuned_noDist}
-\end{figure} \todo[inline]{Remove observer estimated outputs for all figures. We need to focus on the actual outputs}
-The controlled outputs of the OBLQR controller is regulated to near zero, and as such, the controller seem to work near the linearisation point. To further investigate the accuracy of the controlled outputs, a zoomed version of \cref{fig:LQR_wellTuned_noDist} is consulted in \cref{fig:LQR_wellTuned_noDist_zoom}.
+\end{figure} 
+The controlled outputs of the OBLQR controller is regulated to near zero, and as such, the controller seem to work near the linearisation point. This also implies that the observed states are accurate. The "LQR - control model outputs", are the observer estimates of the outputs. The observer estimates can not be distinguished from the "LQR - HiFi model output" which is the actual outputs of the HiFi model. To further investigate the accuracy of the controlled outputs, a zoomed version of \cref{fig:LQR_wellTuned_noDist} is consulted in \cref{fig:LQR_wellTuned_noDist_zoom}.
 
 
 \begin{figure}[H]
@@ -64,7 +64,7 @@ The fact that the OBLQR control signals $ \Theta_1, U_{fan2} $ seem to be consta
 \end{figure}
  
 In \cref{fig:inputs_noDist_zoom}, it can be seen that $ \Theta_1, U_{fan2} $ are in fact varying slightly to, just after the switch time. This confirms that the controller is reacting to the controlled outputs. \\
-\noindent As the linearised model of the OBLQR model is based on the same linearisation point as the steady state PID controllers, the power consumptions are very similiar. The power consumption in steady state for the two controllers are the same, XX W.
+\noindent As the linearised model of the OBLQR model is based on the same linearisation point as the steady state PID controllers, the power consumptions are very similiar. The energy consumption throughout the entire test case of 
 
 OBLQR: 25.22 kWh
 PID: 25.14 kWh
