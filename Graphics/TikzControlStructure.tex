@@ -3,14 +3,14 @@
 	% ========================== Nodes ============================
 	% Nodes in upper vertical line
 	\node [input, name=rinput] (rinput) {};
-	\node [tmp, right of=rinput, node distance = .5cm] (tmpadd1){};
-	\node [tmp, above of=tmpadd1, node distance = 2.5cm] (tmpadd2){};
-	\node [block, right of=tmpadd2, node distance = 1cm] (omegaA) {$\omega_A$};
-	\node [block, right of=omegaA, node distance = 1.5cm] (deltaA) {$\Delta_A$};
+	\node [tmp, right of=rinput, node distance = 0.7cm] (tmpadd1){};
+	\node [tmp, above of=tmpadd1, node distance = 1.5cm] (tmpadd2){};
+	\node [block, right of=tmpadd2, node distance = 1cm] (omegaA) {$W$};
+	\node [block, right of=omegaA, node distance = 1.5cm] (deltaA) {$\Delta$};
 %	\node [sum, right of=tmpadd1] (sum1) {};
 	\node [block, right of=tmpadd1, node distance = 2cm] (G) {G};
 	\node [sum, right of=G, node distance =1.5cm] (sum2) {};
-	\node [tmp, above of=sum2, node distance = 2.5cm] (tmpadd3){};
+	\node [tmp, above of=sum2, node distance = 1.5cm] (tmpadd3){};
 	\node [tmp, right of=sum2, node distance = 1cm] (tmpadd4){TEST};
 	
 	
@@ -25,7 +25,7 @@
 %	\node [tmp, right of=sum3, node distance = 1cm] (tmpmul4){TEST};
 %	\node [block, right of=sum3, node distance = 2cm] (G2) {G2};
 %	
-	\draw[thick, dotted] ($(G.north west)+(-1.8, 3)$) rectangle  ($(G.south east)+(1.5, -0.25)$);
+	\draw[thick, dotted] ($(G.north west)+(-1.8, 2)$) rectangle  ($(G.south east)+(1.5, -0.25)$);
 %	\node[above of =tmp0, node distance =1.1cm](sys_txt) {System};
 %	
 	% ========================== Lines ============================
