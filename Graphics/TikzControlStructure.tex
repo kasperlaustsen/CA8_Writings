@@ -1,0 +1,56 @@
+	\begin{adjustbox}{max totalsize={.9\textwidth}{.7\textheight},center}
+	\begin{tikzpicture}[node distance=2.5cm,>=latex']
+	% ========================== Nodes ============================
+	% Nodes in upper vertical line
+	\node [input, name=rinput] (rinput) {};
+	\node [tmp, right of=rinput, node distance = .5cm] (tmpadd1){};
+	\node [tmp, above of=tmpadd1, node distance = 2.5cm] (tmpadd2){};
+	\node [block, right of=tmpadd2, node distance = 1cm] (omegaA) {$\omega_A$};
+	\node [block, right of=omegaA, node distance = 1.5cm] (deltaA) {$\Delta_A$};
+%	\node [sum, right of=tmpadd1] (sum1) {};
+	\node [block, right of=tmpadd1, node distance = 2cm] (G) {G};
+	\node [sum, right of=G, node distance =1.5cm] (sum2) {};
+	\node [tmp, above of=sum2, node distance = 2.5cm] (tmpadd3){};
+	\node [tmp, right of=sum2, node distance = 1cm] (tmpadd4){TEST};
+	
+	
+%	\node [tmp, right of=tmpadd4, node distance = 1.5cm] (tmpmul1){};
+%	\node [tmp, above of=tmpmul1, node distance = 2.5cm] (tmpmul2){};
+%	\node [block, right of=tmpmul2, node distance = 1cm] (omegaI) {$\omega_I$};
+%	\node [block, right of=omegaI, node distance = 1.5cm] (deltaI) {$\Delta_I$};
+%	%	\node [sum, right of=tmpmul1] (sum1) {};
+%
+%	\node [sum, right of=tmpmul1, node distance =4cm] (sum3) {};
+%	\node [tmp, above of=sum3, node distance = 2.5cm] (tmpmul3){};
+%	\node [tmp, right of=sum3, node distance = 1cm] (tmpmul4){TEST};
+%	\node [block, right of=sum3, node distance = 2cm] (G2) {G2};
+%	
+	\draw[thick, dotted] ($(G.north west)+(-1.8, 3)$) rectangle  ($(G.south east)+(1.5, -0.25)$);
+%	\node[above of =tmp0, node distance =1.1cm](sys_txt) {System};
+%	
+	% ========================== Lines ============================
+
+	\draw [-] (rinput) -- (tmpadd1);
+	\draw [->] (tmpadd1) -- (G);
+	\draw [->] (G) -- (sum2);
+	\draw [->] (sum2) -- (tmpadd4);
+
+	
+	% Lines for additive uncertainty
+	\draw [-] (tmpadd1) -- (tmpadd2);
+	\draw [->] (tmpadd2) -- (omegaA);
+	\draw [->] (omegaA) -- (deltaA);
+	\draw [-] (deltaA) -- (tmpadd3);
+	\draw [->] (tmpadd3) -- (sum2);
+	
+%	% Lines for multiplicative uncertainty
+%	\draw [-] (tmpmul1) -- (tmpmul2);
+%	\draw [->] (tmpmul2) -- (omegaI);
+%	\draw [->] (omegaI) -- (deltaI);
+%	\draw [-] (deltaI) -- (tmpmul3);
+%	\draw [->] (tmpmul3) -- (sum3);
+
+%	
+%	
+\end{tikzpicture}
+\end{adjustbox}

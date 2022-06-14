@@ -1,17 +1,66 @@
-\begin{frame}{Title}{Subtitle}
-	 \textbf{Some text}
+\begin{frame}{Robustness Analysis}{Uncertainty}
+	 \textbf{A parameter that will likely vary is the heat transfer coefficient of the cargo }$UA_{ca}$
 	 \begin{itemize}
-	 	\item Item
-	 \end{itemize}
+	 	\item Packaging differ
+	 	\item Cargo differ
+	 \end{itemize} \bigskip
+ 	\textbf{Stability for a system with a linearly varying parameter can be investigated using LMI's for the parameter space}
+ 	\begin{itemize}
+ 		\item Checking stability for corner cases guarantee stability in parameter space $\rightarrow$ robust stability! 
+ 		\item Uncertainty assumed to be $\pm 20 \%$
+ 	\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Next slide title}{Next slide subtitle}
-	 \textbf{Some text}
-	\begin{itemize}
-		\item Item
-	\end{itemize}
+\begin{frame}{Robustness Analysis}{Stability}
+	For a linear system
+	\begin{equation*} \label{eq:lqr_sys}
+		\begin{split}
+			\dot{x} 	& = Ax + Bu \\
+			y 	& = Cx
+		\end{split}
+	\end{equation*}
+	The system is stable iff a P exists that satisfies 
+	\begin{equation*} \label{eq:rob_lyapunov_stability}
+		\begin{split}
+			A^TP+PA &< 0 \\
+			P &> 0
+		\end{split}
+	\end{equation*}
+	
+	And if a system with uncertainty is stable for all pertubations, it is robust stable. 
+	Corner cases for perturbed system:
+	\begin{flalign*}
+		\hspace{1cm} \bar{A}_{\Delta max} \! ^T \: P + P \:\bar{A}_{\Delta max} &< 0 \text{, $\;$ (+20\% perturbation on $U A_{ca}$)} &\\
+		\hspace{1cm} \bar{A}_{\Delta min} \! ^T \: P + P \:\bar{A}_{\Delta min} &< 0 \text{, $\;$ (-20\% perturbation on $U A_{ca}$)} &\\
+		P &> 0
+	\end{flalign*} 
+%	\textbf{Some text}
+%	
+%	
+%	\begin{itemize}
+%		\item Item
+%	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Uncertainty representation}
+	The uncertainty can be represented as follows where:
+	\begin{equation*}
+		G = \left\lbrack \begin{array}{cc}
+			A_{nom} & B\\
+			C & \textrm{D}
+		\end{array}\right\rbrack
+	\end{equation*}
+	
+	\begin{figure}[h!]
+		\centering
+		\resizebox{\columnwidth}{!}{
+			\input{../Graphics/TikzControlStructure}}
+		\label{fig:tikzControlStrat}
+	\end{figure}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%

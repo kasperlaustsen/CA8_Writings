@@ -230,6 +230,43 @@ Enthalpies:
 	\end{align}
 \end{frame}
 
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Component Input/Output relationship}
+	\begin{itemize}
+		\item \color{red} Red \color{black}: Missing outputs - Steady-state (SS) values from Hi-Fi simulation
+		\item \color{blue} Blue \color{black}: Unused outputs of components
+	\end{itemize}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1\textwidth]{../Graphics/Block_Diagram_inout_flowValveVersion.pdf}
+		\label{fig:Block_diagram_inout}
+	\end{figure}
+	
+\end{frame}
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Component Input/Output relationship}
+	\begin{itemize}
+		\item All table lookups are SS variables at operating point (OP)
+			\begin{itemize}
+				\item Reduces complexity and eases linearisation
+				\item Downside: Removes dependencies between states and inputs
+			\end{itemize}
+		\item Pressure/flow input/output setup leads to problems
+			\begin{enumerate}
+				\item Consider condenser throttle valve
+				\item Input and output pressure are constant
+			\end{enumerate}
+	\end{itemize}
+\end{frame}
+
+
+
+
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{Formulating non-linear state-space model}
@@ -281,27 +318,198 @@ Enthalpies:
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Component Input/Output relationship}
+\begin{frame}{Modelling}{Verification}
 	\begin{itemize}
-		\item Red: Missing, Blue: Unused.
-		\item Pressure/flow input/output setup leads to problems
-		\item Current model setup leads to problems e.g. condenser throttle valve
+		\item Model is verified with simulation
+		\item Simulated at OP derived from Hi-Fi simulation
+		\item Results shows 'faulty' states: $M_{pjj}$ and $M_{Con}$ with constant derivatives.
+		\item Do not affect other states and are therefore removed from model
 	\end{itemize}
-	\begin{figure}[h!]
+	\begin{figure}[h]
 		\centering
-		\includegraphics[width=1\textwidth]{../Graphics/Block_Diagram_inout_flowValveVersion.pdf}
-		\label{fig:Block_diagram_inout}
+		\includegraphics[width=0.9\textwidth]{../Graphics/nonlin_sim_faulty_Mass.png}
+		\label{fig:non_lin_sim_faulty_Mass}
+	\end{figure}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Verification}
+	\begin{itemize}
+		\item States: $M_{lv}$, $M_v$ and $\dot{m}_{air}$
+		\item Mass of vapour inside evaporator has constant non-zero derivative at SS
+		\item Considered numeric error and mitigated by subtracting function of compressor speed
+	\end{itemize}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=1\textwidth]{../Graphics/nonlin_sim_Mass_Mvfucked.png}
+		\caption{Notice two y-axis}
+		\label{fig:non_lin_sim_Mass_Mvfucked}
+		
 	\end{figure}
 	
 \end{frame}
 
 
 
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Verification}
+	\begin{itemize}
+		\item Likely cause: Simplifications in modelling section
+		\begin{itemize}
+			\item Pressure inside components not defined as states
+			\item Results in mass inside states not affecting pressure and thereby flow through component
+			\item Best example: Condenser throttle valve should be outputting pressure
+		\end{itemize}
+	\end{itemize}
+
+\end{frame}
+
+
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{}
-	
+\begin{frame}{Modelling}{Linearisation}
+	\begin{itemize}
+		\item Motivation: Non-linear model is not directly applicable control strategy 
+		\item Linearisation is thus performed at relevant OP
+	\end{itemize}
+	Non-linear model is transformed to the following form:
+	\begin{equation} \label{eq:state_space}
+		\begin{split}
+			\dot{x} & = Ax + Bu + B_dd \\
+			y 		& = Cx
+		\end{split}
+	\end{equation}
+	By using the first order taylor expansion:
+	\begin{equation}
+		f(x) \approx f(x_o) + \left. \dfrac{\partial f}{\partial x} \right |_{x_o} \cdot (x-x_0)		
+	\end{equation}
+	Where $f(x)$ = $\dot{x}$ and $x = (x, u, d)$
+
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+%\begin{frame}{Modelling}{Linearisation}
+%	Resulting full taylor expansion expression:
+%	\begin{equation} \label{eq:taylor}
+%		\begin{split}
+%			\dot{x}   \approx   f(x_o, u_o, d_o)   & +
+%			\left. \dfrac{\partial f}{\partial x} \right |_{x_o, u_o, d_o} \cdot (x-x_0)  + 
+%			\left. \dfrac{\partial f}{\partial u} \right |_{x_o, u_o, d_o} \cdot (u-u_0) \\ & +
+%			\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} \cdot (d-d_0)
+%		\end{split}
+%	\end{equation}
+%	With each partial derivative yielding a Jacobian on the form:
+%	\begin{equation} \label{eq:jacobians}
+%		\dfrac{\partial f}{\partial x} =
+%		\begin{bmatrix}
+%			\dfrac{\partial f_1}{\partial x_1} & \cdots & \dfrac{\partial f_1}{\partial x_{nx}} & \\
+%			\vdots & \ddots & \vdots & \\
+%			\dfrac{\partial f_e}{\partial x_1} & \cdots & \dfrac{\partial f_e}{\partial x_{nx}} &
+%		\end{bmatrix}
+%	\end{equation}
+%	Where derivatives are made with respect to both states, inputs and disturbance $(x,u,d)$
+%	
+%
+%\end{frame}
+%
+%
+%
+%%%%%%%%%%%%%%%%%%
+%
+%\begin{frame}{Modelling}{}
+%	Resultingly the system matrix, input and disturbance input matrices are:
+%	\begin{equation}
+%		\left. \dfrac{\partial f}{\partial x} \right |_{x_o, u_o, d_o} = A, \;\;
+%		\left. \dfrac{\partial f}{\partial u} \right |_{x_o, u_o, d_o} = B, \;\;
+%		\left. \dfrac{\partial f}{\partial d} \right |_{x_o, u_o, d_o} = B_d
+%	\end{equation}
+%	Notes regarding operating point:
+%	\begin{itemize}
+%		\item Should be at equilibrium
+%		\item If not then some eigenvalues of $A$ will have zero real parts. 
+%		\item In this case not all dynamics of the system are captured at that operating point (Hartman-Grobman theorem)
+%	\end{itemize}
+%\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Linearisation}
+	\begin{itemize}
+		\item Chosen operating point from Hi-Fi simulation is at $T_{air} = -5 ^{\circ} C$
+		\item Resulting B matrix shows two inputs not mapping to states. These are simply removed.
+	\end{itemize}
+\begin{align}
+	B = &\kbordermatrix{
+		& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
+		T_m 			& 0 & 0 & 0 & -0.0093 & 0\\
+		\dot{m}_{air}	& 0 & 0 & 0 & 0 & \text{7.9630e-04}\\
+		T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
+		T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
+		M_{lv}			& 0 & \text{5.0703e-04} & 0 & 0 & 0\\
+		M_v 			& 0 & 0 & 0 & 0 & 0\\
+		T_{air}  		& 0 & 0 & 0 & 0 & \text{1.0069e-04}\\
+		T_{box}	 		& 0 & 0 & 0 & 0 & 0\\
+		T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
+		T_v 			& 0 & 0 & 0 & 0 & 0
+	} \label{eq:B_full}
+\end{align}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Linearisation}
+	\begin{itemize}
+		\item $\omega$ and $\Theta_2$ not mapping to any states is unexpected
+		\begin{itemize}
+			\item Explanation: Too simple model - several components do not connect
+			\item Example: No flow coupling between $\dot{m}_{in}$ and $\dot{m}_{out}$ of condenser results in no control of flow into evaporator
+		\end{itemize}
+		\item Resulting $A$ matrix is stable (only negative eigenvalues)
+		\item One pole is $-1.3e-9$ which indicates a zero pole
+		\begin{enumerate}
+			\item Indicates that not all dynamics are captured by the chosen operating point
+		\end{enumerate}
+	\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Controllability and Observability}
+	\textbf{Controllability}
+	\begin{itemize}
+		\item Checked to ensure that all inputs map to states
+		\item Controllability matrix should be full rank:
+	\end{itemize}
+	\begin{equation} \label{eq:ctrb}
+		Q_c = [A|B] = \begin{bmatrix}  B & AB & \cdots & A^{n-1}B  \end{bmatrix}
+	\end{equation}
+
+	\textbf{Observability}
+	\begin{itemize}
+		\item Checked to ensure that all states map to outputs
+		\item Observability matrix should be full rank:
+	\end{itemize}
+	\begin{equation}
+		Q_o = [A|C] = \begin{bmatrix}
+			C \\ CA \\ \vdots \\ CA^{n-1}
+		\end{bmatrix}
+	\end{equation}
 \end{frame}
 
 
@@ -309,7 +517,103 @@ Enthalpies:
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{}
+	\begin{itemize}
+		\item Controllability matrix is full rank: Rank of [A|B] = 10
+		\item Observability matrix is \underline{not} full rank: Rank of [A|C] = 8
+			\begin{itemize}
+				\item Two states are not observable: $T_m$ and $M_v$
+				\item Actions are taken to mitigate: Kalman decomposition for unobservable system
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Kalman decomposition for unobservable system}
+	\begin{itemize}
+		\item Used to remove unobservable states, leaving a fully observable system
+	\end{itemize}
+	For the Kalman decomposition, there exists a nonsingular P  $\in \mathbb{R} ^{n x n}$ such that
+	\begin{equation}
+		PAP^{-1} = \begin{bmatrix}
+			A_{11}       & 0 \\
+			A_{21}       & A_{22} \\
+		\end{bmatrix}
+	\end{equation}
 	
+	and
+	
+	\begin{equation}
+		CP^{-1} = \begin{bmatrix}
+			C_{1}       & 0 \\
+		\end{bmatrix}
+	\end{equation}
+	
+	where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, where p is the number of outputs and l is the number of observable states.
+	
+	Input and disturbance matrices are transformed as such:
+	\begin{equation}
+		PB = \begin{bmatrix}
+			B_1 \\
+			B_2
+		\end{bmatrix}, \
+		PB_d = \begin{bmatrix}
+			{B_d}_1 \\
+			{B_d}_2
+		\end{bmatrix}
+	\end{equation}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Kalman Decomposition reduced system}
+	Resulting B matrix:
+	\begin{align}
+		B_1 & = \kbordermatrix{
+			& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
+			\dot{m}_{air}	& 0 & 0 & 0 & 0 & 0.00083\\
+			T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
+			T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
+			M_{lv}			& 0 & 0.0005 & 0 & 0 & 0\\
+			T_{air}  		& 0 & 0 & 0 & 0 & 0.0001\\
+			T_{box}	 		& 0 & 0 & 0 & 0 & 0\\
+			T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
+			T_v 			& 0 & 0 & 0 & 0 & 0
+		} \label{eq:B1}
+	\end{align}
+	\begin{itemize}
+		\item Another input $U_{fan1}$ does not map to states
+		\item Is also removed
+	\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Condition number}
+	\begin{itemize}
+		\item Brings nuance to degree of controllability and observability
+		\item "Large" condition numbers are generally undesirable
+	\end{itemize}
+	Definition:
+	\begin{equation}
+		\kappa (G(j\omega)) = \frac{\bar{\sigma}(G(j\omega))}{\underline{\sigma}(G(j\omega))}
+	\end{equation}
+	where $G(j\omega)$ is the transfer matrix of the system and
+	\begin{itemize}
+		\item $\bar{\sigma}$ is the largest singular value: Greatest gain at 'worst' input \textit{direction} and 'worst' frequency
+		\item $\underline{\sigma}$ is the smallest singular value: Smallest gain at 'worst' input \textit{direction} and 'worst' frequency
+	\end{itemize}
+	Singular values are found from a Singular Value Decomposition (SVD) of the system.
+	
+	\begin{itemize}
+		\item Condition numbers for $Q_c$ are: 1.195e+9 and 2.934e+8 for 'two state reduced' and Kalman decomposition reduced system respectively
+	\end{itemize}
 \end{frame}
 
 
@@ -317,7 +621,9 @@ Enthalpies:
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{}
-	
+	\begin{itemize}
+		\item 
+	\end{itemize}
 \end{frame}
 
 
@@ -325,26 +631,8 @@ Enthalpies:
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{}
-	
+	\begin{itemize}
+		\item 
+	\end{itemize}
 \end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Modelling}{}
-	
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Modelling}{}
-	
-\end{frame}
-
-
-
-
 
