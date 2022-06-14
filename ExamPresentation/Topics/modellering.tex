@@ -38,10 +38,8 @@
 	\textbf{Purpose:} Lower pressure of liquid refrigerant from flash tank to evaporator.
 	\begin{itemize}
 		\item Adiabatic process: Modelled algebraicly
-		\item Inputs: Input pressure $p_{in}$, output pressure $p_{out}$, input enthalpy $h_{in}$
-		\item Outputs: Flow through valve $\dot{m}$
 	\end{itemize}
-	
+	Flow through valve:
 	\begin{equation} \label{eq:ExpansionValve_Alt}
 		\begin{split}
 			\dot{m} & = f_p(\Theta) K  \sqrt{\frac{1}{v_{in}} (p_{in} - p_{out})} \\
@@ -61,18 +59,16 @@
 \begin{frame}{Modelling}{Pipe joining junction}
 	\textbf{Purpose:} Join refrigerant flows from between compressor stage 1 and two and the flash tank.
 	\begin{itemize}
-		\item Inputs: $\dot{m}_{in1}$, $\dot{m}_{in2}$, $\dot{m}_{out}$, $h_{in1}$ and $h_{in2}$
-		\item Outputs: $h_{out}$
 		\item States: $M$
 	\end{itemize}
-Mass balance:
+	Mass balance:
 	\begin{equation}
-		 \frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} - \dot{m}_{out}       \label{eq:PipeJoiningJunction_ChangeOfMass}
+	 \frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} - \dot{m}_{out}       \label{eq:PipeJoiningJunction_ChangeOfMass}
 	\end{equation}
-Enthalpy out:
-\begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
-	h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
-\end{equation}
+	Enthalpy out:
+	\begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
+		h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
+	\end{equation}
 	
 \end{frame}
 
@@ -86,15 +82,13 @@ Enthalpy out:
 		\item Two compressor stages
 		\item Only difference: Stage 2 has half the internal volume of stage 1
 		\item Modelled as reciprocating (piston) compressor
-		\item Modelled algebraicly - does not affect slow evaporator dynamics 
-		\item Inputs: $p_{in}$, $T_{in}$ and $p_{out}$
-		\item Outputs: $\dot{m}_{in}$, $\dot{m}_{out}$, $h_{out}$ and $T_{out}$
+		\item Modelled algebraicly - Fast dynamics do not affect slow evaporator dynamics 
 	\end{itemize}
-Flow through compressor and enthalpy out
-\begin{align}
-	\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \label{eq:comp_mass_flow} \\
-	h_{out} &= \Upsilon(T_{out}, p_{out}) \label{eq:comp_enthalpy}
-\end{align}
+	Flow through compressor and enthalpy out
+	\begin{align}
+		\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \label{eq:comp_mass_flow} \\
+		h_{out} &= \Upsilon(T_{out}, p_{out}) \label{eq:comp_enthalpy}
+	\end{align}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%
@@ -103,16 +97,14 @@ Flow through compressor and enthalpy out
 	\textbf{Purpose:} Exchange heat from hot vapour refrigerant to outside ambient air 
 	\begin{itemize}
 		\item Modelled as one Control Volume (CV)
-		\item Inputs: $\dot{m}_{in}$, $h_{in}$ and $p_{out}$
-		\item Outputs: $\dot{m}_{out}$, $h_{out}$ and $p_{in}$
 		\item States: $M_r$ and $T_m$
 	\end{itemize}
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=1\textwidth]{../Graphics/Condenser.pdf}
-	\caption{Diagram of condenser control volume}
-	\label{fig:condenser_CV}
-\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1\textwidth]{../Graphics/Condenser.pdf}
+		\caption{Diagram of condenser control volume}
+		\label{fig:condenser_CV}
+	\end{figure}
 \end{frame}
 
 \begin{frame}{Condenser}{Equations}
@@ -140,28 +132,23 @@ Flow through compressor and enthalpy out
 	\begin{itemize}
 		\item Modelled algebraicly
 		\item Pressures out = in
-		\item Inputs: $\dot{m}_{lv}$ and $\dot{m}_{l}$
-		\item Outputs: $\dot{m}_{v}$, $h_l$ and $h_v$
 	\end{itemize}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.8\textwidth]{../Graphics/Flash_tank.pdf}
-		\caption{Diagram of Flash tank control volumes}
+		\includegraphics[width=0.7\textwidth]{../Graphics/Flash_tank.pdf}
+%		\caption{Diagram of Flash tank control volumes}
 		\label{fig:flash_tank_CV}
 	\end{figure}
+	Mass balance:
+\begin{equation}
+	\dot{m}_{v} = \dot{m}_{lv} - \dot{m}_{l}  \label{eq:Flash_tank_massflow}
+\end{equation}
+Enthalpies:
+\begin{equation}
+	h_{l} = \mathcal{M}(p) \hspace{0.8cm} h_{v} = \mathcal{N}(p)
+\end{equation}
 \end{frame}
 
-\begin{frame}{Flash tank}{Equations}
-	Mass balance:
-	\begin{equation}
-		\dot{m}_{v} = \dot{m}_{lv} - \dot{m}_{l}  \label{eq:Flash_tank_massflow}
-	\end{equation}
-	Enthalpies:
-	\begin{align}
-		h_{l}  & = \mathcal{M}(p)\\
-		h_{v}  & = \mathcal{N}(p)
-	\end{align}
-\end{frame}
 
 
 %%%%%%%%%%%%%%%%%
@@ -172,10 +159,10 @@ Flow through compressor and enthalpy out
 		\item Superheat is important control objective
 		\item Modelled with two CVs: liquid-vapour and vapour
 		\item Pressure out is simplified to being pressure in
-		\item Inputs: $p_{in}$, $\dot{m}_{in}$, $h_{in}$, $\dot{m}_{out}$, $T_{out}$ and $T_{ret}$
-		\item Outputs: $p_{out}$, $h_{out}$ and $T_{sup}$
 		\item States: $T_{mlv}$, $T_{mv}$, $M_{lv}$, $M_{v}$ and $T_{v}$
 	\end{itemize}
+	
+	\vspace{0.4cm}
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=1\textwidth]{../Graphics/Evaporator_CV_diagram.pdf}
@@ -215,8 +202,6 @@ Flow through compressor and enthalpy out
 	\textbf{Purpose:} Allow for convective heat transfer between cargo and circulating air
 	\begin{itemize}
 		\item Contains greatest thermal masses
-		\item Inputs: $T_{sup}$
-		\item Outputs: $T_{ret}$
 		\item States: $T_{air}$, $T_{box}$ and $T_{cargo}$
 	\end{itemize}
 	\begin{figure}[h!]
@@ -247,15 +232,76 @@ Flow through compressor and enthalpy out
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{}
-	\textbf{Purpose:} 
+\begin{frame}{Modelling}{Formulating non-linear state-space model}
+	A non-linear state space model is formulated
 	\begin{itemize}
-		\item Inputs: 
-		\item Outputs: 
-		\item States: 
+		\item All state equations equations are collected in a $f(x,u)$ vector
+		\item Algebraic equations are constraints
 	\end{itemize}
+	State vector and input vector:
+	\begin{equation}  \label{eq:xu}
+		\begin{split}
+			x & = [M_{pjj}	\;
+				M_{con} \;
+				T_m \;
+				\dot{m}_{air}\;
+				T_{mlv}      \;
+				T_{mv}       \;
+				M_{lv}       \;
+				M_v          \;
+				T_{air}      \;
+				T_{box}      \;
+				T_{cargo}    \;
+				T_v]^T \\
+			u & = [\omega	\;
+				\Theta_1	\;
+				\Theta_2     \;
+				U_{fan_1}    \;
+				U_{fan_2}]^T \\
+		\end{split}
+	\end{equation}
+
+\end{frame}
 
 
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Non-linear state-space system}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1\textwidth]{Graphics/f_x_u.jpeg}
+		\label{fig:f_x_u}
+	\end{figure}
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{Component Input/Output relationship}
+	\begin{itemize}
+		\item Red: Missing, Blue: Unused.
+		\item Pressure/flow input/output setup leads to problems
+		\item Current model setup leads to problems e.g. condenser throttle valve
+	\end{itemize}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1\textwidth]{../Graphics/Block_Diagram_inout_flowValveVersion.pdf}
+		\label{fig:Block_diagram_inout}
+	\end{figure}
+	
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{}
+	
 \end{frame}
 
 
@@ -269,6 +315,36 @@ Flow through compressor and enthalpy out
 
 
 %%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{}
+	
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{}
+	
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{}
+	
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Modelling}{}
+	
+\end{frame}
+
+
 
 
 
