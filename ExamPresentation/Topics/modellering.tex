@@ -10,7 +10,8 @@
 		\begin{itemize}
 			\item Including faster dynamics = more accurate model
 			\item Unnecessary from control perspective.
-		\end{itemize}		
+		\end{itemize}	
+		\item All energy balances are defined in steady-state (SS)
 	\end{itemize}
 \end{frame}
 
@@ -29,7 +30,8 @@
 		\item Evaporator
 		\item Box
 	\end{itemize}
-	Only the most important or relevant equations are included here.
+	
+	Only the most relevant components and equations are included in the following.
 \end{frame}
 
 
@@ -48,30 +50,6 @@
 		\end{split}
 	\end{equation}
 
-	Table lookup:
-	\begin{equation} \label{eq:ExpansionValve_vin}
-		v_{in} = \mathcal{Z}(h_{in}, p_{in})
-	\end{equation}
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Modelling}{Pipe joining junction}
-	\textbf{Purpose:} Join refrigerant flows from between compressor stage 1 and two and the flash tank.
-	\begin{itemize}
-		\item States: $M$
-	\end{itemize}
-	Mass balance:
-	\begin{equation}
-	 \frac{dM}{dt} = \dot{m}_{in1} + \dot{m}_{in2} - \dot{m}_{out}       \label{eq:PipeJoiningJunction_ChangeOfMass}
-	\end{equation}
-	Enthalpy out:
-	\begin{equation} \label{eq:PipeJoiningJunction_Enthalpy}
-		h_{out} = \frac{h_{in1} \cdot \dot{m}_{in1} + h_{in2} \cdot \dot{m}_{in2}}{ \dot{m}_{in1} + \dot{m}_{in2} }
-	\end{equation}
-	
 \end{frame}
 
 
@@ -82,7 +60,6 @@
 	\textbf{Purpose:} Generate pressure sufficient for refrigerant flow and condenser heat flow to ambient air.
 	\begin{itemize}
 		\item Two compressor stages
-		\item Difference: Stage 2 has half the internal volume of stage 1
 		\item Modelled as reciprocating (piston) compressor
 		\item Modelled algebraicly - Fast dynamics do not affect slow evaporator dynamics
 	\end{itemize}
@@ -127,32 +104,6 @@
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Flash tank}
-	\textbf{Purpose:} Separate flash gas and liquid refrigerant after condenser throttle valve (CDV).
-	\begin{itemize}
-		\item Modelled algebraicly and as one CV
-		\item Pressures out = in
-	\end{itemize}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.7\textwidth]{../Graphics/Flash_tank.pdf}
-%		\caption{Diagram of Flash tank control volumes}
-		\label{fig:flash_tank_CV}
-	\end{figure}
-	Mass balance:
-\begin{equation}
-	\dot{m}_{v} = \dot{m}_{lv} - \dot{m}_{l}  \label{eq:Flash_tank_massflow}
-\end{equation}
-Enthalpies:
-\begin{equation}
-	h_{l} = \mathcal{M}(p) \hspace{0.8cm} h_{v} = \mathcal{N}(p)
-\end{equation}
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%
-
 \begin{frame}{Modelling}{Evaporator}
 	\textbf{Purpose:} Exchange heat from box air to cold liquid refrigerant.
 	\begin{itemize}
@@ -174,7 +125,7 @@ Enthalpies:
 \begin{frame}{Evaporator}{Equations}
 	Moving boundary:
 	\begin{equation}
-		\sigma = \frac{M_{lv} \cdot v_1}{V_i} \label{eq:Evaporator_boundary}
+		\sigma = \frac{M_{lv} \cdot v_{lv}}{V_i} \label{eq:Evaporator_boundary}
 	\end{equation}
 	Liquid-vapour CV metal temperature:
 	\begin{equation}
@@ -198,7 +149,7 @@ Enthalpies:
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{Box}
-	\textbf{Purpose:} Allow for convective heat transfer between cargo and circulating air
+	\textbf{Purpose:} Isolate cargo from ambient air and allow for air circulation.
 	\begin{itemize}
 		\item Contains greatest thermal masses: Box and Cargo
 		\item Cargo coupled to air due to large cargo surface area
@@ -256,11 +207,6 @@ Enthalpies:
 				\item Reduces complexity and eases linearisation
 				\item Downside: Removes dependencies between states and inputs
 			\end{itemize}
-		\item Pressure/flow input/output setup leads to problems
-			\begin{itemize}
-				\item Consider condenser throttle valve
-				\item Input and output pressure is constant
-			\end{itemize}
 	\end{itemize}
 \end{frame}
 
@@ -272,7 +218,7 @@ Enthalpies:
 \begin{frame}{Modelling}{Formulating non-linear state-space model}
 	A non-linear state space model is formulated
 	\begin{itemize}
-		\item All state equations equations are collected in a $f(x,u)$ vector
+		\item All state equations equations are collected in a $f(x,u,d)$ vector
 		\item Algebraic equations are constraints
 	\end{itemize}
 	State vector and input vector:
@@ -295,6 +241,7 @@ Enthalpies:
 				\Theta_2     \;
 				U_{fan_1}    \;
 				U_{fan_2}]^T \\
+			d & = [T_{ambi}]
 		\end{split}
 	\end{equation}
 
@@ -323,9 +270,9 @@ Enthalpies:
 	\begin{itemize}
 		\item Model is verified with simulation
 		\item Simulated at OP derived from Hi-Fi simulation
-		\item Results shows 'faulty' states: $M_{pjj}$ and $M_{Con}$ with constant derivatives
+		\item 'Faulty' states: $M_{pjj}$ and $M_{Con}$ with constant derivatives
 		\begin{itemize}
-			\item Do not affect other states and are therefore removed from model 
+			\item Not affecting other states $\rightarrow$ Removed
 		\end{itemize}
 	\end{itemize}
 	\begin{figure}[h]
@@ -362,11 +309,10 @@ Enthalpies:
 
 \begin{frame}{Modelling}{Verification: Discussion}
 	\begin{itemize}
-		\item Likely cause: Simplifications in modelling section
+		\item Likely cause of errors: Simplifications in modelling section
 		\begin{itemize}
 			\item Pressure inside components not defined as states
-			\item Results in mass inside states not affecting pressure and thereby flow through component
-			\item Best example: Condenser throttle valve should be outputting pressure
+			\item Results in mass inside components not affecting pressure and thereby flow through component
 		\end{itemize}
 	\end{itemize}
 
@@ -378,7 +324,7 @@ Enthalpies:
 
 \begin{frame}{Modelling}{Linearisation}
 	\begin{itemize}
-		\item Motivation: Non-linear model is not directly applicable control strategy 
+		\item Motivation: Non-linear model is not directly applicable for control strategy 
 		\item Linearisation is thus performed at relevant OP
 	\end{itemize}
 	Non-linear model is transformed to the following form:
@@ -455,7 +401,7 @@ Enthalpies:
 	\end{itemize}
 \begin{align}
 	B = &\kbordermatrix{
-		& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
+		& \omega & \Theta_{eva} & \Theta_{con} & U_{fan\_con} & U_{fan\_eva} \\
 		T_m 			& 0 & 0 & 0 & -0.0093 & 0\\
 		\dot{m}_{air}	& 0 & 0 & 0 & 0 & \text{7.9630e-04}\\
 		T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
@@ -476,7 +422,7 @@ Enthalpies:
 
 \begin{frame}{Modelling}{Linearisation: Discussion}
 	\begin{itemize}
-		\item $\omega$ and $\Theta_2$ not mapping to any states is unexpected
+		\item $\omega$ and $\Theta_2$ do not map to any states
 		\begin{itemize}
 			\item Explanation: Too simple model - several components do not connect
 			\item Example: No flow coupling between $\dot{m}_{in}$ and $\dot{m}_{out}$ of condenser.
@@ -524,16 +470,17 @@ Enthalpies:
 
 \begin{frame}{Modelling}{Controllability and Observability: Results}
 	\begin{itemize}
-		\item Controllability matrix is full rank: Rank of [A|B] = 10
-		\item Observability matrix is \underline{not} full rank: Rank of [A|C] = 8
+		\item Controllability matrix has full rank: Rank of [A|B] = 10
+		\item Observability matrix has \underline{not} full rank: Rank of [A|C] = 8
 			\begin{itemize}
+				\item Actions are taken to mitigate: Kalman decomposition for unobservable system
 				\item Two states are not observable: 
 				\begin{itemize}
 					\item Condenser metal temperature: $T_m$
 					\item Evaporator vapour CV mass: $M_v$
 				\end{itemize} 
-				\item Actions are taken to mitigate: Kalman decomposition for unobservable system
 			\end{itemize}
+		
 	\end{itemize}
 \end{frame}
 
@@ -543,7 +490,7 @@ Enthalpies:
 
 \begin{frame}{Modelling}{Kalman decomposition for unobservable system}
 	\begin{itemize}
-		\item Used to remove unobservable states, leaving a fully observable system
+		\item Used to obtain an observable subsystem
 	\end{itemize}
 	For the Kalman decomposition, there exists a nonsingular P  $\in \mathbb{R} ^{n x n}$ such that
 	\begin{equation}
@@ -584,7 +531,7 @@ Enthalpies:
 	Resulting B matrix:
 	\begin{align}
 		B_1 & = \kbordermatrix{
-			& \omega & \Theta_1 & \Theta_2 & U_{fan1} & U_{fan2} \\
+			& \omega & \Theta_{eva} & \Theta_{con} & U_{fan\_con} & U_{fan\_eva} \\
 			\dot{m}_{air}	& 0 & 0 & 0 & 0 & 0.00083\\
 			T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
 			T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
@@ -596,7 +543,7 @@ Enthalpies:
 		} \label{eq:B1}
 	\end{align}
 	\begin{itemize}
-		\item Another input $U_{fan1}$ does not map to states
+		\item Another input $U_{fan\_con}$ does not map to states
 		\item Is also removed
 	\end{itemize}
 \end{frame}
