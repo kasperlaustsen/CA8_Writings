@@ -1,5 +1,5 @@
 \begin{frame}{Modelling}{Introduction}
-	A first principle model of the refrigeration system is derived, linearised and further developed for observer based control.
+	First principles model derived, linearised and further developed for observer based control.
 	\begin{itemize}
 		\item \textbf{Main goal:} Capture dynamics important for the box air temperature (main control objective)
 		\begin{itemize}
@@ -97,7 +97,7 @@
 \begin{frame}{Modelling}{Condenser}
 	\textbf{Purpose:} Exchange heat from hot vapour refrigerant to outside ambient air.
 	\begin{itemize}
-		\item Modelled as one Control Volume (CV)
+		\item Modelled as one control volume (CV)
 		\item States: $M_r$ and $T_m$
 	\end{itemize}
 	\begin{figure}[h!]
@@ -107,7 +107,6 @@
 		\label{fig:condenser_CV}
 	\end{figure}
 \end{frame}
-
 \begin{frame}{Condenser}{Equations}
 	Energy balance:
 	\begin{equation}
@@ -131,7 +130,7 @@
 \begin{frame}{Modelling}{Flash tank}
 	\textbf{Purpose:} Separate flash gas and liquid refrigerant after condenser throttle valve (CDV).
 	\begin{itemize}
-		\item Modelled algebraicly
+		\item Modelled algebraicly and as one CV
 		\item Pressures out = in
 	\end{itemize}
 	\begin{figure}[h!]
@@ -159,7 +158,7 @@ Enthalpies:
 	\begin{itemize}
 		\item Superheat is important control objective
 		\item Modelled with two CVs: liquid-vapour and vapour separated by $\sigma$
-		\item Pressure out is simplified to being pressure in
+		\item Simplification: Pressure out = in
 		\item States: $T_{mlv}$, $T_{mv}$, $M_{lv}$, $M_{v}$ and $T_{v}$
 	\end{itemize}
 	
@@ -173,23 +172,23 @@ Enthalpies:
 \end{frame}
 
 \begin{frame}{Evaporator}{Equations}
-	Moving boundary and specific volume out:
+	Moving boundary:
 	\begin{equation}
 		\sigma = \frac{M_{lv} \cdot v_1}{V_i} \label{eq:Evaporator_boundary}
 	\end{equation}
-	Liquid-vapour temperature:
+	Liquid-vapour CV metal temperature:
 	\begin{equation}
 		\frac{dT_{mlv}}{dt}  = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m} \label{eq:evap_dT_ml}
 	\end{equation}
-	Vapour metal temperature:
+	Vapour CV metal temperature:
 	\begin{equation}
 		\frac{dT_{mv}}{dt} = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m} \label{eq:evap_dT_mv}
 	\end{equation}
-	Mass balances:
+	Refrigerant mass balances:
 	\begin{equation} \label{eq:evap_dMlv}
 		\frac{dM_{lv}}{dt} = \dot{m}_{in} - \dot{m}_{dew} \hspace{0.8cm}  \frac{dM_v}{dt} = \dot{m}_{dew} - \dot{m}_{out}
 	\end{equation}
-	Vapour refrigerant temperature:
+	Vapour refrigerant (output) temperature:
 	\begin{equation}\label{eq:tv_initial}
 		\frac{dT_{v}}{dt} = \bar{T_v} - T_v
 	\end{equation}
@@ -201,7 +200,8 @@ Enthalpies:
 \begin{frame}{Modelling}{Box}
 	\textbf{Purpose:} Allow for convective heat transfer between cargo and circulating air
 	\begin{itemize}
-		\item Contains greatest thermal masses
+		\item Contains greatest thermal masses: Box and Cargo
+		\item Cargo coupled to air due to large cargo surface area
 		\item States: $T_{air}$, $T_{box}$ and $T_{cargo}$
 	\end{itemize}
 	\begin{figure}[h!]
@@ -616,33 +616,14 @@ Enthalpies:
 	\end{equation}
 	where $G(j\omega)$ is the transfer matrix of the system and
 	\begin{itemize}
-		\item $\bar{\sigma}$ is the largest singular value: Greatest gain at 'worst' input \textit{direction} and 'worst' frequency
-		\item $\underline{\sigma}$ is the smallest singular value: Smallest gain at 'worst' input \textit{direction} and 'worst' frequency
+		\item $\bar{\sigma}$ is the largest singular value
+		\item $\underline{\sigma}$ is the smallest singular value
 	\end{itemize}
-	Singular values are found from a Singular Value Decomposition (SVD) of the system.
+	Found from Singular Value Decomposition (SVD).
 	
 	\begin{itemize}
 		\item Condition numbers for $Q_c$ are: 1.195e+9 and 2.934e+8 for 'two state reduced' and Kalman decomposition reduced system respectively
 	\end{itemize}
 \end{frame}
 
-
-
-%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Modelling}{}
-	\begin{itemize}
-		\item 
-	\end{itemize}
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Modelling}{}
-	\begin{itemize}
-		\item 
-	\end{itemize}
-\end{frame}
 
