@@ -1,5 +1,5 @@
 \begin{frame}{Modelling}{Introduction}
-	A model of the refrigeration system is derived, linearised and further developed for observer based control.
+	A first principle model of the refrigeration system is derived, linearised and further developed for observer based control.
 	\begin{itemize}
 		\item \textbf{Main goal:} Capture dynamics important for the box air temperature (main control objective)
 		\begin{itemize}
@@ -8,7 +8,8 @@
 		\item \textbf{Modular approach:} Inputs, outputs, internal equations/states
 		\item \textbf{Slow vs. fast dynamics:} States or algebraic equations
 		\begin{itemize}
-			\item Including faster dynamics yield more accurate model yet it is unnecessary from control perspective.
+			\item Including faster dynamics = more accurate model
+			\item Unnecessary from control perspective.
 		\end{itemize}		
 	\end{itemize}
 \end{frame}
@@ -28,6 +29,7 @@
 		\item Evaporator
 		\item Box
 	\end{itemize}
+	Only the most important or relevant equations are included here.
 \end{frame}
 
 
@@ -77,24 +79,23 @@
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{Compressor}
-	\textbf{Purpose:} Generate pressure sufficient for refrigerant flow and condenser heat flow
+	\textbf{Purpose:} Generate pressure sufficient for refrigerant flow and condenser heat flow to ambient air.
 	\begin{itemize}
 		\item Two compressor stages
-		\item Only difference: Stage 2 has half the internal volume of stage 1
+		\item Difference: Stage 2 has half the internal volume of stage 1
 		\item Modelled as reciprocating (piston) compressor
-		\item Modelled algebraicly - Fast dynamics do not affect slow evaporator dynamics 
+		\item Modelled algebraicly - Fast dynamics do not affect slow evaporator dynamics
 	\end{itemize}
-	Flow through compressor and enthalpy out
-	\begin{align}
-		\dot{m} &= \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \label{eq:comp_mass_flow} \\
-		h_{out} &= \Upsilon(T_{out}, p_{out}) \label{eq:comp_enthalpy}
-	\end{align}
+	Flow through compressor:
+	\begin{equation}
+		\dot{m} = \left(\frac{V_1}{v_1} - \frac{V_C}{v_2}\right) \frac{\omega}{2} \label{eq:comp_mass_flow}
+	\end{equation}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{Condenser}
-	\textbf{Purpose:} Exchange heat from hot vapour refrigerant to outside ambient air 
+	\textbf{Purpose:} Exchange heat from hot vapour refrigerant to outside ambient air.
 	\begin{itemize}
 		\item Modelled as one Control Volume (CV)
 		\item States: $M_r$ and $T_m$
@@ -128,7 +129,7 @@
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{Flash tank}
-	\textbf{Purpose:} Separate vapour and liquid refrigerant after condenser throttle valve (CDV)
+	\textbf{Purpose:} Separate flash gas and liquid refrigerant after condenser throttle valve (CDV).
 	\begin{itemize}
 		\item Modelled algebraicly
 		\item Pressures out = in
@@ -154,10 +155,10 @@ Enthalpies:
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{Evaporator}
-	\textbf{Purpose:} Exchange heat from box air to cold liquid refrigerant
+	\textbf{Purpose:} Exchange heat from box air to cold liquid refrigerant.
 	\begin{itemize}
 		\item Superheat is important control objective
-		\item Modelled with two CVs: liquid-vapour and vapour
+		\item Modelled with two CVs: liquid-vapour and vapour separated by $\sigma$
 		\item Pressure out is simplified to being pressure in
 		\item States: $T_{mlv}$, $T_{mv}$, $M_{lv}$, $M_{v}$ and $T_{v}$
 	\end{itemize}
@@ -166,14 +167,13 @@ Enthalpies:
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=1\textwidth]{../Graphics/Evaporator_CV_diagram.pdf}
-		\caption{Diagram of evaporator liquid-vapour and liquid CVs split by $\sigma$}
 		\label{fig:evap_CV}
 	\end{figure}
 
 \end{frame}
 
 \begin{frame}{Evaporator}{Equations}
-	Moving boundary and specific volume out
+	Moving boundary and specific volume out:
 	\begin{equation}
 		\sigma = \frac{M_{lv} \cdot v_1}{V_i} \label{eq:Evaporator_boundary}
 	\end{equation}
@@ -241,7 +241,7 @@ Enthalpies:
 	\end{itemize}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=1\textwidth]{../Graphics/Block_Diagram_inout_flowValveVersion.pdf}
+		\includegraphics[width=1.04\textwidth]{../Graphics/Block_Diagram_inout_flowValveVersion.pdf}
 		\label{fig:Block_diagram_inout}
 	\end{figure}
 	
@@ -257,10 +257,10 @@ Enthalpies:
 				\item Downside: Removes dependencies between states and inputs
 			\end{itemize}
 		\item Pressure/flow input/output setup leads to problems
-			\begin{enumerate}
+			\begin{itemize}
 				\item Consider condenser throttle valve
-				\item Input and output pressure are constant
-			\end{enumerate}
+				\item Input and output pressure is constant
+			\end{itemize}
 	\end{itemize}
 \end{frame}
 
@@ -305,9 +305,10 @@ Enthalpies:
 %%%%%%%%%%%%%%%%%
 
 \begin{frame}{Modelling}{Non-linear state-space system}
+	The resulting non-linear states-space system becomes:
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=1\textwidth]{Graphics/f_x_u.jpeg}
+		\includegraphics[width=1.04\textwidth]{Graphics/f_x_u.jpeg}
 		\label{fig:f_x_u}
 	\end{figure}
 \end{frame}
@@ -322,8 +323,10 @@ Enthalpies:
 	\begin{itemize}
 		\item Model is verified with simulation
 		\item Simulated at OP derived from Hi-Fi simulation
-		\item Results shows 'faulty' states: $M_{pjj}$ and $M_{Con}$ with constant derivatives.
-		\item Do not affect other states and are therefore removed from model
+		\item Results shows 'faulty' states: $M_{pjj}$ and $M_{Con}$ with constant derivatives
+		\begin{itemize}
+			\item Do not affect other states and are therefore removed from model 
+		\end{itemize}
 	\end{itemize}
 	\begin{figure}[h]
 		\centering
@@ -337,10 +340,10 @@ Enthalpies:
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Verification}
+\begin{frame}{Modelling}{Verification: $M_{lv}$, $M_{v}$ and $\dot{m}_{air}$}
 	\begin{itemize}
-		\item States: $M_{lv}$, $M_v$ and $\dot{m}_{air}$
-		\item Mass of vapour inside evaporator has constant non-zero derivative at SS
+		\item States plotted: $M_{lv}$, $M_v$ and $\dot{m}_{air}$
+		\item Mass of vapour inside evaporator $M_v$ has constant non-zero derivative at SS
 		\item Considered numeric error and mitigated by subtracting function of compressor speed
 	\end{itemize}
 	\begin{figure}[h]
@@ -357,7 +360,7 @@ Enthalpies:
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Verification}
+\begin{frame}{Modelling}{Verification: Discussion}
 	\begin{itemize}
 		\item Likely cause: Simplifications in modelling section
 		\begin{itemize}
@@ -385,11 +388,11 @@ Enthalpies:
 			y 		& = Cx
 		\end{split}
 	\end{equation}
-	By using the first order taylor expansion:
+	by using the first order taylor expansion:
 	\begin{equation}
 		f(x) \approx f(x_o) + \left. \dfrac{\partial f}{\partial x} \right |_{x_o} \cdot (x-x_0)		
 	\end{equation}
-	Where $f(x)$ = $\dot{x}$ and $x = (x, u, d)$
+	where $f(x)$ = $\dot{x}$ and $x = (x, u, d)$.
 
 
 \end{frame}
@@ -445,9 +448,9 @@ Enthalpies:
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Linearisation}
+\begin{frame}{Modelling}{Linearisation: B matrix}
 	\begin{itemize}
-		\item Chosen operating point from Hi-Fi simulation is at $T_{air} = -5 ^{\circ} C$
+		\item Chosen operating point from Hi-Fi simulation is at SS with $T_{air} = -5 ^{\circ} C$
 		\item Resulting B matrix shows two inputs not mapping to states. These are simply removed.
 	\end{itemize}
 \begin{align}
@@ -471,18 +474,21 @@ Enthalpies:
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Linearisation}
+\begin{frame}{Modelling}{Linearisation: Discussion}
 	\begin{itemize}
 		\item $\omega$ and $\Theta_2$ not mapping to any states is unexpected
 		\begin{itemize}
 			\item Explanation: Too simple model - several components do not connect
-			\item Example: No flow coupling between $\dot{m}_{in}$ and $\dot{m}_{out}$ of condenser results in no control of flow into evaporator
+			\item Example: No flow coupling between $\dot{m}_{in}$ and $\dot{m}_{out}$ of condenser.
+			\begin{itemize}
+				\item Result: No control of flow into evaporator
+			\end{itemize}
 		\end{itemize}
-		\item Resulting $A$ matrix is stable (only negative eigenvalues)
-		\item One pole is $-1.3e-9$ which indicates a zero pole
-		\begin{enumerate}
-			\item Indicates that not all dynamics are captured by the chosen operating point
-		\end{enumerate}
+		\item $A$ matrix is stable
+		\item One pole is -1.3e-9 indicating a zero pole
+		\begin{itemize}
+			\item Inferred: Not all dynamics are captured by the chosen operating point
+		\end{itemize}
 	\end{itemize}
 \end{frame}
 
@@ -516,12 +522,16 @@ Enthalpies:
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{}
+\begin{frame}{Modelling}{Controllability and Observability: Results}
 	\begin{itemize}
 		\item Controllability matrix is full rank: Rank of [A|B] = 10
 		\item Observability matrix is \underline{not} full rank: Rank of [A|C] = 8
 			\begin{itemize}
-				\item Two states are not observable: $T_m$ and $M_v$
+				\item Two states are not observable: 
+				\begin{itemize}
+					\item Condenser metal temperature: $T_m$
+					\item Evaporator vapour CV mass: $M_v$
+				\end{itemize} 
 				\item Actions are taken to mitigate: Kalman decomposition for unobservable system
 			\end{itemize}
 	\end{itemize}
