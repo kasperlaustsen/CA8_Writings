@@ -2,37 +2,34 @@
 	First principles model derived, linearised and further developed for observer based control.
 	\begin{itemize}
 		\item \textbf{Main goal:} Capture dynamics important for the box air temperature (main control objective)
-		\begin{itemize}
-			\item Thermal masses: Trailer box, cargo, evaporator, condenser.
-		\end{itemize}
+%		\begin{itemize}
+%			\item Thermal masses: Trailer box, cargo, evaporator, condenser.
+%		\end{itemize}
 		\item \textbf{Modular approach:} Inputs, outputs, internal equations/states
-		\item \textbf{Slow vs. fast dynamics:} States or algebraic equations
-		\begin{itemize}
-			\item Including faster dynamics = more accurate model
-			\item Unnecessary from control perspective.
-		\end{itemize}	
-		\item All energy balances are defined in steady-state (SS)
-	\end{itemize}
+		\item \textbf{Slow vs. fast dynamics:} States or algebraic equations	
+		\item Enthalpies are defined in steady-state (SS)
+	\end{itemize}\bigskip
+Only the most relevant components and equations are included in the following.
 \end{frame}
 
 
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Component Models}
-	Each component is modelled separately. The components are:
-	\begin{itemize}
-		\item Expansion Valve
-		\item Pipe joining junction
-		\item Compressor
-		\item Condenser
-		\item Flash tank
-		\item Evaporator
-		\item Box
-	\end{itemize}
-	
-	Only the most relevant components and equations are included in the following.
-\end{frame}
+%\begin{frame}{Modelling}{Component Models}
+%	Each component is modelled separately. The components are:
+%	\begin{itemize}
+%		\item Expansion Valve
+%		\item Pipe joining junction
+%		\item Compressor
+%		\item Condenser
+%		\item Flash tank
+%		\item Evaporator
+%		\item Box
+%	\end{itemize}
+%	
+%	Only the most relevant components and equations are included in the following.
+%\end{frame}
 
 
 
@@ -108,8 +105,11 @@
 	\textbf{Purpose:} Exchange heat from box air to cold liquid refrigerant.
 	\begin{itemize}
 		\item Superheat is important control objective
+		\begin{itemize}
+			\item Liquid slugging
+			\item Efficiency
+		\end{itemize}
 		\item Modelled with two CVs: liquid-vapour and vapour separated by $\sigma$
-		\item Simplification: Pressure out = in
 		\item States: $T_{mlv}$, $T_{mv}$, $M_{lv}$, $M_{v}$ and $T_{v}$
 	\end{itemize}
 	
@@ -187,7 +187,7 @@
 
 \begin{frame}{Modelling}{Component Input/Output relationship}
 	\begin{itemize}
-		\item \color{red} Red \color{black}: Missing outputs - Steady-state (SS) values from Hi-Fi simulation
+		\item \color{red} Red \color{black}: Missing outputs - Steady-state (SS) values from Hi-Fi simulation is used
 		\item \color{blue} Blue \color{black}: Unused outputs of components
 	\end{itemize}
 	\begin{figure}[h!]
@@ -398,47 +398,53 @@
 
 \begin{frame}{Modelling}{Linearisation: B matrix}
 	\begin{itemize}
-		\item Chosen operating point from Hi-Fi simulation is at SS with $T_{air} = -5 ^{\circ} C$
+		\item $A$ matrix is stable
+		\item One pole is -1.3e-9 indicating a zero pole
+		\begin{itemize}
+			\item Inferred: Not all dynamics are captured by the chosen operating point
+		\end{itemize}
+
 		\item Resulting B matrix shows two inputs not mapping to states. These are simply removed.
 	\end{itemize}
-\begin{align}
-	B = &\kbordermatrix{
-		& \omega & \Theta_{eva} & \Theta_{con} & U_{fan\_con} & U_{fan\_eva} \\
-		T_m 			& 0 & 0 & 0 & -0.0093 & 0\\
-		\dot{m}_{air}	& 0 & 0 & 0 & 0 & \text{7.9630e-04}\\
-		T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
-		T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
-		M_{lv}			& 0 & \text{5.0703e-04} & 0 & 0 & 0\\
-		M_v 			& 0 & 0 & 0 & 0 & 0\\
-		T_{air}  		& 0 & 0 & 0 & 0 & \text{1.0069e-04}\\
-		T_{box}	 		& 0 & 0 & 0 & 0 & 0\\
-		T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
-		T_v 			& 0 & 0 & 0 & 0 & 0
-	} \label{eq:B_full}
-\end{align}
+	\begin{align}
+		B = &\kbordermatrix{
+			& \omega & \Theta_{eva} & \Theta_{con} & U_{fan\_con} & U_{fan\_eva} \\
+			T_m 			& 0 & 0 & 0 & -0.0093 & 0\\
+			\dot{m}_{air}	& 0 & 0 & 0 & 0 & \text{7.9630e-04}\\
+			T_{mlv}			& 0 & 0 & 0 & 0 & 0\\
+			T_{mv}			& 0 & 0 & 0 & 0 & 0.0011\\
+			M_{lv}			& 0 & \text{5.0703e-04} & 0 & 0 & 0\\
+			M_v 			& 0 & 0 & 0 & 0 & 0\\
+			T_{air}  		& 0 & 0 & 0 & 0 & \text{1.0069e-04}\\
+			T_{box}	 		& 0 & 0 & 0 & 0 & 0\\
+			T_{cargo} 		& 0 & 0 & 0 & 0 & 0\\
+			T_v 			& 0 & 0 & 0 & 0 & 0
+		} \label{eq:B_full}
+	\end{align}
+
 \end{frame}
 
 
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Linearisation: Discussion}
-	\begin{itemize}
-		\item $\omega$ and $\Theta_2$ do not map to any states
-		\begin{itemize}
-			\item Explanation: Too simple model - several components do not connect
-			\item Example: No flow coupling between $\dot{m}_{in}$ and $\dot{m}_{out}$ of condenser.
-			\begin{itemize}
-				\item Result: No control of flow into evaporator
-			\end{itemize}
-		\end{itemize}
-		\item $A$ matrix is stable
-		\item One pole is -1.3e-9 indicating a zero pole
-		\begin{itemize}
-			\item Inferred: Not all dynamics are captured by the chosen operating point
-		\end{itemize}
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Modelling}{Linearisation: Discussion}
+%	\begin{itemize}
+%		\item $\omega$ and $\Theta_2$ do not map to any states
+%		\begin{itemize}
+%			\item Explanation: Too simple model - several components do not connect
+%			\item Example: No flow coupling between $\dot{m}_{in}$ and $\dot{m}_{out}$ of condenser.
+%			\begin{itemize}
+%				\item Result: No control of flow into evaporator
+%			\end{itemize}
+%		\end{itemize}
+%		\item $A$ matrix is stable
+%		\item One pole is -1.3e-9 indicating a zero pole
+%		\begin{itemize}
+%			\item Inferred: Not all dynamics are captured by the chosen operating point
+%		\end{itemize}
+%	\end{itemize}
+%\end{frame}
 
 
 
@@ -490,40 +496,40 @@
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Kalman decomposition for unobservable system}
-	\begin{itemize}
-		\item Used to obtain an observable subsystem
-	\end{itemize}
-	For the Kalman decomposition, there exists a nonsingular P  $\in \mathbb{R} ^{n x n}$ such that
-	\begin{equation}
-		PAP^{-1} = \begin{bmatrix}
-			A_{11}       & 0 \\
-			A_{21}       & A_{22} \\
-		\end{bmatrix}
-	\end{equation}
-	
-	and
-	
-	\begin{equation}
-		CP^{-1} = \begin{bmatrix}
-			C_{1}       & 0 \\
-		\end{bmatrix}
-	\end{equation}
-	
-	where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, where p is the number of outputs and l is the number of observable states.
-	
-	Input and disturbance matrices are transformed as such:
-	\begin{equation}
-		PB = \begin{bmatrix}
-			B_1 \\
-			B_2
-		\end{bmatrix}, \
-		PB_d = \begin{bmatrix}
-			{B_d}_1 \\
-			{B_d}_2
-		\end{bmatrix}
-	\end{equation}
-\end{frame}
+%\begin{frame}{Modelling}{Kalman decomposition for unobservable system}
+%	\begin{itemize}
+%		\item Used to obtain an observable subsystem
+%	\end{itemize}
+%	For the Kalman decomposition, there exists a nonsingular P  $\in \mathbb{R} ^{n x n}$ such that
+%	\begin{equation}
+%		PAP^{-1} = \begin{bmatrix}
+%			A_{11}       & 0 \\
+%			A_{21}       & A_{22} \\
+%		\end{bmatrix}
+%	\end{equation}
+%	
+%	and
+%	
+%	\begin{equation}
+%		CP^{-1} = \begin{bmatrix}
+%			C_{1}       & 0 \\
+%		\end{bmatrix}
+%	\end{equation}
+%	
+%	where $A_{11} \in \mathbb{R} ^{l x l}$ and $C_{1} \in \mathbb{R} ^{p x l}$, where p is the number of outputs and l is the number of observable states.
+%	
+%	Input and disturbance matrices are transformed as such:
+%	\begin{equation}
+%		PB = \begin{bmatrix}
+%			B_1 \\
+%			B_2
+%		\end{bmatrix}, \
+%		PB_d = \begin{bmatrix}
+%			{B_d}_1 \\
+%			{B_d}_2
+%		\end{bmatrix}
+%	\end{equation}
+%\end{frame}
 
 
 
@@ -554,29 +560,29 @@
 
 %%%%%%%%%%%%%%%%%
 
-\begin{frame}{Modelling}{Condition number}
-	\begin{itemize}
-		\item Brings nuance to degree of controllability and observability
-		\item "Large" condition numbers are generally undesirable
-	\end{itemize}
-	Definition:
-	\begin{equation}
-		\kappa (G(j\omega)) = \frac{\bar{\sigma}(G(j\omega))}{\underline{\sigma}(G(j\omega))}
-	\end{equation}
-	where $G(j\omega)$ is the transfer matrix of the system and
-	\begin{itemize}
-		\item $\bar{\sigma}$ is the largest singular value
-		\item $\underline{\sigma}$ is the smallest singular value
-	\end{itemize}
-	Found from Singular Value Decomposition (SVD).
-	
-	\begin{itemize}
-		\item Condition numbers for $Q_c$ are:
-		\begin{itemize}
-			\item 1.195e+9 for 'two state reduced' system 
-			\item 2.934e+8 for Kalman decomposition reduced system
-		\end{itemize}
-	\end{itemize}
-\end{frame}
+%\begin{frame}{Modelling}{Condition number}
+%	\begin{itemize}
+%		\item Brings nuance to degree of controllability and observability
+%		\item "Large" condition numbers are generally undesirable
+%	\end{itemize}
+%	Definition:
+%	\begin{equation}
+%		\kappa (G(j\omega)) = \frac{\bar{\sigma}(G(j\omega))}{\underline{\sigma}(G(j\omega))}
+%	\end{equation}
+%	where $G(j\omega)$ is the transfer matrix of the system and
+%	\begin{itemize}
+%		\item $\bar{\sigma}$ is the largest singular value
+%		\item $\underline{\sigma}$ is the smallest singular value
+%	\end{itemize}
+%	Found from Singular Value Decomposition (SVD).
+%	
+%	\begin{itemize}
+%		\item Condition numbers for $Q_c$ are:
+%		\begin{itemize}
+%			\item 1.195e+9 for 'two state reduced' system 
+%			\item 2.934e+8 for Kalman decomposition reduced system
+%		\end{itemize}
+%	\end{itemize}
+%\end{frame}
 
 
