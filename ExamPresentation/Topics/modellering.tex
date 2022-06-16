@@ -93,7 +93,7 @@
 	\begin{equation}
 		\frac{dM_r}{dt} 	 = \dot{m}_{in}(t) - \dot{m}_{out}(t) \label{eq:Condenser_ChangeOfMass}
 	\end{equation}
-	Metal temperature:
+	Metal energy balance:
 	\begin{equation}
 		\frac{dT_m}{dt} 	 = \frac{Q_{rm} - Q_{ma}}{M_m \cdot Cp_m} \label{eq:Condenser_ChangeOfTemperature}
 	\end{equation}
@@ -127,11 +127,11 @@
 	\begin{equation}
 		\sigma = \frac{M_{lv} \cdot v_{lv}}{V_i} \label{eq:Evaporator_boundary}
 	\end{equation}
-	Liquid-vapour CV metal temperature:
+	Liquid-vapour CV metal energy balance:
 	\begin{equation}
 		\frac{dT_{mlv}}{dt}  = \frac{Q_{amlv}-Q_{mlv} + Q_{mvmlv}}{M_m \cdot \sigma \cdot Cp_m} \label{eq:evap_dT_ml}
 	\end{equation}
-	Vapour CV metal temperature:
+	Vapour CV metal energy balance:
 	\begin{equation}
 		\frac{dT_{mv}}{dt} = \frac{Q_{amv} - Q_{mv} - Q_{mvmlv}}{M_m \cdot (1 - \sigma) \cdot Cp_m} \label{eq:evap_dT_mv}
 	\end{equation}
@@ -166,7 +166,7 @@
 \end{frame}
 
 \begin{frame}{Box}{Equations}
-	Air, box and cargo temperatures:
+	Air, box and cargo energy balances:
 	\begin{align}
 		\frac{dT_{air}}{dt} &= \frac{Q_{ca} + Q_{ba} + Q_{fan} -Q_{cool}}{M_{air} \cdot Cp_{air}} \label{eq:box_dT_air} \\
 		\frac{dT_{box}}{dt} &= \frac{Q_{amb} - Q_{ba}}{M_{box} \cdot Cp_{box}} \label{eq:box_dT_box} \\
@@ -218,10 +218,11 @@
 \begin{frame}{Modelling}{Formulating non-linear state-space model}
 	A non-linear state space model is formulated
 	\begin{itemize}
-		\item All state equations equations are collected in a $f(x,u,d)$ vector
+		\item State equations are collected in a $f(x,u,d)$ vector
 		\item Algebraic equations are constraints
 	\end{itemize}
-	State vector and input vector:
+
+	The state, input and disturbance vector are:
 	\begin{equation}  \label{eq:xu}
 		\begin{split}
 			x & = [M_{pjj}	\;
@@ -244,6 +245,7 @@
 			d & = [T_{ambi}]
 		\end{split}
 	\end{equation}
+	System contains 12 states - a lot less than previous work.
 
 \end{frame}
 
